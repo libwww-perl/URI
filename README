@@ -1,7 +1,3 @@
-!!! This is work in progress.  Class names and interfaces will change.
-!!! No documentation provided.
-!!!
-
 This is an attempt to update and simplify the URI::URL classes based
 on RFC 2396 "Uniform Resource Identifiers (URI): Generic Syntax"
 
@@ -43,7 +39,7 @@ Main user visible changes from URI::URL are:
 
    * crack is gone
 
-   * newlocal is gone (or NYI)
+   * newlocal --> URI::file->new_abs
 
    * print_on is gone
 
