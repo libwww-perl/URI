@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.21 2002/07/19 00:44:56 gisle Exp $
+# $Id: Escape.pm,v 3.22 2004/01/14 13:33:44 gisle Exp $
 #
 
 package URI::Escape;
@@ -20,7 +20,7 @@ URI::Escape - Escape and unescape unsafe characters
 
 This module provides functions to escape and unescape URI strings as
 defined by RFC 2396 (and updated by RFC 2732).
-URIs consist of a restricted set of characters,
+A URI consists of a restricted set of characters,
 denoted as C<uric> in RFC 2396.  The restricted set of characters
 consists of digits, letters, and a few graphic symbols chosen from
 those common to most of the character encodings and input facilities
@@ -30,10 +30,10 @@ available to Internet users:
   ";", "/", "?", ":", "@", "&", "=", "+", "$", ",", "[", "]",   # reserved
   "-", "_", ".", "!", "~", "*", "'", "(", ")"
 
-In addition any byte (octet) can be represented in a URI by an escape
-sequence; a triplet consisting of the character "%" followed by two
-hexadecimal digits.  Bytes can also be represented directly by a
-character using the US-ASCII character for that octet (iff the
+In addition, any byte (octet) can be represented in a URI by an escape
+sequence: a triplet consisting of the character "%" followed by two
+hexadecimal digits.  A byte can also be represented directly by a
+character, using the US-ASCII character for that octet (iff the
 character is part of C<uric>).
 
 Some of the C<uric> characters are I<reserved> for use as delimiters
@@ -46,8 +46,8 @@ The functions provided (and exported by default) from this module are:
 
 =item uri_escape($string, [$unsafe])
 
-This function replaces all unsafe characters in the $string with their
-escape sequences and returns the result.
+Replaces each unsafe character in the $string with the
+corresponding escape sequence and returns the result.
 
 The uri_escape() function takes an optional second argument that
 overrides the set of characters that are to be escaped.  The set is
@@ -66,7 +66,7 @@ reserved characters.  I.e. the default is:
 
 =item uri_unescape($string,...)
 
-Returns a string with all %XX sequences replaced with the actual byte
+Returns a string with each %XX sequence replaced with the actual byte
 (octet).
 
 This does the same as:
@@ -77,19 +77,19 @@ but does not modify the string in-place as this RE would.  Using the
 uri_unescape() function instead of the RE might make the code look
 cleaner and is a few characters less to type.
 
-In a simple benchmark test I made I got something like 40% slowdown by
+In a simple benchmark test I did,
 calling the function (instead of the inline RE above) if a few chars
-where unescaped and something like 700% slowdown if none where.  If
+were unescaped was something like 40% slower, and something like 700% slower if none were.  If
 you are going to unescape a lot of times it might be a good idea to
 inline the RE.
 
 If the uri_unescape() function is passed multiple strings, then each
-one is unescaped returned.
+one is returned unescaped.
 
 =back
 
-The module can also export the C<%escapes> hash which contains the
-mapping from all 256 bytes to the corresponding escape code.  Lookup
+The module can also export the C<%escapes> hash, which contains the
+mapping from all 256 bytes to the corresponding escape codes.  Lookup
 in this hash is faster than evaluating C<sprintf("%%%02X", ord($byte))>
 each time.
 
@@ -114,7 +114,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.21 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.22 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 

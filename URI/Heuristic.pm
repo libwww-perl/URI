@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.16 2003/07/23 23:47:52 gisle Exp $
+# $Id: Heuristic.pm,v 4.17 2004/01/14 13:33:44 gisle Exp $
 
 =head1 NAME
 
@@ -18,9 +18,9 @@ URI::Heuristic - Expand URI using heuristics
 =head1 DESCRIPTION
 
 This module provides functions that expand strings into real absolute
-URIs using some builtin heuristics.  Strings that already represent
-absolute URIs (i.e. start with a C<scheme:> part) are never modified
-and are returned unchanged.  The main use of these functions are to
+URIs using some built-in heuristics.  Strings that already represent
+absolute URIs (i.e. that start with a C<scheme:> part) are never modified
+and are returned unchanged.  The main use of these functions is to
 allow abbreviated URIs similar to what many web browsers allow for URIs
 typed in by the user.
 
@@ -30,7 +30,7 @@ The following functions are provided:
 
 =item uf_uristr($str)
 
-The uf_uristr() function will try to make the string passed as argument 
+Tries to make the argument string
 into a proper absolute URI string.  The "uf_" prefix stands for "User 
 Friendly".  Under MacOS, it assumes that any string with a common URL 
 scheme (http, ftp, etc.) is a URL rather than a local path.  So don't name 
@@ -39,28 +39,28 @@ valid file: URL's on those volumes for you, because it won't.
 
 =item uf_uri($str)
 
-This functions work the same way as uf_uristr() but it will
-return a C<URI> object.
+Works the same way as uf_uristr() but
+returns a C<URI> object.
 
 =back
 
 =head1 ENVIRONMENT
 
 If the hostname portion of a URI does not contain any dots, then
-certain qualified guesses will be made.  These guesses are governed be
-the following two environment variables.
+certain qualified guesses are made.  These guesses are governed by
+the following two environment variables:
 
 =over 10
 
 =item COUNTRY
 
-This is the two letter country code (ISO 3166) for your location.  If
+The two-letter country code (ISO 3166) for your location.  If
 the domain name of your host ends with two letters, then it is taken
 to be the default country. See also L<Locale::Country>.
 
 =item URL_GUESS_PATTERN
 
-Contain a space separated list of URL patterns to try.  The string
+Contains a space-separated list of URL patterns to try.  The string
 "ACME" is for some reason used as a placeholder for the host name in
 the URL provided.  Example:
 
@@ -89,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.16 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.17 $ =~ /(\d+)\.(\d+)/);
 
 sub MY_COUNTRY() {
     for ($MY_COUNTRY) {

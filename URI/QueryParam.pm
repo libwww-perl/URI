@@ -113,11 +113,11 @@ URI::QueryParam - Additional query methods for URIs
 
 =head1 DESCRIPTION
 
-Loading the C<URI::QueryParam> module will add some extra methods to
+Loading the C<URI::QueryParam> module adds some extra methods to
 URIs that support query methods.  These methods provide an alternative
 interface to the $u->query_form data.
 
-The provided query_param_* methods on pupose made identical to the
+The query_param_* methods have deliberately been made identical to the
 interface of the corresponding C<CGI.pm> methods.
 
 The following additional methods are made available:
@@ -132,22 +132,22 @@ The following additional methods are made available:
 
 =item $u->query_param( $key, $value,... )
 
-If $u->query_param is called with no argments it returns all the
-distinct parameter keys of the URI.  In scalar context it returns the
+If $u->query_param is called with no arguments, it returns all the
+distinct parameter keys of the URI.  In a scalar context it returns the
 number of distinct keys.
 
-When a $key argument is given it returns the parameter values with the
-given key.  In scalar context only the first parameter value is
+When a $key argument is given, the method returns the parameter values with the
+given key.  In a scalar context, only the first parameter value is
 returned.
 
-If additional arguments are given they are used to update successive
+If additional arguments are given, they are used to update successive
 parameters with the given key.  If any of the values provided are
-array references then the array is dereferenced to get the actual
+array references, then the array is dereferenced to get the actual
 values.
 
 =item $u->query_param_append($key, $value,...)
 
-The $u->query_param_append method adds new parameters with the given
+Adds new parameters with the given
 key without touching any old parameters with the same key.  It
 can be explained as a more efficient version of:
 
@@ -156,14 +156,14 @@ can be explained as a more efficient version of:
                    $value,...);
 
 One difference is that this expression would return the old values
-of $key, while the query_param_append() method will not.
+of $key, whereas the query_param_append() method does not.
 
 =item @values = $u->query_param_delete($key)
 
 =item $first_value = $u->query_param_delete($key)
 
-This method will delete all key/value pairs with the given key.
-The old values are returned.  In scalar context only the first value
+Deletes all key/value pairs with the given key.
+The old values are returned.  In a scalar context, only the first value
 is returned.
 
 Using the query_param_delete() method is slightly more efficient than
@@ -175,15 +175,15 @@ the equivalent:
 
 =item $u->query_form_hash( \%new_form )
 
-This method will return a reference to a hash that represents the
+Returns a reference to a hash that represents the
 query form's key/value pairs.  If a key occurs multiple times, then the hash
-value will become an array reference.
+value becomes an array reference.
 
-Note that sequence information is lost.  It means that:
+Note that sequence information is lost.  This means that:
 
    $u->query_form_hash($u->query_form_hash)
 
-is not necessarily a no-op as it might reorder the key/value pairs.
+is not necessarily a no-op, as it may reorder the key/value pairs.
 The values returned by the query_param() method should stay the same
 though.
 

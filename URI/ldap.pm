@@ -49,38 +49,38 @@ URI::ldap - LDAP Uniform Resource Locators
 
 =head1 DESCRIPTION
 
-C<URI::ldap> provides an interface to parse an LDAP URI in its
-constituent parts and also build a URI as described in
+C<URI::ldap> provides an interface to parse an LDAP URI into its
+constituent parts and also to build a URI as described in
 RFC 2255.
 
 =head1 METHODS
 
-C<URI::ldap> support all the generic and server methods defined by
+C<URI::ldap> supports all the generic and server methods defined by
 L<URI>, plus the following.
 
 Each of the following methods can be used to set or get the value in
-the URI. The values are passed in unescaped form.  None of these will
+the URI. The values are passed in unescaped form.  None of these
 return undefined values, but elements without a default can be empty.
-If arguments are given then a new value will be set for the given part
+If arguments are given, then a new value is set for the given part
 of the URI.
 
 =over 4
 
 =item $uri->dn( [$new_dn] )
 
-Set or get the I<Distinguised Name> part of the URI.  The DN
+Sets or gets the I<Distinguished Name> part of the URI.  The DN
 identifies the base object of the LDAP search.
 
 =item $uri->attributes( [@new_attrs] )
 
-Set or get the list of attribute names which will be
+Sets or gets the list of attribute names which are
 returned by the search.
 
 =item $uri->scope( [$new_scope] )
 
-Set or get the scope that the search will use. The value can be one of
+Sets or gets the scope to be used by the search. The value can be one of
 C<"base">, C<"one"> or C<"sub">. If none is given in the URI then the
-return value will default to C<"base">.
+return value defaults to C<"base">.
 
 =item $uri->_scope( [$new_scope] )
 
@@ -88,8 +88,8 @@ Same as scope(), but does not default to anything.
 
 =item $uri->filter( [$new_filter] )
 
-Set or get the filter that the search will use. If none is given in
-the URI then the return value will default to C<"(objectClass=*)">.
+Sets or gets the filter to be used by the search. If none is given in
+the URI then the return value defaults to C<"(objectClass=*)">.
 
 =item $uri->_filter( [$new_filter] )
 
@@ -97,9 +97,9 @@ Same as filter(), but does not default to anything.
 
 =item $uri->extensions( [$etype => $evalue,...] )
 
-Set or get the extensions used for the search. The list passed should
+Sets or gets the extensions used for the search. The list passed should
 be in the form etype1 => evalue1, etype2 => evalue2,... This is also
-the form of list that will be returned.
+the form of list that is returned.
 
 =back
 

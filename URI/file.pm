@@ -5,7 +5,7 @@ use vars qw(@ISA $VERSION);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.13 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.14 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
 
@@ -81,7 +81,7 @@ __END__
 
 =head1 NAME
 
-URI::file - URI that map to local file names
+URI::file - URI that maps to local file names
 
 =head1 SYNOPSIS
 
@@ -105,7 +105,7 @@ specification of the I<file> URI scheme is found in RFC 1738.  Some
 older background information is also in RFC 1630. There are no newer
 specifications as far as I know.
 
-If you want simply to construct I<file> URI objects from URI strings,
+If you simply want to construct I<file> URI objects from URI strings,
 use the normal C<URI> constructor.  If you want to construct I<file>
 URI objects from the actual file names used by various systems, then
 use one of the following C<URI::file> constructors:
@@ -114,15 +114,15 @@ use one of the following C<URI::file> constructors:
 
 =item $u = URI::file->new( $filename, [$os] )
 
-Maps a file name to the I<file:> URI name space, creates an URI object
-and returns it.  The $filename is interpreted as one belonging to the
+Maps a file name to the I<file:> URI name space, creates a URI object
+and returns it.  The $filename is interpreted as belonging to the
 indicated operating system ($os), which defaults to the value of the
 $^O variable.  The $filename can be either absolute or relative, and
 the corresponding type of URI object for $os is returned.
 
 =item $u = URI::file->new_abs( $filename, [$os] )
 
-Same as URI::file->new, but will make sure that the URI returned
+Same as URI::file->new, but makes sure that the URI returned
 represents an absolute file name.  If the $filename argument is
 relative, then the name is resolved relative to the current directory,
 i.e. this constructor is really the same as:
@@ -143,7 +143,7 @@ the common and generic methods described in L<URI>):
 
 =item $u->file( [$os] )
 
-This method return a file name.  It maps from the URI name space
+Returns a file name.  It maps from the URI name space
 to the file name space of the indicated operating system.
 
 It might return C<undef> if the name can not be represented in the
@@ -159,9 +159,9 @@ a directory.
 
 The C<URI::file> module can be used to map generic file names to names
 suitable for the current system.  As such, it can work as a nice
-replacement for the C<File::Spec> module.  For instance the following
-code will translate the Unix style file name F<Foo/Bar.pm> to a name
-suitable for the local system.
+replacement for the C<File::Spec> module.  For instance, the following
+code translates the UNIX-style file name F<Foo/Bar.pm> to a name
+suitable for the local system:
 
   $file = URI::file->new("Foo/Bar.pm", "unix")->file;
   die "Can't map filename Foo/Bar.pm for $^O" unless defined $file;
@@ -175,8 +175,8 @@ Mapping the names used in these systems to the generic URI syntax
 allows us to work with relative file URIs that behave as they should
 when resolved using the generic algorithm for URIs (specified in RFC
 2396).  Mapping a file name to the generic URI syntax involves mapping
-the path separator character to "/" and encoding of any reserved
-characters that appear in the path segments of the file names.  If
+the path separator character to "/" and encoding any reserved
+characters that appear in the path segments of the file name.  If
 path segments consisting of the strings "." or ".." have a
 different meaning than what is specified for generic URIs, then these
 must be encoded as well.
@@ -184,25 +184,25 @@ must be encoded as well.
 If the file system has device, volume or drive specifications as
 the root of the name space, then it makes sense to map them to the
 authority field of the generic URI syntax.  This makes sure that
-relative URI can not be resolved "above" them , i.e. generally how
+relative URIs can not be resolved "above" them, i.e. generally how
 relative file names work in those systems.
 
-Another common use of the authority field is to encode the host that
-this file name is valid on.  The host name "localhost" is special and
-generally have the same meaning as an missing or empty authority
-field.  This use will be in conflict with using it as a device
+Another common use of the authority field is to encode the host on which
+this file name is valid.  The host name "localhost" is special and
+generally has the same meaning as a missing or empty authority
+field.  This use is in conflict with using it as a device
 specification, but can often be resolved for device specifications
 having characters not legal in plain host names.
 
 File name to URI mapping in normally not one-to-one.  There are
-usually many URI that map to the same file name.  For instance an
+usually many URIs that map to any given file name.  For instance, an
 authority of "localhost" maps the same as a URI with a missing or empty
 authority.
 
-Example 1: The Mac use ":" as path separator, but not in the same way
-as generic URI. ":foo" is a relative name.  "foo:bar" is an absolute
-name.  Also path segments can contain the "/" character as well as be
-literal "." or "..".  It means that we will map like this:
+Example 1: The Mac uses ":" as path separator, but not in the same way
+as a generic URI. ":foo" is a relative name.  "foo:bar" is an absolute
+name.  Also, path segments can contain the "/" character as well as the
+literal "." or "..".  So the mapping looks like this:
 
   Mac                   URI
   ----------            -------------------
@@ -218,14 +218,14 @@ literal "." or "..".  It means that we will map like this:
   ./foo.txt    <==      file:/.%2Ffoo.txt
 
 Note that if you want a relative URL, you *must* begin the path with a :.  Any
-path that begins with [^:] will be treated as absolute.
+path that begins with [^:] is treated as absolute.
 
-Example 2: The Unix file system is easy to map as it use the same path
-separator as URIs, have a single root, and segments of "." and ".."
+Example 2: The UNIX file system is easy to map, as it uses the same path
+separator as URIs, has a single root, and segments of "." and ".."
 have the same meaning.  URIs that have the character "\0" or "/" as
-part of any path segment can not be turned into valid Unix file names.
+part of any path segment can not be turned into valid UNIX file names.
 
-  Unix                  URI
+  UNIX                  URI
   ----------            ------------------
   foo/bar      <==>     foo/bar
   /foo/bar     <==>     file:/foo/bar

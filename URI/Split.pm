@@ -54,31 +54,31 @@ URI::Split - Parse and compose URI strings
 
 =head1 DESCRIPTION
 
-The C<URI::Split> module provide functions to parse and compose URI
+Provides functions to parse and compose URI
 strings.  The following functions are provided:
 
 =over
 
 =item ($scheme, $auth, $path, $query, $frag) = uri_split($uri)
 
-The uri_split() function will break up a URI string into it component
+Breaks up a URI string into its component
 parts.  An C<undef> value is returned for those parts that are not
-present.  The $path part will always be present (but can be the empty
-string) and will thus never be returned as C<undef>.
+present.  The $path part is always present (but can be the empty
+string) and is thus never returned as C<undef>.
 
-No sensible value is returned if this function is called in scalar
+No sensible value is returned if this function is called in a scalar
 context.
 
 =item $uri = uri_join($scheme, $auth, $path, $query, $frag)
 
-The uri_join() function will put together a URI string from its parts.
+Puts together a URI string from its parts.
 Missing parts are signaled by passing C<undef> for the corresponding
 argument.
 
-Minimal escaping will be applied to parts that contain reserved chars
-that would confuse a parser.  For instance any occurence of '?' or '#'
-in $path will always be escaped as they would otherwise be parsed back
-as query or fragment.
+Minimal escaping is applied to parts that contain reserved chars
+that would confuse a parser.  For instance, any occurrence of '?' or '#'
+in $path is always escaped, as it would otherwise be parsed back
+as a query or fragment.
 
 =back
 
