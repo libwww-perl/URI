@@ -121,7 +121,7 @@ sub _split_segment
 sub abs
 {
     my $self = shift;
-    my $base = shift || die "Missing base argument";
+    my $base = shift || Carp::croak("Missing base argument");
 
     if (my $scheme = $self->scheme) {
 	return $self unless $URI::ABS_ALLOW_RELATIVE_SCHEME;
@@ -176,7 +176,7 @@ sub abs
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
     my $self = shift;
-    my $base = shift || die "Missing base argument";
+    my $base = shift || Carp::croak("Missing base argument");
     my $rel = $self->clone;
     $base = URI->new($base) unless ref $base;
 
