@@ -1,3 +1,16 @@
+2001-09-14   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.17
+
+   Fixed unescape of %30 in $http_uri->canonical.
+
+   Fixed test failure for t/heuristic.t on cygwin.
+
+   Fixed warning noise from t/old-base.t on bleadperl.
+   Perl now warns for pack("c*", $i) when $i > 127.
+
+
+
 2001-08-27   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.16
