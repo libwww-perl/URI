@@ -71,11 +71,13 @@ sub _check_path
     my $prefix;
     if ($pre =~ m,/,) {  # authority present
 	$prefix = "/" if length($path) && $path !~ m,^[/?\#],;
-    } else {
+    }
+    else {
 	if ($path =~ m,^//,) {
 	    Carp::carp("Path starting with double slash is confusing")
 		if $^W;
-	} elsif (!length($pre) && $path =~ m,^[^:/?\#]+:,) {
+	}
+	elsif (!length($pre) && $path =~ m,^[^:/?\#]+:,) {
 	    Carp::carp("Path might look like scheme, './' prepended")
 		if $^W;
 	    $prefix = "./";
@@ -96,7 +98,8 @@ sub path_segments
 		$seg[0] =~ s/%/%25/g;
 		for (@seg) { s/;/%3B/g; }
 		$_ = join(";", @seg);
-	    } else {
+	    }
+	    else {
 		 s/%/%25/g; s/;/%3B/g;
 	    }
 	    s,/,%2F,g;
@@ -155,13 +158,15 @@ sub abs
 	if ($p[$i-1] eq ".") {
 	    splice(@p, $i-1, 1);
 	    $i-- if $i > 1;
-	} elsif ($p[$i] eq ".." && $p[$i-1] ne "..") {
+	}
+	elsif ($p[$i] eq ".." && $p[$i-1] ne "..") {
 	    splice(@p, $i-1, 2);
 	    if ($i > 1) {
 		$i--;
 		push(@p, "") if $i == @p;
 	    }
-	} else {
+	}
+	else {
 	    $i++;
 	}
     }
@@ -228,7 +233,8 @@ sub rel {
         defined($rel->fragment) &&
         !defined($rel->query)) {
         $rel->path("");
-    } else {
+    }
+    else {
         # Add one "../" for each path component left in the base path
         $path = ('../' x $bpath =~ tr|/|/|) . $path;
 	$path = "./" if $path eq "";

@@ -1,4 +1,4 @@
-package URI;  # $Date: 2003/01/02 05:11:26 $
+package URI;  # $Date: 2003/07/23 23:18:21 $
 
 use strict;
 use vars qw($VERSION);
@@ -42,10 +42,12 @@ sub new
     my $impclass;
     if ($uri =~ m/^($scheme_re):/so) {
 	$scheme = $1;
-    } else {
+    }
+    else {
 	if (($impclass = ref($scheme))) {
 	    $scheme = $scheme->scheme;
-	} elsif ($scheme && $scheme =~ m/^($scheme_re)(?::|$)/o) {
+	}
+	elsif ($scheme && $scheme =~ m/^($scheme_re)(?::|$)/o) {
 	    $scheme = $1;
         }
     }
@@ -159,12 +161,14 @@ sub _scheme
 	my $newself = URI->new("$new:$$self");
 	$$self = $$newself; 
 	bless $self, ref($newself);
-    } else {
+    }
+    else {
 	if ($self->_no_scheme_ok) {
 	    $old = $1 if $$self =~ s/^($scheme_re)://o;
 	    Carp::carp("Oops, opaque part now look like scheme")
 		if $^W && $$self =~ m/^$scheme_re:/o
-	} else {
+	}
+	else {
 	    $old = $1 if $$self =~ m/^($scheme_re):/o;
 	}
     }
