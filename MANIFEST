@@ -4,9 +4,11 @@ Makefile.PL
 README
 URI.pm
 URI/_generic.pm
+URI/_query.pm
 URI/_server.pm
 URI/data.pm
 URI/http.pm
 URI/https.pm
+URI/mailto.pm
 t/abs.t
 t/generic.t
