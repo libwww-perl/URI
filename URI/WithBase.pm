@@ -88,3 +88,57 @@ sub rel
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+URI::WithBase - URI which remember their base
+
+=head1 SYNOPSIS
+
+ $u1 = URI::WithBase->new($str, $base);
+ $u2 = $u1->abs;
+
+ $base = $u1->base;
+ $u1->base( $new_base )
+
+=head1 DESCRIPTION
+
+This module provide the C<URI::WithBase> class.  Objects of this class
+are like URI objects, but can keep their base too.
+
+The methods provided in addition to or modified from those of URI are:
+
+=over 4
+
+=item $uri = URI::WithBase->new($str, [$base])
+
+The constructor takes a an optional base URI as the second argument.
+
+=item $uri->base( [$new_base] )
+
+This method can be used to get or set the value of the base attribute.
+
+=item $uri->abs( [$base_uri] )
+
+The $base_uri argument is now made optional as the object carry it's
+base with it.
+
+=item $uri->rel( [$base_uri] )
+
+The $base_uri argument is now made optional as the object carry it's
+base with it.
+
+=back
+
+
+=head1 SEE ALSO
+
+L<URI>
+
+=head1 COPYRIGHT
+
+Copyright 1998 Gisle Aas.
+
+=cut
