@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.26 1999/03/22 10:11:45 gisle Exp $
+package URI;  # $Id: URI.pm,v 1.27 1999/03/26 13:32:22 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -661,6 +661,18 @@ The I<https> URI scheme is a Netscape invention which is commonly
 implemented.  The scheme is used to reference HTTP servers through SSL
 connections.  It's syntax is the same as http, but the default
 port is different.
+
+=item B<ldap>:
+
+The I<ldap> URI scheme is specified in RFC 2255.  LDAP is the
+Lightweight Directory Access Protocol.  A ldap URI describes an LDAP
+search operation to perform to retrieve information from an LDAP
+directory.
+
+C<URI> objects belonging to the ldap scheme support the common,
+generic and server methods as well as specific ldap methods; $uri->dn,
+$uri->attributes, $uri->scope, $uri->filter, $uri->extensions.  See
+L<URI::ldap> for details.
 
 =item B<mailto>:
 
