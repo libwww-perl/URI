@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.30 2000/02/14 15:27:33 gisle Exp $
+package URI;  # $Id: URI.pm,v 1.31 2000/02/14 15:30:32 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -713,6 +713,13 @@ userinfo components: $uri->user and $uri->auth
 An old speficication of the I<rlogin> URI scheme is found in RFC
 1738. C<URI> objects belonging to the rlogin scheme support the
 common, generic and server methods.
+
+=item B<rsync>:
+
+Information about rsync is available from http://rsync.samba.org.
+C<URI> objects belonging to the rsync scheme support the common,
+generic and server methods.  In addition they provide methods to
+access the userinfo sub-components: $uri->user and $uri->password.
 
 =item B<snews>:
 
