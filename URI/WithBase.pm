@@ -53,7 +53,7 @@ sub base {
     my $base  = $self->[1];
 
     if (@_) { # set
-	my $new_base = @_;
+	my $new_base = shift;
 	$new_base = $new_base->abs if ref($new_base);  # ensure absoluteness
 	$self->[1] = $new_base;
     }
@@ -74,7 +74,9 @@ sub base {
 sub clone
 {
     my $self = shift;
-    bless [$self->[0]->clone, $self->[0]], ref($self);
+    my $base = $self->[1];
+    $base = $base->clone if ref($base);
+    bless [$self->[0]->clone, $base], ref($self);
 }
 
 sub abs
