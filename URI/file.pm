@@ -140,7 +140,7 @@ the common and generic methods described in L<URI>):
 This method return a file name.  It maps from the URI name space
 to the file name space of the indicated operating system.
 
-It might return U<undef> if the name can not be represented in the
+It might return C<undef> if the name can not be represented in the
 indicated file system.
 
 =item $u->dir( [$os] )
