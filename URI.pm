@@ -1,8 +1,8 @@
-package URI;  # $Date: 2001/05/15 03:45:33 $
+package URI;  # $Date: 2001/07/18 13:43:11 $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.13";
+$VERSION = "1.14";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
