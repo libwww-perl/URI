@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.3 1998/09/04 21:04:10 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.4 1998/09/05 06:22:45 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -224,15 +224,16 @@ sub as_string
 sub canonical
 {
     my $self = shift;
-    my $other = $self->clone;
 
     # Make sure scheme is lowercased
-    my $scheme = $other->scheme;
+    my $scheme = $self->scheme;
     if ($scheme =~ /[A-Z]/) {
+	my $other = $self->clone;
 	$other->scheme(lc $scheme);
+	return $other;
     }
 
-    $other;
+    $self;
 }
 
 # Compare two URIs, subclasses will provide a more correct implementation
