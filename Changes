@@ -1,6 +1,12 @@
+1998-09-06   Gisle Aas <aas@sn.no>
+
+   Release 0.03 based on simplified scalar object.
+
+
+
 1998-09-02   Gisle Aas <aas@sn.no>
 
-   use fields
+   Release 0.02 based on perl5.005 and fields.pm
 
 
 
