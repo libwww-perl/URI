@@ -20,6 +20,7 @@ URI/file/Base.pm
 URI/file/FAT.pm
 URI/file/Mac.pm
 URI/file/OS2.pm
+URI/file/QNX.pm
 URI/file/Unix.pm
 URI/file/Win32.pm
 URI/ftp.pm
@@ -32,6 +33,7 @@ URI/news.pm
 URI/nntp.pm
 URI/pop.pm
 URI/rlogin.pm
+URI/rsync.pm
 URI/snews.pm
 URI/telnet.pm
 rfc2396.txt
@@ -55,4 +57,5 @@ t/roytest2.html
 t/roytest3.html
 t/roytest4.html
 t/roytest5.html
+t/rsync.t
 uri-test
