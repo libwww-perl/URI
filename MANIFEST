@@ -11,4 +11,6 @@ URI/http.pm
 URI/https.pm
 URI/mailto.pm
 t/abs.t
+t/data.t
+t/http.t
 t/generic.t
