@@ -132,7 +132,7 @@ sub port
 sub default_port { undef }
 
 
-sub abs_path
+sub abs_path_query
 {
     my $self = shift;
     #my($authority, $path, $query) = @{$self}{qw(authority path query)};
