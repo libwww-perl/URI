@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.25 1999/03/20 07:32:40 gisle Exp $
+package URI;  # $Id: URI.pm,v 1.26 1999/03/22 10:11:45 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.01";
+$VERSION = "1.02";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -301,14 +301,16 @@ URI - Uniform Resource Identifiers (absolute and relative)
 =head1 DESCRIPTION
 
 This module implements the C<URI> class.  Objects of this class
-represent Uniform Resource Identifier (URI) references as specified
-in RFC 2396.
+represent "Uniform Resource Identifier references" as specified in RFC
+2396.
 
 A Uniform Resource Identifier is a compact string of characters for
 identifying an abstract or physical resource.  A Uniform Resource
 Identifier can be further classified either a Uniform Resource Locator
 (URL) or a Uniform Resource Name (URN).  The distinction between URL
-and URN does not matter to the C<URI> class interface.
+and URN does not matter to the C<URI> class interface. A
+"URI-reference" is a URI that may have additional information attached
+in the form of a fragment identifier.
 
 An absolute URI reference consists of three parts.  A I<scheme>, a
 I<scheme specific part> and a I<fragment> identifier.  A subset of URI
@@ -359,7 +361,10 @@ automatically escaped by the URI constructor.
 
 =item $uri = URI->new_abs( $str, $base_uri )
 
-This constructs a new absolute URI.
+This constructs a new absolute URI object.  The $str argument can
+denote a relative or absolute URI.  If relative, then it will be
+absolutized using $base_uri as base. The $base_uri must be an absolute
+URI.
 
 =item $uri = URI::file->new( $filename, [$os] )
 
@@ -399,7 +404,7 @@ an escaped or an unescaped string.  Components that can be futher
 divided into sub-parts are usually passed escaped, as unescaping might
 change its semantics.
 
-The common methods are:
+The common methods available for all URI are:
 
 =over 4
 
@@ -412,7 +417,7 @@ class of $uri, and return the old scheme value.  The method croaks
 if the new scheme name is illegal; scheme names must begin with a
 letter and must consist of only US-ASCII letters, numbers, and a few
 special marks: ".", "+", "-".  This restriction effectively means
-that scheme should always be passed unescaped.  Passing an undefined
+that scheme have to be passed unescaped.  Passing an undefined
 argument to the scheme method will make the URI relative (if possible).
 
 Letter case does not matter for scheme names.  The string
@@ -431,7 +436,7 @@ as an escaped string.
 This method sets and returns the same value as $uri->opaque unless the URI
 supports the generic syntax for hierarchical namespaces.
 In that case the generic method is overridden to set and return
-the part of the URI between the hostname and the fragment.
+the part of the URI between the I<host name> and the I<fragment>.
 
 =item $uri->fragment( [$new_frag] )
 
@@ -440,7 +445,7 @@ as an escaped string.
 
 =item $uri->as_string
 
-This method converts a URI object to a plain string.  URI objects are
+This method returns a URI object to a plain string.  URI objects are
 also converted to plain strings automatically by overloading.  This
 means that $uri objects can be used as plain strings in most Perl
 constructs.
@@ -454,8 +459,8 @@ removing the explicit port specification if it matches the default port,
 uppercasing all escape sequences, and unescaping octets that can be
 better represented as plain characters.
 
-If the $uri already was in normalized form, then a reference to
-it is returned instead of a copy.
+For efficiency reasons, if the $uri already was in normalized form,
+then a reference to it is returned instead of a copy.
 
 =item $uri->eq( $other_uri )
 
@@ -473,8 +478,8 @@ same object, use the '==' operator.
 
 This method returns an absolute URI reference.  If $uri already is
 absolute, then a reference to it is simply returned.  If the $uri
-is relative then a new absolute URI is constructed by combining the
-$uri and the $base_uri and returned.
+is relative, then a new absolute URI is constructed by combining the
+$uri and the $base_uri, and returned.
 
 =item $uri->rel( $base_uri )
 
@@ -513,13 +518,13 @@ separated by a "?" character, but the query can itself contain "?".
 
 =item $uri->path_segments( [$segment,...] )
 
-This method sets and returns the path.  In scalar context it
-returns the same value as $uri->path.  In list context it will return
-the unescaped path segments that make up the path.  Path segments that
+This method sets and returns the path.  In scalar context it returns
+the same value as $uri->path.  In list context it will return the
+unescaped path segments that make up the path.  Path segments that
 have parameters are returned as an anonymous array.  The first element
 is the unescaped path segment proper.  Subsequent elements are escaped
-parameter strings.  An anonymous array uses overloading so it can be
-treated as a string too, but this string does not include the
+parameter strings.  Such an anonymous array uses overloading so it can
+be treated as a string too, but this string does not include the
 parameters.
 
 =item $uri->query( [$new_query] )
@@ -551,8 +556,13 @@ methods.
 
 =item $uri->userinfo( [$new_userinfo] )
 
-This method sets and returns the escaped userinfo part of
-the authority componenent.
+This method sets and returns the escaped userinfo part of the
+authority componenent.
+
+For some schemes this will be a user name and a password separated by
+a colon.  This practice is not recommended. Embedding passwords in
+clear text (such as URI) has proven to be a security risk in almost
+every case where it has been used.
 
 =item $uri->host( [$new_host] )
 
@@ -563,11 +573,12 @@ number will also set the port.
 
 =item $uri->port( [ $new_port] )
 
-This method sets the port in $uri and returns the port specified 
-in the URI or the default
-port for the URI scheme if no port is specified. If you don't want the
-default port substituted, then you can use the $uri->_port method
-instead.
+This method sets and returns the port.  The port is simple integer
+that should be greater than 0.
+
+If no explicit port is specified in the URI, then the default port of
+the URI scheme is returned. If you don't want the default port
+substituted, then you can use the $uri->_port method instead.
 
 =item $uri->host_port( [ $new_host_port ] )
 
@@ -580,7 +591,8 @@ colon; ":".
 
 This method returns the default port of the URI scheme that $uri
 belongs to.  For I<http> this will be the number 80, for I<ftp> this
-will be the number 21, etc.
+will be the number 21, etc.  The default port for a scheme can not be
+changed.
 
 =back
 
@@ -637,7 +649,7 @@ $uri->selector, $uri->search, $uri->string.
 =item B<http>:
 
 The I<http> URI scheme is specified in
-<draft-ietf-http-v11-spec-rev-04> (which will become an RFC soon).
+<draft-ietf-http-v11-spec-rev-06> (which will become an RFC soon).
 The scheme is used to reference resources hosted by HTTP servers.
 
 C<URI> objects belonging to the http scheme support the common,
@@ -754,7 +766,7 @@ Berners-Lee, Fielding, Masinter, August 1998.
 
 =head1 COPYRIGHT
 
-Copyright 1995-1998 Gisle Aas.
+Copyright 1995-1999 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
