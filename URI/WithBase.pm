@@ -12,11 +12,18 @@ sub new
 {
     my($class, $uri, $base) = @_;
     my $ibase = $base;
-    if ($base && UNIVERSAL::isa($base, "URI::WithBase")) {
+    if ($base && ref($base) && UNIVERSAL::isa($base, "URI::WithBase")) {
 	$base = $base->abs;
 	$ibase = $base->[0];
     }
     bless [URI->new($uri, $ibase), $base], $class;
+}
+
+sub new_abs
+{
+    my $class = shift;
+    my $self = $class->new(@_);
+    $self->abs;
 }
 
 sub _init
