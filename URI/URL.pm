@@ -6,7 +6,7 @@ require URI::WithBase;
 use strict;
 use vars qw(@EXPORT $VERSION);
 
-$VERSION = "5.01";
+$VERSION = "5.02";
 
 # Provide as much as possible of the old URI::URL interface for backwards
 # compatibility...
@@ -177,6 +177,7 @@ sub vms_path   { shift->file("vms");  }
 # mailto:
 sub address { shift->to(@_); }
 sub encoded822addr { shift->to(@_); }
+sub URI::mailto::authority { shift->to(@_); }  # make 'netloc' method work
 
 # news:
 sub groupart { shift->_group(@_); }
@@ -298,6 +299,6 @@ L<URI>, L<URI::WithBase>
 
 =head1 COPYRIGHT
 
-Copyright 1998 Gisle Aas.
+Copyright 1998-1999 Gisle Aas.
 
 =cut
