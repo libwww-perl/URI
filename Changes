@@ -1,3 +1,18 @@
+2001-01-10   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.10
+
+   The $u->query_form method will not escape spaces in
+   keywords or values as '+' (instead of '%20').  This also
+   affect the $mailto_uri->header() method.
+
+   URI::Heuristic did not work for domain-names with dashes '-'
+   in them.  Fixed.
+
+   Documented that $uri->xxx($1) might not work.
+
+
+
 2000-08-16   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.09
