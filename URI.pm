@@ -1,4 +1,4 @@
-package URI;  # $Date: 2002/07/08 03:38:06 $
+package URI;  # $Date: 2002/07/17 06:03:47 $
 
 use strict;
 use vars qw($VERSION);
@@ -712,6 +712,18 @@ userinfo components: $uri->user and $uri->auth
 An old speficication of the I<rlogin> URI scheme is found in RFC
 1738. C<URI> objects belonging to the rlogin scheme support the
 common, generic and server methods.
+
+=item B<rtsp>:
+
+The I<rtsp> URL specification can be found in section 3.2 of RFC 2326.
+C<URI> objects belonging to the rtsp scheme support the common,
+generic, and server methods, with the exception of userinfo and
+query-related sub-components.
+
+=item B<rtspu>:
+
+The I<rtspu> URI scheme is used to talk to RTSP servers over UDP
+instead of TCP.  The syntax is the same as rtsp.
 
 =item B<rsync>:
 
