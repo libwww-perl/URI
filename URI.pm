@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.14 1998/09/13 21:11:23 aas Exp $
+package URI;  # $Id: URI.pm,v 1.15 1998/09/14 15:01:55 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -135,6 +135,8 @@ sub clone
 }
 
 
+sub _no_scheme_ok { 0 }
+
 sub _scheme
 {
     my $self = shift;
@@ -145,16 +147,21 @@ sub _scheme
     }
 
     my $old;
-    $old = $1 if $$self =~ s/^($scheme_re)://o;
-
     my $new = shift;
     if (defined($new) && length($new)) {
 	Carp::croak("Bad scheme '$new'") unless $new =~ /^$scheme_re$/o;
+	$old = $1 if $$self =~ s/^($scheme_re)://o;
 	my $newself = URI->new("$new:$$self");
 	$$self = $$newself; 
 	bless $self, ref($newself);
-    } elsif ($$self =~ m/^$scheme_re:/o) {
-	Carp::carp("Opaque part look like scheme") if $^W;
+    } else {
+	if ($self->_no_scheme_ok) {
+	    $old = $1 if $$self =~ s/^($scheme_re)://o;
+	    Carp::carp("Oops, opaque part now look like scheme")
+		if $^W && $$self =~ m/^$scheme_re:/o
+	} else {
+	    $old = $1 if $$self =~ m/^($scheme_re):/o;
+	}
     }
 
     return $old;
@@ -248,6 +255,7 @@ sub canonical
 # Compare two URIs, subclasses will provide a more correct implementation
 sub eq {
     my($self, $other) = @_;
+    $self  = URI->new($self, $other) unless ref $self;
     $other = URI->new($other, $self) unless ref $other;
     ref($self) eq ref($other) &&                # same class
 	$self->canonical->as_string eq $other->canonical->as_string;
@@ -288,7 +296,7 @@ URI - Uniform Resource Identifiers (absolute and relative)
 =head1 DESCRIPTION
 
 This module implements the C<URI> class.  Objects of this class
-represent Uniform Resource Identifiers (URI) references as specified
+represent Uniform Resource Identifier (URI) references as specified
 in RFC 2396.
 
 A Uniform Resource Identifier is a compact string of characters for
@@ -298,37 +306,150 @@ Identifier can be further classified either a Uniform Resource Locator
 and URN is not reflected in the abstractions provided by the C<URI>
 class.
 
-The following methods are provided:
+An absolute URI reference consist of three parts.  A I<scheme>, a
+I<scheme specific part> and a I<fragment> identifier.  A subset of URI
+references share a common syntax for hierarchical namespaces.  For
+those the scheme specific part is further broken down into
+I<authority>, I<path> and I<query> components.  These can also take
+the form of relative URI references, where the scheme (and usually
+also the authority) component is missing, but implied by the context
+of the URI reference usage.  The three forms of URI reference syntax
+is summarized as follows:
+
+  <scheme>:<scheme-specific-part>#<fragment>
+  <scheme>://<authority><path>?<query>#<fragment>
+  <path>?<query>#<fragment>
+
+The components that a URI reference can be divided into depend on the
+I<scheme>.  The C<URI> class provide methods to get and set the
+individual components.  The set of methods available for a specific
+URI object depend on the scheme.
+
+=head1 CONSTRUCTORS
+
+The following methods to construct new C<URI> objects are provided:
 
 =over 4
 
 =item $uri = URI->new( $str, [$scheme] )
 
+This constructs a new URI object.  The string representation of a URI
+is given as an argument together with an optional scheme
+specification.  The constructor will determine the scheme, map this to
+an appropriate URI subclass, construct a new object of this class and
+return it.
+
+The $scheme is only needed when $str takes a relative form.  The
+$scheme argument can then either be a simple string that denotes the
+scheme, a string containing an absolute URI reference or an absolute
+C<URI> object.
+
+=item $uri = URI::file->new( $filename, [$os] )
+
+This constructs a new file:-URI from a file name.  See the section
+about file methods below.
+
 =item $uri->clone
 
-=item $uri->scheme( [$new_scheme] )
-
-$uri->_scheme
-
-=item $uri->opaque( [$new_opaque] )
-
-=item $uri->path( [$new_path] )
-
-=item $uri->fragment( [$new_frag] )
-
-=item $uri->as_string
-
-=item $uri->eq( $other_uri )
-
-=item $uri->abs( $base_uri )
-
-=item $uri->rel( $base_uri )
+This method returns a copy of the $uri.
 
 =back
 
-Generic methods:
+=head1 COMMON METHODS
+
+The following methods are available for all C<URI> objects.
+
+Methods that give access to components of a URI will always return the
+value of the component.  The value returned will be C<undef> if the
+component was not present.  If an accessor method is given an argument
+it will update the corresponding component in addition to returning
+the old value.  Passing an undefined argument will remove the
+component (if possible).
 
 =over 4
+
+=item $uri->scheme( [$new_scheme] )
+
+When called without an argument it will return the scheme of the $uri.
+If the $uri is relative, $uri->scheme will return undef.  If called
+with an argument we will update the scheme of the $uri and return the
+old value.  The method will croak if the new scheme name is illegal;
+scheme names must begin with a letter and must consist of only
+US-ASCII letters, numbers, and a few special marks: ".", "+", "-".
+Passing an undefined argument to $uri->scheme will make the URI
+relative (if possible).
+
+Scheme names should be treated as case insensitive.  The scheme
+returned by $uri->scheme is always lowercased.  If you want the scheme
+just as it was written in the URI, i.e. not necessarily lowercased,
+you can use the $uri->_scheme method instead.
+
+=item $uri->opaque( [$new_opaque] )
+
+The scheme specific part can be accessed with this method.  The value
+is escaped.
+
+=item $uri->path( [$new_path] )
+
+This method access the same stuff as $uri->opaque unless the URI
+support the common/generic syntax for hierarchical namespaces where the
+path is more restricted.
+
+=item $uri->fragment( [$new_frag] )
+
+The fragment identifier of a URI reference can be accessed with this
+method.  The value is escaped.
+
+=item $uri->as_string
+
+This method convert a URI object to a plain string.  URI objects are
+also converted to plain strings automatically by overloading.
+
+=item $uri->canonical
+
+This method will return a normalized version of the URI.  The rules
+for normalization is scheme dependent.  It usually involves
+lowercasing of the scheme and host name components.  Removal of
+explicit port specification that match the default port and unescaping
+of octets that can be represented by plain characters.
+
+=item $uri->eq( $other_uri )
+
+=item URI::eq( $first_uri, $other_uri )
+
+This method test whether two URI references are equal.  The method can
+also be used as a plain function and can then also test two string
+arguments.
+
+If you need to test whether two URI objects are the same, you can use
+the '==' operator.
+
+=item $uri->abs( $base_uri )
+
+This method will return an absolute URI reference.  If $uri already
+was absolute, then it is just returned.  If the $uri was relative then
+a new URI is created.
+
+=item $uri->rel( $base_uri )
+
+This method will return a relative URI reference if possible.
+
+=back
+
+=head1 GENERIC METHODS
+
+The following methods are available to schemes that use the
+common/generic syntax for hierarchical namespaces.
+
+=over 4
+
+=item $uri->authority( [$new_authority] )
+
+=item $uri->path( [$new_path] )
+
+=item $uri->path_query( [$new_path_query] )
+
+=item $uri->path_segments( [$segment,...] )
 
 =item $uri->query( [$new_query] )
 
@@ -336,15 +457,13 @@ Generic methods:
 
 =item $uri->query_keywords( [$keywords,...] )
 
-=item $uri->authority( [$new_authority] )
-
-=item $uri->path_query( [$new_path_query] )
-
-=item $uri->path_segments( [$segment,...] )
-
 =back
 
-Server methods:
+=head1 SERVER METHODS
+
+Schemes where the I<authority> component denote a Internet host will
+have the following methods available in addition to the generic
+methods.
 
 =over 4
 
@@ -359,6 +478,125 @@ $uri->_port()
 =item $uri->default_port;
 
 =back
+
+=head1 SCHEME SPECIFIC SUPPORT
+
+The following URI schemes are specifically supported.  For C<URI>
+objects not belonging to one of these you can only use the common and
+generic methods.
+
+=over 4
+
+=item B<data>:
+
+The I<data> URI scheme is specified in RFC 2397.  It allows inclusion
+of small data items as "immediate" data, as if it had been included
+externally.
+
+C<URI> objects belonging to the data scheme support the common methods
+and two new methods to access their scheme specific components;
+$uri->media_type and $uri->data.
+
+=item B<file>:
+
+An old speficication of the I<file> URI scheme is found in RFC 1738.
+A new RFC 2396 based specification in not available yet, but file URI
+references are in common use.
+
+URI::file constructors: URI::file->new, URI::file->new_abs,
+URI::file->cwd
+
+C<URI> objects belonging to the file scheme support the common and
+generic methods.  In addition we provide two methods to map file URI
+back to local file names; $uri->file and $uri->dir.
+
+=item B<ftp>:
+
+An old speficication of the I<ftp> URI scheme is found in RFC 1738.  A
+new RFC 2396 based specification in not available yet, but ftp URI
+references are in common use.
+
+C<URI> objects belonging to the ftp scheme support the common,
+generic and server methods.  In addition we provide two methods to
+access the userinfo components: $uri->user and $uri->password
+
+=item B<gopher>:
+
+The I<gopher> URI scheme is specified in
+<draft-murali-url-gopher-1996-12-04> and will hopefully soon be
+available as a RFC 2396 based specification.
+
+C<URI> objects belonging to the gopher scheme support the common,
+generic and server methods. In addition we support some methods to
+access gopher specific path components: $uri->gopher_type,
+$uri->selector, $uri->search, $uri->string.
+
+=item B<http>:
+
+The I<http> URI scheme is specified in
+<draft-ietf-http-v11-spec-rev-04> (which will become an RFC soon).
+The scheme is used to reference objects hosted by a HTTP server.
+
+C<URI> objects belonging to the http scheme support the common,
+generic and server methods.
+
+=item B<https>:
+
+The I<http> URI scheme is a Netscape invention which is commonly
+implemented.  It's syntax is equal of that of http, but the default
+port is different.
+
+=item B<mailto>:
+
+The I<mailto> URI scheme is specified in RFC 2368.  The scheme was
+originally used to designate the Internet mailing address of an
+individual or service.  It has been extended to allow setting mail
+header fields and the message body.
+
+C<URI> objects belonging to the mailto scheme support the common
+methods and the generic query methods.  In addition we support the
+following mailto specific methods: $uri->to, $uri->headers.
+
+=item B<news>:
+
+The I<news>, I<nntp> and I<snews> URI schemes are specified in
+<draft-gilman-news-url-01> and will hopefully soon be available as a
+RFC 2396 based specification.
+
+=item B<nntp>:
+
+See I<news> schme.
+
+=item B<pop>:
+
+The I<pop> URI scheme is specified in RFC 2384. The scheme is used to
+reference a POP3 mailbox.
+
+C<URI> objects belonging to the pop scheme support the common, generic
+and server methods.  In addition we provide two methods to access the
+userinfo components: $uri->user and $uri->auth
+
+
+=item B<rlogin>:
+
+An old speficication of the I<rlogin> URI scheme is found in RFC
+1738. C<URI> objects belonging to the rlogin scheme support the
+common, generic and server methods.
+
+=item B<snews>:
+
+See I<news> scheme.  It's syntax is equal of that of news, but the default
+port is different.
+
+=item B<telnet>:
+
+An old speficication of the I<telnet> URI scheme is found in RFC
+1738. C<URI> objects belonging to the telnet scheme support the
+common, generic and server methods.
+
+=back
+
+
 
 =head1 SEE ALSO
 
