@@ -41,3 +41,15 @@ if (@ARGV) {
     print join(" ", @result), "\n";
 }
 print "$uri\n" unless $orig eq $uri;
+exit;
+
+# Some extra methods that might be nice
+
+sub UNIVERSAL::class { ref($_[0]) }
+
+sub UNIVERSAL::dump {
+    require Data::Dumper;
+    my $d = Data::Dumper->Dump(\@_, ["self", "arg1", "arg2", "arg3", "arg4"]);
+    chomp($d);
+    $d;
+}
