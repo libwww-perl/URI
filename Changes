@@ -1,3 +1,24 @@
+2002-05-09   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.19
+
+   URI::Heuristic will guess better on strings
+   like "123.3.3.3:8080/foo".  It used to think that
+   the numbers before ":" was a scheme.
+
+   URI::WithBase will not keep the full history of
+   any base URI's base URI etc.  This used to make
+   these objects grow into to monsters for some
+   web spiders.
+
+   URI::URL->new("foo", "bar")->base used to return
+   a "URI" object.  Now an URI::URL object is returned
+   instead.
+
+   Deal properly with file:///-URIs.
+
+
+
 2001-12-30   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.18
