@@ -1,3 +1,8 @@
+if (-f "OFFLINE") {
+   print "1..0";
+   exit;
+}
+
 print "1..14\n";
 
 use URI::Heuristic qw(uf_urlstr uf_url);
