@@ -1,9 +1,9 @@
-package URI;  # $Id: URI.pm,v 1.7.2.16 1998/09/08 13:36:45 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.17 1998/09/09 04:36:05 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
 
-$VERSION = "0.06";
+$VERSION = "0.07";
 
 $DEFAULT_SCHEME ||= "http";
 
