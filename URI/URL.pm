@@ -6,7 +6,7 @@ require URI::WithBase;
 use strict;
 use vars qw(@EXPORT $VERSION);
 
-$VERSION = "5.02";
+$VERSION = "5.03";
 
 # Provide as much as possible of the old URI::URL interface for backwards
 # compatibility...
@@ -213,7 +213,8 @@ constructor interface.
 
 =item *
 
-The constructor takes an optional $base argument.  See L<URI::WithBase>.
+The constructor takes an optional $base argument.  The C<URI::URL>
+class is a subclasses of C<URI::WithBase>.
 
 =item *
 
