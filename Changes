@@ -1,10 +1,23 @@
-1998-09-10   Gisle Aas <aas@sn.no>
+1998-09-12   Gisle Aas <aas@sn.no>
 
    Release 0.09
+
+   Included URI::Escape and URI::Heuristic from LWP.  URI::Escape
+   updated with new default set of characters to escape (according
+   to RFC 2396) and a faster uri_unescape() function.  URI::Heuristic
+   with new funtion that returns an URI object.
+
+   First argument to URI->new is always treated as a string now.
+
+   URI->new("", URI::WithBase("foo:")) now works.  It returns an
+   URI::WithBase object.
 
    Included Roy T. Fielding's URI parsing/abs tests from
    <http://www.ics.uci.edu/~fielding/url/>.  We did in fact agree
    with RFC 2396 on all tests.
+
+   Allow authority "A|" in Win32 file:-URIs to denote A:.  Treat
+   escaped chars.
 
 
 
