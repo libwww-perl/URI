@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.7 1998/09/07 21:00:07 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.8 1998/09/07 21:24:16 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -17,15 +17,9 @@ my $reserved   = q(;/?:@&=+$,);
 my $mark       = q(-_.!~*'());                                    #'; emacs
 my $unreserved = "A-Za-z0-9\Q$mark\E";
 
-use vars qw($uric $pchar $achar $ppchar $scheme_re);
-$uric   = "\Q$reserved\E$unreserved%";
-$pchar  = $uric;  $pchar  =~ s,\\[/?;],,g;
-$achar  = $uric;  $achar  =~ s,\\[/?],,g;
-$ppchar = $uric;  $ppchar =~ s,\\[?],,g;
-
+use vars qw($uric $scheme_re);
+$uric  = "\Q$reserved\E$unreserved%";
 $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
-
-#print "$uric\n$achar\n$pchar\n";
 
 use Carp ();
 use URI::Escape ();
@@ -155,7 +149,7 @@ sub scheme
 	my $newself = URI->new("$new:$$self");
 	$$self = $$newself; 
 	bless $self, ref($newself);
-    } elsif ($$self =~ m/^$scheme_re:/) {
+    } elsif ($$self =~ m/^$scheme_re:/o) {
 	warn "Opaque part look like scheme";
     }
 
