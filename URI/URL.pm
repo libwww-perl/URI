@@ -101,11 +101,6 @@ sub epath
     $path;
 }
 
-sub equery
-{
-    shift->SUPER::query(@_);
-}
-
 sub eparams
 {
     my $self = shift;
