@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/02/27 17:35:13 $
+package URI;  # $Date: 2001/04/18 23:34:54 $
 
 use strict;
 use vars qw($VERSION);
@@ -82,7 +82,7 @@ sub _init
 sub implementor
 {
     my($scheme, $impclass) = @_;
-    unless ($scheme) {
+    if (!$scheme || $scheme !~ /\A$scheme_re\z/o) {
 	require URI::_generic;
 	return "URI::_generic";
     }
