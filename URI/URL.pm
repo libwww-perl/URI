@@ -6,7 +6,7 @@ require URI::WithBase;
 use strict;
 use vars qw(@EXPORT $VERSION);
 
-$VERSION = "5.00_01";
+$VERSION = "5.00_02";
 
 # Provide as much as possible of the old URI::URL interface for backwards
 # compatibility...
@@ -179,3 +179,30 @@ sub groupart { shift->_group(@_); }
 sub article  { shift->message(@_); }
 
 1;
+
+__END__
+
+=head1 NAME
+
+URI::URL - Uniform Resource Locators
+
+=head1 SYNOPSIS
+
+ $u1 = URI::URL->new($str, $base);
+ $u2 = $u1->abs;
+
+=head1 DESCRIPTION
+
+This module is provided for backwards compatibility with modules that
+depend on the interface provided by the C<URI::URL> class that used to
+be distributed with the libwww-perl library.
+
+=head1 SEE ALSO
+
+L<URI>, L<URI::WithBase>
+
+=head1 COPYRIGHT
+
+Copyright 1998 Gisle Aas.
+
+=cut
