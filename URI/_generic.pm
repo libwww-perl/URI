@@ -110,33 +110,27 @@ sub _split_segment
 sub abs
 {
     my $self = shift;
-    my $abs = $self->clone;
-    my $base = shift || return $abs;
+    my $base = shift || die "Missing base argument";
     my $allow_scheme = shift;
 
-    $base = URI->new($base) unless ref $base;
-
-    #my($scheme, $authority, $path, $query, $fragment) =
-    #   @{$self}{qw(scheme authority path query fragment)};
-    my $scheme    = $self->scheme;
-    my $authority = $self->authority;
-    my $path      = $self->path;
-    my $query     = $self->query;
-    my $fragment  = $self->fragment;
-
-    if ($scheme) {
-	return $abs unless $allow_scheme;
-	return $abs if lc($scheme) ne lc($base->scheme);
+    if (my $scheme = $self->scheme) {
+	return $self unless $allow_scheme;
+	$base = URI->new($base) unless ref $base;
+	return $self unless lc($scheme) eq lc($base->scheme);
     }
+
+    $base = URI->new($base) unless ref $base;
+    my $abs = $self->clone;
     $abs->scheme($base->scheme);
-    return $abs if defined $authority;
+    return $abs if $$self =~ m,^(?:$URI::scheme_re:)?//,;
     $abs->authority($base->authority);
+
+    my $path = $self->path;
     return $abs if $path =~ m,^/,;
 
-    if (!length($path) && !defined($query)) {
-	# we are empty, reference to base (all modifications to $abs wasted)
-	$abs = $base->clone;
-	$abs->fragment($fragment);
+    if (!length($path) && $$self !~ /\?/) {
+	my $abs = $base->clone;
+	$abs->fragment($self->fragment);
 	return $abs;
     }
 
@@ -169,9 +163,8 @@ sub abs
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
     my $self = shift;
-    my $base = shift;
+    my $base = shift || die "Missing base argument";
     my $rel = $self->clone;
-    return $rel unless $base;
     $base = URI->new($base) unless ref $base;
 
     #my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
