@@ -3,7 +3,15 @@ use ExtUtils::MakeMaker;
 
 if ("foo" !~ /\Afoo\z/) {
     print "\\z not supported by this perl.  Fixing URI.pm...\n";
-    system("$^X -p -i.bak -e 's/\\\\z/\\\\Z/' URI.pm");
+    rename( 'URI.pm', 'URI.pm.bak' ) || die;
+    open( IN, '<URI.pm.bak' ) || die;
+    open( OUT, '>URI.pm' ) || die;
+    while( <IN> ) {
+        $_ =~ s/\\z/\\Z/g;
+        print OUT;
+    }
+    close( OUT );
+    close( IN );
 }
 
 WriteMakefile(
