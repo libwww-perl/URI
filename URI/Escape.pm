@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.24 2004/04/13 13:57:33 gisle Exp $
+# $Id: Escape.pm,v 3.25 2004/04/13 15:05:55 gisle Exp $
 #
 
 package URI::Escape;
@@ -44,10 +44,16 @@ The functions provided (and exported by default) from this module are:
 
 =over 4
 
-=item uri_escape($string, [$unsafe])
+=item uri_escape( $string )
 
-Replaces each unsafe character in the $string with the
-corresponding escape sequence and returns the result.
+=item uri_escape( $string, $unsafe )
+
+Replaces each unsafe character in the $string with the corresponding
+escape sequence and returns the result.  The $string argument should
+be a string of bytes.  The uri_escape() function will croak if given a
+characters with code above 255.  Use uri_escape_utf8() if you know you
+have such chars or/and want chars in the 128 .. 255 range treated as
+UTF-8.
 
 The uri_escape() function takes an optional second argument that
 overrides the set of characters that are to be escaped.  The set is
@@ -63,6 +69,28 @@ I<not> part of the C<uric> character class shown above as well as the
 reserved characters.  I.e. the default is:
 
   "^A-Za-z0-9\-_.!~*'()"
+
+=item uri_escape_utf8( $string )
+
+=item uri_escape_utf8( $string, $unsafe )
+
+Works like uri_escape(), but will encode chars as UTF-8 before
+escaping them.  This makes this function able do deal with characters
+with code above 255 in $string.  Note that chars in the 128 .. 255
+range will be escaped differently by this function compared to what
+uri_escape() would.  For chars in the 0 .. 127 range there is no
+difference.
+
+The call:
+
+    $uri = uri_escape_utf8($string);
+
+will be the same as:
+
+    use Encode qw(encode);
+    $uri = uri_escape(encode("UTF-8", $string));
+
+but will even work for perl-5.6 for chars in the 128 .. 255 range.
 
 =item uri_unescape($string,...)
 
@@ -100,7 +128,7 @@ L<URI>
 
 =head1 COPYRIGHT
 
-Copyright 1995-2001 Gisle Aas.
+Copyright 1995-2004 Gisle Aas.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -114,7 +142,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes uri_escape_utf8);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.24 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.25 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
