@@ -1,10 +1,32 @@
+2001-07-19   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.15
+
+   [This release was made just to document the changes that went
+    into the (unreleased) URI-1.13 but never made it into this
+    change-log.  There is no functional difference between the 1.14
+    and 1.15 release.]
+
+
+
 2001-07-18   Gisle Aas <gisle@ActiveState.com>
 
-   Release 1.13
+   Release 1.14
 
    The module failed on perl5.004 because \z is not supported
    in regexps.  The Makefile.PL will now try to patch the module
    to be compatible.
+
+
+
+2001-05-15   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.13 (never made it to CPAN)
+
+   URI.pm now conforms to RFC 2732 which specify how literal IPv6
+   addresses are to be included in URLs.
+
+   URI/Escape now allows "/" in the $unsafe pattern argument.
 
 
 
