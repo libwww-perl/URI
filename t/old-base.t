@@ -34,7 +34,8 @@ if ($^O eq 'VMS') {
 for (@INC) {
     my $x = $_;
     $x = VMS::Filespec::unixpath($x) if $^O eq 'VMS';
-    next if $x =~ m|^/| or $^O =~ /os2|mswin32/i and $x =~ m|^\w:[\\/]|;
+    next if $x =~ m|^/| or $^O =~ /os2|mswin32/i
+	and $x =~ m#^(\w:[\\/]|[\\/]{2})#;
     print "Turn lib path $x into $pwd/$x\n";
     $_ = "$pwd/$x";
 
