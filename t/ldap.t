@@ -76,10 +76,10 @@ print "not " unless $uri->query eq "???!bindname=cn=Manager%2Cco=Foo" &&
                     $ext{"!bindname"} eq "cn=Manager,co=Foo";
 print "ok 14\n";
 
-$uri = URI->new("ldap://LDAP-HOST:389/o=University%20of%20Michigan,c=US?postalAddress?base?ObjectClass=*?FOO=bar,bindname=CN%3DManager%CO%3dFoo");
+$uri = URI->new("ldap://LDAP-HOST:389/o=University%20of%20Michigan,c=US?postalAddress?base?ObjectClass=*?FOO=Bar,bindname=CN%3DManager%CO%3dFoo");
 
-print "not " unless $uri->canonical eq "ldap://ldap-host/o=University%20of%20Michigan,c=US?postaladdress???foo=bar,bindname=CN=Manager%CO=Foo";
+print "not " unless $uri->canonical eq "ldap://ldap-host/o=University%20of%20Michigan,c=US?postaladdress???foo=Bar,bindname=CN=Manager%CO=Foo";
 print "ok 15\n";
 
-#print "$uri\n";
-#print $uri->canonical, "\n";
+print "$uri\n";
+print $uri->canonical, "\n";
