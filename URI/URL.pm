@@ -146,6 +146,18 @@ sub query {
 
 }
 
+sub abs
+{
+    my $self = shift;
+    my $base = shift;
+    my $allow_scheme = shift;
+    $allow_scheme = $URI::URL::ABS_ALLOW_RELATIVE_SCHEME
+	unless defined $allow_scheme;
+    local $URI::ABS_ALLOW_RELATIVE_SCHEME = $allow_scheme;
+    local $URI::ABS_REMOTE_LEADING_DOTS = $URI::URL::ABS_REMOTE_LEADING_DOTS;
+    $self->SUPER::abs($base);
+}
+
 sub frag { shift->fragment(@_); }
 sub keywords { shift->query_keywords(@_); }
 
