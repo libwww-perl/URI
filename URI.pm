@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.9 1998/09/11 18:57:12 aas Exp $
+package URI;  # $Id: URI.pm,v 1.10 1998/09/12 11:12:45 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -33,7 +33,7 @@ use overload ('""'     => sub { ${$_[0]} },
 sub new
 {
     my($class, $url, $base) = @_;
-    $url = "" unless defined $url;
+    $url = defined ($url) ? "$url" : "";   # stringify
 
     # Get rid of potential wrapping
     $url =~ s/^<(?:URL:)?(.*)>$/$1/;  # 
