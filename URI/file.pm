@@ -53,7 +53,9 @@ sub cwd
 {
     my $class = shift;
     require Cwd;
-    my $cwd = $class->new(Cwd::cwd());
+    my $cwd = Cwd::cwd();
+    $cwd = VMS::Filespec::unixpath($cwd) if $^O eq 'VMS';
+    $cwd = $class->new($cwd);
     $cwd .= "/" unless substr($cwd, -1, 1) eq "/";
     $cwd;
 }

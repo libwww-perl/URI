@@ -27,11 +27,18 @@ package main;
 # Must ensure that there is no relative paths in @INC because we will
 # chdir in the newlocal tests.
 unless ($^O eq "MacOS") {
-chomp($pwd = ($^O =~ /mswin32/i ? `cd` : `pwd`));
+chomp($pwd = ($^O =~ /mswin32/i ? `cd` : $^O eq 'VMS' ? `show default` : `pwd`));
+if ($^O eq 'VMS') {
+    $pwd =~ s#^\s+##;
+    $pwd = VMS::Filespec::unixpath($pwd);
+    $pwd =~ s#/$##;
+}
 for (@INC) {
-    next if m|^/| or $^O =~ /os2|mswin32/i and m|^\w:[\\/]|;
-    print "Turn lib path $_ into $pwd/$_\n";
-    $_ = "$pwd/$_";
+    my $x = $_;
+    $x = VMS::Filespec::unixpath($x) if $^O eq 'VMS';
+    next if $x =~ m|^/| or $^O =~ /os2|mswin32/i and $x =~ m|^\w:[\\/]|;
+    print "Turn lib path $x into $pwd/$x\n";
+    $_ = "$pwd/$x";
 
 }
 }
@@ -635,27 +642,41 @@ sub newlocal_test {
     print "newlocal_test:\n";
     my $pwd = ($^O eq 'MSWin32' ? 'cd' :
 	  ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
-	    (-e '/bin/pwd' ? '/bin/pwd' : 'pwd')));
+          ($^O eq 'VMS' ? 'show default' :
+            (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'))));
     my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');
 	if ( $^O eq 'qnx' ) {
 	  $tmpdir = `/usr/bin/fullpath -t $tmpdir`;
 	  chomp $tmpdir;
 	}
+    $tmpdir = '/sys$scratch' if $^O eq 'VMS';
     $tmpdir =~ tr|\\|/|;
 
     my $savedir = `$pwd`;     # we don't use Cwd.pm because we want to check
 			      # that it get require'd corretly by URL.pm
     chomp $savedir;
+    if ($^O eq 'VMS') {
+        $savedir =~ s#^\s+##;
+        $savedir = VMS::Filespec::unixpath($savedir);
+        $savedir =~ s#/$##;
+    }
 
     # cwd
     chdir($tmpdir) or die $!;
     my $dir = `$pwd`; $dir =~ tr|\\|/|;
-    chomp $dir; $dir = uri_escape($dir, ':');
+    chomp $dir;
+    if ($^O eq 'VMS') {
+        $dir =~ s#^\s+##;
+        $dir = VMS::Filespec::unixpath($dir);
+        $dir =~ s#/$##;
+    }
+    $dir = uri_escape($dir, ':');
     $url = newlocal URI::URL;
     $url->_expect('as_string', URI::URL->new("file:$dir/")->as_string);
 
     print "Local directory is ". $url->local_path . "\n";
 
+    if ($^O ne 'VMS') {
     # absolute dir
     chdir('/') or die $!;
     $url = newlocal URI::URL '/usr/';
@@ -664,27 +685,43 @@ sub newlocal_test {
     # absolute file
     $url = newlocal URI::URL '/vmunix';
     $url->_expect('as_string', 'file:/vmunix');
+    }
 
     # relative file
     chdir($tmpdir) or die $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
-    chomp $dir; $dir = uri_escape($dir, ':');
+    chomp $dir;
+    if ($^O eq 'VMS') {
+        $dir =~ s#^\s+##;
+        $dir = VMS::Filespec::unixpath($dir);
+        $dir =~ s#/$##;
+    }
+    $dir = uri_escape($dir, ':');
     $url = newlocal URI::URL 'foo';
     $url->_expect('as_string', "file:$dir/foo");
 
     # relative dir
     chdir($tmpdir) or die $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
-    chomp $dir; $dir = uri_escape($dir, ':');
+    chomp $dir;
+    if ($^O eq 'VMS') {
+        $dir =~ s#^\s+##;
+        $dir = VMS::Filespec::unixpath($dir);
+        $dir =~ s#/$##;
+    }
+    $dir = uri_escape($dir, ':');
     $url = newlocal URI::URL 'bar/';
     $url->_expect('as_string', "file:$dir/bar/");
 
     # 0
+    if ($^O ne 'VMS') {
     chdir('/') or die $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
-    chomp $dir; $dir = uri_escape($dir, ':');
+        chomp $dir;
+        $dir = uri_escape($dir, ':');
     $url = newlocal URI::URL '0';
     $url->_expect('as_string', "file:${dir}0");
+    }
 
     # Test access methods for file URLs
     $url = new URI::URL 'file:/c:/dos';
