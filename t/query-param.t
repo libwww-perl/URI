@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..12\n";
+print "1..18\n";
 
 use strict;
 
@@ -54,7 +54,34 @@ $u->query_param(a => []);  # same as $u->query_param_delete("a");
 print "not " unless $u->query eq "b=2&b=4&b=6";
 print "ok 12\n";
 
+$u->query(undef);
+$u->query_param(a => 1, 2, 3);
+$u->query_param(b => 1);
 
+print "not " unless $u->query eq 'a=3&a=2&a=1&b=1';
+print "ok 13\n";
 
+$u->query_param_delete('a');
+$u->query_param_delete('b');
 
+print "not " if $u->query;
+print "ok 14\n";
 
+print "not " unless $u->as_string eq 'http://www.sol.no';
+print "ok 15\n";
+
+$u->query(undef);
+$u->query_param(a => 1, 2, 3);
+$u->query_param(b => 1);
+
+print "not " unless $u->query eq 'a=3&a=2&a=1&b=1';
+print "ok 16\n";
+
+$u->query_param('a' => []);
+$u->query_param('b' => []);
+
+print "not " if $u->query;
+print "ok 17\n";
+
+print "not " unless $u->as_string eq 'http://www.sol.no';
+print "ok 18\n";

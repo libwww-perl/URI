@@ -42,7 +42,7 @@ sub URI::_query::query_param {
 	    $new[shift(@new_i)+1] = $_;
 	}
 
-	$self->query_form(@new);
+	$self->query_form(\@new);
     }
 
     return wantarray ? @old[map $_+1, @i] : @i ? $old[$i[0]+1] : undef;
@@ -65,7 +65,7 @@ sub URI::_query::query_param_delete {
 	next if $old[$i] ne $key;
 	push(@vals, (splice(@old, $i, 2))[1]);
     }
-    $self->query_form(@old) if @vals;
+    $self->query_form(\@old) if @vals;
     return wantarray ? reverse @vals : $vals[-1];
 }
 

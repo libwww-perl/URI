@@ -1,4 +1,8 @@
 
+   The query_param_delete() method was not able to delete
+   the last parameter from a form.  Similar problem existing
+   when deleting via query_param().  Patch by <awk@awks.org>.
+
    The query_form() method now allow an array or hash
    reference to be passed to set the value.  This makes it
    possible to set the value to an empty form, something that
