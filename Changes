@@ -1,3 +1,11 @@
+2004-09-19   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.33
+
+   Fix heuristic test.  Apparently www.perl.co.uk is no more.
+
+
+
 2004-09-07   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.32
