@@ -1,3 +1,17 @@
+2004-06-08   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.31
+
+   Added uri_escape_utf8() function to URI::Escape module.
+
+   Fixed abs/rel behaviour for sip: URIs.  Fixed by
+   Ville Skyttä <ville.skytta@iki.fi>.
+
+   Avoid croaking on code like $u->query_form(a => { foo => 1 }).
+   It will still not really do anything useful.
+
+
+
 2004-01-14   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.30
