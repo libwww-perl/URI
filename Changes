@@ -1,3 +1,14 @@
+1998-10-12   Gisle Aas <aas@sn.no>
+
+   Release 0.90_02
+
+   Implemented new $uri->host_port method.
+
+   $uri->epath and $uri->equery aliases to make URI::URL
+   compatibility easier.
+
+
+
 1998-09-23   Gisle Aas <aas@sn.no>
 
    Release 0.90_01
