@@ -5,7 +5,7 @@ use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.15 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.16 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
 
@@ -49,7 +49,7 @@ sub new
 sub new_abs
 {
     my $class = shift;
-    my $file = $class->new(shift);
+    my $file = $class->new(@_);
     return $file->abs($class->cwd) unless $$file =~ /^file:/;
     $file;
 }
