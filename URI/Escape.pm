@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.14 2000/08/16 18:42:44 gisle Exp $
+# $Id: Escape.pm,v 3.15 2000/08/16 18:45:03 gisle Exp $
 #
 
 package URI::Escape;
@@ -60,7 +60,7 @@ character class (between [ ]).  E.g.:
 The default set of characters to be escaped is all those which are
 I<not> part of the C<uric> character class shown above.
 
-=item uri_unescape($string)
+=item uri_unescape($string,...)
 
 Returns a string with all %XX sequences replaced with the actual byte
 (octet).
@@ -78,6 +78,9 @@ calling the function (instead of the inline RE above) if a few chars
 where unescaped and something like 700% slowdown if none where.  If
 you are going to unescape a lot of times it might be a good idea to
 inline the RE.
+
+If the uri_unescape() function is passed multiple strings, then each
+one is unescaped returned.
 
 =back
 
@@ -107,7 +110,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.14 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.15 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
