@@ -13,6 +13,9 @@ URI/_server.pm
 URI/_userpass.pm
 URI/data.pm
 URI/file.pm
+URI/file/Mac.pm
+URI/file/Unix.pm
+URI/file/Win32.pm
 URI/ftp.pm
 URI/gopher.pm
 URI/http.pm
