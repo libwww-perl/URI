@@ -1,8 +1,8 @@
-package URI::_query;  # we fill methods into this namespace still
+package URI::QueryParam;
 
 use strict;
 
-sub query_param {
+sub URI::_query::query_param {
     my $self = shift;
     my @old = $self->query_form;
 
@@ -48,14 +48,14 @@ sub query_param {
     return wantarray ? @old[map $_+1, @i] : @i ? $old[$i[0]+1] : undef;
 }
 
-sub query_param_append {
+sub URI::_query::query_param_append {
     my $self = shift;
     my $key = shift;
     $self->query_form($self->query_form, $key => \@_);  # XXX
     return;
 }
 
-sub query_param_delete {
+sub URI::_query::query_param_delete {
     my $self = shift;
     my $key = shift;
     my @old = $self->query_form;
@@ -69,7 +69,7 @@ sub query_param_delete {
     return wantarray ? reverse @vals : $vals[-1];
 }
 
-sub query_form_hash {
+sub URI::_query::query_form_hash {
     my $self = shift;
     my @old = $self->query_form;
     if (@_) {
