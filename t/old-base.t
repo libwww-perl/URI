@@ -644,20 +644,21 @@ sub newlocal_test {
     return 1 if $^O eq "MacOS";
     
     print "newlocal_test:\n";
-    my $pwd = ($^O eq 'MSWin32' ? 'cd' :
-	  ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
-          ($^O eq 'VMS' ? 'show default' :
-            (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'))));
+    my $isMSWin32 = ($^O =~ /MSWin32/i);
+    my $pwd = ($isMSWin32 ? 'cd' :
+	      ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
+              ($^O eq 'VMS' ? 'show default' :
+              (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'))));
     my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');
-	if ( $^O eq 'qnx' ) {
-	  $tmpdir = `/usr/bin/fullpath -t $tmpdir`;
-	  chomp $tmpdir;
-	}
+    if ( $^O eq 'qnx' ) {
+	$tmpdir = `/usr/bin/fullpath -t $tmpdir`;
+	chomp $tmpdir;
+    }
     $tmpdir = '/sys$scratch' if $^O eq 'VMS';
     $tmpdir =~ tr|\\|/|;
 
     my $savedir = `$pwd`;     # we don't use Cwd.pm because we want to check
-			      # that it get require'd corretly by URL.pm
+			      # that it get require'd correctly by URL.pm
     chomp $savedir;
     if ($^O eq 'VMS') {
         $savedir =~ s#^\s+##;
