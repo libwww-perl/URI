@@ -30,6 +30,10 @@ sub data
 {
     my $self = shift;
     my($enc, $data) = split(",", $self->opaque_part, 2);
+    unless (defined $data) {
+	$data = "";
+	$enc  = "" unless defined $enc;
+    }
     my $base64 = ($enc =~ /;base64$/i);
     if (@_) {
 	$enc =~ s/;base64$//i if $base64;
