@@ -5,7 +5,7 @@ use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY %OS_CLASS);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.18 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.19 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
 
@@ -63,6 +63,33 @@ sub cwd
     $cwd = $class->new($cwd);
     $cwd .= "/" unless substr($cwd, -1, 1) eq "/";
     $cwd;
+}
+
+sub canonical {
+    my $self = shift;
+    my $other = $self->SUPER::canonical;
+
+    my $scheme = $other->scheme;
+    my $auth = $other->authority;
+    return $other if !defined($scheme) && !defined($auth);  # relative
+
+    if (!defined($auth) ||
+	$auth eq "" ||
+	lc($auth) eq "localhost" ||
+	(defined($DEFAULT_AUTHORITY) && lc($auth) eq lc($DEFAULT_AUTHORITY))
+       )
+    {
+	# avoid cloning if $auth already match
+	if ((defined($auth) || defined($DEFAULT_AUTHORITY)) &&
+	    (!defined($auth) || !defined($DEFAULT_AUTHORITY) || $auth ne $DEFAULT_AUTHORITY)
+	   )
+	{
+	    $other = $other->clone if $self == $other;
+	    $other->authority($DEFAULT_AUTHORITY);
+        }
+    }
+
+    $other;
 }
 
 sub file

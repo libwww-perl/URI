@@ -3,6 +3,10 @@
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
 
+# want compatiblity
+use URI::file;
+$URI::file::DEFAULT_AUTHORITY = undef;
+
 # _expect()
 #
 # Handy low-level object method tester which we insert as a method
@@ -643,9 +647,6 @@ sub escape_test {
 
 sub newlocal_test {
     return 1 if $^O eq "MacOS";
-
-    require URI::file;
-    $URI::file::DEFAULT_AUTHORITY = $URI::file::DEFAULT_AUTHORITY = undef;
 
     print "newlocal_test:\n";
     my $isMSWin32 = ($^O =~ /MSWin32/i);
