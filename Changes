@@ -1,3 +1,6 @@
+2003-11-30   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.28
 
    The query_param_delete() method was not able to delete
    the last parameter from a form.  Similar problem existing
