@@ -70,6 +70,18 @@ sub port
     $port;
 }
 
+sub host_port
+{
+    my $self = shift;
+    my $old = $self->authority;
+    $self->host(shift) if @_;
+    return undef unless defined $old;
+    $old =~ s/^[^@]*@//;    # zap userinfo
+    $old =~ s/:$//;         # empty port does not could
+    $old .= ":" . $self->port unless $old =~ /:/;
+    $old;
+}
+
 
 sub default_port { undef }
 
