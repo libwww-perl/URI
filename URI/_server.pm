@@ -58,7 +58,7 @@ sub _port
 	$new .= ":$port" if defined $port;
 	$self->authority($new);
     }
-    return $1 if defined($old) && $old =~ /:(\d+)$/;
+    return $1 if defined($old) && $old =~ /:(\d*)$/;
     return;
 }
 
@@ -83,8 +83,7 @@ sub canonical
     if ($uc_host || $def_port) {
 	$other = $other->clone if $other == $self;
 	$other->host(lc $host) if $uc_host;
-	$other->port(undef) if $def_port;
-	return $other;
+	$other->port(undef)    if $def_port;
     }
     $other;
 }
