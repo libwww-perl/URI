@@ -3,11 +3,16 @@ MANIFEST
 Makefile.PL
 README
 URI.pm
+URI/URL.pm
+URI/WithBase.pm
 URI/_generic.pm
+URI/_login.pm
 URI/_query.pm
 URI/_segment.pm
 URI/_server.pm
+URI/_userpass.pm
 URI/data.pm
+URI/file.pm
 URI/ftp.pm
 URI/gopher.pm
 URI/http.pm
@@ -16,7 +21,9 @@ URI/mailto.pm
 URI/news.pm
 URI/nntp.pm
 URI/pop.pm
+URI/rlogin.pm
 URI/snews.pm
+URI/telnet.pm
 rfc2396.txt
 t/abs.t
 t/data.t
@@ -24,5 +31,8 @@ t/generic.t
 t/http.t
 t/mailto.t
 t/news.t
+t/old-absconf.t
+t/old-base.t
+t/old-relbase.t
 t/pop.t
 uri-test
