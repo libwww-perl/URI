@@ -1,3 +1,14 @@
+2001-02-27   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.11
+
+   The t/heuristic.t test relied on the fact that 'www.perl.no'
+   was not registered in DNS.  This is no longer true.
+   The penguins at Bouvet Island will hopefully be ignorant
+   of Perl forever.
+
+
+
 2001-01-10   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.10
