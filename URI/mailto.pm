@@ -58,8 +58,8 @@ sub headers
 	}
 
 	my $new = join(",",@to);
-	$new =~ s/\?/%3F/g;  # protect any ?
 	$new =~ s/%/%25/g;
+	$new =~ s/\?/%3F/g;
 	$self->opaque($new);
 	$self->query_form(@new) if @new;
     }

@@ -91,11 +91,11 @@ sub path_segments
 	for (@arg) {
 	    if (ref($_)) {
 		my @seg = @$_;
-		for (@seg) { s/;/%3B/g; }
 		$seg[0] =~ s/%/%25/g;
+		for (@seg) { s/;/%3B/g; }
 		$_ = join(";", @seg);
 	    } else {
-		s/;/%3B/g; s/%/%25/g;
+		 s/%/%25/g; s/;/%3B/g;
 	    }
 	    s,/,%2F,g;
 	}

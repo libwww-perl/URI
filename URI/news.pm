@@ -21,8 +21,8 @@ sub _group
     my $old = $self->path;
     if (@_) {
 	my($group,$from,$to) = @_;
-	$group =~ s,/,%2F,g;
 	$group =~ s,%,%25,g;
+	$group =~ s,/,%2F,g;
 	my $path = $group;
 	if (defined $from) {
 	    $path .= "/$from";
