@@ -1,3 +1,14 @@
+2003-10-03   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.26
+
+   Help Storable deal with URI objects.  Patch contributed
+   by <talby@trap.mtview.ca.us>.
+
+   Fix failure under OS/2.  Patch contributed by Ilya Zakharevich.
+
+
+
 2003-08-18   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.25
