@@ -79,6 +79,8 @@ t/rsync.t
 t/rtsp.t
 t/split.t
 t/sip.t
+t/storable.t
+t/storable-test.pl
 t/urn-isbn.t
 t/urn-oid.t
 uri-test

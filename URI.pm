@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.25"; # $Date: 2003/08/18 18:36:46 $
+$VERSION = "1.25"; # $Date: 2003/10/03 12:20:07 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -273,6 +273,17 @@ sub eq {
 # generic-URI transformation methods
 sub abs { $_[0]; }
 sub rel { $_[0]; }
+
+# help out Storable
+sub STORABLE_freeze {
+       my($self, $cloning) = @_;
+       return $$self;
+}
+
+sub STORABLE_thaw {
+       my($self, $cloning, $str) = @_;
+       $$self = $str;
+}
 
 1;
 
