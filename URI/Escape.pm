@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.16 2000/08/16 18:45:23 gisle Exp $
+# $Id: Escape.pm,v 3.17 2001/05/15 02:53:49 gisle Exp $
 #
 
 package URI::Escape;
@@ -96,7 +96,7 @@ L<URI>
 
 =head1 COPYRIGHT
 
-Copyright 1995-2000 Gisle Aas.
+Copyright 1995-2001 Gisle Aas.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -110,7 +110,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.16 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.17 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -128,8 +128,9 @@ sub uri_escape
     if (defined $patn){
 	unless (exists  $subst{$patn}) {
 	    # Because we can't compile the regex we fake it with a cached sub
+	    (my $tmp = $patn) =~ s,/,\\/,g;
 	    $subst{$patn} =
-	      eval "sub {\$_[0] =~ s/([$patn])/\$escapes{\$1}/g; }";
+	      eval "sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1}/g; }";
 	    Carp::croak("uri_escape: $@") if $@;
 	}
 	&{$subst{$patn}}($text);
