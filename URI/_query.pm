@@ -30,11 +30,11 @@ sub query_form {
         my @query;
         while (my($key,$vals) = splice(@_, 0, 2)) {
             $key = '' unless defined $key;
-	    $key =~ s/([=&%+])/$URI::Escape::escapes{$1}/g;
+	    $key =~ s/([;\/?:@&=+,\$%])/$URI::Escape::escapes{$1}/g;
 	    $vals = [ref($vals) ? @$vals : $vals];
             for my $val (@$vals) {
                 $val = '' unless defined $val;
-		$val =~ s/([=&%+])/$URI::Escape::escapes{$1}/g;
+		$val =~ s/([;\/?:@&=+,\$%])/$URI::Escape::escapes{$1}/g;
                 push(@query, "$key=$val");
             }
         }
@@ -52,13 +52,9 @@ sub query_keywords
     my $old = $self->query;
     if (@_) {
         # Try to set query string
-	my $k;
-        $self->query(join('+', map { $k = $_;
-				     $k =~ s/%/%25/g;
-				     $k =~ s/=/%3D/g;
-                                     $k =~ s/\+/%2B/g;
-                                     $k }
-                                     @_));
+	my @copy = @_;
+	for (@copy) { s/([;\/?:@&=+,\$%])/$URI::Escape::escapes{$1}/g; }
+	$self->query(join('+', @copy));
     }
     return if !defined($old) || !defined(wantarray);
     return if $old =~ /=/;  # not keywords, but a form
