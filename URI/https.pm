@@ -1,5 +1,6 @@
 package URI::https;
-use base 'URI::http';
+require URI::http;
+@ISA=qw(URI::http);
 
 sub default_port { 443 }
 

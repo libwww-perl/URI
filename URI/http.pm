@@ -1,5 +1,7 @@
 package URI::http;
-use base 'URI::_generic';
+
+require URI::_generic;
+@ISA=qw(URI::_generic);
 
 use strict;
 use URI::Escape qw(uri_unescape %escapes);
@@ -10,7 +12,7 @@ sub default_port { 80 }
 sub keywords
 {
     my $self = shift;
-    my $old = $self->{'query'};
+    my $old = $self->query;
     if (@_) {
         # Try to set query string
         $self->query(join('+', map { my $k = $_;
@@ -25,7 +27,7 @@ sub keywords
 # Handle ...?foo=bar&bar=foo type of query
 sub query_form {
     my $self = shift;
-    my $old = $self->{'query'};
+    my $old = $self->query;
     if (@_) {
         # Try to set query string
         my @query;
