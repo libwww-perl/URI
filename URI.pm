@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.27"; # $Date: 2003/10/06 10:35:07 $
+$VERSION = "1.27"; # $Date: 2003/10/06 10:38:31 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -893,7 +893,7 @@ http://www.w3.org/Addressing/
 
 =head1 COPYRIGHT
 
-Copyright 1995-2002 Gisle Aas.
+Copyright 1995-2003 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
