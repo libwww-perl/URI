@@ -21,7 +21,7 @@ sub _parse
     $self->{'authority'} = $2  if defined $2;
     $self->{'path'}      = $3; # will always be defined
     $self->{'query'}     = $4  if defined $4;
-    $self->{'fragment'}      = $5  if defined $5;
+    $self->{'fragment'}  = $5  if defined $5;
 }
 
 sub _as_string
@@ -169,7 +169,63 @@ sub _split_segment
 
 sub abs
 {
+    my $self = shift;
+    my $abs = $self->clone;
+    my $base = shift || $abs->base || return $abs;
+    my $allow_scheme = 1; #shift;
+
+    $base = URI->new($base) unless ref $base;
+    delete $abs->{'_base'};
+    my($scheme, $authority, $path, $query, $fragment) =
+	@{$self}{qw(scheme authority path query fragment)};
+    if ($scheme) {
+	return $abs unless $allow_scheme;
+	return $abs if lc($scheme) ne lc($base->{'scheme'});
+    }
+    $abs->{'_str'} = '';
+    $abs->{'scheme'} = $base->{'scheme'};
+    return $abs if defined $authority;
+    $abs->{'authority'} = $base->{'authority'};
+    return $abs if $path =~ m,^/,;
+
+    if (!length($path) && !defined($query)) {
+	# we are empty, reference to base (all modifications to $abs wasted)
+	$abs = $base->clone;
+	if (defined $fragment) {
+	    $abs->{'fragment'} = $fragment;
+	} else {
+	    delete $abs->{'fragment'};
+	}
+	$abs->{'_str'} = '';
+	return $abs;
+    }
+
+    my $p = $base->{'path'};
+    $p =~ s,[^/]+$,,;
+    $p .= $path;
+    my @p = split('/', $p, -1);
+    shift(@p) if @p && !length($p[0]);
+    my $i = 1;
+    while ($i < @p) {
+	#print "$i ", join("/", @p), " ($p[$i])\n";
+	if ($p[$i-1] eq ".") {
+	    splice(@p, $i-1, 1);
+	    $i-- if $i > 1;
+	} elsif ($p[$i] eq ".." && $p[$i-1] ne "..") {
+	    splice(@p, $i-1, 2);
+	    if ($i > 1) {
+		$i--;
+		push(@p, "") if $i == @p;
+	    }
+	} else {
+	    $i++;
+	}
+    }
+    $p[-1] = "" if @p && $p[-1] eq ".";  # trailing "/."
+    $abs->{'path'} = "/" . join("/", @p);
+    $abs;
 }
+
 
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
