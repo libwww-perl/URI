@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.9 1998/09/11 09:45:34 aas Exp $
+# $Id: Heuristic.pm,v 4.10 1999/03/19 21:12:45 gisle Exp $
 
 =head1 NAME
 
@@ -30,9 +30,12 @@ The following functions are provided:
 
 =item uf_uristr($str)
 
-The uf_uristr() function will try to make the string passed as
-argument into a proper absolute URI string.  The "uf_" prefix stands
-for "User Friendly".
+The uf_uristr() function will try to make the string passed as argument 
+into a proper absolute URI string.  The "uf_" prefix stands for "User 
+Friendly".  Under MacOS, it assumes that any string with a common URL 
+scheme (http, ftp, etc.) is a URL rather than a local path.  So don't name 
+your volumes after common URL schemes and expect uf_uristr() to construct 
+valid file: URL's on those volumes for you, because it won't.
 
 =item uf_uri($str)
 
@@ -86,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.9 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.10 $ =~ /(\d+)\.(\d+)/);
 
 eval {
     require Net::Domain;
@@ -123,12 +126,21 @@ sub uf_uristr ($)
     } elsif (/^(ftp|gopher|news|wais|http|https)\./) {
 	$_ = "$1://$_";
 
-    } elsif (m,^/,      ||          # absolute file name
+    } elsif ($^O ne "MacOS" && 
+	    (m,^/,      ||          # absolute file name
 	     m,^\.\.?/, ||          # relative file name
 	     m,^[a-zA-Z]:[/\\],)    # dosish file name
+	    )
     {
 	$_ = "file:$_";
 
+    } elsif ($^O eq "MacOS" && m/:/) {
+        # potential MacOS file name
+	unless (m/^(ftp|gopher|news|wais|http|https|mailto):/) {
+	    require URI::file;
+	    my $a = URI::file->new($_)->as_string;
+	    $_ = ($a =~ m/^file:/) ? $a : "file:$a";
+	}
     } elsif (/^\w+([\.\-]\w+)*\@(\w+\.)+\w{2,3}$/) {
 	$_ = "mailto:$_";
 
