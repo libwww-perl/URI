@@ -14,11 +14,13 @@ sub authority
     if (@_) {
 	my $auth = shift;
 	$$self = $1;
+	my $rest = $3;
 	if (defined $auth) {
 	    $auth =~ s/([^$URI::achar])/$URI::Escape::escapes{$1}/go;
 	    $$self .= "//$auth";
+	} elsif ($rest =~ m,^//,) {
+	    warn "Path starting with double slash is confusing";
 	}
-	my $rest = $3;
 	$$self .= "/" if length($rest) && $rest !~ m,^[/?\#],;
 	$$self .= $rest;
     }
@@ -43,7 +45,7 @@ sub path
 		warn "Path starting with double slash is confusing";
 	    } elsif ($new_path =~ m,^[^:/?\#]+:,) {
 		warn "Path might look like scheme, './' prepended";
-		$new_path = "./$newpath";
+		$new_path = "./$new_path";
 	    }
 	}
 
