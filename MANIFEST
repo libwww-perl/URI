@@ -5,6 +5,7 @@ README
 URI.pm
 URI/Escape.pm
 URI/Heuristic.pm
+URI/QueryParam.pm
 URI/URL.pm
 URI/WithBase.pm
 URI/_foreign.pm
@@ -62,6 +63,7 @@ t/old-base.t
 t/old-relbase.t
 t/pop.t
 t/query.t
+t/query-param.t
 t/rfc2732.t
 t/roy-test.t
 t/roytest1.html
