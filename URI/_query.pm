@@ -30,11 +30,11 @@ sub query_form {
         my @query;
         while (my($key,$vals) = splice(@_, 0, 2)) {
             $key = '' unless defined $key;
-	    $key =~ s/([=&])/$URI::Escape::escapes{$1}/g;
+	    $key =~ s/([=&%])/$URI::Escape::escapes{$1}/g;
 	    $vals = [ref($vals) ? @$vals : $vals];
             for my $val (@$vals) {
                 $val = '' unless defined $val;
-		$val =~ s/([=&])/$URI::Escape::escapes{$1}/g;
+		$val =~ s/([=&%])/$URI::Escape::escapes{$1}/g;
                 push(@query, "$key=$val");
             }
         }
@@ -54,6 +54,7 @@ sub query_keywords
         # Try to set query string
 	my $k;
         $self->query(join('+', map { $k = $_;
+				     $k =~ s/%/%25/g;
                                      $k =~ s/\+/%2B/g;
                                      $k }
                                      @_));
