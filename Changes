@@ -1,3 +1,30 @@
+1998-09-09   Gisle Aas <aas@sn.no>
+
+   Release 0.07
+
+   Implemented rlogin, telnet and file URLs.
+
+   Implemented URI::WithBase
+
+   Implemented URI::URL emulator (ported old URI::URL test suite)
+
+   Can now use schemes with "-", "+" or "." characters in them.
+
+   $u->scheme will downcase.  $u->_scheme will keep it as it is.
+
+   Configuration variables for $u->abs
+
+   $u->query_form and $u->query_keyword is more careful about escaping
+   "+" and "=".
+
+   $u->host unescaped
+
+   $u->_port if you want to bypass $u->default_port
+
+   Can handle news message-ids with embedded "/" now
+
+
+
 1998-09-08   Gisle Aas <aas@sn.no>
 
    Release 0.06
