@@ -1,3 +1,21 @@
+2001-08-27   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.16
+
+   URI::Escape::uri_escape default has changed.  Reserved
+   characters are now escaped when no second argument is
+   provided.
+
+   The perl5.004 backwards compatibility patching taking place
+   in the Makefile.PL should now work for MacPerl.
+   Patch by KIMURA Takeshi <kim@ga2.so-net.ne.jp>.
+
+   URI::WithBase now overrides the can() method and delegate it to
+   the URI member.  This also affects the URI::URL behaviour.
+   Patch by Sean M. Burke <sburke@cpan.org>.
+
+
+
 2001-07-19   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.15
