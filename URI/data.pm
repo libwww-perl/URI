@@ -12,7 +12,7 @@ sub media_type
 {
     my $self = shift;
     my $opaque = $self->opaque_part;
-    $opaque =~ /^([^,]*),/;
+    $opaque =~ /^([^,]*),?/ or die;
     my $old = $1;
     my $base64;
     $base64 = $1 if $old =~ s/(;base64)$//i;
