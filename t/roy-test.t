@@ -25,6 +25,15 @@ for $i (1..5) {
            $link = $1;
            $exp  = $2;
            $exp = $base if $exp =~ /current/;  # special case test 22
+
+	   # rfc2396bis restores the rfc1808 behaviour
+	   if ($no == 7) {
+	       $exp = "http://a/b/c/d;p?y";
+           }
+	   elsif ($no == 48) {	
+	       $exp = "http://a/b/c/d;p?y";
+	   }
+
            $abs  = URI->new($link)->abs($base);
            unless ($abs eq $exp) {
               print "$file:$.:  Expected: $exp\n";

@@ -141,8 +141,10 @@ sub abs
     my $path = $self->path;
     return $abs if $path =~ m,^/,;
 
-    if (!length($path) && !defined($self->query)) {
+    if (!length($path)) {
 	my $abs = $base->clone;
+	my $query = $self->query;
+	$abs->query($query) if defined $query;
 	$abs->fragment($self->fragment);
 	return $abs;
     }

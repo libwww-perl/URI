@@ -940,9 +940,9 @@ EOM
 	 # Test absolutizing with old behaviour.
 	 ['http:foo',     'http://h/a/b',   'http://h/a/foo'],
 	 ['http:/foo',    'http://h/a/b',   'http://h/foo'],
-	 ['http:?foo',    'http://h/a/b',   'http://h/a/?foo'],
+	 ['http:?foo',    'http://h/a/b',   'http://h/a/b?foo'],
 	 ['http:#foo',    'http://h/a/b',   'http://h/a/b#foo'],
-	 ['http:?foo#bar','http://h/a/b',   'http://h/a/?foo#bar'],
+	 ['http:?foo#bar','http://h/a/b',   'http://h/a/b?foo#bar'],
 	 ['file:/foo',    'http://h/a/b',   'file:/foo'],
 
 	)

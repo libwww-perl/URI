@@ -77,7 +77,7 @@ C.1.  Normal Examples
       g/            =  http://a/b/c/g/
       /g            =  http://a/g
       //g           =  http://g
-      ?y            =  http://a/b/c/?y
+      ?y            =  http://a/b/c/d;p?y
       g?y           =  http://a/b/c/g?y
       #s            =  (current document)#s
       g#s           =  http://a/b/c/g#s
@@ -165,5 +165,5 @@ C.2.  Abnormal Examples
 Some extra tests for good measure...
 
       #foo?        = (current document)#foo?
-      ?#foo        = http://a/b/c/?#foo
+      ?#foo        = http://a/b/c/d;p?#foo
 
