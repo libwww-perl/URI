@@ -1,4 +1,6 @@
-!!! This is work in progress.  Class names and interfaces will change. !!!
+!!! This is work in progress.  Class names and interfaces will change.
+!!! No documentation provided.
+!!!
 
 This is an attempt to update and simplify the URI::URL classes based
 on RFC 2396 "Uniform Resource Identifiers (URI): Generic Syntax"
@@ -19,12 +21,15 @@ Main user visible changes from URI::URL are:
 
    * Don't export url() constructor function.  URI->new is short
      enough.
+     
+   * No base() attribute, also means that abs() and rel() needs
+     mandatory $base argument.
 
    * netloc --> authority
 
    * user/password --> userinfo
 
-   * full_path  --> abs_path_query
+   * full_path is gone (but path_query() is quite close).
 
    * path_components --> path_segments.  If a path segment has
      parameters then this segment is represented by an array reference.

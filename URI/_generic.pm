@@ -1,235 +1,148 @@
 package URI::_generic;
-use base 'URI';
-
-use fields qw(authority path query);
+require URI;
+require URI::_query;
+@ISA=qw(URI URI::_query);
 
 use strict;
-use vars qw(@ISA);
 use URI::Escape qw(uri_unescape);
+use Carp ();
 
-URI::_generic->make_accessor_methods(qw(authority path query));
+my $ACHAR = $URI::uric;  $ACHAR =~ s,\\[/?],,g;
+my $PCHAR = $URI::uric;  $PCHAR =~ s,\\[?],,g;
 
-
-sub _parse
-{
-    my URI::_generic $self = shift;
-    my $str = shift;
-    $str =~ m,^
-	      (?:([a-zA-Z][a-zA-Z0-9+\-.]*):)?   # optional scheme
-	      (?://([^/?\#]*))?                  # optional authority
-	      ([^?\#]*)                          # path which can be empty
-              (?:\?([^\#]*))?                    # optional query
-              (?:\#(.*))?                        # optional fragment
-            $,sx or die "This should always match";
-    $self->{'scheme'}    = $1  if defined $1;
-    $self->{'authority'} = $2  if defined $2;
-    $self->{'path'}      = $3; # will always be defined
-    $self->{'query'}     = $4  if defined $4;
-    $self->{'fragment'}  = $5  if defined $5;
-}
-
-
-sub _as_string
-{
-    my URI::_generic $self = shift;
-    my $str = "";
-
-    #my($scheme, $authority, $path, $query, $fragment) =
-    #   @{$self}{qw(scheme authority path query fragment)};
-    my $scheme    = $self->{scheme};
-    my $authority = $self->{authority};
-    my $path      = $self->{path};
-    my $query     = $self->{query};
-    my $fragment  = $self->{fragment};
-
-    my $need_abs_path;
-    $str = "$scheme:" if $scheme;
-    if (defined $authority) {
-	$authority =~ s/([^$URI::achar])/$URI::Escape::escapes{$1}/go;
-	$str .= "//$authority";
-	$need_abs_path++;
-    }
-    if (defined($path) && length $path) {
-	$path =~ s/([^$URI::ppchar])/$URI::Escape::escapes{$1}/go;
-	$path = "/$path" if $need_abs_path && $path !~ m,^/,;
-	$str .= "$path";
-    }
-    if (defined $query) {
-	$query =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
-	$str .= "?$query";
-    }
-    if (defined $fragment) {
-	$fragment =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
-	$str .= "#$fragment";
-    }
-    $str;
-}
-
-
-sub userinfo
-{
-    my URI::_generic $self = shift;
-    my $old = $self->{authority};
-    if (@_) {
-	my $new = $old;
-	$new = "" unless defined($new);
-	$new =~ s/^[^@]*@//;  # remove old stuff
-	my $ui = shift;
-	if (defined $ui) {
-	    $ui =~ s/@/%40/g;   # protect @
-	    $new = "$ui\@$new";
-	}
-	$self->{authority} = $new;
-	$self->{xstr} = undef;
-    }
-    return undef if !defined($old) || $old !~ /^([^@]*)@/;
-    return $1;
-}
-
-
-sub host
-{
-    my URI::_generic $self = shift;
-    my $old = $self->{authority};
-    if (@_) {
-	my $tmp = $old;
-	$tmp = "" unless defined $tmp;
-	my $ui;
-	$ui = $1 if $tmp =~ s/^([^@]*@)//;
-	$tmp =~ s/^[^:]*//;        # get rid of old host
-	my $new = shift;
-	if (defined $new) {
-	    $new =~ s/[@]/%40/g;   # protect @
-	    $tmp = ($new =~ /:/) ? $new : "$new$tmp";
-	}
-	$tmp = "$ui$tmp" if defined $ui;
-	$self->{authority} = $tmp;
-	$self->{xstr} = undef;
-    }
-    return undef if !defined($old) || $old !~ /^(?:[^@]*@)?([^:]*)/;
-    return $1;
-}
-
-
-sub port
-{
-    my URI::_generic $self = shift;
-    my $old = $self->{authority};
-    if (@_) {
-	my $new = $old;
-	$new =~ s/:.*$//;
-	my $port = shift;
-	$new .= ":$port" if defined $port;
-	$self->{authority} = $new;
-	$self->{xstr} = '';
-    }
-    return undef unless defined $old;
-    return $1 if $old =~ /:(\d+)$/;
-    $self->default_port;
-}
-
-
-sub default_port { undef }
-
-
-sub abs_path_query
+sub authority
 {
     my $self = shift;
-    #my($authority, $path, $query) = @{$self}{qw(authority path query)};
-    my $authority = $self->{authority};
-    my $path      = $self->{path};
-    my $query     = $self->{query};
-    
-    if (defined $authority) {
-	if (defined $path) {
-	    $path = "/$path" unless $path =~ m,^/,;
-	} else {
-	    $path = "/";
+    $$self =~ m,^((?:$URI::scheme_re:)?)(?://([^/?\#]*))?(.*)$,os or die;
+
+    if (@_) {
+	my $auth = shift;
+	$$self = $1;
+	my $rest = $3;
+	if (defined $auth) {
+	    $auth =~ s/([^$ACHAR])/$URI::Escape::escapes{$1}/go;
+	    $$self .= "//$auth";
 	}
-    } else {
-	return undef unless defined($path) && $path =~ m,^/,;
+	_check_path($rest, $$self);
+	$$self .= $rest;
     }
-    $path =~ s/([^$URI::ppchar])/$URI::Escape::escapes{$1}/go;
-    $path = "/$path" if defined($authority) && $path !~ m,^/,;
-    if (defined $query) {
-	$query =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
-	$path .= "?$query";
-    }
-    $path;
+    $2;
 }
 
+sub path
+{
+    my $self = shift;
+    $$self =~ m,^((?:[^:/?\#]+:)?(?://[^/?\#]*)?)([^?\#]*)(.*)$,s or die;
+
+    if (@_) {
+	$$self = $1;
+	my $rest = $3;
+	my $new_path = shift;
+	$new_path = "" unless defined $new_path;
+	$new_path =~ s/([^$PCHAR])/$URI::Escape::escapes{$1}/go;
+	_check_path($new_path, $$self);
+	$$self .= $new_path . $rest;
+    }
+    $2;
+}
+
+sub path_query
+{
+    my $self = shift;
+    $$self =~ m,^((?:[^:/?\#]+:)?(?://[^/?\#]*)?)([^\#]*)(.*)$,s or die;
+
+    if (@_) {
+	$$self = $1;
+	my $rest = $3;
+	my $new_path = shift;
+	$new_path = "" unless defined $new_path;
+	$new_path =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
+	_check_path($new_path, $$self);
+	$$self .= $new_path . $rest;
+    }
+    $2;
+}
+
+sub _check_path
+{
+    my($path, $pre) = @_;
+    my $prefix;
+    if ($pre =~ m,/,) {  # authority present
+	$prefix = "/" if length($path) && $path !~ m,^[/?\#],;
+    } else {
+	if ($path =~ m,^//,) {
+	    Carp::carp("Path starting with double slash is confusing")
+		if $^W;
+	} elsif (!length($pre) && $path =~ m,^[^:/?\#]+:,) {
+	    Carp::carp("Path might look like scheme, './' prepended")
+		if $^W;
+	    $prefix = "./";
+	}
+    }
+    substr($_[0], 0, 0) = $prefix if defined $prefix;
+}
 
 sub path_segments
 {
-    my URI::_generic $self = shift;
-    my $path = $self->{'path'};
+    my $self = shift;
+    my $path = $self->path;
     if (@_) {
 	my @arg = @_;  # make a copy
 	for (@arg) {
 	    if (ref($_)) {
 		my @seg = @$_;
-		$seg[0] =~ s/([^$URI::pchar])/$URI::Escape::escapes{$1}/go;
+		$seg[0] =~ s/%/%25/g;
+		for (@seg) { s/;/%3B/g; }
 		$_ = join(";", @seg);
 	    } else {
-		s/([^$URI::pchar])/$URI::Escape::escapes{$1}/go;
+		 s/%/%25/g; s/;/%3B/g;
 	    }
+	    s,/,%2F,g;
 	}
-	$self->{'path'} = join("/", @arg);
+	$self->path(join("/", @arg));
     }
     return $path unless wantarray;
-    $path = "/$path" if defined $self->{'authority'} && $path !~ m,^/,;
-    map {/;/ ? _split_segment($_) : uri_unescape($_) } split('/', $path, -1);
+    map {/;/ ? $self->_split_segment($_)
+             : uri_unescape($_) }
+        split('/', $path, -1);
 }
 
 
 sub _split_segment
 {
-    my @segment = split(';', shift, -1);
-    $segment[0] = uri_unescape($segment[0]);
-    \@segment;
+    my $self = shift;
+    require URI::_segment;
+    URI::_segment->new(@_);
 }
 
 
 sub abs
 {
-    my URI::_generic $self = shift;
-    my URI::_generic $abs = $self->clone;
-    my URI::_generic $base = shift || $abs->base || return $abs;
-    my $allow_scheme = shift;
+    my $self = shift;
+    my $base = shift || die "Missing base argument";
+
+    if (my $scheme = $self->scheme) {
+	return $self unless $URI::ABS_ALLOW_RELATIVE_SCHEME;
+	$base = URI->new($base) unless ref $base;
+	return $self unless lc($scheme) eq lc($base->scheme);
+    }
 
     $base = URI->new($base) unless ref $base;
-    $abs->{'base'} = $base;
-    #my($scheme, $authority, $path, $query, $fragment) =
-    #   @{$self}{qw(scheme authority path query fragment)};
-    my $scheme    = $self->{scheme};
-    my $authority = $self->{authority};
-    my $path      = $self->{path};
-    my $query     = $self->{query};
-    my $fragment  = $self->{fragment};
+    my $abs = $self->clone;
+    $abs->scheme($base->scheme);
+    return $abs if $$self =~ m,^(?:$URI::scheme_re:)?//,;
+    $abs->authority($base->authority);
 
-    if ($scheme) {
-	return $abs unless $allow_scheme;
-	return $abs if lc($scheme) ne lc($base->{'scheme'});
-    }
-    $abs->{'xstr'} = '';
-    $abs->{'scheme'} = $base->{'scheme'};
-    return $abs if defined $authority;
-    $abs->{'authority'} = $base->{'authority'};
+    my $path = $self->path;
     return $abs if $path =~ m,^/,;
 
-    if (!length($path) && !defined($query)) {
-	# we are empty, reference to base (all modifications to $abs wasted)
-	$abs = $base->clone;
-	if (defined $fragment) {
-	    $abs->{'fragment'} = $fragment;
-	} else {
-	    $abs->{'fragment'} = undef;
-	}
-	$abs->{'xstr'} = '';
+    if (!length($path) && $$self !~ /\?/) {
+	my $abs = $base->clone;
+	$abs->fragment($self->fragment);
 	return $abs;
     }
 
-    my $p = $base->{'path'};
+    my $p = $base->path;
     $p =~ s,[^/]+$,,;
     $p .= $path;
     my @p = split('/', $p, -1);
@@ -251,25 +164,24 @@ sub abs
 	}
     }
     $p[-1] = "" if @p && $p[-1] eq ".";  # trailing "/."
-    $abs->{'path'} = "/" . join("/", @p);
+    if ($URI::ABS_REMOTE_LEADING_DOTS) {
+        shift @p while @p && $p[0] =~ /^\.\.?$/;
+    }
+    $abs->path("/" . join("/", @p));
     $abs;
 }
 
-
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
-    my URI::_generic $self = shift;
-    my URI::_generic $base = shift;
-    my URI::_generic $rel = $self->clone;
-    $base = $self->base unless $base;
-    return $rel unless $base;
+    my $self = shift;
+    my $base = shift || die "Missing base argument";
+    my $rel = $self->clone;
     $base = URI->new($base) unless ref $base;
-    $rel->{'base'} = $base;
 
     #my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
-    my $scheme = $rel->{scheme};
-    my $auth   = $rel->{authority};
-    my $path   = $rel->{path};
+    my $scheme = $rel->scheme;
+    my $auth   = $rel->authority;
+    my $path   = $rel->path;
 
     if (!defined($scheme) && !defined($auth)) {
 	# it is already relative
@@ -277,9 +189,9 @@ sub rel {
     }
 
     #my($bscheme, $bauth, $bpath) = @{$base}{qw(scheme authority path)};
-    my $bscheme = $base->{scheme};
-    my $bauth   = $base->{authority};
-    my $bpath   = $base->{path};
+    my $bscheme = $base->scheme;
+    my $bauth   = $base->authority;
+    my $bpath   = $base->path;
 
     for ($bscheme, $bauth, $auth) {
 	$_ = '' unless defined
@@ -293,8 +205,8 @@ sub rel {
     for ($path, $bpath) {  $_ = "/$_" unless m,^/,; }
 
     # Make it relative by eliminating scheme and authority
-    $rel->{'scheme'} = undef;
-    $rel->{'authority'} = undef;
+    $rel->scheme(undef);
+    $rel->authority(undef);
 
     # This loop is based on code from Nicolai Langfeldt <janl@ifi.uio.no>.
     # First we calculate common initial path components length ($li).
@@ -311,16 +223,15 @@ sub rel {
     substr($bpath,0,$li) = '';
 
     if ($path eq $bpath &&
-        defined($rel->{'fragment'}) &&
-        !defined($rel->{'query'})) {
-        $rel->{'path'} = '';
+        defined($rel->fragment) &&
+        !defined($rel->query)) {
+        $rel->path("");
     } else {
         # Add one "../" for each path component left in the base path
         $path = ('../' x $bpath =~ tr|/|/|) . $path;
 	$path = "./" if $path eq "";
-        $rel->{'path'} = $path;
+        $rel->path($path);
     }
-    $rel->{'xstr'} = '';
 
     $rel;
 }

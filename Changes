@@ -1,6 +1,116 @@
+1998-09-10   Gisle Aas <aas@sn.no>
+
+   Release 0.09
+
+   Included Roy T. Fielding's URI parsing/abs tests from
+   <http://www.ics.uci.edu/~fielding/url/>.  We did in fact agree
+   with RFC 2396 on all tests.
+
+
+
+1998-09-10   Gisle Aas <aas@sn.no>
+
+   Release 0.08
+
+   Implemented transformations between various file: URIs and
+   actual file names.  New URI::file methods:
+
+       new
+       new_abs
+       cwd
+       file
+       dir
+
+
+
+1998-09-09   Gisle Aas <aas@sn.no>
+
+   Release 0.07
+
+   Implemented rlogin, telnet and file URLs.
+
+   Implemented URI::WithBase
+
+   Implemented URI::URL emulator (ported old URI::URL test suite)
+
+   Can now use schemes with "-", "+" or "." characters in them.
+
+   $u->scheme will downcase.  $u->_scheme will keep it as it is.
+
+   Configuration variables for $u->abs
+
+   $u->query_form and $u->query_keyword is more careful about escaping
+   "+" and "=".
+
+   $u->host unescaped
+
+   $u->_port if you want to bypass $u->default_port
+
+   Can handle news message-ids with embedded "/" now
+
+
+
+1998-09-08   Gisle Aas <aas@sn.no>
+
+   Release 0.06
+
+   Implemented gopher URLs
+
+   Implemented ftp URLs
+
+   Second ctor argument can be a plain scheme name.  If it is an
+   object, then we use the class of the object as implementor.
+
+   Protect literal % in various places by escaping
+
+   Path segments with parameters is not arrays of class URI::_segment,
+   which overload stingify operator.
+
+   URI::http->canonical will now unescape unreserved characters.
+
+
+
+1998-09-08   Gisle Aas <aas@sn.no>
+
+   Release 0.05
+
+   Implemented news URLs (together with snews/nntp)
+
+   Implemented pop URLs (RFC 2384)
+
+   Can now use '==' to compare if two URI objects are the same or not.
+
+   $u->opaque_part renamed as $u->opaque
+
+   Better canonicalization
+
+   Faster $u->abs (especially for URI that already are absolute)
+
+   $u->query_form will keep more chars unescaped
+
+
+
+1998-09-06   Gisle Aas <aas@sn.no>
+
+   Release 0.04
+
+   Implemented mailto:-URLs (specified in RFC 2368)
+
+   Moved query() methods to internal URI::_query mixin class.
+
+   Escape stuff in the media_type field of data:-URLs.
+
+
+
+1998-09-06   Gisle Aas <aas@sn.no>
+
+   Release 0.03 based on simplified scalar object.
+
+
+
 1998-09-02   Gisle Aas <aas@sn.no>
 
-   use fields
+   Release 0.02 based on perl5.005 and fields.pm
 
 
 

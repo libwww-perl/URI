@@ -18,10 +18,10 @@ while (<DATA>) {
 
    my $bad;
    my $u = URI->new($uref, $base);
-   if ($u->abs->as_string ne $expect) {
+   if ($u->abs($base)->as_string ne $expect) {
        $bad++;
-       my $abs = $u->abs->as_string;
-       print qq(URI->new("$uref", "$base")->abs ==> "$abs"\n);
+       my $abs = $u->abs($base)->as_string;
+       print qq(URI->new("$uref")->abs("$base") ==> "$abs"\n);
    }
 
    # Let's test another version of the same thing
@@ -33,7 +33,7 @@ while (<DATA>) {
    }
 
    # Let's try the other way
-   $u = URI->new($expect, $base)->rel->as_string;
+   $u = URI->new($expect)->rel($base)->as_string;
    if ($u ne $uref) {
        push(@rel_fail, qq($testno: URI->new("$expect", "$base")->rel ==> "$u" (not "$uref")\n));
    }
