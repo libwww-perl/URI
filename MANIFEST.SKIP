@@ -2,6 +2,7 @@
 ^draft-.*\.txt$
 ^rfc\d+\.txt$
 ^old/
+^tgz/
 ^blib/
 \.old$
 \.bak$
