@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.13 2002/01/16 23:26:09 gisle Exp $
+# $Id: Heuristic.pm,v 4.14 2003/01/01 16:58:47 gisle Exp $
 
 =head1 NAME
 
@@ -89,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.13 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.14 $ =~ /(\d+)\.(\d+)/);
 
 eval {
     require Net::Domain;
@@ -171,9 +171,9 @@ sub uf_uristr ($)
 
 		my $guess;
 		for $guess (@guess) {
-		    print STDERR "uf_uristr: gethostbyname('$guess')..."
+		    print STDERR "uf_uristr: gethostbyname('$guess.')..."
 		      if $DEBUG;
-		    if (gethostbyname($guess)) {
+		    if (gethostbyname("$guess.")) {
 			print STDERR "yes\n" if $DEBUG;
 			$host = $guess;
 			last;
