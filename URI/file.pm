@@ -1,10 +1,13 @@
 package URI::file;
 
 use strict;
-use vars qw(@ISA);
+use vars qw(@ISA $VERSION);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.12 $ =~ /(\d+)\.(\d+)/);
+
+use URI::Escape qw(uri_unescape);
 
 # Map from $^O values to implementation classes.  The Unix
 # class is the default.
@@ -33,7 +36,7 @@ sub os_class
 }
 
 sub path { shift->path_query(@_) }
-sub host { shift->authority(@_)  }
+sub host { uri_unescape(shift->authority(@_)) }
 
 sub new
 {
