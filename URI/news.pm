@@ -5,6 +5,7 @@ require URI::_server;
 
 use strict;
 use URI::Escape qw(uri_unescape);
+use Carp ();
 
 sub default_port { 119 }
 
@@ -21,6 +22,7 @@ sub _group
     if (@_) {
 	my($group,$from,$to) = @_;
 	$group =~ s,/,%2F,g;
+	$group =~ s,%,%25,g;
 	my $path = $group;
 	if (defined $from) {
 	    $path .= "/$from";
@@ -42,7 +44,7 @@ sub group
 {
     my $self = shift;
     if (@_) {
-	die "Group name can't contain '\@'" if $_[0] =~ /\@/;
+	Carp::croak("Group name can't contain '\@'") if $_[0] =~ /\@/;
     }
     my @old = $self->_group(@_);
     return if $old[0] =~ /\@/;
@@ -53,7 +55,7 @@ sub message
 {
     my $self = shift;
     if (@_) {
-	die "Message must contain '\@'" unless $_[0] =~ /\@/;
+	Carp::croak("Message must contain '\@'") unless $_[0] =~ /\@/;
     }
     my $old = $self->_group(@_);
     return unless $old =~ /\@/;

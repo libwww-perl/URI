@@ -25,6 +25,7 @@ sub user
 	    $self->userinfo(undef);
 	} else {
 	    $new = "" unless defined $new;
+	    $new =~ s/%/%25/g;
 	    $new =~ s/;/%3B/g;
 	    $self->userinfo("$new$new_info");
 	}
@@ -50,6 +51,7 @@ sub auth
 	
 	my $auth = shift;
 	if (defined $auth) {
+	    $auth =~ s/%/%25/g;
 	    $auth =~ s/;/%3B/g;
 	    $new = ";AUTH=$auth$new";
 	}
