@@ -567,7 +567,7 @@ sub escape_test {
 
     $url = new URI::URL uri_escape('http://web/try %?#" those');
     $url->_expect('as_string',
-		  'http://web/try%20%25%3F%23%22%20those');
+		  'http://web/try%20%25?%23%22%20those');
 
     my $all = pack('c*',0..255);
     my $esc = uri_escape($all);
