@@ -105,7 +105,7 @@ sub path_segments
 	$self->path(join("/", @arg));
     }
     return $path unless wantarray;
-    $path = "/$path" if defined $self->{'authority'} && $path !~ m,^/,;
+    $path = "/$path" if defined($self->authority) && $path !~ m,^/,;
     map {/;/ ? _split_segment($_) : uri_unescape($_) } split('/', $path, -1);
 }
 
