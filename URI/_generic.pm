@@ -3,7 +3,6 @@ require URI;
 @ISA=qw(URI);
 
 use strict;
-use vars qw(@ISA);
 use URI::Escape qw(uri_unescape);
 
 sub authority
@@ -70,66 +69,6 @@ sub query
     }
     $2;
 }
-
-sub userinfo
-{
-    my $self = shift;
-    my $old = $self->authority;
-
-    if (@_) {
-	my $new = $old;
-	$new = "" unless defined $new;
-	$new =~ s/^[^@]*@//;  # remove old stuff
-	my $ui = shift;
-	if (defined $ui) {
-	    $ui =~ s/@/%40/g;   # protect @
-	    $new = "$ui\@$new";
-	}
-	$self->authority($new);
-    }
-    return undef if !defined($old) || $old !~ /^([^@]*)@/;
-    return $1;
-}
-
-sub host
-{
-    my $self = shift;
-    my $old = $self->authority;
-    if (@_) {
-	my $tmp = $old;
-	$tmp = "" unless defined $tmp;
-	my $ui;
-	$ui = $1 if $tmp =~ s/^([^@]*@)//;
-	$tmp =~ s/^[^:]*//;        # get rid of old host
-	my $new = shift;
-	if (defined $new) {
-	    $new =~ s/[@]/%40/g;   # protect @
-	    $tmp = ($new =~ /:/) ? $new : "$new$tmp";
-	}
-	$tmp = "$ui$tmp" if defined $ui;
-	$self->authority($tmp);
-    }
-    return undef if !defined($old) || $old !~ /^(?:[^@]*@)?([^:]*)/;
-    return $1;
-}
-
-sub port
-{
-    my $self = shift;
-    my $old = $self->authority;
-    if (@_) {
-	my $new = $old;
-	$new =~ s/:.*$//;
-	my $port = shift;
-	$new .= ":$port" if defined $port;
-	$self->authority($new);
-    }
-    return undef unless defined $old;
-    return $1 if $old =~ /:(\d+)$/;
-    $self->default_port;
-}
-
-sub default_port { undef }
 
 sub abs_path
 {
@@ -302,13 +241,6 @@ sub rel {
     }
 
     $rel;
-}
-
-
-sub canonical_notyet
-{
-    my $self = shift;
-    my $other = $self->clone;
 }
 
 1;
