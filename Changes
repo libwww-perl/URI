@@ -1,3 +1,15 @@
+2000-08-02   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.08
+
+   ldap URIs now support _scope() and _filter() methods that
+   don't have default values.  Suggested by Graham Barr.
+
+   Incorporated old rejected MSWin32 patch to t/old-base.t.
+   Hope it works.
+
+
+
 2000-06-13   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.07
