@@ -633,8 +633,14 @@ sub newlocal_test {
     return 1 if $^O eq "MacOS";
     
     print "newlocal_test:\n";
-    my $pwd = ($^O eq 'MSWin32' ? 'cd' : (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'));
+    my $pwd = ($^O eq 'MSWin32' ? 'cd' :
+	  ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
+	    (-e '/bin/pwd' ? '/bin/pwd' : 'pwd')));
     my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');
+	if ( $^O eq 'qnx' ) {
+	  $tmpdir = `/usr/bin/fullpath -t $tmpdir`;
+	  chomp $tmpdir;
+	}
     $tmpdir =~ tr|\\|/|;
 
     my $savedir = `$pwd`;     # we don't use Cwd.pm because we want to check

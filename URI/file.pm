@@ -16,6 +16,7 @@ my %os_class = (
      win32   => "Win32",
      msdos   => "FAT",
      dos     => "FAT",
+     qnx     => "QNX",
 );
 
 sub os_class
