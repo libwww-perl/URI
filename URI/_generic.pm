@@ -196,11 +196,11 @@ sub abs
 {
     my URI::_generic $self = shift;
     my URI::_generic $abs = $self->clone;
-    my $base = shift || $abs->base || return $abs;
+    my URI::_generic $base = shift || $abs->base || return $abs;
     my $allow_scheme = shift;
 
     $base = URI->new($base) unless ref $base;
-    delete $abs->{'_base'};
+    $abs->{'base'} = $base;
     #my($scheme, $authority, $path, $query, $fragment) =
     #   @{$self}{qw(scheme authority path query fragment)};
     my $scheme    = $self->{scheme};
@@ -225,7 +225,7 @@ sub abs
 	if (defined $fragment) {
 	    $abs->{'fragment'} = $fragment;
 	} else {
-	    delete $abs->{'fragment'};
+	    $abs->{'fragment'} = undef;
 	}
 	$abs->{'xstr'} = '';
 	return $abs;
@@ -261,20 +261,28 @@ sub abs
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
     my URI::_generic $self = shift;
-    my $base = shift;
+    my URI::_generic $base = shift;
     my URI::_generic $rel = $self->clone;
     $base = $self->base unless $base;
     return $rel unless $base;
     $base = URI->new($base) unless ref $base;
-    $rel->base($base);
+    $rel->{'base'} = $base;
 
-    my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
+    #my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
+    my $scheme = $rel->{scheme};
+    my $auth   = $rel->{authority};
+    my $path   = $rel->{path};
+
     if (!defined($scheme) && !defined($auth)) {
 	# it is already relative
 	return $rel;
     }
 
-    my($bscheme, $bauth, $bpath) = @{$base}{qw(scheme authority path)};
+    #my($bscheme, $bauth, $bpath) = @{$base}{qw(scheme authority path)};
+    my $bscheme = $base->{scheme};
+    my $bauth   = $base->{authority};
+    my $bpath   = $base->{path};
+
     for ($bscheme, $bauth, $auth) {
 	$_ = '' unless defined
     }
