@@ -1,0 +1,25 @@
+#!/usr/bin/perl -w
+
+sub usage {
+    my $prog = $0; $prog =~ s,.*/,,;
+    die "Usage: $prog <uri> [<method> [<args>]...]\n";
+}
+
+my $uri = shift || usage();
+my $orig = $uri;
+
+require URI;
+$uri = URI->new($uri);
+
+if (@ARGV) {
+    my $method = shift;
+    #print "URI->new(\"$uri\")->$method ==> ";
+    my $result = $uri->$method(@ARGV);
+    if (defined $result) {
+	print "$result\n";
+    } else {
+	print "<undef>\n";
+    }
+}
+print "$uri\n" unless $orig eq $uri;
+

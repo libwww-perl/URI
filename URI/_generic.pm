@@ -42,7 +42,7 @@ sub path
 	$new_path = "" unless defined $new_path;
 	$new_path =~ s/([^$PCHAR])/$URI::Escape::escapes{$1}/go;
 	if (length($$self)) {
-	    $$self .= "/" if length($new_path) && $new_path !~ m,^/,;	    
+	    $$self .= "/" if length($new_path) && $new_path !~ m,^/,;
 	} else {
 	    if ($new_path =~ m,^//,) {
 		warn "Path starting with double slash is confusing";
@@ -57,22 +57,31 @@ sub path
     $2;
 }
 
-
-sub abs_path
+sub path_query
 {
     my $self = shift;
-    my $tmp = $self->abs_path_query;
-    $tmp =~ s/\?.*//s;
-    $tmp;
-}
+    $$self =~ m,^((?:[^:/?\#]+:)?(?://[^/?\#]*)?)([^\#]*)(.*)$,s or die;
 
-sub abs_path_query
-{
-    my $self = shift;
-    $$self =~  m,^[^/?\#]*(?://([^/?\#]*))?([^\#]*),s or die;
-    my $tmp = $1;
-    $tmp = "/$tmp" unless $tmp =~ m,^/,;
-    $tmp;
+    if (@_) {
+	$$self = $1;
+	my $rest = $3;
+	my $new_path = shift;
+	$new_path = "" unless defined $new_path;
+	$new_path =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
+	if (length($$self)) {
+	    $$self .= "/" if length($new_path) && $new_path !~ m,^[/?],;
+	} else {
+	    if ($new_path =~ m,^//,) {
+		warn "Path starting with double slash is confusing";
+	    } elsif ($new_path =~ m,^[^:/?\#]+:,) {
+		warn "Path might look like scheme, './' prepended";
+		$new_path = "./$new_path";
+	    }
+	}
+
+	$$self .= $new_path . $rest;
+    }
+    $2;
 }
 
 

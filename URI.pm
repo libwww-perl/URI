@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.11 1998/09/07 23:16:43 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.12 1998/09/08 10:30:02 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -25,7 +25,9 @@ use Carp ();
 use URI::Escape ();
 
 use overload ('""'     => sub { ${$_[0]} },
-	      '=='     => sub { overload::StrVal($_[0]) eq overload::StrVal($_[1]) },
+	      '=='     => sub { overload::StrVal($_[0]) eq
+                                overload::StrVal($_[1])
+                              },
               fallback => 1,
              );
 
