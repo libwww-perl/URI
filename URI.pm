@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.26"; # $Date: 2003/10/03 12:44:47 $
+$VERSION = "1.27"; # $Date: 2003/10/06 10:35:07 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 

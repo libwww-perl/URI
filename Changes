@@ -1,3 +1,13 @@
+2003-10-06   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.27
+
+   The URI module is now less strict about the values accepted
+   for gopher_type attribute of gopher:-URLs.  Patch suggested
+   by the Net::Gopher author; William G. Davis.
+
+
+
 2003-10-03   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.26
