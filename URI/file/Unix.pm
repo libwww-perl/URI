@@ -1,6 +1,8 @@
 package URI::file::Unix;
 
-sub extract_host
+use strict;
+
+sub extract_authority
 {
     undef;
 }
@@ -14,32 +16,17 @@ sub split_path
     split("/", $path, -1);
 }
 
-#-------------------------
-
-sub local_file
+sub file
 {
-    my $self = shift;
-    my @path = $self->path_segments;
-    File::Spec->catfile(@path);
-}
-
-sub local_dir
-{
-    my $self = shift;
-    my @path = $self->path_segments;
-    File::Spec->catdir(@path);
-}
-
-sub local_path
-{
-    my $self = shift;
-    my @path = $self->path_segments;
-    if ($path[-1] eq "") {
-	pop(@path);
-	File::Spec->catdir(@path);
-    } else {
-	File::Spec->catfile(@path);
+    shift;  # class;
+    shift;  # authority
+    for (@_) {
+	return if /\0/;
+	return if /\//;  # should we?
     }
+    my $path = join("/", @_);
 }
+
+*dir = \&file;
 
 1;
