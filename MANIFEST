@@ -53,7 +53,7 @@ t/news.t
 t/old-absconf.t
 t/old-base.t
 t/old-relbase.t
-t/pop.tc
+t/pop.t
 t/query.t
 t/rfc2732.t
 t/roy-test.t
