@@ -1,6 +1,7 @@
 #!perl -w
 
 use URI::file;
+$URI::file::DEFAULT_AUTHORITY = undef;
 
 @tests =  (
 [ "file",          "unix",       "win32",         "mac" ],

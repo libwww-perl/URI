@@ -643,7 +643,10 @@ sub escape_test {
 
 sub newlocal_test {
     return 1 if $^O eq "MacOS";
-    
+
+    require URI::file;
+    $URI::file::DEFAULT_AUTHORITY = $URI::file::DEFAULT_AUTHORITY = undef;
+
     print "newlocal_test:\n";
     my $isMSWin32 = ($^O =~ /MSWin32/i);
     my $pwd = ($isMSWin32 ? 'cd' :
