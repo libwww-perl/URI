@@ -18,7 +18,11 @@ sub new
 	$auth =~ s,%,%25,g unless $escaped_auth;
 	$auth =~ s,([/?\#]),$URI::Escape::escapes{$1},g;
 	$auth = "//$auth";
-	$path = "" unless defined $path;
+	if (defined $path) {
+	    $path = "/$path" unless substr($path, 0, 1) eq "/";
+	} else {
+	    $path = "";
+	}
     } else {
 	return unless defined $path;
 	$auth = "";
