@@ -1,4 +1,4 @@
-print "1..1\n";
+print "1..10\n";
 
 use strict;
 use URI ();
