@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..7\n";
+print "1..9\n";
 
 use URI::Escape;
 
@@ -26,11 +26,23 @@ use URI::Escape qw(%escapes);
 print "not" unless $escapes{"%"} eq "%25";
 print "ok 6\n";
 
+
+use URI::Escape qw(uri_escape_utf8);
+
+print "not " unless uri_escape_utf8("|abcå") eq "%7Cabc%C3%A5";
+print "ok 7\n";
+
 if ($] < 5.008) {
-    print "ok 7  # skipped\n";
+    print "ok 8  # skipped\n";
+    print "ok 9  # skipped\n";
 }
 else {
     eval { print uri_escape("abc" . chr(300)) };
     print "not " unless $@ && $@ =~ /^Can\'t escape \\x{012C}, try uri_escape_utf8\(\) instead/;
-    print "ok 7\n";
+    print "ok 8\n";
+
+    print "not " unless uri_escape_utf8(chr(0xFFF)) eq "%E0%BF%BF";
+    print "ok 9\n";
 }
+
+

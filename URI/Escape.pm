@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.23 2004/04/13 13:39:05 gisle Exp $
+# $Id: Escape.pm,v 3.24 2004/04/13 13:57:33 gisle Exp $
 #
 
 package URI::Escape;
@@ -113,8 +113,8 @@ use vars qw(%escapes);
 require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
-@EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.23 $ =~ /(\d+)\.(\d+)/);
+@EXPORT_OK = qw(%escapes uri_escape_utf8);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.24 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -147,6 +147,18 @@ sub uri_escape
 sub _fail_hi {
     my $chr = shift;
   Carp::croak(sprintf "Can't escape \\x{%04X}, try uri_escape_utf8() instead", ord($chr));
+}
+
+sub uri_escape_utf8
+{
+    if ($] < 5.008) {
+	my $text = shift;
+	$text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
+	return uri_escape($text, @_);
+    }
+
+    require Encode;
+    return uri_escape(Encode::encode_utf8(shift), @_);
 }
 
 sub uri_unescape
