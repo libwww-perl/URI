@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/01/11 05:09:41 $
+package URI;  # $Date: 2001/01/11 05:16:25 $
 
 use strict;
 use vars qw($VERSION);
@@ -774,7 +774,15 @@ examples:
 
 =back
 
+=head1 BUGS
 
+Using regexp variables like $1 directly as argument to the URI methods
+do not work too well with current perl implementations.  I would argue
+that this is actually a bug in perl.  The workaround is to quote
+them. E.g.:
+
+   /(...)/ || die;
+   $u->query("$1");
 
 =head1 SEE ALSO
 
