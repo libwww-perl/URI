@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.4 1998/09/05 06:22:45 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.5 1998/09/05 23:44:22 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -232,6 +232,8 @@ sub canonical
 	$other->scheme(lc $scheme);
 	return $other;
     }
+    # XXX might also want to ensure that we only use either upper or
+    # lower case hex digits in %xx escapes.
 
     $self;
 }
