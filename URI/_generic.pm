@@ -37,7 +37,7 @@ sub _as_string
 	$str .= "//$authority";
 	$need_abs_path++;
     }
-    if (defined $path) {
+    if (defined($path) && length $path) {
 	$path =~ s/([^$URI::ppchar])/$URI::Escape::escapes{$1}/go;
 	$path = "/$path" if $need_abs_path && $path !~ m,^/,;
 	$str .= "$path";
@@ -172,7 +172,7 @@ sub abs
     my $self = shift;
     my $abs = $self->clone;
     my $base = shift || $abs->base || return $abs;
-    my $allow_scheme = 1; #shift;
+    my $allow_scheme = shift;
 
     $base = URI->new($base) unless ref $base;
     delete $abs->{'_base'};
