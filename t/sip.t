@@ -1,4 +1,4 @@
-print "1..9\n";
+print "1..8\n";
 
 use URI;
 
@@ -52,4 +52,4 @@ print "not " unless $u->host eq 'domain.ext' &&
 		    $u->params eq 'maddr=127.0.0.1;ttl=16' &&
 		    @p == 4 && "@p" eq "maddr 127.0.0.1 ttl 16";
 
-print "ok 9\n";
+print "ok 8\n";
