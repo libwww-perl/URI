@@ -1,3 +1,13 @@
+1998-11-19   Gisle Aas <aas@sn.no>
+
+   Release 1.00
+
+   Added new URI->new_abs method
+
+   Replaced a few die calls with croak.
+
+
+
 1998-10-12   Gisle Aas <aas@sn.no>
 
    Release 0.90_02
