@@ -1,15 +1,16 @@
 package URI::_generic;
+use base 'URI';
+
+use fields qw(authority path query);
+
 use strict;
 use vars qw(@ISA);
-
-require URI;
-@ISA=qw(URI);
-
 use URI::Escape qw(uri_unescape);
 
 sub _parse
 {
-    my($self, $str) = @_;
+    my URI::_generic $self = shift;
+    my $str = shift;
     $str =~ m,^
 	      (?:([a-zA-Z][a-zA-Z0-9+\-.]*):)?   # optional scheme
 	      (?://([^/?\#]*))?                  # optional authority
@@ -26,10 +27,17 @@ sub _parse
 
 sub _as_string
 {
-    my $self = shift;
+    my URI::_generic $self = shift;
     my $str = "";
-    my($scheme, $authority, $path, $query, $fragment) =
-	@{$self}{qw(scheme authority path query fragment)};
+
+    #my($scheme, $authority, $path, $query, $fragment) =
+    #   @{$self}{qw(scheme authority path query fragment)};
+    my $scheme    = $self->{scheme};
+    my $authority = $self->{authority};
+    my $path      = $self->{path};
+    my $query     = $self->{query};
+    my $fragment  = $self->{fragment};
+
     my $need_abs_path;
     $str = "$scheme:" if $scheme;
     if (defined $authority) {
@@ -53,14 +61,24 @@ sub _as_string
     $str;
 }
 
-sub authority { shift->_elem("authority", @_) }
-sub path      { shift->_elem("path",      @_) }
-sub query     { shift->_elem("query",     @_) }
+# Create a few accessor methods...
+use vars qw(%FIELDS);
+my $code = "";
+for (qw(authority path query)) {
+    my $fno = $FIELDS{$_} || die "No such field: $_";
+    $code .= "sub $_ { shift->_elem($fno, \@_) };\n";
+}
+print "$code\n";
+eval $code; die $@ if $@;
+
+#sub authority { shift->_elem("authority", @_) } #XXX
+#sub path      { shift->_elem("path",      @_) } #XXX
+#sub query     { shift->_elem("query",     @_) } #XXX
 
 sub userinfo
 {
-    my $self = shift;
-    my $old = $self->{'authority'};
+    my URI::_generic $self = shift;
+    my $old = $self->{authority};
     if (@_) {
 	my $new = $old;
 	$new = "" unless defined($new);
@@ -70,7 +88,8 @@ sub userinfo
 	    $ui =~ s/@/%40/g;   # protect @
 	    $new = "$ui\@$new";
 	}
-	$self->{'authority'} = $new;
+	$self->{authority} = $new;
+	$self->{xstr} = undef;
     }
     return undef if !defined($old) || $old !~ /^([^@]*)@/;
     return $1;
@@ -78,8 +97,8 @@ sub userinfo
 
 sub host
 {
-    my $self = shift;
-    my $old = $self->{'authority'};
+    my URI::_generic $self = shift;
+    my $old = $self->{authority};
     if (@_) {
 	my $tmp = $old;
 	$tmp = "" unless defined $tmp;
@@ -92,7 +111,8 @@ sub host
 	    $tmp = ($new =~ /:/) ? $new : "$new$tmp";
 	}
 	$tmp = "$ui$tmp" if defined $ui;
-	$self->{'authority'} = $tmp;
+	$self->{authority} = $tmp;
+	$self->{xstr} = undef;
     }
     return undef if !defined($old) || $old !~ /^(?:[^@]*@)?([^:]*)/;
     return $1;
@@ -100,14 +120,15 @@ sub host
 
 sub port
 {
-    my $self = shift;
-    my $old = $self->{'authority'};
+    my URI::_generic $self = shift;
+    my $old = $self->{authority};
     if (@_) {
 	my $new = $old;
 	$new =~ s/:.*$//;
 	my $port = shift;
 	$new .= ":$port" if defined $port;
-	$self->{'authority'} = $new;
+	$self->{authority} = $new;
+	$self->{xstr} = '';
     }
     return undef unless defined $old;
     return $1 if $old =~ /:(\d+)$/;
@@ -119,7 +140,11 @@ sub default_port { undef }
 sub abs_path
 {
     my $self = shift;
-    my($authority, $path, $query) = @{$self}{qw(authority path query)};
+    #my($authority, $path, $query) = @{$self}{qw(authority path query)};
+    my $authority = $self->{authority};
+    my $path      = $self->{path};
+    my $query     = $self->{query};
+    
     if (defined $authority) {
 	if (defined $path) {
 	    $path = "/$path" unless $path =~ m,^/,;
@@ -140,7 +165,7 @@ sub abs_path
 
 sub path_segments
 {
-    my $self = shift;
+    my URI::_generic $self = shift;
     my $path = $self->{'path'};
     if (@_) {
 	my @arg = @_;  # make a copy
@@ -169,20 +194,26 @@ sub _split_segment
 
 sub abs
 {
-    my $self = shift;
-    my $abs = $self->clone;
+    my URI::_generic $self = shift;
+    my URI::_generic $abs = $self->clone;
     my $base = shift || $abs->base || return $abs;
     my $allow_scheme = shift;
 
     $base = URI->new($base) unless ref $base;
     delete $abs->{'_base'};
-    my($scheme, $authority, $path, $query, $fragment) =
-	@{$self}{qw(scheme authority path query fragment)};
+    #my($scheme, $authority, $path, $query, $fragment) =
+    #   @{$self}{qw(scheme authority path query fragment)};
+    my $scheme    = $self->{scheme};
+    my $authority = $self->{authority};
+    my $path      = $self->{path};
+    my $query     = $self->{query};
+    my $fragment  = $self->{fragment};
+
     if ($scheme) {
 	return $abs unless $allow_scheme;
 	return $abs if lc($scheme) ne lc($base->{'scheme'});
     }
-    $abs->{'_str'} = '';
+    $abs->{'xstr'} = '';
     $abs->{'scheme'} = $base->{'scheme'};
     return $abs if defined $authority;
     $abs->{'authority'} = $base->{'authority'};
@@ -196,7 +227,7 @@ sub abs
 	} else {
 	    delete $abs->{'fragment'};
 	}
-	$abs->{'_str'} = '';
+	$abs->{'xstr'} = '';
 	return $abs;
     }
 
@@ -229,8 +260,9 @@ sub abs
 
 # The oposite of $url->abs.  Return a URI which is much relative as possible
 sub rel {
-    my($self, $base) = @_;
-    my $rel = $self->clone;
+    my URI::_generic $self = shift;
+    my $base = shift;
+    my URI::_generic $rel = $self->clone;
     $base = $self->base unless $base;
     return $rel unless $base;
     $base = URI->new($base) unless ref $base;
@@ -282,7 +314,7 @@ sub rel {
 	$path = "./" if $path eq "";
         $rel->{'path'} = $path;
     }
-    $rel->{'_str'} = '';
+    $rel->{'xstr'} = '';
 
     $rel;
 }

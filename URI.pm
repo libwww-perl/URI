@@ -1,9 +1,9 @@
-package URI;  # $Id: URI.pm,v 1.4 1998/04/09 18:26:57 aas Exp $
+package URI;  # $Id: URI.pm,v 1.5 1998/09/03 13:53:32 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
 
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 $DEFAULT_SCHEME ||= "http";
 #$STRICT = 0;
@@ -24,6 +24,11 @@ $achar  = $uric;  $achar =~ s,\\[/?],,g;
 $ppchar = $uric;  $ppchar =~ s,\\?,,g;
 
 my $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
+
+use fields qw(xstr _scheme);
+use fields qw(scheme specific fragment);
+use fields qw(base);
+#use fields qw(_orig_uri);
 
 #print "$uric\n$achar\n$pchar\n";
 
@@ -81,9 +86,9 @@ sub _init
 {
     my $class = shift;
     my($str, $base, $scheme) = @_;
-    my $self = bless {}, $class;
+    my URI $self = bless [], $class;
     $self->{'_scheme'} = $scheme;
-    $self->{'_orig_uri'} = $str if $DEBUG;
+    #$self->{'_orig_uri'} = $str if $DEBUG;
     $self->base($base) if $base;
     $self->_parse($str);
     $self;
@@ -92,7 +97,8 @@ sub _init
 
 sub _parse
 {
-    my($self, $str) = @_;
+    my URI $self = shift;
+    my $str = shift;
     # <scheme>:<scheme-specific-part>
     $self->{'scheme'} = $1 if $str =~ s/^($scheme_re)://o;
     $self->{'fragment'}   = $1 if $str =~ s/\#(.*)//s;
@@ -150,26 +156,13 @@ sub clone
 {
     my $self = shift;
     # this work as long as none of the components are references themselves
-    bless { %$self }, ref $self;
-}
-
-
-sub _elem
-{
-    my $self = shift;
-    my $elem = shift;
-    my $old = $self->{$elem};
-    if (@_) {
-	$self->{$elem} = shift;
-	$self->{'_str'} = '';        # void cached string
-    }
-    $old;
+    bless [ @$self ], ref $self;
 }
 
 
 sub scheme
 {
-    my $self = shift;
+    my URI $self = shift;
     my $old = $self->{'scheme'};
     if (@_) {
 	my $new_scheme = shift;
@@ -178,7 +171,7 @@ sub scheme
 	    my $str = $self->as_string;
 	    $str =~ s/^$scheme_re://o;
 	    my $newself = URI->new("$new_scheme:$str");
-	    %$self = %$newself;  # copy content
+	    @$self = @$newself;  # copy content
 	    bless $self, ref($newself);
 	} else {
 	    $self->{'scheme'} = undef;
@@ -187,28 +180,47 @@ sub scheme
     $old;
 }
 
-
-sub fragment
+sub _elem
 {
-    shift->_elem("fragment", @_);
+    my URI $self = shift;
+    my $idx  = shift;
+    my $old = $self->[$idx];
+    if ($@) {
+	$self->[$idx] = shift;
+	$self->{xstr} = undef;
+    }
+    $old;
 }
+
+# Make accessor function for 'fragment'
+use vars qw(%FIELDS);
+my $code = "sub fragment { shift->_elem($FIELDS{fragment}, \@_); }";
+#print "$code\n";
+eval $code; die $@ if $@;
+
 
 
 sub as_string
 {
-    my $self = shift;
-    if (my $str = $self->{'_str'}) {
+    my URI $self = shift;
+    if (my $str = $self->{xstr}) {
 	return $str;  # cached
     }
-    $self->{'_str'} = $self->_as_string;  # set cache and return
+    $self->{'xstr'} = $self->_as_string;  # set cache and return
 }
 
 
 sub _as_string
 {
-    my $self = shift;
+    my URI $self = shift;
     my $str = "";
-    my($scheme, $specific, $fragment) = @{$self}{qw(scheme specific fragment)};
+
+    # XXX Argh... this should not have to be rewritten...
+    #my($scheme, $specific, $fragment) = @{$self}{qw(scheme specific fragment)};
+    my $scheme   = $self->{scheme};
+    my $specific = $self->{specific};
+    my $fragment = $self->{fragment};
+
     $str = "$scheme:" if $scheme;
     $specific =~ s/([^$uric])/$URI::Escape::escapes{$1}/go;
     $str .= $specific;
@@ -221,13 +233,13 @@ sub _as_string
 
 
 sub base {
-    my $self = shift;
-    my $base  = $self->{'_base'};
+    my URI $self = shift;
+    my $base  = $self->{base};
 
     if (@_) { # set
 	my $new_base = shift;
-	$new_base = $new_base->abs if ref($new_base);  # unsure absoluteness
-	$self->{_base} = $new_base;
+	$new_base = $new_base->abs if ref($new_base);  # ensure absoluteness
+	$self->{base} = $new_base;
     }
     return unless defined wantarray;
 
@@ -237,7 +249,7 @@ sub base {
     # The main benefit is to make it much cheaper to say:
     #   URI->new($random_url_string, 'http:')
     if (defined($base) && !ref($base)) {
-	$self->{'_base'} = $base = URI->new($base);
+	$self->{base} = $base = URI->new($base);
     }
     $base;
 }
@@ -255,7 +267,7 @@ sub eq {
 # This is set up as an alias for various methods
 sub _bad_access_method
 {
-    my $self = shift;
+    my URI $self = shift;
     if ($STRICT) {
 	Carp::croak("Illegal method called for $self->{'_scheme'} URI")
     }
