@@ -1,6 +1,7 @@
 \.tar\.gz$
 ^draft-.*\.txt$
 ^rfc\d+\.txt$
+^old/
 ^blib/
 \.old$
 \.bak$
