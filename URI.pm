@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.28"; # $Date: 2004/01/01 23:36:47 $
+$VERSION = "1.28"; # $Date: 2004/01/02 10:16:05 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -761,12 +761,16 @@ L<URI::ldap> for details.
 =item B<ldapi>:
 
 Like the I<ldap> URI scheme, but will use a Unix domain socket.  The
-server methods are not supported.  The local socket path is
-available as $uri->un_path.
+server methods are not supported, and the local socket path is
+available as $uri->un_path.  The I<ldapi> scheme is used by the
+OpenLDAP package.  There is no real specification for it, but it is
+mentioned in various OpenLDAP manual pages.
 
 =item B<ldaps>:
 
-Like the I<ldap> URI scheme, but will use an SSL connection.
+Like the I<ldap> URI scheme, but will use an SSL connection.  This
+scheme is deprecated, as the prefered way is to use the I<start_tls>
+mechanism.
 
 =item B<mailto>:
 
