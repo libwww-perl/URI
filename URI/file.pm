@@ -5,25 +5,28 @@ use vars qw(@ISA);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-set_type($^O);
 
-sub set_type
+my %os_class = (
+     os2     => "OS2",
+     mac     => "Mac",
+     MacOS   => "Mac",
+     MSWin32 => "Win32",
+     win32   => "Win32",
+     msdos   => "Win32",
+     dos     => "Win32",
+);
+
+sub os_class
 {
-    my($OS) = @_;
-    pop(@ISA) if @ISA > 1;
+    my($OS) = shift || $^O;
 
-    my $class = {
-		 os2     => "OS2",
-		 MacOS   => "Mac",
-		 MSWin32 => "Win32",
-		 Win32   => "Win32"
-		}->{$OS} || "Unix";
-    $class = "URI::file::$class";
-
-    eval "require $class";
-    warn $@ if $@;
-    die $@ if $@;
-    push(@ISA, $class);
+    my $class = "URI::file::" . ($os_class{$OS} || "Unix");
+    no strict 'refs';
+    unless (defined %{"$class\::"}) {
+	eval "require $class";
+	die $@ if $@;
+    }
+    $class;
 }
 
 sub path { shift->path_query(@_) }
@@ -31,12 +34,14 @@ sub host { shift->authority(@_)  }
 
 sub new
 {
-    my($class, $path) = @_;
+    my($class, $path, $os) = @_;
+    return undef unless defined $path;
+    $os = os_class($os);
     my $uri = URI->new("", "file");
-    if (my $host = $class->extract_host($path)) {
+    if (my $host = $os->extract_authority($path)) {
 	$uri->authority($host);
     }
-    $uri->path_segments($class->split_path($path));
+    $uri->path_segments($os->split_path($path));
     $$uri = "file:$$uri" if $$uri =~ m,^/,;  # fixup
     $uri;
 }
@@ -44,14 +49,26 @@ sub new
 sub new_abs
 {
     my $class = shift;
-    $class->new(@_)->abs($class->curdir);
+    $class->new(@_)->abs($class->cwd);
 }
 
-sub curdir
+sub cwd
 {
     my $class = shift;
     require Cwd;
     $class->new(Cwd::fastcwd());
+}
+
+sub file
+{
+    my($self, $os) = @_;
+    os_class($os)->file($self->authority, $self->path_segments);
+}
+
+sub dir
+{
+    my($self, $os) = @_;
+    os_class($os)->dir($self->authority, $self->path_segments);
 }
 
 1;
