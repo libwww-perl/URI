@@ -16,6 +16,7 @@ sub uri_split {
 sub uri_join {
     my($scheme, $auth, $path, $query, $frag) = @_;
     my $uri = defined($scheme) ? "$scheme:" : "";
+    $path = "" unless defined $path;
     if (defined $auth) {
 	$uri .= "//$auth";
 	$path = "/$path" unless $path =~ m,^/,;

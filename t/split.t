@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..10\n";
+print "1..12\n";
 
 use strict;
 use URI::Split qw(uri_split uri_join);
@@ -36,3 +36,10 @@ print "ok 9\n";
 
 print "not " unless uri_join("s", undef, "p") eq "s:p";
 print "ok 10\n";
+
+print "not " unless uri_join("s") eq "s:";
+print "ok 11\n";
+
+print "not " unless uri_join() eq "";
+print "ok 12\n";
+
