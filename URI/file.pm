@@ -35,7 +35,7 @@ sub host { shift->authority(@_)  }
 sub new
 {
     my($class, $path, $os) = @_;
-    return undef unless defined $path;
+    $path = "" unless defined $path;
     $os = os_class($os);
     my $uri = URI->new("", "file");
     if (my $host = $os->extract_authority($path)) {
@@ -49,14 +49,18 @@ sub new
 sub new_abs
 {
     my $class = shift;
-    $class->new(@_)->abs($class->cwd);
+    my $file = $class->new(shift);
+    return $file->abs($class->cwd) unless $$file =~ /^file:/;
+    $file;
 }
 
 sub cwd
 {
     my $class = shift;
     require Cwd;
-    $class->new(Cwd::fastcwd());
+    my $cwd = $class->new(Cwd::fastcwd());
+    $cwd .= "/" unless substr($cwd, -1, 1) eq "/";
+    $cwd;
 }
 
 sub file
