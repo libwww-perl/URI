@@ -22,19 +22,20 @@ sub default_port { 5060 }
 sub authority
 {
     my $self = shift;
-    $$self =~ m,^((?:$URI::scheme_re:)?)(?:([^;?]*))?(;[^?]*)?(.*)$,os or die;
+    $$self =~ m,^($URI::scheme_re:)?([^;?]*)(.*)$,os or die;
+    my $old = $2;
 
     if (@_) {
         my $auth = shift;
-        $$self = $1;
-        my $rest = $3 . $4;
+        $$self = defined($1) ? $1 : "";
+        my $rest = $3;
         if (defined $auth) {
             $auth =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
             $$self .= "$auth";
         }
         $$self .= $rest;
     }
-    $2;
+    $old;
 }
 
 sub params_form
