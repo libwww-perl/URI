@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/12/30 22:30:28 $
+package URI;  # $Date: 2002/02/19 17:50:25 $
 
 use strict;
 use vars qw($VERSION);
@@ -806,9 +806,11 @@ L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
 
+http://www.w3.org/Addressing/
+
 =head1 COPYRIGHT
 
-Copyright 1995-2001 Gisle Aas.
+Copyright 1995-2002 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
