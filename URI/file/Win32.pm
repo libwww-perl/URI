@@ -1,5 +1,7 @@
 package URI::file::Win32;
 
+use URI::Escape qw(uri_unescape);
+
 sub extract_authority
 {
     my $class = shift;
@@ -28,10 +30,11 @@ sub file
     my $auth = shift;
     my $rel;
     if ($auth) {
-	if ($auth =~ /^([a-zA-Z]:)(.?)/) {
-	    $auth = uc($1);
+        $auth = uri_unescape($auth);
+	if ($auth =~ /^([a-zA-Z])[:|](.?)/) {
+	    $auth = uc($1) . ":";
 	    $rel++ if $2;
-	} elsif ($auth eq "localhost") {
+	} elsif (lc($auth) eq "localhost") {
 	    $auth = "";
 	} else {
 	    $auth = "\\\\" . $auth;  # UNC
