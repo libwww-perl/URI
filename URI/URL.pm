@@ -4,13 +4,15 @@ require URI::WithBase;
 @ISA=qw(URI::WithBase);
 
 use strict;
+use vars qw(@EXPORT $VERSION);
+
+$VERSION = "5.00_00";
 
 # Provide as much as possible of the old URI::URL interface for backwards
 # compatibility...
 
 require Exporter;
 *import = \&Exporter::import;
-use vars qw(@EXPORT);
 @EXPORT = qw(url);
 
 # Easy to use constructor
@@ -19,6 +21,13 @@ sub url ($;$) { URI::URL->new(@_); }
 sub newlocal
 {
     die "NYI";
+}
+
+sub print_on
+{
+    my $self = shift;
+    require Data::Dumper;
+    print STDERR Data::Dumper::Dumper($self);
 }
 
 sub crack
@@ -62,7 +71,6 @@ sub query;
 sub params;
 
 sub frag { shift->fragment(@_); }
-
 sub keywords { shift->query_keywords(@_); }
 
 # mailto:
