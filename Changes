@@ -1,3 +1,12 @@
+2003-01-01   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.23
+
+   Use anchored DNS lookups in URI::Heuristic as suggested
+   by Malcolm Weir <malc@gelt.org>
+
+
+
 2002-09-02   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.22
