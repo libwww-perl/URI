@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.10 1998/09/11 09:50:55 aas Exp $
+# $Id: Escape.pm,v 3.11 1998/09/12 11:13:37 aas Exp $
 #
 
 package URI::Escape;
@@ -18,12 +18,17 @@ URI::Escape - Escape and unescape unsafe characters
 
 =head1 DESCRIPTION
 
-This module provide functions to escape and unescape URI strings.
-Some characters are regarded as "unsafe" and must be escaped in
-accordance with RFC 1738.  Escaped characters are represented by a
+This module provide functions to escape and unescape URI strings as
+defined by RFC 2396.
+
+
+URIs consist of a restricted set of characters, primarily chosen to
+aid transcribability and usability both in computer systems and in
+non-computer communications.
+
+In addition any byte can be represented by an escape sequence; a
 triplet consisting of the character "%" followed by two hexadecimal
-digits.  The following functions are provided (and exported by
-default):
+digits.
 
 =over 4
 
@@ -37,18 +42,34 @@ overrides the set of characters that are to be escaped.  The set is
 specified as a string that can be used in a regular expression
 character class (between [ ]).  E.g.:
 
-  \x00-\x1f\x7f-\xff          # all control and hi-bit characters
-  a-z                         # all lower case characters
-  ^A-Za-z                     # everything not a letter
+  "\x00-\x1f\x7f-\xff"          # all control and hi-bit characters
+  "a-z"                         # all lower case characters
+  "^A-Za-z"                     # everything not a letter
 
-The default set of characters to be escaped is:
+The default set of characters to be escaped is all those which are
+I<not> part of the C<uric> character class as defined by RFC 2396,
+i.e. everything not mentioned below:
 
-  \x00-\x20"#%;<>?{}|\\^~`\[\]\x7F-\xFF
+  "A" .. "Z", "a" .. "z", "0" .. "9",
+  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",",
+  "-", "_", ".", "!", "~", "*", "'", "(", ")"
 
 =item uri_unescape($string)
 
 Returns a string with all %XX sequences replaced with the actual
 character.
+
+This does the same as:
+
+   $string =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+
+but does not modify the string in-place as this RE would.  Using the
+uri_unescape() function instead of the RE might make the code look
+cleaner and is a few characters less to type.
+
+In a simple benchmark test I made I got something like 40% slowdown by
+calling the function (instead of the inline RE above) if a few chars
+where unescaped and something like 700% slowdown if none where.
 
 =back
 
@@ -57,7 +78,7 @@ mapping from all characters to the corresponding escape code.
 
 =head1 SEE ALSO
 
-L<URI::URL>
+L<URI>
 
 
 =head1 COPYRIGHT
@@ -76,7 +97,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.10 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.11 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -100,8 +121,8 @@ sub uri_escape
 	}
 	&{$subst{$patn}}($text);
     } else {
-	# Default unsafe characters. (RFC1738 section 2.2)
-	$text =~ s/([\x00-\x20\"#%;<>?{}|\\^~`\[\]\x7F-\xFF])/$escapes{$1}/g;
+	# Default unsafe characters. (RFC 2396 ^uric)
+	$text =~ s/([^;\/?:@&=+\$,A-Za-z0-9\-_.!~*'()])/$escapes{$1}/g;
     }
     $text;
 }
@@ -111,9 +132,14 @@ sub uri_unescape
     # Note from RFC1630:  "Sequences which start with a percent sign
     # but are not followed by two hexadecimal characters are reserved
     # for future extension"
-    my @copy = @_;
-    for (@copy) { s/%([\dA-Fa-f]{2})/chr(hex($1))/eg; }
-    wantarray ? @copy : $copy[0];
+    my $str = shift;
+    if (@_ && wantarray) {
+	# not executed for the common case of a single argument
+	my @str = @_;  # need to copy
+	return map { s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg } $str, @str;
+    }
+    $str =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+    $str;
 }
 
 1;
