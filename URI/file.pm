@@ -236,7 +236,7 @@ RFC 1630
    unexpected and possibly harmful results.  Therefore, the convention
    is that even a "file" URL is provided with a host part.  This allows
    a client on another system to know that it cannot access the file
-   system, or perhaps to use some other local mecahnism to access the
+   system, or perhaps to use some other local mechanism to access the
    file.
 
    The special value "localhost" is used in the host field to indicate
