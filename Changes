@@ -5,6 +5,9 @@
    Use anchored DNS lookups in URI::Heuristic as suggested
    by Malcolm Weir <malc@gelt.org>.
 
+   Delay calculation of MY_COUNTRY() in URI::Heuristic.
+   Patch by Ed Avis <ed@membled.com>.
+
    Support for tn3270 URIs.
 
 

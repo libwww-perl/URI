@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.14 2003/01/01 16:58:47 gisle Exp $
+# $Id: Heuristic.pm,v 4.15 2003/01/02 05:30:42 gisle Exp $
 
 =head1 NAME
 
@@ -89,17 +89,30 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.14 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.15 $ =~ /(\d+)\.(\d+)/);
 
-eval {
-    require Net::Domain;
-    my $fqdn = Net::Domain::hostfqdn();
-    $MY_COUNTRY = lc($1) if $fqdn =~ /\.([a-zA-Z]{2})$/;
+sub MY_COUNTRY() {
+    for ($MY_COUNTRY) {
+	return $_ if defined;
 
-    # Some other heuristics to guess country?  Perhaps looking
-    # at some environment variable (LANG, LC_ALL, ???)
-    $MY_COUNTRY = $ENV{COUNTRY} if exists $ENV{COUNTRY};
-};
+	# First try the environment.
+	$_ = $ENV{COUNTRY};
+	return $_ if defined;
+
+	# Could use LANG, LC_ALL, etc at this point, but probably too
+	# much of a wild guess.  (Catalan != Canada, etc.)
+	#
+
+	# Last bit of domain name.  This may access the network.
+	require Net::Domain;
+	my $fqdn = Net::Domain::hostfqdn();
+	$_ = lc($1) if $fqdn =~ /\.([a-zA-Z]{2})$/;
+	return $_ if defined;
+
+	# Give up.  Defined but false.
+	return ($_ = 0);
+    }
+}
 
 %LOCAL_GUESSING =
 (
@@ -154,14 +167,14 @@ sub uf_uristr ($)
 		    @guess = map { s/\bACME\b/$host/; $_ }
 		             split(' ', $ENV{URL_GUESS_PATTERN});
 		} else {
-		    if ($MY_COUNTRY) {
-			my $special = $LOCAL_GUESSING{$MY_COUNTRY};
+		    if (MY_COUNTRY()) {
+			my $special = $LOCAL_GUESSING{MY_COUNTRY()};
 			if ($special) {
 			    my @special = @$special;
 			    push(@guess, map { s/\bACME\b/$host/; $_ }
                                                @special);
 			} else {
-			    push(@guess, "www.$host.$MY_COUNTRY");
+			    push(@guess, 'www.$host.' . MY_COUNTRY());
 			}
 		    }
 		    push(@guess, map "www.$host.$_",
