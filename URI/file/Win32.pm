@@ -1,5 +1,9 @@
 package URI::file::Win32;
 
+require URI::file::Base;
+@ISA=qw(URI::file::Base);
+
+use strict;
 use URI::Escape qw(uri_unescape);
 
 sub extract_authority
@@ -13,48 +17,54 @@ sub extract_authority
 	$auth .= "relative" if $_[0] !~ m,^[\\/],;
 	return $auth;
     }
-    return $1 if $_[0] =~ s,^([a-zA-Z]:),,;
     return;
 }
 
-sub split_path
+sub extract_path
 {
     my($class, $path) = @_;
-    $path =~ s,[/\\][/\\]+,/,g;       # \\    --> \
-    $path =~ s,([/\\]\.)+[/\\],/,g;   # \.\.\ --> \
-    map { s/%/%25/g; s/;/%3B/g; $_; } split(/[\\\/]/, $path, -1);
+    $path =~ s,\\,/,g;
+    $path =~ s,//+,/,g;
+    $path =~ s,(/\.)+/,/,g;
+    $path;
 }
 
 sub file
 {
-    shift; # class;
-    my $auth = shift;
-    my $rel;
-    if ($auth) {
+    my $class = shift;
+    my $uri = shift;
+    my $auth = $uri->authority;
+    my $rel; # is filename relative to drive specified in authority
+    if (defined $auth) {
         $auth = uri_unescape($auth);
 	if ($auth =~ /^([a-zA-Z])[:|](relative)?/) {
 	    $auth = uc($1) . ":";
 	    $rel++ if $2;
 	} elsif (lc($auth) eq "localhost") {
 	    $auth = "";
-	} else {
+	} elsif (length $auth) {
 	    $auth = "\\\\" . $auth;  # UNC
 	}
     } else {
 	$auth = "";
     }
-    for (@_) {
+
+    my @path = $uri->path_segments;
+    for (@path) {
 	return if /\0/;
 	return if /\//;
 	#return if /\\/;        # URLs with "\" is not uncommon
+	
     }
-    my $path = join("\\", @_);
+    return unless $class->fix_path(@path);
+
+    my $path = join("\\", @path);
     $path =~ s/^\\// if $rel;
     $path = $auth . $path;
-    $path =~ s,\\([a-zA-Z])[:|],\u$1:,;
+    $path =~ s,^\\([a-zA-Z])[:|],\u$1:,;
     $path;
 }
 
-*dir = \&file;
+sub fix_path { 1; }
 
 1;
