@@ -1,3 +1,15 @@
+1999-06-24   Gisle Aas <gisle@aas.no>
+
+   Release 1.03
+
+   Escape all reserved query characters in the individual components
+   of $uri->query_form and $uri->query_keywords.
+
+   Make compatibility URI::URL->new("mailto:gisle@aas.no")->netloc
+   work again.
+
+
+
 1999-03-26   Gisle Aas <gisle@aas.no>
 
    Release 1.02
