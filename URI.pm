@@ -1,4 +1,4 @@
-package URI;  # $Date: 2002/07/06 03:51:57 $
+package URI;  # $Date: 2002/07/08 03:38:06 $
 
 use strict;
 use vars qw($VERSION);
@@ -741,13 +741,36 @@ access the userinfo sub-components: $uri->user and $uri->password.
 =item B<urn>:
 
 The syntax of Uniform Resource Names is specified in RFC 2141.  C<URI>
-objects belonging to the urn scheme common methods and the methods:
-$uri->nid and $uri->nss that returns the Namespace Identifier and the
-Namespace Specific String respectively.  The Namespace Identifier
-basically works like the Scheme identifier of URIs.
+objects belonging to the urn scheme provide the common methods and the
+methods: $uri->nid and $uri->nss that returns the Namespace Identifier
+and the Namespace Specific String respectively.
+
+The Namespace Identifier basically works like the Scheme identifier of
+URIs, and further divides the URN namespace.  Namespace Identifier
+assignments are maintained at
+<http://www.iana.org/assignments/urn-namespaces>.
+
+Letter case is not significant for the Namespace Identifier.  It is
+always returned in lower case by the $uri->nid method.  The $uri->_nid
+method can be used if you want it in its original case.
+
+=item B<urn>:B<isbn>:
+
+The C<urn:isbn:> namespace contains International Standard Book
+Numbers (ISBNs) and is described in RFC 3187.  C<URI> object belonging
+to this namespace has the following extra methods (if the
+Business::ISBN module is available); $uri->isbn,
+$uri->isbn_publisher_code, $uri->isbn_country_code, $uri->isbn_as_ean.
+
+=item B<urn>:B<oid>:
+
+The C<urn:oid:> namespace contains Object Identifiers (OIDs) and is
+described in RFC 3061.  An object identifier is sequences of digits
+separated by dots.  C<URI> object belonging to this namespace has an
+additional method called $uri->oid that can be used to get/set the oid
+value.  In list context oid numbers are returned as separate elements.
 
 =back
-
 
 =head1 CONFIGURATION VARIABLES
 

@@ -39,6 +39,7 @@ URI/ssh.pm
 URI/telnet.pm
 URI/urn.pm
 URI/urn/isbn.pm
+URI/urn/oid.pm
 rfc2396.txt
 t/abs.t
 t/clone.t
@@ -66,4 +67,5 @@ t/roytest4.html
 t/roytest5.html
 t/rsync.t
 t/urn-isbn.t
+t/urn-oid.t
 uri-test
