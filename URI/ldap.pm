@@ -6,14 +6,14 @@ package URI::ldap;
 
 use strict;
 
-use URI::Escape qw(uri_escape uri_unescape);
-
 use vars qw(@ISA $VERSION);
-
 $VERSION = "1.99";
 
 require URI::_server;
 @ISA=qw(URI::_server);
+
+use URI::Escape qw(uri_unescape);
+
 
 sub default_port { 389 }
 
@@ -25,9 +25,12 @@ sub _ldap_elem {
   my $old   = $bits[$elem];
 
   if (@_) {
-    $bits[$elem] = shift;
+    my $new = shift;
+    $new =~ s/\?/%3F/g;
+    $bits[$elem] = $new;
     $query = join("?",@bits);
     $query =~ s/\?+$//;
+    $query = undef unless length($query);
     $self->query($query);
   }
 
@@ -42,36 +45,69 @@ sub dn {
 
 sub attributes {
   my $self = shift;
-  my $old = _ldap_elem($self,0, @_ ? join(",", map { uri_escape($_) } @_) : ());
+  my $old = _ldap_elem($self,0, @_ ? join(",", map { my $tmp = $_; $tmp =~ s/,/%2C/g; $tmp } @_) : ());
   return $old unless wantarray;
   map { uri_unescape($_) } split(/,/,$old);
 }
 
 sub scope {
   my $self = shift;
-  my $old = _ldap_elem($self,1, map { uri_escape($_) } @_);
+  my $old = _ldap_elem($self,1, @_);
   return unless defined wantarray && defined $old;
   uri_unescape($old) || "base";
 }
 
 sub filter {
   my $self = shift;
-  my $old = _ldap_elem($self,2, map { uri_escape($_) } @_);
+  my $old = _ldap_elem($self,2, @_);
   return unless defined wantarray && defined $old;
   uri_unescape($old) || "(objectClass=*)";
 }
 
 sub extensions {
   my $self = shift;
-  my @ext = ();
-  if (@_) {
-    my %ext = @_;
-    @ext = (join(",", map { $_ . "=" . uri_escape($ext{$_},";,\\/?:\\@&=+#%") }
-			 keys %ext));
+  my @ext;
+  while (@_) {
+    my $key = shift;
+    my $value = shift;
+    push(@ext, join("=", map { $_="" unless defined; s/,/%2C/g; $_ } $key, $value));
   }
+  @ext = join(",", @ext) if @ext;
   my $old = _ldap_elem($self,3, @ext);
   return $old unless wantarray;
   map { uri_unescape($_) } map { /^([^=]+)=(.*)$/ } split(/,/,$old);
+}
+
+sub canonical
+{
+    my $self = shift;
+    my $other = $self->SUPER::canonical;
+    $other = $other->clone if $other == $self;
+
+    # Should perhaps normalize the DN, but getting that right is not easy...
+
+    # Should really know about "postalAddress", etc...
+    $other->attributes(map lc, $other->attributes);
+
+    # Scope
+    my $old_scope = $other->scope;
+    my $new_scope = lc($old_scope);
+    $new_scope = "" if $new_scope eq "base";
+    $other->scope($new_scope) if $new_scope ne $old_scope;
+
+    # Remove filter if default
+    my $old_filter = $other->filter;
+    $other->filter("") if lc($old_filter) eq "(objectClass=*)" ||
+	                  lc($old_filter) eq "objectclass=*";
+
+    # Lowercase extentions types
+    my @ext = $other->extensions;
+    for (my $i = 0; $i < @ext; $i += 2) {
+	$ext[$i] = lc($ext[$i]);
+    }
+    $other->extensions(@ext) if @ext;
+    
+    $other;
 }
 
 1;
