@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.18 1998/09/14 21:28:57 aas Exp $
+package URI;  # $Id: URI.pm,v 1.19 1998/09/22 20:34:43 aas Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -372,15 +372,17 @@ The methods described in this section are available for all C<URI>
 objects.
 
 Methods that give access to components of a URI will always return the
-value of the component.  The value returned will be C<undef> if the
-component was not present.  If an accessor method is given an argument
-it will update the corresponding component in addition to returning
-the old value of the component.  Passing an undefined argument will
-remove the component (if possible).  The description of the various
-accessor methods will tell if the component is passed as an escaped or
-an unescaped string.  Components that can be futher divided into
-sub-parts are usually passed escaped, as unescaping might change its
-semantics.
+old value of the component.  The value returned will be C<undef> if the
+component was not present.  There is generally a difference between a
+component that is empty (represented as C<"">) and a component that is
+missing (represented as C<undef>).  If an accessor method is given an
+argument it will update the corresponding component in addition to
+returning the old value of the component.  Passing an undefined
+argument will remove the component (if possible).  The description of
+the various accessor methods will tell if the component is passed as
+an escaped or an unescaped string.  Components that can be futher
+divided into sub-parts are usually passed escaped, as unescaping might
+change its semantics.
 
 The common methods are:
 
@@ -394,8 +396,9 @@ argument, it will update the scheme of $uri, possibly changing the
 class of $uri, and return the old scheme value.  The method will croak
 if the new scheme name is illegal; scheme names must begin with a
 letter and must consist of only US-ASCII letters, numbers, and a few
-special marks: ".", "+", "-".  Passing an undefined argument to
-$uri->scheme will make the URI relative (if possible).
+special marks: ".", "+", "-".  This restriction effectively means
+that scheme will always be passed unescaped.  Passing an undefined
+argument to $uri->scheme will make the URI relative (if possible).
 
 Case distinctions does not matter for scheme names.  The scheme
 returned by $uri->scheme is always lowercased.  If you want the scheme
@@ -706,7 +709,7 @@ examples:
 
 =head1 SEE ALSO
 
-L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
+L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
