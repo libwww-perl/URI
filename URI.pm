@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.24 1998/11/19 22:06:53 aas Exp $
+package URI;  # $Id: URI.pm,v 1.25 1999/03/20 07:32:40 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.00";
+$VERSION = "1.01";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -308,16 +308,16 @@ A Uniform Resource Identifier is a compact string of characters for
 identifying an abstract or physical resource.  A Uniform Resource
 Identifier can be further classified either a Uniform Resource Locator
 (URL) or a Uniform Resource Name (URN).  The distinction between URL
-and URN is not reflected by the C<URI> class interface.
+and URN does not matter to the C<URI> class interface.
 
-An absolute URI reference consist of three parts.  A I<scheme>, a
+An absolute URI reference consists of three parts.  A I<scheme>, a
 I<scheme specific part> and a I<fragment> identifier.  A subset of URI
 references share a common syntax for hierarchical namespaces.  For
 these the scheme specific part is further broken down into
 I<authority>, I<path> and I<query> components.  These URI can also
 take the form of relative URI references, where the scheme (and
 usually also the authority) component is missing, but implied by the
-context of the URI reference usage.  The three forms of URI reference
+context of the URI reference.  The three forms of URI reference
 syntax are summarized as follows:
 
   <scheme>:<scheme-specific-part>#<fragment>
@@ -325,13 +325,13 @@ syntax are summarized as follows:
   <path>?<query>#<fragment>
 
 The components that a URI reference can be divided into depend on the
-I<scheme>.  The C<URI> class provide methods to get and set the
+I<scheme>.  The C<URI> class provides methods to get and set the
 individual components.  The methods available for a specific
 C<URI> object depend on the scheme.
 
 =head1 CONSTRUCTORS
 
-The following methods to construct new C<URI> objects are provided:
+The following methods construct new C<URI> objects:
 
 =over 4
 
@@ -340,26 +340,26 @@ The following methods to construct new C<URI> objects are provided:
 This class method constructs a new URI object.  The string
 representation of a URI is given as argument together with an optional
 scheme specification.  Common URI wrappers like "" and <>, as well as
-leading and trailing white space, will be automatically removed from
+leading and trailing white space, are automatically removed from
 the $str argument before it is processed further.
 
-The constructor will determine the scheme, map this to an appropriate
-URI subclass, construct a new object of this class and return it.
+The constructor determines the scheme, maps this to an appropriate
+URI subclass, constructs a new object of that class and returns it.
 
-The $scheme argument only makes a difference when $str takes a
-relative form.  The $scheme can then either be a simple string that
+The $scheme argument is only used when $str is a
+relative URI.  It can either be a simple string that
 denotes the scheme, a string containing an absolute URI reference or
 an absolute C<URI> object.  If no $scheme is specified for a relative
-URI $str, then it is simply treated as a generic URI (no scheme
+URI $str, then $str is simply treated as a generic URI (no scheme
 specific methods available).
 
-The set of characters available for building up URI references is
-restricted (see L<URI::Escape>).  Characters outside this set is
+The set of characters available for building URI references is
+restricted (see L<URI::Escape>).  Characters outside this set are
 automatically escaped by the URI constructor.
 
 =item $uri = URI->new_abs( $str, $base_uri )
 
-This custructs a new absolute URI.
+This constructs a new absolute URI.
 
 =item $uri = URI::file->new( $filename, [$os] )
 
@@ -405,80 +405,81 @@ The common methods are:
 
 =item $uri->scheme( [$new_scheme] )
 
-This method will return the scheme part of the $uri.  If the $uri is
-relative, then $uri->scheme will return C<undef>.  If called with an
+This method sets and returns the scheme part of the $uri.  If the $uri is
+relative, then $uri->scheme returns C<undef>.  If called with an
 argument, it will update the scheme of $uri, possibly changing the
-class of $uri, and return the old scheme value.  The method will croak
+class of $uri, and return the old scheme value.  The method croaks
 if the new scheme name is illegal; scheme names must begin with a
 letter and must consist of only US-ASCII letters, numbers, and a few
 special marks: ".", "+", "-".  This restriction effectively means
-that scheme will always be passed unescaped.  Passing an undefined
+that scheme should always be passed unescaped.  Passing an undefined
 argument to the scheme method will make the URI relative (if possible).
 
-Case distinctions does not matter for scheme names.  The string
-returned by $uri->scheme is always lowercased.  If you want the scheme
-just as it was written in the URI, i.e. not necessarily lowercased,
+Letter case does not matter for scheme names.  The string
+returned by $uri->scheme is always lowercase.  If you want the scheme
+just as it was written in the URI in its original case,
 you can use the $uri->_scheme method instead.
 
 =item $uri->opaque( [$new_opaque] )
 
-The scheme specific part can be accessed with this method.  The value
-is an escaped string.
+This method sets and returns the scheme specific part of the $uri 
+(everything between the scheme and the fragment)
+as an escaped string.
 
 =item $uri->path( [$new_path] )
 
-This method access the same stuff as $uri->opaque unless the URI
-support the generic syntax for hierarchical namespaces.  Here
-the path is more restricted and $uri->opaque access everything that is
-found in between the scheme and the fragment.
+This method sets and returns the same value as $uri->opaque unless the URI
+supports the generic syntax for hierarchical namespaces.
+In that case the generic method is overridden to set and return
+the part of the URI between the hostname and the fragment.
 
 =item $uri->fragment( [$new_frag] )
 
-The fragment identifier of a URI reference can be accessed with this
-method.  The value is escaped.
+This method returns the fragment identifier of a URI reference
+as an escaped string.
 
 =item $uri->as_string
 
-This method convert a URI object to a plain string.  URI objects are
-also converted to plain strings automatically by overloading.  It
+This method converts a URI object to a plain string.  URI objects are
+also converted to plain strings automatically by overloading.  This
 means that $uri objects can be used as plain strings in most Perl
 constructs.
 
 =item $uri->canonical
 
 This method will return a normalized version of the URI.  The rules
-for normalization is scheme dependent.  It usually involves
+for normalization are scheme dependent.  It usually involves
 lowercasing of the scheme and the Internet host name components,
-removal of explicit port specification that match the default port,
-upcasing of all escape sequences, and unescaping of octets that can be
-better represented by plain characters.
+removing the explicit port specification if it matches the default port,
+uppercasing all escape sequences, and unescaping octets that can be
+better represented as plain characters.
 
-If the $uri already was in the normalized form, then a reference to
-itself is returned instead of a copy.
+If the $uri already was in normalized form, then a reference to
+it is returned instead of a copy.
 
 =item $uri->eq( $other_uri )
 
 =item URI::eq( $first_uri, $other_uri )
 
-This method test whether two URI references are equal.  URI references
+This method tests whether two URI references are equal.  URI references
 that normalize to the same string are considered equal.  The method
-can also be used as a plain function and can then also test two string
+can also be used as a plain function which can also test two string
 arguments.
 
 If you need to test whether two C<URI> object references denote the
-same object, you can use the '==' operator.
+same object, use the '==' operator.
 
 =item $uri->abs( $base_uri )
 
-This method will return an absolute URI reference.  If $uri already is
-absolute, then a reference to itself is simply returned.  If the $uri
-is relative then a new absolute URI is constructed, by combining the
-$uri and the $base, and returned.
+This method returns an absolute URI reference.  If $uri already is
+absolute, then a reference to it is simply returned.  If the $uri
+is relative then a new absolute URI is constructed by combining the
+$uri and the $base_uri and returned.
 
 =item $uri->rel( $base_uri )
 
-This method will return a relative URI reference if it is possible to
-make one that denotes the same resource as $uri relative to $base_uri.
+This method returns a relative URI reference if it is possible to
+make one that denotes the same resource relative to $base_uri.
 If not, then $uri is simply returned.
 
 =back
@@ -495,54 +496,54 @@ methods:
 
 =item $uri->authority( [$new_authority] )
 
-This method can be used to get and set the escaped authority component
+This method sets and returns the escaped authority component
 of the $uri.
 
 =item $uri->path( [$new_path] )
 
-This method can be used to get and set the escaped path component of
-the $uri.  The path will never be undefined, but it can be the empty
-string.
+This method sets and returns the escaped path component of
+the $uri (the part between the host name and the query or fragment).
+The path will never be undefined, but it can be the empty string.
 
 =item $uri->path_query( [$new_path_query] )
 
-This method can be used to get and set the escaped path and query
-components as a single entity.  The path and the query should be
-separated by a "?" character (but the query can itself contain "?").
+This method sets and returns the escaped path and query
+components as a single entity.  The path and the query are
+separated by a "?" character, but the query can itself contain "?".
 
 =item $uri->path_segments( [$segment,...] )
 
-This method can be used to get and set the path.  In scalar context it
+This method sets and returns the path.  In scalar context it
 returns the same value as $uri->path.  In list context it will return
 the unescaped path segments that make up the path.  Path segments that
 have parameters are returned as an anonymous array.  The first element
 is the unescaped path segment proper.  Subsequent elements are escaped
-parameter strings.  The anonymous array use overloading so it can be
-treated as a string too, and this string does not include the
+parameter strings.  An anonymous array uses overloading so it can be
+treated as a string too, but this string does not include the
 parameters.
 
 =item $uri->query( [$new_query] )
 
-This method can be used to get and set the escaped query component of
+This method sets and returns the escaped query component of
 the $uri.
 
 =item $uri->query_form( [$key => $value,...] )
 
-This method can be used to get and set query components that use the
+This method sets and returns query components that use the
 I<application/x-www-form-urlencoded> format.  Key/value pairs are
 separated by "&" and the key is separated from the value with a "="
 character.
 
 =item $uri->query_keywords( [$keywords,...] )
 
-This method can be used to get and set query components that use the
+This method sets and returns query components that use the
 keywords separated by "+" format.
 
 =back
 
 =head1 SERVER METHODS
 
-Schemes where the I<authority> component denote a Internet host will
+Schemes where the I<authority> component denotes a Internet host will
 have the following methods available in addition to the generic
 methods.
 
@@ -550,33 +551,34 @@ methods.
 
 =item $uri->userinfo( [$new_userinfo] )
 
-This method can be used to get and set the escaped userinfo part of
+This method sets and returns the escaped userinfo part of
 the authority componenent.
 
 =item $uri->host( [$new_host] )
 
-This method can be used to get and set the unescaped hostname.
+This method sets and returns the unescaped hostname.
 
 If the $new_host string ends with a colon and a number, then this
 number will also set the port.
 
 =item $uri->port( [ $new_port] )
 
-This method will return the port specified in the URI or the default
+This method sets the port in $uri and returns the port specified 
+in the URI or the default
 port for the URI scheme if no port is specified. If you don't want the
 default port substituted, then you can use the $uri->_port method
 instead.
 
-=item $uri->host_port
+=item $uri->host_port( [ $new_host_port ] )
 
-This method can be used to get and set the host and port as a single
+This method sets and returns the host and port as a single
 unit.  The returned value will include a port, even if it matches the
 default port.  The host part and the port part is separated with a
 colon; ":".
 
 =item $uri->default_port
 
-This method will return the default port the URI scheme that $uri
+This method returns the default port of the URI scheme that $uri
 belongs to.  For I<http> this will be the number 80, for I<ftp> this
 will be the number 21, etc.
 
@@ -602,7 +604,7 @@ $uri->media_type and $uri->data.  See L<URI::data> for details.
 
 =item B<file>:
 
-An old speficication of the I<file> URI scheme is found in RFC 1738.
+An old specification of the I<file> URI scheme is found in RFC 1738.
 A new RFC 2396 based specification in not available yet, but file URI
 references are in common use.
 
@@ -645,7 +647,7 @@ generic and server methods.
 
 The I<https> URI scheme is a Netscape invention which is commonly
 implemented.  The scheme is used to reference HTTP servers through SSL
-connections.  It's syntax is equal of that of http, but the default
+connections.  It's syntax is the same as http, but the default
 port is different.
 
 =item B<mailto>:
@@ -682,7 +684,6 @@ C<URI> objects belonging to the pop scheme support the common, generic
 and server methods.  In addition they provide two methods to access the
 userinfo components: $uri->user and $uri->auth
 
-
 =item B<rlogin>:
 
 An old speficication of the I<rlogin> URI scheme is found in RFC
@@ -691,7 +692,7 @@ common, generic and server methods.
 
 =item B<snews>:
 
-See I<news> scheme.  It's syntax is equal of that of news, but the default
+See I<news> scheme.  It's syntax is the same as news, but the default
 port is different.
 
 =item B<telnet>:
@@ -728,7 +729,7 @@ The difference is demonstrated by the following examples:
 
 =item $URI::ABS_REMOTE_LEADING_DOTS
 
-You can also have the abs() method ignore if there is too many ".."
+You can also have the abs() method ignore excess ".."
 segments in the relative URI by setting $URI::ABS_REMOTE_LEADING_DOTS
 to a TRUE value.  The difference is demonstrated by the following
 examples:

@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.12 1998/09/12 11:38:53 aas Exp $
+# $Id: Escape.pm,v 3.13 1999/03/20 07:34:08 gisle Exp $
 #
 
 package URI::Escape;
@@ -18,7 +18,7 @@ URI::Escape - Escape and unescape unsafe characters
 
 =head1 DESCRIPTION
 
-This module provide functions to escape and unescape URI strings as
+This module provides functions to escape and unescape URI strings as
 defined by RFC 2396.  URIs consist of a restricted set of characters,
 denoted as C<uric> in RFC 2396.  The restricted set of characters
 consists of digits, letters, and a few graphic symbols chosen from
@@ -35,9 +35,9 @@ hexadecimal digits.  Bytes can also be represented directly by a
 character using the US-ASCII character for that octet (iff the
 character is part of C<uric>).
 
-Some of the C<uric> characters are I<reserved> for usage as delimiters
-or part of certains URI components.  These must be escaped if they are
-to be treated as ordinary byte data.  Read RFC 2396 for further details.
+Some of the C<uric> characters are I<reserved> for use as delimiters
+or as part of certain URI components.  These must be escaped if they are
+to be treated as ordinary data.  Read RFC 2396 for further details.
 
 The functions provided (and exported by default) from this module are:
 
@@ -46,7 +46,7 @@ The functions provided (and exported by default) from this module are:
 =item uri_escape($string, [$unsafe])
 
 This function replaces all unsafe characters in the $string with their
-escape sequence and return the result.
+escape sequences and returns the result.
 
 The uri_escape() function takes an optional second argument that
 overrides the set of characters that are to be escaped.  The set is
@@ -83,7 +83,7 @@ inline the RE.
 
 The module can also export the C<%escapes> hash which contains the
 mapping from all 256 bytes to the corresponding escape code.  Lookup
-in this hash is faster than to evaluate C<sprintf("%%%02X", ord($byte))>
+in this hash is faster than evaluating C<sprintf("%%%02X", ord($byte))>
 each time.
 
 =head1 SEE ALSO
@@ -107,7 +107,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.12 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.13 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -124,7 +124,7 @@ sub uri_escape
     return undef unless defined $text;
     if (defined $patn){
 	unless (exists  $subst{$patn}) {
-	    # Because we can't compile regex we fake it with a cached sub
+	    # Because we can't compile the regex we fake it with a cached sub
 	    $subst{$patn} =
 	      eval "sub {\$_[0] =~ s/([$patn])/\$escapes{\$1}/g; }";
 	    Carp::croak("uri_escape: $@") if $@;
