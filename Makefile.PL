@@ -5,7 +5,7 @@ WriteMakefile(
     'NAME'	   => 'URI',
     'VERSION_FROM' => 'URI.pm',
     'PREREQ_PM'    => {	
-	                 'URI::Escape' => 0,
+	                 'MIME::Base64' => 2,
 		      },
     dist           => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 );
