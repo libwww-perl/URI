@@ -33,8 +33,10 @@ print "not " unless $uri->as_string eq "ldap://ldap.itd.umich.edu/o=University%2
 print "ok 7\n";
 
 # check defaults
-print "not " unless $uri->scope eq "base" &&
-                    $uri->filter eq "(objectClass=*)";
+print "not " unless $uri->_scope  eq "" &&
+                    $uri->scope   eq "base" &&
+                    $uri->_filter eq "" &&
+                    $uri->filter  eq "(objectClass=*)";
 print "ok 8\n";
 
 # attribute
