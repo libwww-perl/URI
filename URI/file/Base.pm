@@ -7,7 +7,7 @@ sub new
 {
     my $class = shift;
     my $path  = shift;
-    return unless defined $path;
+    $path = "" unless defined $path;
 
     my($auth, $escaped_auth, $escaped_path);
 
