@@ -1,0 +1,54 @@
+!!! This is work in progress.  Class names and interfaces will change. !!!
+
+This is an attempt to update and simplify the URI::URL classes based
+on the most recent URI Internet-Draft: draft-fielding-uri-syntax-02
+
+Some basic terminology has changed so it might make sense to make a
+new start with new class names.  This also allows us to simplify the
+implementation by getting rid of some methods since we don't really
+have to be backwards compatible.  The old modules can still be used
+for old code.  The new draft also allows the parser implemented by a
+single regual expression which should also help making it faster than
+the old modules.
+
+The main change proposed is to use 'URI' as the main class name.  The
+URI and URI::_generic class implement Uniform Resource Identifiers
+parsing and resolving of relative URIs as specified by
+draft-fielding-uri-syntax-02.
+
+Main user visible changes from URI::URL are:
+
+   * Don't export url() constructor function.  URI->new is short
+     enough.
+
+   * netloc --> authority
+
+   * user/password --> userinfo
+
+   * full_path  --> abs_path
+
+   * path_components --> path_segments.  If a path segment has
+     parameters then this segment is represented by an array reference.
+
+   * frag --> fragment.  The returned fragment is still escaped?
+
+   * params() is gone.
+
+   * All the epath/equery/eparam methods are gone.  The corresponding
+     method without e-prefix now returns escaped strings
+
+   * crack is gone
+
+   * newlocal is gone (or NYI)
+
+   * print_on is gone
+
+   * URI::URL::strict() is replaced by a global variable $URI::STRICT
+
+Comments welcomed?
+
+--
+Copyright 1998 Gisle Aas.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
