@@ -1,5 +1,17 @@
 1998-09-06   Gisle Aas <aas@sn.no>
 
+   Release 0.04
+
+   Implemented mailto:-URLs (specified in RFC 2368)
+
+   Moved query() methods to internal URI::_query mixin class.
+
+   Escape stuff in the media_type field of data:-URLs.
+
+
+
+1998-09-06   Gisle Aas <aas@sn.no>
+
    Release 0.03 based on simplified scalar object.
 
 
