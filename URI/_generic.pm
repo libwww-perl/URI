@@ -238,7 +238,4 @@ sub rel {
     $rel;
 }
 
-# Some URI::URL compatibility stuff
-*epath = \&path;
-
 1;
