@@ -65,4 +65,5 @@ t/roytest3.html
 t/roytest4.html
 t/roytest5.html
 t/rsync.t
+t/urn-isbn.t
 uri-test

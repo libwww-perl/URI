@@ -87,12 +87,9 @@ sub nss {  # namespace specific string
 sub canonical {
     my $self = shift;
     my $nid = $self->_nid;
-    warn "XXX $nid\n";
-    return $self->SUPER::canonical if $nid !~ /[A-Z]/ || $nid =~ /%/;
-
     my $new = $self->SUPER::canonical;
+    return $new if $nid !~ /[A-Z]/ || $nid =~ /%/;
     $new = $new->clone if $new == $self;
-    warn;
     $new->nid(lc($nid));
     return $new;
 }

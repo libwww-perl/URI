@@ -19,7 +19,7 @@ sub _nss_isbn {
     my $self = shift;
     my $nss = $self->nss(@_);
     my $isbn = _isbn($nss);
-    $isbn = $isbn->as_string;
+    $isbn = $isbn->as_string if $isbn;
     return($nss, $isbn);
 }
 
@@ -48,8 +48,9 @@ sub isbn_as_ean {
 sub canonical {
     my $self = shift;
     my($nss, $isbn) = $self->_nss_isbn;
-    return $self unless $nss && $isbn && $nss ne $isbn;
-    my $new = $self->clone;
+    my $new = $self->SUPER::canonical;
+    return $new unless $nss && $isbn && $nss ne $isbn;
+    $new = $new->clone if $new == $self;
     $new->nss($isbn);
     return $new;
 }
