@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.34"; # $Date: 2004/10/05 08:36:13 $
+$VERSION = "1.34"; # $Date: 2004/11/05 14:09:21 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -569,6 +569,10 @@ is the unescaped path segment proper;  subsequent elements are escaped
 parameter strings.  Such an anonymous array uses overloading so it can
 be treated as a string too, but this string does not include the
 parameters.
+
+Note that absolute paths have the empty string as their first
+I<path_segment>, i.e. the I<path> C</foo/bar> have 3
+I<path_segments>; "", "foo" and "bar".
 
 =item $uri->query
 
