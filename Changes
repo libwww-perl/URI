@@ -2,6 +2,9 @@
 
    Release 1.33
 
+   URI::file->canonical will now try to change the 'authority'
+   to the default one.
+
    Fix heuristic test.  Apparently www.perl.co.uk is no more.
 
 
