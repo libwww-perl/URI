@@ -3,7 +3,7 @@ require URI::_generic;
 @ISA=qw(URI::_generic);
 
 use strict;
-use URI::Escape ();
+use URI::Escape qw(uri_unescape);
 
 sub userinfo
 {
@@ -44,7 +44,7 @@ sub host
 	$self->authority($tmp);
     }
     return undef if !defined($old) || $old !~ /^(?:[^@]*@)?([^:]*)/;
-    return $1;
+    return uri_unescape($1);
 }
 
 sub _port
@@ -53,7 +53,7 @@ sub _port
     my $old = $self->authority;
     if (@_) {
 	my $new = $old;
-	$new =~ s/:.*$//;
+	$new =~ s/:\d*$//;
 	my $port = shift;
 	$new .= ":$port" if defined $port;
 	$self->authority($new);
@@ -65,7 +65,9 @@ sub _port
 sub port
 {
     my $self = shift;
-    $self->_port(@_) || $self->default_port;
+    my $port = $self->_port(@_);
+    $port = $self->default_port unless defined $port;
+    $port;
 }
 
 
