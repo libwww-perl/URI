@@ -1,0 +1,63 @@
+package URI::news;  # draft-gilman-news-url-01
+
+require URI::_server;
+@ISA=qw(URI::_server);
+
+use strict;
+use URI::Escape qw(uri_unescape);
+
+sub default_port { 119 }
+
+#   newsURL      =  scheme ":" [ news-server ] [ refbygroup | message ]
+#   scheme       =  "news" | "snews" | "nntp"
+#   news-server  =  "//" server "/"
+#   refbygroup   = group [ "/" messageno [ "-" messageno ] ]
+#   message      = local-part "@" domain
+
+sub _group
+{
+    my $self = shift;
+    my $old = $self->path;
+    if (@_) {
+	my($group,$from,$to) = @_;
+	$group =~ s,/,%2F,g;
+	my $path = $group;
+	if (defined $from) {
+	    $path .= "/$from";
+	    $path .= "-$to" if defined $to;
+	}
+	$self->path($path);
+    }
+
+    $old =~ s,^/,,;
+    if ($old =~ s,/(.*),, && wantarray) {
+	my $extra = $1;
+	return uri_unescape($old), split(/-/, $extra);
+    }
+    uri_unescape($old);
+}
+
+
+sub group
+{
+    my $self = shift;
+    if (@_) {
+	die "Group name can't contain '\@'" if $_[0] =~ /\@/;
+    }
+    my $old = $self->_group(@_);
+    return if $old =~ /\@/;
+    return $old;
+}
+
+sub message
+{
+    my $self = shift;
+    if (@_) {
+	die "Message must contain '\@'" unless $_[0] =~ /\@/;
+    }
+    my $old = $self->_group(@_);
+    return unless $old =~ /\@/;
+    return $old;
+}
+
+1;
