@@ -1,3 +1,13 @@
+1999-03-26   Gisle Aas <gisle@aas.no>
+
+   Release 1.02
+
+   Added URI::ldap.  Contributed by Graham Barr <gbarr@pobox.com>.
+
+   Documentation update.
+
+
+
 1999-03-20   Gisle Aas <gisle@aas.no>
 
    Release 1.01
