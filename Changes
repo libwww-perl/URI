@@ -1,3 +1,18 @@
+1998-09-10   Gisle Aas <aas@sn.no>
+
+   Release 0.08
+
+   Implemented transformations between various file: URIs and
+   actual file names.  New URI::file methods:
+
+       new
+       new_abs
+       cwd
+       file
+       dir
+
+
+
 1998-09-09   Gisle Aas <aas@sn.no>
 
    Release 0.07
