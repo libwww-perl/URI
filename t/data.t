@@ -1,4 +1,4 @@
-print "1..20\n";
+print "1..21\n";
 
 use URI;
 
@@ -85,9 +85,13 @@ print "not " unless $u eq "data:,";
 print "ok 18\n";
 
 $u = URI->new("data:foo");
-print "not " unless $u->media_type("bar") eq "foo";
+print "not " unless $u->media_type("bar,båz") eq "foo";
 print "ok 19\n";
 
-$old = $u->data("new");
-print "not " unless $old eq "" && $u eq "data:bar,new";
+print "not " unless $u->media_type eq "bar,båz";
 print "ok 20\n";
+
+$old = $u->data("new");
+print "not " unless $old eq "" && $u eq "data:bar%2Cb%E5z,new";
+print "ok 21\n";
+
