@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.21 1998/09/23 12:47:39 aas Exp $
+package URI;  # $Id: URI.pm,v 1.22 1998/10/12 12:03:49 aas Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "0.90_01";
+$VERSION = "0.90_02";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -554,6 +554,13 @@ This method will return the port specified in the URI or the default
 port for the URI scheme if no port is specified. If you don't want the
 default port substituted, then you can use the $uri->_port method
 instead.
+
+=item $uri->host_port
+
+This method can be used to get and set the host and port as a single
+unit.  The returned value will include a port, even if it matches the
+default port.  The host part and the port part is separated with a
+colon; ":".
 
 =item $uri->default_port
 
