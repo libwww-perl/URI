@@ -1,3 +1,20 @@
+2001-12-30   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.18
+
+   Added support for ssh: URIs.
+   Contributed by Jean-Philippe Bouchard <jeanphil@sitepak.com>
+
+   URI::Escape: Make sure cache is not set when the RE
+   wouldn't compile.  Fix suggested by <me-01@ton.iguana.be>.
+   Applied patch as suggested by Randal L. Schwartz.
+
+   Don't try to come up with the e-mail address of the user as
+   the anonymous password.
+   Patch by Eduardo Pérez <eperez@dei.inf.uc3m.es>.
+
+
+
 2001-09-14   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.17
