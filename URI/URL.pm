@@ -40,7 +40,7 @@ sub newlocal
     {
 	my $class = shift;
 	die "Unknown URI::URL scheme $_[1]:" if $URI::URL::STRICT;
-	$class->SUPER::init(@_);
+	$class->SUPER::_init(@_);
     }
 }
 
