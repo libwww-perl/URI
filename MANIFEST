@@ -36,6 +36,8 @@ URI/rlogin.pm
 URI/rsync.pm
 URI/rtsp.pm
 URI/rtspu.pm
+URI/sip.pm
+URI/sips.pm
 URI/snews.pm
 URI/ssh.pm
 URI/telnet.pm
@@ -69,6 +71,7 @@ t/roytest4.html
 t/roytest5.html
 t/rsync.t
 t/rtsp.t
+t/sip.t
 t/urn-isbn.t
 t/urn-oid.t
 uri-test
