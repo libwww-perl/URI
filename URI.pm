@@ -1,4 +1,4 @@
-package URI;  # $Date: 2002/08/04 22:41:22 $
+package URI;  # $Date: 2002/09/03 02:44:03 $
 
 use strict;
 use vars qw($VERSION);
@@ -658,7 +658,7 @@ generic and server methods.
 
 The I<https> URI scheme is a Netscape invention which is commonly
 implemented.  The scheme is used to reference HTTP servers through SSL
-connections.  It's syntax is the same as http, but the default
+connections.  Its syntax is the same as http, but the default
 port is different.
 
 =item B<ldap>:
@@ -732,9 +732,22 @@ C<URI> objects belonging to the rsync scheme support the common,
 generic and server methods.  In addition they provide methods to
 access the userinfo sub-components: $uri->user and $uri->password.
 
+=item B<sip>:
+
+The I<sip> URI specification is described in sections 19.1 and 25
+of RFC 3261.  C<URI> objects belonging to the sip scheme support the
+common, generic, and server methods with the exception of path related
+sub-components.  In addition, they provide two methods to get and set
+I<sip> parameters, $uri->params_form and $uri->params.
+
+=item B<sips>:
+
+See I<sip> scheme.  Its syntax is the same as sip, but the default
+port is different.
+
 =item B<snews>:
 
-See I<news> scheme.  It's syntax is the same as news, but the default
+See I<news> scheme.  Its syntax is the same as news, but the default
 port is different.
 
 =item B<telnet>:
@@ -786,7 +799,7 @@ value.  In list context oid numbers are returned as separate elements.
 
 =head1 CONFIGURATION VARIABLES
 
-The following configuration variables influence how the class and it's
+The following configuration variables influence how the class and its
 methods behave:
 
 =over 4
