@@ -8,6 +8,7 @@ URI/_query.pm
 URI/_segment.pm
 URI/_server.pm
 URI/data.pm
+URI/ftp.pm
 URI/gopher.pm
 URI/http.pm
 URI/https.pm
