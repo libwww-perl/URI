@@ -677,9 +677,9 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
-    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL;
-    my $ss = $isMSWin32 ? '//' : '';
+    my $ss = $isMSWin32 ? '//' : (($dir =~ m,^/,) ? '' : '///' );
     $url->_expect('as_string', URI::URL->new("file:$ss$dir/")->as_string);
 
     print "Local directory is ". $url->local_path . "\n";
@@ -705,7 +705,7 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
-    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL 'foo';
     $url->_expect('as_string', "file:$ss$dir/foo");
 
@@ -719,7 +719,7 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
-    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL 'bar/';
     $url->_expect('as_string', "file:$ss$dir/bar/");
 
@@ -729,7 +729,7 @@ sub newlocal_test {
     $dir = `$pwd`; $dir =~ tr|\\|/|;
         chomp $dir;
         $dir = uri_escape($dir, ':');
-    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL '0';
     $url->_expect('as_string', "file:$ss${dir}0");
     }
