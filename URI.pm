@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/04/27 14:04:23 $
+package URI;  # $Date: 2001/05/14 21:52:51 $
 
 use strict;
 use vars qw($VERSION);
@@ -11,7 +11,7 @@ my %implements;  # mapping from scheme to implementor class
 # Some "official" character classes
 
 use vars qw($reserved $mark $unreserved $uric $scheme_re);
-$reserved   = q(;/?:@&=+$,);
+$reserved   = q(;/?:@&=+$,[]);
 $mark       = q(-_.!~*'());                                    #'; emacs
 $unreserved = "A-Za-z0-9\Q$mark\E";
 $uric       = quotemeta($reserved) . $unreserved . "%";
