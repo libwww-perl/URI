@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.27 2004/11/05 12:57:43 gisle Exp $
+# $Id: Escape.pm,v 3.28 2004/11/05 13:58:31 gisle Exp $
 #
 
 package URI::Escape;
@@ -92,6 +92,13 @@ will be the same as:
 
 but will even work for perl-5.6 for chars in the 128 .. 255 range.
 
+Note: Javascript has a function called escape() that produce the
+sequence "%uXXXX" for chars in the 256 .. 65535 range.  This function
+has really nothing to do with URI escaping but some folks got confused
+since it "does the right thing" in the 0 .. 255 range.  Because of
+this you sometimes see "URIs" with these kind of escapes.  The
+JavaScript encodeURI() function is similar to uri_escape_utf8().
+
 =item uri_unescape($string,...)
 
 Returns a string with each %XX sequence replaced with the actual byte
@@ -142,7 +149,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes uri_escape_utf8);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.27 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.28 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
