@@ -1,3 +1,18 @@
+2003-08-18   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.25
+
+   Allow literal '@' in userinfo.  If there are multiple '@' chars
+   in the 'authority' component use the last (instead of first) as
+   the 'userinfo' delimiter.
+
+   Make URI->query_form escape '[' and ']'.  These chars where added
+   to the reserved set in RFC 2732.  This also match MSIE behaviour.
+
+   Silience warning from 'sip' support class.
+
+
+
 2003-07-24   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.24
