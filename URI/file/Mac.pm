@@ -8,6 +8,7 @@ sub extract_host
 sub split_path
 {
     my($class, $path) = @_;
+    $path = ":$path" unless $path =~ s/^://;
     split(/:/, $path);
 }
 
