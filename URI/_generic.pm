@@ -10,6 +10,8 @@ use Carp ();
 my $ACHAR = $URI::uric;  $ACHAR =~ s,\\[/?],,g;
 my $PCHAR = $URI::uric;  $PCHAR =~ s,\\[?],,g;
 
+sub _no_scheme_ok { 1 }
+
 sub authority
 {
     my $self = shift;
