@@ -42,6 +42,7 @@ URI/sips.pm
 URI/snews.pm
 URI/ssh.pm
 URI/telnet.pm
+URI/tn3270.pm
 URI/urn.pm
 URI/urn/isbn.pm
 URI/urn/oid.pm

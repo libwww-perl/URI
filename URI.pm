@@ -1,4 +1,4 @@
-package URI;  # $Date: 2003/01/01 17:07:18 $
+package URI;  # $Date: 2003/01/02 05:11:26 $
 
 use strict;
 use vars qw($VERSION);
@@ -754,6 +754,12 @@ port is different.
 
 An old speficication of the I<telnet> URI scheme is found in RFC
 1738. C<URI> objects belonging to the telnet scheme support the
+common, generic and server methods.
+
+=item B<tn3270>:
+
+There URIs are used like I<telnet> URIs but for connections to IBM
+mainframes.  C<URI> objects belonging to the tn3270 scheme support the
 common, generic and server methods.
 
 =item B<ssh>:

@@ -5,6 +5,8 @@
    Use anchored DNS lookups in URI::Heuristic as suggested
    by Malcolm Weir <malc@gelt.org>.
 
+   Support for tn3270 URIs.
+
 
 
 2002-09-02   Gisle Aas <gisle@ActiveState.com>
