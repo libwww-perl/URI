@@ -10,7 +10,7 @@ sub split_path
     my($class, $path) = @_;
     $path =~ s,//+,/,g;
     $path =~ s,(/\.)+/,/,g;
-    $path = "./$path" if $path =~ m,^[^:/]+:,,;
+    $path = "./$path" if $path =~ m,^[^:/]+:,,; # look like "scheme:"
     split("/", $path, -1);
 }
 
