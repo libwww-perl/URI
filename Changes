@@ -1,3 +1,19 @@
+2003-07-24   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.24
+
+   Relative URIs that start with the query string directly (i.e. "?q")
+   are not absolutized as specified in rfc2396bis.  See:
+   http://www.apache.org/~fielding/uri/rev-2002/issues.html#003-relative-query
+   
+   Added URI::Split module.  It's a lightweight module that can be
+   used to parse and compose URI string to/from its component parts.
+
+   The rel() method will now work from canonical URIs.  That allow it
+   to extract a relative URI in more cases.
+
+
+
 2003-01-01   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.23
