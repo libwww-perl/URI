@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.14 1998/09/08 12:40:33 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.15 1998/09/08 12:41:56 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -6,9 +6,6 @@ use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
 $VERSION = "0.06";
 
 $DEFAULT_SCHEME ||= "http";
-#$STRICT = 0;
-#$DEBUG = 0;
-$DEBUG = 1;
 
 my %implements;  # mapping from scheme to implementor class
 
