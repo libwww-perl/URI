@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.22 2004/01/14 13:33:44 gisle Exp $
+# $Id: Escape.pm,v 3.23 2004/04/13 13:39:05 gisle Exp $
 #
 
 package URI::Escape;
@@ -114,7 +114,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.22 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.23 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -133,15 +133,20 @@ sub uri_escape
 	unless (exists  $subst{$patn}) {
 	    # Because we can't compile the regex we fake it with a cached sub
 	    (my $tmp = $patn) =~ s,/,\\/,g;
-	    eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1}/g; }";
+	    eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
 	    Carp::croak("uri_escape: $@") if $@;
 	}
 	&{$subst{$patn}}($text);
     } else {
 	# Default unsafe characters.  RFC 2732 ^(uric - reserved)
-	$text =~ s/([^A-Za-z0-9\-_.!~*'()])/$escapes{$1}/g;
+	$text =~ s/([^A-Za-z0-9\-_.!~*'()])/$escapes{$1} || _fail_hi($1)/ge;
     }
     $text;
+}
+
+sub _fail_hi {
+    my $chr = shift;
+  Carp::croak(sprintf "Can't escape \\x{%04X}, try uri_escape_utf8() instead", ord($chr));
 }
 
 sub uri_unescape

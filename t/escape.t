@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..6\n";
+print "1..7\n";
 
 use URI::Escape;
 
@@ -21,8 +21,16 @@ print "not " unless join(":", uri_unescape("%40A%42", "CDE", "F%47H")) eq
 print "ok 5\n";
 
 
-
 use URI::Escape qw(%escapes);
 
 print "not" unless $escapes{"%"} eq "%25";
 print "ok 6\n";
+
+if ($] < 5.008) {
+    print "ok 7  # skipped\n";
+}
+else {
+    eval { print uri_escape("abc" . chr(300)) };
+    print "not " unless $@ && $@ =~ /^Can\'t escape \\x{012C}, try uri_escape_utf8\(\) instead/;
+    print "ok 7\n";
+}
