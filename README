@@ -1,7 +1,7 @@
 !!! This is work in progress.  Class names and interfaces will change. !!!
 
 This is an attempt to update and simplify the URI::URL classes based
-on the most recent URI Internet-Draft: draft-fielding-uri-syntax-02
+on RFC 2396 "Uniform Resource Identifiers (URI): Generic Syntax"
 
 Some basic terminology has changed so it might make sense to make a
 new start with new class names.  This also allows us to simplify the
@@ -13,8 +13,7 @@ the old modules.
 
 The main change proposed is to use 'URI' as the main class name.  The
 URI and URI::_generic class implement Uniform Resource Identifiers
-parsing and resolving of relative URIs as specified by
-draft-fielding-uri-syntax-02.
+parsing and resolving of relative URIs as specified by RFC 2396.
 
 Main user visible changes from URI::URL are:
 
