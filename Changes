@@ -1,3 +1,16 @@
+2004-11-05   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.35
+
+   Documentation update.
+
+   Simplified uri_escape_utf8 implementation.  No need to load the
+   Encode module.  Contributed by Alexey Tourbin.
+
+   Work around bug in perl-5.6.0 that made t/query.t fail.
+
+
+
 2004-10-05   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.34
