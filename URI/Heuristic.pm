@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.12 2001/01/09 20:44:54 gisle Exp $
+# $Id: Heuristic.pm,v 4.13 2002/01/16 23:26:09 gisle Exp $
 
 =head1 NAME
 
@@ -89,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.12 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.13 $ =~ /(\d+)\.(\d+)/);
 
 eval {
     require Net::Domain;
@@ -144,7 +144,7 @@ sub uf_uristr ($)
     } elsif (/^\w+([\.\-]\w+)*\@(\w+\.)+\w{2,3}$/) {
 	$_ = "mailto:$_";
 
-    } elsif (!/^[.+\-\w]+:/) {      # no scheme specified
+    } elsif (!/^[a-zA-Z][a-zA-Z0-9.+\-]*:/) {      # no scheme specified
 	if (s/^([-\w]+(?:\.[-\w]+)*)([\/:\?\#]|$)/$2/) {
 	    my $host = $1;
 

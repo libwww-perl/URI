@@ -3,7 +3,7 @@ if (-f "OFFLINE") {
    exit;
 }
 
-print "1..14\n";
+print "1..15\n";
 
 use URI::Heuristic qw(uf_urlstr uf_url);
 if (shift) {
@@ -80,6 +80,9 @@ print "ok 13\n";
 
 print "not " unless uf_url("gopher.sn.no")->scheme eq "gopher";
 print "ok 14\n";
+
+print "not " unless uf_urlstr("123.3.3.3:8080/foo") eq "http://123.3.3.3:8080/foo";
+print "ok 15\n";
 }
 
 #
