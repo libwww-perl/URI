@@ -9,18 +9,19 @@ use URI::Escape qw(uri_unescape);
 sub extract_path
 {
     my($class, $path) = @_;
+
     # tidy path
     $path =~ s,//+,/,g;
     $path =~ s,(/\.)+/,/,g;
     $path = "./$path" if $path =~ m,^[^:/]+:,,; # look like "scheme:"
-    $path;
+
+    return $path;
 }
 
 sub file
 {
     my $class = shift;
     my $uri = shift;
-
     my @path;
 
     my $auth = $uri->authority;
@@ -39,10 +40,11 @@ sub file
 
     for (@path) {
 	# Unix file/directory names are not allowed to contain '\0' or '/'
-	return if /\0/;
-	return if /\//;  # should we really?
+	return undef if /\0/;
+	return undef if /\//;  # should we really?
     }
-    join("/", @path);
+
+    return join("/", @path);
 }
 
 1;

@@ -24,7 +24,7 @@ sub new
 	    $path = "";
 	}
     } else {
-	return unless defined $path;
+	return undef unless defined $path;
 	$auth = "";
     }
 

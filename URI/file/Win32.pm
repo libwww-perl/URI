@@ -17,7 +17,7 @@ sub extract_authority
 	$auth .= "relative" if $_[0] !~ m,^[\\/],;
 	return $auth;
     }
-    return;
+    return undef;
 }
 
 sub extract_path
@@ -26,7 +26,7 @@ sub extract_path
     $path =~ s,\\,/,g;
     $path =~ s,//+,/,g;
     $path =~ s,(/\.)+/,/,g;
-    $path;
+    return $path;
 }
 
 sub file
@@ -51,10 +51,9 @@ sub file
 
     my @path = $uri->path_segments;
     for (@path) {
-	return if /\0/;
-	return if /\//;
-	#return if /\\/;        # URLs with "\" is not uncommon
-	
+	return undef if /\0/;
+	return undef if /\//;
+	#return undef if /\\/;        # URLs with "\" is not uncommon
     }
     return unless $class->fix_path(@path);
 
@@ -62,7 +61,8 @@ sub file
     $path =~ s/^\\// if $rel;
     $path = $auth . $path;
     $path =~ s,^\\([a-zA-Z])[:|],\u$1:,;
-    $path;
+
+    return $path;
 }
 
 sub fix_path { 1; }
