@@ -1,7 +1,7 @@
 package URI::http;
 
-require URI::_generic;
-@ISA=qw(URI::_generic);
+require URI::_server;
+@ISA=qw(URI::_server);
 
 use strict;
 use URI::Escape qw(uri_unescape %escapes);
