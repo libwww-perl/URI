@@ -5,6 +5,7 @@ require URI::_query;
 
 use strict;
 use URI::Escape qw(uri_unescape);
+use Carp ();
 
 my $ACHAR = $URI::uric;  $ACHAR =~ s,\\[/?],,g;
 my $PCHAR = $URI::uric;  $PCHAR =~ s,\\[?],,g;
@@ -21,10 +22,8 @@ sub authority
 	if (defined $auth) {
 	    $auth =~ s/([^$ACHAR])/$URI::Escape::escapes{$1}/go;
 	    $$self .= "//$auth";
-	} elsif ($rest =~ m,^//,) {
-	    warn "Path starting with double slash is confusing";
 	}
-	$$self .= "/" if length($rest) && $rest !~ m,^[/?\#],;
+	_check_path($rest, $$self);
 	$$self .= $rest;
     }
     $2;
@@ -41,17 +40,7 @@ sub path
 	my $new_path = shift;
 	$new_path = "" unless defined $new_path;
 	$new_path =~ s/([^$PCHAR])/$URI::Escape::escapes{$1}/go;
-	if (length($$self)) {
-	    $$self .= "/" if length($new_path) && $new_path !~ m,^/,;
-	} else {
-	    if ($new_path =~ m,^//,) {
-		warn "Path starting with double slash is confusing";
-	    } elsif ($new_path =~ m,^[^:/?\#]+:,) {
-		warn "Path might look like scheme, './' prepended";
-		$new_path = "./$new_path";
-	    }
-	}
-
+	_check_path($new_path, $$self);
 	$$self .= $new_path . $rest;
     }
     $2;
@@ -68,22 +57,30 @@ sub path_query
 	my $new_path = shift;
 	$new_path = "" unless defined $new_path;
 	$new_path =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
-	if (length($$self)) {
-	    $$self .= "/" if length($new_path) && $new_path !~ m,^[/?],;
-	} else {
-	    if ($new_path =~ m,^//,) {
-		warn "Path starting with double slash is confusing";
-	    } elsif ($new_path =~ m,^[^:/?\#]+:,) {
-		warn "Path might look like scheme, './' prepended";
-		$new_path = "./$new_path";
-	    }
-	}
-
+	_check_path($new_path, $$self);
 	$$self .= $new_path . $rest;
     }
     $2;
 }
 
+sub _check_path
+{
+    my($path, $pre) = @_;
+    my $prefix;
+    if ($pre =~ m,/,) {  # authority present
+	$prefix = "/" if length($path) && $path !~ m,^[/?\#],;
+    } else {
+	if ($path =~ m,^//,) {
+	    Carp::carp("Path starting with double slash is confusing")
+		if $^W;
+	} elsif (!length($pre) && $path =~ m,^[^:/?\#]+:,) {
+	    Carp::carp("Path might look like scheme, './' prepended")
+		if $^W;
+	    $prefix = "./";
+	}
+    }
+    substr($_[0], 0, 0) = $prefix if defined $prefix;
+}
 
 sub path_segments
 {
@@ -95,24 +92,27 @@ sub path_segments
 	    if (ref($_)) {
 		my @seg = @$_;
 		for (@seg) { s/;/%3B/g; }
+		$seg[0] =~ s/%/%25/g;
 		$_ = join(";", @seg);
 	    } else {
-		s/;/%3B/g;
+		s/;/%3B/g; s/%/%25/g;
 	    }
 	    s,/,%2F,g;
 	}
 	$self->path(join("/", @arg));
     }
     return $path unless wantarray;
-    map {/;/ ? _split_segment($_) : uri_unescape($_) } split('/', $path, -1);
+    map {/;/ ? $self->_split_segment($_)
+             : uri_unescape($_) }
+        split('/', $path, -1);
 }
 
 
 sub _split_segment
 {
-    my @segment = split(';', shift, -1);
-    $segment[0] = uri_unescape($segment[0]);
-    \@segment;
+    my $self = shift;
+    require URI::_segment;
+    URI::_segment->new(@_);
 }
 
 
