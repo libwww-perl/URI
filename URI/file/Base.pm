@@ -39,7 +39,7 @@ sub new
 
 sub extract_authority
 {
-    undef;
+    $URI::file::DEFAULT_AUTHORITY;
 }
 
 sub extract_path

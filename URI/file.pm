@@ -1,13 +1,15 @@
 package URI::file;
 
 use strict;
-use vars qw(@ISA $VERSION);
+use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.14 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.15 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
+
+$DEFAULT_AUTHORITY = "";
 
 # Map from $^O values to implementation classes.  The Unix
 # class is the default.
