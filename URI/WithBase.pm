@@ -19,6 +19,16 @@ sub new
     bless [URI->new($uri, $ibase), $base], $class;
 }
 
+sub _init
+{
+    my $class = shift;
+    my($str, $base, $scheme) = @_;
+    die "Assertion failed" unless UNIVERSAL::isa($base, "URI::WithBase");
+    $base = $base->abs;
+    my $ibase = $base->[0];
+    bless [URI->new($str, $ibase), $base], $class;
+}
+
 sub eq
 {
     my($self, $other) = @_;
