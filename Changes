@@ -1,3 +1,19 @@
+2002-07-18   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.20
+
+   Direct support for some new schemes urn:, urn:isbn:,
+   urn:oid:, rtsp:, and rtspu:.  The rtsp support was
+   contributed by Matt Selsky <selsky@columbia.edu>.
+
+   Documentation fix for $URI::ABS_REMOTE_LEADING_DOTS.
+   CPAN-RT-Bug #1224.
+
+   The host for URI::file was not unescaped.
+   Patch by Ville Skyttä <ville.skytta@iki.fi>.
+
+
+
 2002-05-09   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.19
