@@ -1,3 +1,5 @@
+#!perl -w
+
 eval {
     require MIME::Base64;
 };

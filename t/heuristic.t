@@ -1,3 +1,5 @@
+#!perl -w
+
 if (-f "OFFLINE") {
    print "1..0";
    exit;

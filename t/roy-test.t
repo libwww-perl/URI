@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..102\n";
 
 if (-d "t") {

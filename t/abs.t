@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..45\n";
 
 # This test the resolution of abs path for all examples given

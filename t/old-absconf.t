@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..6\n";
 
 use URI::URL qw(url);

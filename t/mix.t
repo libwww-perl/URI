@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..6\n";
 
 # Test mixing of URI and URI::WithBase objects

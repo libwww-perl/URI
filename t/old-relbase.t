@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..5\n";
 
 use URI::URL;

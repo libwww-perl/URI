@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..9\n";
 
 use strict;

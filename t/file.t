@@ -1,3 +1,5 @@
+#!perl -w
+
 use URI::file;
 
 @tests =  (

@@ -1,4 +1,4 @@
-#!perl
+#!perl -w
 
 print "1..15\n";
 

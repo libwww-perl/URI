@@ -1,3 +1,5 @@
+#!perl -w
+
 print "1..7\n";
 
 use URI;
