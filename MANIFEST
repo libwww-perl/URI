@@ -5,6 +5,7 @@ README
 URI.pm
 URI/_generic.pm
 URI/_server.pm
+URI/data.pm
 URI/http.pm
 URI/https.pm
 t/abs.t
