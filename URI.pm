@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.5 1998/09/03 13:53:32 aas Exp $
+package URI;  # $Id: URI.pm,v 1.6 1998/09/03 14:12:06 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -25,7 +25,7 @@ $ppchar = $uric;  $ppchar =~ s,\\?,,g;
 
 my $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
-use fields qw(xstr _scheme);
+use fields qw(xstr);
 use fields qw(scheme specific fragment);
 use fields qw(base);
 #use fields qw(_orig_uri);
@@ -87,7 +87,7 @@ sub _init
     my $class = shift;
     my($str, $base, $scheme) = @_;
     my URI $self = bless [], $class;
-    $self->{'_scheme'} = $scheme;
+    #$self->{'_scheme'} = $scheme;
     #$self->{'_orig_uri'} = $str if $DEBUG;
     $self->base($base) if $base;
     $self->_parse($str);
@@ -267,12 +267,13 @@ sub eq {
 # This is set up as an alias for various methods
 sub _bad_access_method
 {
-    my URI $self = shift;
+    my $self = shift;
+    my $type = ref($self) || "URI";
     if ($STRICT) {
-	Carp::croak("Illegal method called for $self->{'_scheme'} URI")
+	Carp::croak("Illegal method called for $type");
     }
     if ($^W && @_) {
-	Carp::carp("Setting not effective for $self->{'_scheme'} URI");
+	Carp::carp("Setting not effective for $type");
     }
     undef;
 }
