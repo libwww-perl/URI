@@ -204,11 +204,15 @@ literal "." or "..".  It means that we will map like this:
   :            <==>     ./
   ::foo:bar    <==>     ../foo/bar
   :::          <==>     ../../
-  foo:bar      <==>     file://foo:/bar
-  foo:bar:     <==>     file://foo:/bar/
+  foo:bar      <==>     file:/foo/bar
+  foo:bar:     <==>     file:/foo/bar/
   ..           <==>     %2E%2E
   <undef>      <==      /
-  foo:         <==      file:/foo
+  foo/         <==      file:/foo%2F
+  ./foo.txt    <==      file:/.%2Ffoo.txt
+  
+Note that if you want a relative URL, you *must* begin the path with a :.  Any
+path that begins with [^:] will be treated as absolute.
 
 Example 2: The Unix file system is easy to map as it use the same path
 separator as URIs, have a single root, and segments of "." and ".."
