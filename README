@@ -19,6 +19,9 @@ Main user visible changes from URI::URL are:
 
    * Don't export url() constructor function.  URI->new is short
      enough.
+     
+   * No base() attribute, also means that abs() and rel() needs
+     mandatory $base argument.
 
    * netloc --> authority
 
