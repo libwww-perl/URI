@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.11 1999/03/20 07:34:27 gisle Exp $
+# $Id: Heuristic.pm,v 4.12 2001/01/09 20:44:54 gisle Exp $
 
 =head1 NAME
 
@@ -89,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.11 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.12 $ =~ /(\d+)\.(\d+)/);
 
 eval {
     require Net::Domain;
@@ -107,7 +107,7 @@ eval {
  'uk' => [qw(www.ACME.co.uk www.ACME.org.uk www.ACME.ac.uk)],
  'au' => [qw(www.ACME.com.au www.ACME.org.au www.ACME.edu.au)],
  'il' => [qw(www.ACME.co.il www.ACME.org.il www.ACME.net.il)],
- # send corrections and new entries to <aas@sn.no>
+ # send corrections and new entries to <gisle@aas.no>
 );
 
 
@@ -145,7 +145,7 @@ sub uf_uristr ($)
 	$_ = "mailto:$_";
 
     } elsif (!/^[.+\-\w]+:/) {      # no scheme specified
-	if (s/^(\w+(?:\.\w+)*)([\/:\?\#]|$)/$2/) {
+	if (s/^([-\w]+(?:\.[-\w]+)*)([\/:\?\#]|$)/$2/) {
 	    my $host = $1;
 
 	    if ($host !~ /\./ && $host ne "localhost") {

@@ -59,7 +59,8 @@ if (gethostbyname("www.netscape.com")) {
 
 }
 
-$ENV{URL_GUESS_PATTERN} = "";
+{
+local $ENV{URL_GUESS_PATTERN} = "";
 print "not " unless uf_urlstr("perl") eq "http://perl";
 print "ok 9\n";
 
@@ -77,3 +78,12 @@ print "ok 13\n";
 
 print "not " unless uf_url("gopher.sn.no")->scheme eq "gopher";
 print "ok 14\n";
+}
+
+#
+#print "not " unless uf_urlstr("some-site") eq "http://www.some-site.com";
+#print "ok 15\n";
+#
+#print "not " unless uf_urlstr("some-site.com") eq "http://some-site.com";
+#print "ok 16\n";
+#
