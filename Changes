@@ -1,3 +1,18 @@
+1998-09-13   Gisle Aas <aas@sn.no>
+
+   Release 0.09_01
+
+   Use version number with underscore to avoid that the CPAN
+   indexer hides the URI::URL from libwww-perl that contains
+   all the documentation.
+
+   Started to document the new modules.
+
+   URI::file->new() escape fix which allow Mac file names like
+   ::.. to be treated as they should (I think).
+
+
+
 1998-09-12   Gisle Aas <aas@sn.no>
 
    Release 0.09
