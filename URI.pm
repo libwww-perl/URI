@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.23 1998/11/19 20:06:08 aas Exp $
+package URI;  # $Id: URI.pm,v 1.24 1998/11/19 22:06:53 aas Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "0.9003";
+$VERSION = "1.00";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
