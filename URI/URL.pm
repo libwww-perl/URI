@@ -6,7 +6,7 @@ require URI::WithBase;
 use strict;
 use vars qw(@EXPORT $VERSION);
 
-$VERSION = "5.00_02";
+$VERSION = "5.01";
 
 # Provide as much as possible of the old URI::URL interface for backwards
 # compatibility...
@@ -35,10 +35,19 @@ sub newlocal
     bless [URI::file->new_abs(shift)], $class;
 }
 
+{package URI::_foreign;
+    sub _init  # hope it is not defined
+    {
+	my $class = shift;
+	die "Unknown URI::URL scheme $_[1]:" if $URI::URL::STRICT;
+	$class->SUPER::init(@_);
+    }
+}
+
 sub strict
 {
-    my $old = $URI::STRICT;
-    $URI::STRICT = shift if @_;
+    my $old = $URI::URL::STRICT;
+    $URI::URL::STRICT = shift if @_;
     $old;
 }
 
