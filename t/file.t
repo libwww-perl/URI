@@ -2,6 +2,7 @@ use URI::file;
 
 @tests =  (
 [ "file",          "unix",       "win32",         "mac" ],
+#----------------  ------------  ---------------  --------------
 [ "file:/foo/bar", "/foo/bar",   "\\foo\\bar",    "foo:bar", ],
 [ "foo/bar",       "foo/bar",    "foo\\bar",      ":foo:bar",],
 [ "file://foo/bar","!//foo/bar", "\\\\foo\\bar",  "!foo:bar"],
