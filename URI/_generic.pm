@@ -167,4 +167,68 @@ sub _split_segment
     \@segment;
 }
 
+sub abs
+{
+}
+
+# The oposite of $url->abs.  Return a URI which is much relative as possible
+sub rel {
+    my($self, $base) = @_;
+    my $rel = $self->clone;
+    $base = $self->base unless $base;
+    return $rel unless $base;
+    $base = URI->new($base) unless ref $base;
+    $rel->base($base);
+
+    my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
+    if (!defined($scheme) && !defined($auth)) {
+	# it is already relative
+	return $rel;
+    }
+
+    my($bscheme, $bauth, $bpath) = @{$base}{qw(scheme authority path)};
+    for ($bscheme, $bauth, $auth) {
+	$_ = '' unless defined
+    }
+
+    unless ($scheme eq $bscheme && $auth eq $bauth) {
+	# different location, can't make it relative
+	return $rel;
+    }
+
+    for ($path, $bpath) {  $_ = "/$_" unless m,^/,; }
+
+    # Make it relative by eliminating scheme and authority
+    $rel->{'scheme'} = undef;
+    $rel->{'authority'} = undef;
+
+    # This loop is based on code from Nicolai Langfeldt <janl@ifi.uio.no>.
+    # First we calculate common initial path components length ($li).
+    my $li = 1;
+    while (1) {
+	my $i = index($path, '/', $li);
+	last if $i < 0 ||
+                $i != index($bpath, '/', $li) ||
+	        substr($path,$li,$i-$li) ne substr($bpath,$li,$i-$li);
+	$li=$i+1;
+    }
+    # then we nuke it from both paths
+    substr($path, 0,$li) = '';
+    substr($bpath,0,$li) = '';
+
+    if ($path eq $bpath &&
+        defined($rel->{'fragment'}) &&
+        !defined($rel->{'query'})) {
+        $rel->{'path'} = '';
+    } else {
+        # Add one "../" for each path component left in the base path
+        $path = ('../' x $bpath =~ tr|/|/|) . $path;
+	$path = "./" if $path eq "";
+        $rel->{'path'} = $path;
+    }
+    $rel->{'_str'} = '';
+
+    $rel;
+}
+
 1;
