@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..12\n";
+print "1..17\n";
 
 use strict;
 use URI::Split qw(uri_split uri_join);
@@ -43,3 +43,17 @@ print "ok 11\n";
 print "not " unless uri_join() eq "";
 print "ok 12\n";
 
+print "not " unless uri_join("s", "a") eq "s://a";
+print "ok 13\n";
+
+print "not " unless uri_join("s", "a/b") eq "s://a%2Fb";
+print "ok 14\n";
+
+print "not " unless uri_join("s", ":/?#", ":/?#", ":/?#", ":/?#") eq "s://:%2F%3F%23/:/%3F%23?:/?%23#:/?#";
+print "ok 15\n";
+
+print "not " unless uri_join(undef, undef, "a:b") eq "a%3Ab";
+print "ok 16\n";
+
+print "not " unless uri_join("s", undef, "//foo//bar") eq "s:////foo//bar";
+print "ok 17\n";
