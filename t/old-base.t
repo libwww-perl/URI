@@ -26,12 +26,14 @@ package main;
 
 # Must ensure that there is no relative paths in @INC because we will
 # chdir in the newlocal tests.
+unless ($^O eq "MacOS") {
 chomp($pwd = ($^O =~ /mswin32/i ? `cd` : `pwd`));
 for (@INC) {
     next if m|^/| or $^O =~ /os2|mswin32/i and m|^\w:[\\/]|;
     print "Turn lib path $_ into $pwd/$_\n";
     $_ = "$pwd/$_";
 
+}
 }
 
 $| = 1;
@@ -628,6 +630,8 @@ $url->path($all);
 #
 
 sub newlocal_test {
+    return 1 if $^O eq "MacOS";
+    
     print "newlocal_test:\n";
     my $pwd = ($^O eq 'MSWin32' ? 'cd' : (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'));
     my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');

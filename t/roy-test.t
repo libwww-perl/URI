@@ -25,7 +25,7 @@ for $i (1..5) {
            $link = $1;
            $exp  = $2;
            $exp = $base if $exp =~ /current/;  # special case test 22
-           $abs  = URI->new_abs($link, $base);
+           $abs  = URI->new($link)->abs($base);
            unless ($abs eq $exp) {
               print "$file:$.:  Expected: $exp\n";
               print qq(  abs("$link","$base") ==> "$abs"\n);

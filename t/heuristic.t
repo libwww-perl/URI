@@ -1,5 +1,6 @@
 print "1..14\n";
 
+$^O ="";
 use URI::Heuristic qw(uf_urlstr uf_url);
 $URI::Heuristic::DEBUG++;
 open(STDERR, ">&STDOUT");  # redirect STDERR
@@ -7,16 +8,29 @@ open(STDERR, ">&STDOUT");  # redirect STDERR
 print "not " unless uf_urlstr("http://www.sn.no/") eq "http://www.sn.no/";
 print "ok 1\n";
 
+if ($^O eq "MacOS") {
+    print "not " unless uf_urlstr("etc:passwd") eq "file:/etc/passwd";
+} else {
 print "not " unless uf_urlstr("/etc/passwd") eq "file:/etc/passwd";
+}
 print "ok 2\n";
 
+if ($^O eq "MacOS") {
+    print "not " unless uf_urlstr(":foo.txt") eq "file:./foo.txt";
+} else {
 print "not " unless uf_urlstr("./foo.txt") eq "file:./foo.txt";
+}
 print "ok 3\n";
 
 print "not " unless uf_urlstr("ftp.aas.no/lwp.tar.gz") eq "ftp://ftp.aas.no/lwp.tar.gz";
 print "ok 4\n";
 
+if($^O eq "MacOS") {
+#  its a weird, but valid, MacOS path, so it can't be left alone
+    print "not " unless uf_urlstr("C:\\CONFIG.SYS") eq "file:/C/%5CCONFIG.SYS";
+} else {
 print "not " unless uf_urlstr("C:\\CONFIG.SYS") eq "file:C:\\CONFIG.SYS";
+}
 print "ok 5\n";
 
 if (gethostbyname("www.netscape.com")) {
