@@ -3,7 +3,7 @@ print "1..21\n";
 use URI;
 
 $u = URI->new("data:,A%20brief%20note");
-print "not " unless $u->scheme eq "data" && $u->opaque_part eq ",A%20brief%20note";
+print "not " unless $u->scheme eq "data" && $u->opaque eq ",A%20brief%20note";
 print "ok 1\n";
 
 print "not " unless $u->media_type eq "text/plain;charset=US-ASCII" &&

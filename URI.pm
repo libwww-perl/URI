@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.6 1998/09/05 23:52:42 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.7 1998/09/07 21:00:07 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -163,7 +163,7 @@ sub scheme
 }
 
 
-sub opaque_part
+sub opaque
 {
     my $self = shift;
 

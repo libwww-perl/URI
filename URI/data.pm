@@ -11,7 +11,7 @@ use URI::Escape  qw(uri_unescape);
 sub media_type
 {
     my $self = shift;
-    my $opaque = $self->opaque_part;
+    my $opaque = $self->opaque;
     $opaque =~ /^([^,]*),?/ or die;
     my $old = $1;
     my $base64;
@@ -22,7 +22,7 @@ sub media_type
 	$new =~ s/,/%2C/g;  # protect ,
 	$base64 = "" unless defined $base64;
 	$opaque =~ s/^[^,]*,?/$new$base64,/;
-	$self->opaque_part($opaque);
+	$self->opaque($opaque);
     }
     return uri_unescape($old) if $old;  # media_type can't really be "0"
     "text/plain;charset=US-ASCII";      # default type
@@ -31,7 +31,7 @@ sub media_type
 sub data
 {
     my $self = shift;
-    my($enc, $data) = split(",", $self->opaque_part, 2);
+    my($enc, $data) = split(",", $self->opaque, 2);
     unless (defined $data) {
 	$data = "";
 	$enc  = "" unless defined $enc;
@@ -49,7 +49,7 @@ sub data
 	    $enc .= ";base64";
 	    $new = encode_base64($new, "");
 	}
-	$self->opaque_part("$enc,$new");
+	$self->opaque("$enc,$new");
     }
     return unless defined wantarray;
     return $base64 ? decode_base64($data) : uri_unescape($data);

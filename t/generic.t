@@ -17,7 +17,7 @@ print "ok 3\n";
 print "not " unless $foo->scheme eq "Foo";
 print "ok 4\n";
 
-print "not " unless $foo->opaque_part eq "opaque";
+print "not " unless $foo->opaque eq "opaque";
 print "ok 5\n";
 
 print "not " unless $foo->fragment eq "frag";
@@ -45,20 +45,20 @@ print "ok 10\n";
 $foo->scheme("foo");
 
 
-$old = $foo->opaque_part("xxx");
+$old = $foo->opaque("xxx");
 print "not " unless $old eq "opaque" && $foo eq "foo:xxx#frag";
 print "ok 11\n";
 
-$old = $foo->opaque_part("");
+$old = $foo->opaque("");
 print "not " unless $old eq "xxx" && $foo eq "foo:#frag";
 print "ok 12\n";
 
-$old = $foo->opaque_part(" #?/");
-$old = $foo->opaque_part(undef);
+$old = $foo->opaque(" #?/");
+$old = $foo->opaque(undef);
 print "not " unless $old eq "%20%23?/" && $foo eq "foo:#frag";
 print "ok 13\n";
 
-$foo->opaque_part("opaque");
+$foo->opaque("opaque");
 
 
 $old = $foo->fragment("x");
@@ -202,7 +202,7 @@ $old = $foo->path("bar");
 print "not " unless $old eq "foo" && $foo eq "bar";
 print "ok 45\n";
 
-$old = $foo->opaque_part("foo");
+$old = $foo->opaque("foo");
 print "not " unless $old eq "bar" && $foo eq "foo";
 print "ok 46\n";
 

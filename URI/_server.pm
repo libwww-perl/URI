@@ -58,8 +58,7 @@ sub port
 	$new .= ":$port" if defined $port;
 	$self->authority($new);
     }
-    return undef unless defined $old;
-    return $1 if $old =~ /:(\d+)$/;
+    return $1 if defined($old) && $old =~ /:(\d+)$/;
     $self->default_port;
 }
 

@@ -42,7 +42,7 @@ sub headers
     my $self = shift;
 
     # The trick is to just treat everything as the query string...
-    my $opaque = "to=" . $self->opaque_part;
+    my $opaque = "to=" . $self->opaque;
     $opaque =~ s/\?/&/;
 
     if (@_) {
@@ -59,7 +59,7 @@ sub headers
 
 	my $new = join(",",@to);
 	$new =~ s/\?/%3F/g;  # protect any ?
-	$self->opaque_part($new);
+	$self->opaque($new);
 	$self->query_form(@new) if @new;
     }
     return unless defined wantarray;
