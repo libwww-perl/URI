@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.9 1998/09/07 21:45:01 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.10 1998/09/07 23:14:13 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -24,7 +24,10 @@ $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 use Carp ();
 use URI::Escape ();
 
-use overload ( '""' => 'as_string', 'fallback' => 1 );
+use overload ('""'     => sub { ${$_[0]} },
+	      '=='     => sub { overload::StrVal($_[0]) eq overload::StrVal($_[1]) },
+              fallback => 1,
+             );
 
 sub new
 {
@@ -220,15 +223,16 @@ sub canonical
     my $self = shift;
 
     # Make sure scheme is lowercased
-    my $scheme = $self->scheme;
-    if ($scheme =~ /[A-Z]/) {
+    my $scheme = $self->scheme || "";
+    my $uc_scheme = $scheme =~ /[A-Z]/;
+    my $lc_esc    = $$self =~ /%(?:[a-f][a-fA-F0-9]|[A-F0-9][a-f])/;
+    if ($uc_scheme || $lc_esc) {
 	my $other = $self->clone;
-	$other->scheme(lc $scheme);
+	$other->scheme(lc $scheme) if $uc_scheme;
+	$$other =~ s/(%(?:[a-f][a-fA-F0-9]|[A-F0-9][a-f]))/uc($1)/ge
+	    if $lc_esc;
 	return $other;
     }
-    # XXX might also want to ensure that we only use either upper or
-    # lower case hex digits in %xx escapes.
-
     $self;
 }
 
