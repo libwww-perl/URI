@@ -53,6 +53,7 @@ t/clone.t
 t/data.t
 t/escape.t
 t/file.t
+t/ftp.t
 t/generic.t
 t/heuristic.t
 t/http.t
