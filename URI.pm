@@ -1,12 +1,10 @@
-package URI;  # $Id: URI.pm,v 1.17 1998/09/14 20:55:48 aas Exp $
+package URI;  # $Id: URI.pm,v 1.18 1998/09/14 21:28:57 aas Exp $
 
 use strict;
-use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
-use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
-
+use vars qw($VERSION);
 $VERSION = "0.09_02";
 
-$DEFAULT_SCHEME ||= "http";
+use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
 my %implements;  # mapping from scheme to implementor class
 
@@ -50,19 +48,12 @@ sub new
 	    $scheme = $base->scheme;
 	} elsif ($base && $base =~ m/^($scheme_re)(?::|$)/o) {
 	    $scheme = $1;
-	} elsif ($DEFAULT_SCHEME && !$STRICT) {
-	    $scheme = $DEFAULT_SCHEME;
-	} else {
-	    Carp::croak("Unable to determine scheme for '$url'");
-	}
+        }
     }
     $impclass ||= implementor($scheme) ||
 	do {
-	    Carp::croak("URI scheme '$scheme' is not supported")
-		if $STRICT;
-	    
-	    require URI::_generic;
-	    $impclass = 'URI::_generic';
+	    require URI::_foreign;
+	    $impclass = 'URI::_foreign';
 	};
 
     return $impclass->_init($url, $base, $scheme);
@@ -82,6 +73,11 @@ sub _init
 sub implementor
 {
     my($scheme, $impclass) = @_;
+    unless ($scheme) {
+	require URI::_generic;
+	return "URI::_generic";
+    }
+
     $scheme = lc($scheme);
 
     if ($impclass) {
@@ -673,16 +669,6 @@ The following configuration variables influence how the class and it's
 methods behave:
 
 =over 4
-
-=item $URI::STRICT
-
-Should we allow unknown URI schemes to be treated as if they supported
-the common and generic methods.  XXX: replaced by $URI::UNKNOWN_CLASS
-
-=item $URI::DEFAULT_SCHEME
-
-Which scheme to assume for relative URIs where the scheme is
-unspecified. XXX: do we need this???
 
 =item $URI::ABS_ALLOW_RELATIVE_SCHEME
 
