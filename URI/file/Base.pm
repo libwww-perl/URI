@@ -39,12 +39,19 @@ sub new
 
 sub extract_authority
 {
-    $URI::file::DEFAULT_AUTHORITY;
+    my($class, $path) = @_;
+    return undef unless $class->file_is_absolute($path);
+    return $URI::file::DEFAULT_AUTHORITY;
 }
 
 sub extract_path
 {
-    undef;
+    return undef;
+}
+
+sub file_is_absolute
+{
+    return 0;
 }
 
 sub is_this_host

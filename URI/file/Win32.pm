@@ -9,6 +9,10 @@ use URI::Escape qw(uri_unescape);
 sub extract_authority
 {
     my $class = shift;
+
+    return $class->SUPER::extract_authority($_[0])
+	if defined $URI::file::DEFAULT_AUTHORITY;
+
     return $1 if $_[0] =~ s,^\\\\([^\\]+),,;  # UNC
     return $1 if $_[0] =~ s,^//([^/]+),,;     # UNC too?
 
@@ -24,9 +28,19 @@ sub extract_path
 {
     my($class, $path) = @_;
     $path =~ s,\\,/,g;
-    $path =~ s,//+,/,g;
+    #$path =~ s,//+,/,g;
     $path =~ s,(/\.)+/,/,g;
+
+    if (defined $URI::file::DEFAULT_AUTHORITY) {
+	$path =~ s,^([a-zA-Z]:),/$1,;
+    }
+
     return $path;
+}
+
+sub file_is_absolute {
+    my($self, $path) = @_;
+    return $path =~ m,^[a-zA-Z]:, || $path =~ m,^[/\\],;
 }
 
 sub file
@@ -55,7 +69,7 @@ sub file
 	return undef if /\//;
 	#return undef if /\\/;        # URLs with "\" is not uncommon
     }
-    return unless $class->fix_path(@path);
+    return undef unless $class->fix_path(@path);
 
     my $path = join("\\", @path);
     $path =~ s/^\\// if $rel;

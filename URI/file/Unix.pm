@@ -18,6 +18,11 @@ sub extract_path
     return $path;
 }
 
+sub file_is_absolute {
+    my($class, $path) = @_;
+    return $path =~ m,^/,;
+}
+
 sub file
 {
     my $class = shift;
