@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.22 1998/10/12 12:03:49 aas Exp $
+package URI;  # $Id: URI.pm,v 1.23 1998/11/19 20:06:08 aas Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "0.90_02";
+$VERSION = "0.9003";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -56,6 +56,14 @@ sub new
 	};
 
     return $impclass->_init($uri, $scheme);
+}
+
+
+sub new_abs
+{
+    my($class, $uri, $base) = @_;
+    $uri = $class->new($uri, $base);
+    $uri->abs($base);
 }
 
 
@@ -348,6 +356,10 @@ specific methods available).
 The set of characters available for building up URI references is
 restricted (see L<URI::Escape>).  Characters outside this set is
 automatically escaped by the URI constructor.
+
+=item $uri = URI->new_abs( $str, $base_uri )
+
+This custructs a new absolute URI.
 
 =item $uri = URI::file->new( $filename, [$os] )
 
