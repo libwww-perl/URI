@@ -3,6 +3,10 @@ use URI::file;
 @tests =  (
 [ "file",          "unix",       "win32",         "mac" ],
 #----------------  ------------  ---------------  --------------
+[ "file://localhost/foo/bar",
+	           "!/foo/bar",  "!\\foo\\bar",   "!foo:bar", ],
+[ "file:///foo/bar",
+	           "!/foo/bar",  "!\\foo\\bar",   "!foo:bar", ],
 [ "file:/foo/bar", "/foo/bar",   "\\foo\\bar",    "foo:bar", ],
 [ "foo/bar",       "foo/bar",    "foo\\bar",      ":foo:bar",],
 [ "file://foo/bar","!//foo/bar", "\\\\foo\\bar",  "!foo:bar"],

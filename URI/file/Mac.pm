@@ -47,7 +47,7 @@ sub file
 
     my $auth = $uri->authority;
     if (defined $auth) {
-	if (lc($auth) ne "localhost") {
+	if (lc($auth) ne "localhost" && $auth ne "") {
 	    my $u_auth = uri_unescape($auth);
 	    if (!$class->is_this_host($u_auth)) {
 		# some other host (use it as volume name)

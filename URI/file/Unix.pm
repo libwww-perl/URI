@@ -25,7 +25,7 @@ sub file
 
     my $auth = $uri->authority;
     if (defined($auth)) {
-	if (lc($auth) ne "localhost") {
+	if (lc($auth) ne "localhost" && $auth ne "") {
 	    $auth = uri_unescape($auth);
 	    unless ($class->is_this_host($auth)) {
 		push(@path, "", "", $auth);
