@@ -14,12 +14,12 @@ $u->query_form(a => undef);
 print "not " unless $u eq "?a=";
 print "ok 2\n";
 
-$u->query_form("a=+& " => " =&+#");
-print "not " unless $u eq "?a%3D%2B%26+=+%3D%26%2B%23";
+$u->query_form("a[=&+#] " => " [=&+#]");
+print "not " unless $u eq "?a%5B%3D%26%2B%23%5D+=+%5B%3D%26%2B%23%5D";
 print "ok 3\n";
 
 @q = $u->query_form;
-print "not " unless join(":", @q) eq "a=+& : =&+#";
+print "not " unless join(":", @q) eq "a[=&+#] : [=&+#]";
 print "ok 4\n";
 
 @q = $u->query_keywords;
@@ -30,12 +30,12 @@ $u->query_keywords("a", "b");
 print "not " unless $u eq "?a+b";
 print "ok 6\n";
 
-$u->query_keywords(" ", "+", "=");
-print "not " unless $u eq "?%20+%2B+%3D";
+$u->query_keywords(" ", "+", "=", "[", "]");
+print "not " unless $u eq "?%20+%2B+%3D+%5B+%5D";
 print "ok 7\n";
 
 @q = $u->query_keywords;
-print "not " unless join(":", @q) eq " :+:=";
+print "not " unless join(":", @q) eq " :+:=:[:]";
 print "ok 8\n";
 
 @q = $u->query_form;
