@@ -70,7 +70,7 @@ sub canonical_notyet
     my $self = shift;
     my $scheme = $self->scheme;
     my $host = $self->host;
-    if ($scheme =~ /[A-Z]/ || $host =~ /[A-Z]) {
+    if ($scheme =~ /[A-Z]/ || $host =~ /[A-Z]/) {
 	my $other = $self->clone;
 	$other->scheme(lc $scheme);
 	$other->host(lc $host);
