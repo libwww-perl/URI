@@ -50,18 +50,30 @@ sub attributes {
   map { uri_unescape($_) } split(/,/,$old);
 }
 
-sub scope {
+sub _scope {
   my $self = shift;
   my $old = _ldap_elem($self,1, @_);
   return unless defined wantarray && defined $old;
-  uri_unescape($old) || "base";
+  uri_unescape($old);
 }
 
-sub filter {
+sub scope {
+  my $old = &_scope;
+  $old = "base" unless length $old;
+  $old;
+}
+
+sub _filter {
   my $self = shift;
   my $old = _ldap_elem($self,2, @_);
   return unless defined wantarray && defined $old;
-  uri_unescape($old) || "(objectClass=*)";
+  uri_unescape($old); # || "(objectClass=*)";
+}
+
+sub filter {
+  my $old = &_filter;
+  $old = "(objectClass=*)" unless length $old;
+  $old;
 }
 
 sub extensions {
@@ -190,13 +202,21 @@ returned by the search.
 =item $uri->scope( [$new_scope] )
 
 Set or get the scope that the search will use. The value can be one of
-C<"base">, C<"one"> or C<"sub">. If none is given then it will default
-to C<"base">.
+C<"base">, C<"one"> or C<"sub">. If none is given in the URI then the
+return value will default to C<"base">.
+
+=item $uri->_scope( [$new_scope] )
+
+Same as scope(), but does not default to anything.
 
 =item $uri->filter( [$new_filter] )
 
-Set or get the filter that the search will use. If none is given then
-it will default to C<"(objectClass=*)">.
+Set or get the filter that the search will use. If none is given in
+the URI then the return value will default to C<"(objectClass=*)">.
+
+=item $uri->_filter( [$new_filter] )
+
+Same as filter(), but does not default to anything.
 
 =item $uri->extensions( [$etype => $evalue,...] )
 
