@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.26 2004/04/13 15:17:27 gisle Exp $
+# $Id: Escape.pm,v 3.27 2004/11/05 12:57:43 gisle Exp $
 #
 
 package URI::Escape;
@@ -142,7 +142,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes uri_escape_utf8);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.26 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.27 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -179,14 +179,15 @@ sub _fail_hi {
 
 sub uri_escape_utf8
 {
+    my $text = shift;
     if ($] < 5.008) {
-	my $text = shift;
 	$text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
-	return uri_escape($text, @_);
+    }
+    else {
+	utf8::encode($text);
     }
 
-    require Encode;
-    return uri_escape(Encode::encode_utf8(shift), @_);
+    return uri_escape($text, @_);
 }
 
 sub uri_unescape
