@@ -1,11 +1,11 @@
 package URI::file;
 
 use strict;
-use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY);
+use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY %OS_CLASS);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.16 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.17 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
 
@@ -13,7 +13,7 @@ $DEFAULT_AUTHORITY = "";
 
 # Map from $^O values to implementation classes.  The Unix
 # class is the default.
-my %os_class = (
+%OS_CLASS = (
      os2     => "OS2",
      mac     => "Mac",
      MacOS   => "Mac",
@@ -28,7 +28,7 @@ sub os_class
 {
     my($OS) = shift || $^O;
 
-    my $class = "URI::file::" . ($os_class{$OS} || "Unix");
+    my $class = "URI::file::" . ($OS_CLASS{$OS} || "Unix");
     no strict 'refs';
     unless (%{"$class\::"}) {
 	eval "require $class";
