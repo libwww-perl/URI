@@ -1,3 +1,17 @@
+2001-04-23   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.12
+
+   URI->new($u, $scheme) does no longer fail if given a badly
+   formatted scheme string.
+
+   URI::WithBase's clone and base method was basically just
+   broken.  This also affected the URI::URL subclass.
+   The clone() method did not copy the base, and updating
+   the base with the base method always set it to "1".
+
+
+
 2001-02-27   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.11
