@@ -41,7 +41,7 @@ sub new
     if (my $host = $os->extract_authority($path)) {
 	$uri->authority($host);
     }
-    $uri->path_segments($os->split_path($path));
+    $uri->path(join("/", map { s,/,%2F,g; $_ } $os->split_path($path)));
     $$uri = "file:$$uri" if $$uri =~ m,^/,;  # fixup
     $uri;
 }
