@@ -45,4 +45,20 @@ sub query_form {
          map { /=/ ? split(/=/, $_, 2) : ($_ => '')} split(/&/, $old);
 }
 
+# Handle ...?dog+bones type of query
+sub query_keywords
+{
+    my $self = shift;
+    my $old = $self->query;
+    if (@_) {
+        # Try to set query string
+        $self->query(join('+', map { my $k = $_;
+                                     $k =~ s/(\W)/$URI::Escape::escapes{$1}/g;
+                                     $k }
+                                     @_));
+    }
+    return if !defined($old) || !defined(wantarray);
+    map { uri_unescape($_) } split(/\+/, $old, -1);
+}
+
 1;
