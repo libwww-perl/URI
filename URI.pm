@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.15 1998/09/08 12:41:56 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.16 1998/09/08 13:36:45 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -10,13 +10,14 @@ $DEFAULT_SCHEME ||= "http";
 my %implements;  # mapping from scheme to implementor class
 
 # Some "official" character classes
-my $reserved   = q(;/?:@&=+$,);
-my $mark       = q(-_.!~*'());                                    #'; emacs
-my $unreserved = "A-Za-z0-9\Q$mark\E";
 
-use vars qw($uric $scheme_re);
-$uric  = "\Q$reserved\E$unreserved%";
-$scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
+use vars qw($reserved $mark $unreserved $uric $scheme_re);
+$reserved   = q(;/?:@&=+$,);
+$mark       = q(-_.!~*'());                                    #'; emacs
+$unreserved = "A-Za-z0-9\Q$mark\E";
+$uric       = quotemeta($reserved) . $unreserved . "%";
+
+$scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
 use Carp ();
 use URI::Escape ();
