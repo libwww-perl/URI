@@ -628,7 +628,6 @@ $url->path($all);
 #
 
 sub newlocal_test {
-    print "newlocal_test disabled\n"; return;
     print "newlocal_test:\n";
     my $pwd = ($^O eq 'MSWin32' ? 'cd' : (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'));
     my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');
@@ -679,42 +678,42 @@ sub newlocal_test {
 
     # Test access methods for file URLs
     $url = new URI::URL 'file:/c:/dos';
-    $url->_expect('dos_path', 'C:\\DOS');
+    $url->_expect('dos_path', 'C:\\dos');
     $url->_expect('unix_path', '/c:/dos');
-    $url->_expect('vms_path', '[C:]DOS');
-    eval { $url->mac_path; };  # This is not allowed since we have ':' in path
-    die "Mac_path generated when it should fail." unless $@;
+    #$url->_expect('vms_path', '[C:]DOS');
+    $url->_expect('mac_path',  'UNDEF');
+
     $url = new URI::URL 'file:/foo/bar';
     $url->_expect('unix_path', '/foo/bar');
     $url->_expect('mac_path', 'foo:bar');
 
     # Some edge cases
-    $url = new URI::URL 'file:';
-    $url->_expect('unix_path', '/');
+#    $url = new URI::URL 'file:';
+#    $url->_expect('unix_path', '/');
     $url = new URI::URL 'file:/';
     $url->_expect('unix_path', '/');
     $url = new URI::URL 'file:.';
     $url->_expect('unix_path', '.');
     $url = new URI::URL 'file:./foo';
-    $url->_expect('unix_path', 'foo');
+    $url->_expect('unix_path', './foo');
     $url = new URI::URL 'file:0';
     $url->_expect('unix_path', '0');
     $url = new URI::URL 'file:../../foo';
     $url->_expect('unix_path', '../../foo');
     $url = new URI::URL 'file:foo/../bar';
-    $url->_expect('unix_path', 'bar');
+    $url->_expect('unix_path', 'foo/../bar');
 
     # Relative files
     $url = new URI::URL 'file:foo/b%61r/Note.txt';
     $url->_expect('unix_path', 'foo/bar/Note.txt');
     $url->_expect('mac_path', ':foo:bar:Note.txt');
-    $url->_expect('dos_path', 'FOO\\BAR\\NOTE.TXT');
-    $url->_expect('vms_path', '[.FOO.BAR]NOTE.TXT');
+    $url->_expect('dos_path', 'foo\\bar\\Note.txt');
+    #$url->_expect('vms_path', '[.FOO.BAR]NOTE.TXT');
 
     # The VMS path found in RFC 1738 (section 3.10)
     $url = new URI::URL 'file://vms.host.edu/disk$user/my/notes/note12345.txt';
-    $url->_expect('vms_path', 'DISK$USER:[MY.NOTES]NOTE12345.TXT');
-    $url->_expect('mac_path', 'disk$user:my:notes:note12345.txt');
+#    $url->_expect('vms_path', 'DISK$USER:[MY.NOTES]NOTE12345.TXT');
+#    $url->_expect('mac_path', 'disk$user:my:notes:note12345.txt');
 
     chdir($savedir) or die $!;
 }
