@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.8 1998/09/07 21:24:16 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.9 1998/09/07 21:45:01 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -240,6 +240,10 @@ sub eq {
 	$self->canonical->as_string eq $other->canonical->as_string;
 }
 
+# generic-URI transformation methods
+sub abs { $_[0]; }
+sub rel { $_[0]; }
+
 1;
 
 __END__
@@ -268,8 +272,5 @@ sub _bad_access_method
 *path_segments  = \&_bad_access_method;
 *query          = \&_bad_access_method;
 
-# generic-URI transformation methods
-sub abs { shift->clone; }
-sub rel { shift->clone; }
 
 1;
