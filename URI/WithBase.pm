@@ -106,9 +106,9 @@ URI::WithBase - URI which remember their base
 =head1 DESCRIPTION
 
 This module provide the C<URI::WithBase> class.  Objects of this class
-are like URI objects, but can keep their base too.
+are like C<URI> objects, but can keep their base too.
 
-The methods provided in addition to or modified from those of URI are:
+The methods provided in addition to or modified from those of C<URI> are:
 
 =over 4
 
