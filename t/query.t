@@ -77,7 +77,7 @@ print "not " unless $u eq "";
 print "ok 17\n";
 
 $u->query_form(a => { foo => 1 });
-print "not " unless $u =~ /^\?a=HASH\(/;
+print "not " unless "$u" =~ /^\?a=HASH\(/;
 print "ok 18\n";
 
 __END__
