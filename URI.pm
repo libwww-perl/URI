@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.33"; # $Date: 2004/09/19 05:55:05 $
+$VERSION = "1.33"; # $Date: 2004/10/05 08:32:41 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -245,20 +245,26 @@ sub as_string
 
 sub canonical
 {
-    my $self = shift;
+    # Make sure scheme is lowercased, that we don't escape unreserved chars,
+    # and that we use upcase escape sequences.
 
-    # Make sure scheme is lowercased
+    my $self = shift;
     my $scheme = $self->_scheme || "";
     my $uc_scheme = $scheme =~ /[A-Z]/;
-    my $lc_esc    = $$self =~ /%(?:[a-f][a-fA-F0-9]|[A-F0-9][a-f])/;
-    if ($uc_scheme || $lc_esc) {
-	my $other = $self->clone;
-	$other->_scheme(lc $scheme) if $uc_scheme;
-	$$other =~ s/(%(?:[a-f][a-fA-F0-9]|[A-F0-9][a-f]))/uc($1)/ge
-	    if $lc_esc;
-	return $other;
+    my $esc = $$self =~ /%[a-fA-F0-9]{2}/;
+    return $self unless $uc_scheme || $esc;
+
+    my $other = $self->clone;
+    if ($uc_scheme) {
+	$other->_scheme(lc $scheme);
     }
-    $self;
+    if ($esc) {
+	$$other =~ s{%([0-9a-fA-F]{2})}
+	            { my $a = chr(hex($1));
+                      $a =~ /^[$unreserved]\z/o ? $a : "%\U$1"
+                    }ge;
+    }
+    return $other;
 }
 
 # Compare two URIs, subclasses will provide a more correct implementation
