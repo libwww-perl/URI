@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.18 2001/05/15 03:41:38 gisle Exp $
+# $Id: Escape.pm,v 3.19 2001/08/24 17:25:43 gisle Exp $
 #
 
 package URI::Escape;
@@ -59,7 +59,10 @@ character class (between [ ]).  E.g.:
   "^A-Za-z"                     # everything not a letter
 
 The default set of characters to be escaped is all those which are
-I<not> part of the C<uric> character class shown above.
+I<not> part of the C<uric> character class shown above as well as the
+reserved characters.  I.e. the default is:
+
+  "^A-Za-z0-9\-_.!~*'()"
 
 =item uri_unescape($string,...)
 
@@ -111,7 +114,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.18 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.19 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -136,8 +139,8 @@ sub uri_escape
 	}
 	&{$subst{$patn}}($text);
     } else {
-	# Default unsafe characters. (RFC 2732 ^uric)
-	$text =~ s/([^;\/?:@&=+\$,A-Za-z0-9\-_.!~*'()[\]])/$escapes{$1}/g;
+	# Default unsafe characters.  RFC 2732 ^(uric - reserved)
+	$text =~ s/([^A-Za-z0-9\-_.!~*'()])/$escapes{$1}/g;
     }
     $text;
 }
