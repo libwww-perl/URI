@@ -1,3 +1,16 @@
+1998-09-22   Gisle Aas <aas@sn.no>
+
+   Release 0.09_02
+
+   New internal URI::file::* interface.  Implemented 8.3 mapping
+   for "dos".
+
+   Got rid of $URI::STRICT and $URI::DEFAULT_SCHEME
+
+   More documentation.
+
+
+
 1998-09-13   Gisle Aas <aas@sn.no>
 
    Release 0.09_01
