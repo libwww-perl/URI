@@ -2,16 +2,18 @@ require 5.004;
 use ExtUtils::MakeMaker;
 
 if ("foo" !~ /\Afoo\z/) {
-    print "\\z not supported by this perl.  Fixing URI.pm...\n";
-    rename( 'URI.pm', 'URI.pm.bak' ) || die;
-    open( IN, '<URI.pm.bak' ) || die;
-    open( OUT, '>URI.pm' ) || die;
-    while( <IN> ) {
-        $_ =~ s/\\z/\\Z/g;
-        print OUT;
+    for $file ("URI", "URI/urn") {
+	print "\\z not supported by this perl.  Fixing $file.pm...\n";
+	rename("$file.pm", "$file.pm.bak") || die;
+	open( IN, "<$file.pm.bak" ) || die;
+	open( OUT, ">$file.pm" ) || die;
+	while( <IN> ) {
+	    $_ =~ s/\\z/\\Z/g;
+	    print OUT;
+	}
+	close( OUT ) || die;
+	close( IN ) || die;
     }
-    close( OUT );
-    close( IN );
 }
 
 WriteMakefile(
