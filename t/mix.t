@@ -5,7 +5,7 @@ use URI;
 use URI::WithBase;
 use URI::URL;
 
-$str = "http://www.sn.no";
+$str = "http://www.sn.no/";
 $rel = "path/img.gif";
 
 $u  = URI->new($str);
