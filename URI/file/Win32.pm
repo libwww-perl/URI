@@ -21,7 +21,7 @@ sub split_path
     my($class, $path) = @_;
     $path =~ s,[/\\][/\\]+,/,g;       # \\    --> \
     $path =~ s,([/\\]\.)+[/\\],/,g;   # \.\.\ --> \
-    split(/[\\\/]/, $path, -1);
+    map { s/%/%25/g; s/;/%3B/g; $_; } split(/[\\\/]/, $path, -1);
 }
 
 sub file

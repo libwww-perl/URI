@@ -13,7 +13,7 @@ sub split_path
     $path =~ s,//+,/,g;
     $path =~ s,(/\.)+/,/,g;
     $path = "./$path" if $path =~ m,^[^:/]+:,,; # look like "scheme:"
-    split("/", $path, -1);
+    map { s/%/%25/g; s/;/%3B/g; $_; } split("/", $path, -1);
 }
 
 sub file
