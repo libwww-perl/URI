@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.8 1998/09/11 09:54:02 aas Exp $
+package URI;  # $Id: URI.pm,v 1.9 1998/09/11 18:57:12 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -33,46 +33,39 @@ use overload ('""'     => sub { ${$_[0]} },
 sub new
 {
     my($class, $url, $base) = @_;
-    my $self;
-    if (ref $url) {
-	$self = $url->clone;
+    $url = "" unless defined $url;
+
+    # Get rid of potential wrapping
+    $url =~ s/^<(?:URL:)?(.*)>$/$1/;  # 
+    $url =~ s/^"(.*)"$/$1/;
+    $url =~ s/^\s+//;
+    $url =~ s/\s+$//;
+
+    my $scheme;
+    my $impclass;
+    if ($url =~ m/^($scheme_re):/so) {
+	$scheme = $1;
     } else {
-	$url = "" unless defined $url;
-	# Get rid of potential wrapping
-        $url =~ s/^<(?:URL:)?(.*)>$/$1/;  # 
-	$url =~ s/^"(.*)"$/$1/;
-        $url =~ s/^\s+//;
-	$url =~ s/\s+$//;
-
-	# We need a scheme to determine which class to use
-        my $scheme;
-	my $impclass;
-	if ($url =~ m/^($scheme_re):/so) {
+	if ($impclass = ref($base)) {
+	    $scheme = $base->scheme;
+	} elsif ($base && $base =~ m/^($scheme_re)(?::|$)/o) {
 	    $scheme = $1;
+	} elsif ($DEFAULT_SCHEME && !$STRICT) {
+	    $scheme = $DEFAULT_SCHEME;
 	} else {
-            if ($impclass = ref($base)) {
-		$scheme = $base->scheme;
-	    } elsif ($base && $base =~ m/^($scheme_re)(?::|$)/o) {
-                $scheme = $1;
-	    } elsif ($DEFAULT_SCHEME && !$STRICT) {
-		$scheme = $DEFAULT_SCHEME;
-	    } else {
-		Carp::croak("Unable to determine scheme for '$url'");
-	    }
-        }
-	$impclass ||= implementor($scheme) ||
-	    do {
-		Carp::croak("URI scheme '$scheme' is not supported")
-		    if $STRICT;
-	    
-		require URI::_generic;
-		$impclass = 'URI::_generic';
-	    };
-
-        # hand-off to scheme specific implementation sub-class
-        $self = $impclass->_init($url, $base, $scheme);
+	    Carp::croak("Unable to determine scheme for '$url'");
+	}
     }
-    $self;
+    $impclass ||= implementor($scheme) ||
+	do {
+	    Carp::croak("URI scheme '$scheme' is not supported")
+		if $STRICT;
+	    
+	    require URI::_generic;
+	    $impclass = 'URI::_generic';
+	};
+
+    return $impclass->_init($url, $base, $scheme);
 }
 
 
