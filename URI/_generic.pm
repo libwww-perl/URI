@@ -6,6 +6,9 @@ require URI::_query;
 use strict;
 use URI::Escape qw(uri_unescape);
 
+my $ACHAR = $URI::uric;  $ACHAR =~ s,\\[/?],,g;
+my $PCHAR = $URI::uric;  $PCHAR =~ s,\\[?],,g;
+
 sub authority
 {
     my $self = shift;
@@ -16,7 +19,7 @@ sub authority
 	$$self = $1;
 	my $rest = $3;
 	if (defined $auth) {
-	    $auth =~ s/([^$URI::achar])/$URI::Escape::escapes{$1}/go;
+	    $auth =~ s/([^$ACHAR])/$URI::Escape::escapes{$1}/go;
 	    $$self .= "//$auth";
 	} elsif ($rest =~ m,^//,) {
 	    warn "Path starting with double slash is confusing";
@@ -37,7 +40,7 @@ sub path
 	my $rest = $3;
 	my $new_path = shift;
 	$new_path = "" unless defined $new_path;
-	$new_path =~ s/([^$URI::ppchar])/$URI::Escape::escapes{$1}/go;
+	$new_path =~ s/([^$PCHAR])/$URI::Escape::escapes{$1}/go;
 	if (length($$self)) {
 	    $$self .= "/" if length($new_path) && $new_path !~ m,^/,;	    
 	} else {
@@ -53,6 +56,7 @@ sub path
     }
     $2;
 }
+
 
 sub abs_path
 {
@@ -71,6 +75,7 @@ sub abs_path_query
     $tmp;
 }
 
+
 sub path_segments
 {
     my $self = shift;
@@ -80,16 +85,16 @@ sub path_segments
 	for (@arg) {
 	    if (ref($_)) {
 		my @seg = @$_;
-		$seg[0] =~ s/([^$URI::pchar])/$URI::Escape::escapes{$1}/go;
+		for (@seg) { s/;/%3B/g; }
 		$_ = join(";", @seg);
 	    } else {
-		s/([^$URI::pchar])/$URI::Escape::escapes{$1}/go;
+		s/;/%3B/g;
 	    }
+	    s,/,%2F,g;
 	}
 	$self->path(join("/", @arg));
     }
     return $path unless wantarray;
-    $path = "/$path" if defined($self->authority) && $path !~ m,^/,;
     map {/;/ ? _split_segment($_) : uri_unescape($_) } split('/', $path, -1);
 }
 
