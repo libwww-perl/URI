@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.28"; # $Date: 2004/01/01 19:49:05 $
+$VERSION = "1.28"; # $Date: 2004/01/01 23:36:47 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -761,8 +761,8 @@ L<URI::ldap> for details.
 =item B<ldapi>:
 
 Like the I<ldap> URI scheme, but will use a Unix domain socket.  The
-server methods are not supported.  The escaped socket path is
-available as $uri->authority.
+server methods are not supported.  The local socket path is
+available as $uri->un_path.
 
 =item B<ldaps>:
 
