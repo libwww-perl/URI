@@ -5,7 +5,7 @@ use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY %OS_CLASS);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.17 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.18 $ =~ /(\d+)\.(\d+)/);
 
 use URI::Escape qw(uri_unescape);
 
@@ -259,13 +259,42 @@ RFC 1630
 
    A void host field is equivalent to "localhost".
 
+=head1 CONFIGURATION VARIABLES
+
+The following configuration variables influence how the class and its
+methods behave:
+
+=over
+
+=item %URI::file::OS_CLASS
+
+This hash maps OS identifiers to implementation classes.  You might
+want to add or modify this if you want to plug in your own file
+handler class.  Normally the keys should match the $^O values in use.
+
+If there is no mapping then the "Unix" implementation is used.
+
+=item $URI::file::DEFAULT_AUTHORITY
+
+This determine what "authority" string to include in absolute file
+URIs.  It defaults to "".  If you prefer verbose URIs you might set it
+to be "localhost".
+
+Setting this value to C<undef> force behaviour compatible to URI v1.31
+and earlier.  In this mode host names in UNC paths and drive letters
+are mapped to the authority component on Windows, while we produce
+authority-less URIs on Unix.
+
+=back
+
+
 =head1 SEE ALSO
 
 L<URI>, L<File::Spec>, L<perlport>
 
 =head1 COPYRIGHT
 
-Copyright 1995-1998 Gisle Aas.
+Copyright 1995-1998,2004 Gisle Aas.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

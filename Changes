@@ -1,3 +1,15 @@
+2004-09-07   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.32
+
+   Introduce $URI::file::DEFAULT_AUTHORITY which control what
+   authority string to use for absolute file URIs.  Its value
+   default to "" which produce file URIs that better interoperates
+   with other implementations.  The old mapping behaviour can be
+   requested by setting this variable to a TRUE value.
+
+
+
 2004-06-08   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.31
