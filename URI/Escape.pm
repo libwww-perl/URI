@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.15 2000/08/16 18:45:03 gisle Exp $
+# $Id: Escape.pm,v 3.16 2000/08/16 18:45:23 gisle Exp $
 #
 
 package URI::Escape;
@@ -96,7 +96,7 @@ L<URI>
 
 =head1 COPYRIGHT
 
-Copyright 1995-1998 Gisle Aas.
+Copyright 1995-2000 Gisle Aas.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -110,7 +110,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.15 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.16 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
