@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.28 1999/06/24 10:26:06 gisle Exp $
+package URI;  # $Id: URI.pm,v 1.29 1999/08/02 22:45:52 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.03";
+$VERSION = "1.04";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -111,11 +111,11 @@ sub implementor
 
     no strict 'refs';
     # check we actually have one for the scheme:
-    unless (defined @{"${ic}::ISA"}) {
+    unless (@{"${ic}::ISA"}) {
         # Try to load it
         eval "require $ic";
         die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
-        return unless defined @{"${ic}::ISA"};
+        return unless @{"${ic}::ISA"};
     }
 
     $ic->_init_implementor($scheme);

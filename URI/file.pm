@@ -24,7 +24,7 @@ sub os_class
 
     my $class = "URI::file::" . ($os_class{$OS} || "Unix");
     no strict 'refs';
-    unless (defined %{"$class\::"}) {
+    unless (%{"$class\::"}) {
 	eval "require $class";
 	die $@ if $@;
     }
