@@ -39,6 +39,7 @@ URI/telnet.pm
 rfc2396.txt
 t/abs.t
 t/data.t
+t/escape.t
 t/file.t
 t/generic.t
 t/heuristic.t
