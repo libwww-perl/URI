@@ -1,3 +1,14 @@
+
+   The query_form() method now allow an array or hash
+   reference to be passed to set the value.  This makes it
+   possible to set the value to an empty form, something that
+   the old API did not allow.
+
+   The query_keywords() method now allow an array reference
+   to be passed to set the value.
+
+
+
 2003-10-06   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.27

@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..10\n";
+print "1..17\n";
 
 use strict;
 use URI ();
@@ -47,6 +47,34 @@ print "ok 9\n";
 $u->query(" +?=#");
 print "not " unless $u eq "?%20+?=%23";
 print "ok 10\n";
+
+$u->query_keywords([qw(a b)]);
+print "not " unless $u eq "?a+b";
+print "ok 11\n";
+
+$u->query_keywords([]);
+print "not " unless $u eq "";
+print "ok 12\n";
+
+$u->query_form({ a => 1, b => 2 });
+print "not " unless $u eq "?a=1&b=2" || $u eq "?b=2&a=1";
+print "ok 13\n";
+
+$u->query_form([ a => 1, b => 2 ]);
+print "not " unless $u eq "?a=1&b=2";
+print "ok 14\n";
+
+$u->query_form({});
+print "not " unless $u eq "";
+print "ok 15\n";
+
+$u->query_form([a => [1..4]]);
+print "not " unless $u eq "?a=1&a=2&a=3&a=4";
+print "ok 16\n";
+
+$u->query_form([]);
+print "not " unless $u eq "";
+print "ok 17\n";
 
 __END__
 # Some debugging while writing new tests

@@ -27,8 +27,18 @@ sub query_form {
     my $old = $self->query;
     if (@_) {
         # Try to set query string
+	my @new = @_;
+	if (@new == 1) {
+	    my $n = $new[0];
+	    if (ref($n) eq "ARRAY") {
+		@new = @$n;
+	    }
+	    elsif (ref($n) eq "HASH") {
+		@new = %$n;
+	    }
+	}
         my @query;
-        while (my($key,$vals) = splice(@_, 0, 2)) {
+        while (my($key,$vals) = splice(@new, 0, 2)) {
             $key = '' unless defined $key;
 	    $key =~ s/([;\/?:@&=+,\$\[\]%])/$URI::Escape::escapes{$1}/g;
 	    $key =~ s/ /+/g;
@@ -40,7 +50,7 @@ sub query_form {
                 push(@query, "$key=$val");
             }
         }
-        $self->query(join('&', @query));
+        $self->query(@query ? join('&', @query) : undef);
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
     return unless $old =~ /=/; # not a form
@@ -56,8 +66,9 @@ sub query_keywords
     if (@_) {
         # Try to set query string
 	my @copy = @_;
+	@copy = @{$copy[0]} if @copy == 1 && ref($copy[0]);
 	for (@copy) { s/([;\/?:@&=+,\$\[\]%])/$URI::Escape::escapes{$1}/g; }
-	$self->query(join('+', @copy));
+	$self->query(@copy ? join('+', @copy) : undef);
     }
     return if !defined($old) || !defined(wantarray);
     return if $old =~ /=/;  # not keywords, but a form

@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.27"; # $Date: 2003/11/30 11:57:31 $
+$VERSION = "1.27"; # $Date: 2003/11/30 13:28:45 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -575,17 +575,51 @@ the $uri.
 
 =item $uri->query_form( $key1 => $val1, $key2 => $val2, ... )
 
+=item $uri->query_form( \@key_value_pairs )
+
+=item $uri->query_form( \%hash )
+
 This method sets and returns query components that use the
 I<application/x-www-form-urlencoded> format.  Key/value pairs are
 separated by "&" and the key is separated from the value with a "="
 character.
 
+The form can be set either by passing separate key/value pairs, or via
+an array or hash reference.  Passing an empty array or empty hash will
+remove the query component, while passing no arguments at all leaves
+the component unchanged.  The order of keys is undefined if a hash
+reference is passed.  The old value is always returned as a list of
+separate key/value pairs.  Assigning this list to a hash is unwise as
+the keys returned might repeat.
+
+The values passed when setting the form can be plain strings or
+references to arrays of strings.  Passing an array of values has the
+same effect as passing the key repeatedly with one value at a time.
+All the following statements will all have the same effect:
+
+    $uri->query_form(foo => 1, foo => 2);
+    $uri->query_form(foo => [1, 2]);
+    $uri->query_form([ foo => 1, foo => 2 ]);
+    $uri->query_form([ foo => [1, 2] ]);
+    $uri->query_form({ foo => [1, 2] });
+
+The C<URI::QueryParam> module can be loaded to add further methods to
+manipulate the form of an URI.  See L<URI::QueryParam> for details.
+
 =item $uri->query_keywords
 
 =item $uri->query_keywords( $keywords, ... )
 
+=item $uri->query_keywords( \@keywords )
+
 This method sets and returns query components that use the
 keywords separated by "+" format.
+
+The keywords can be set either by passing separate keywords directly
+or by passing a reference to an array of keywords.  Passing an empty
+array will remove the query component, while passing no arguments at
+all leaves the component unchanged.  The old value is always returned
+as a list of separate words.
 
 =back
 
@@ -916,7 +950,8 @@ readable alternative.
 
 =head1 SEE ALSO
 
-L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Split>, L<URI::Heuristic>
+L<URI::file>, L<URI::WithBase>, L<URI::QueryParam>, L<URI::Escape>,
+L<URI::Split>, L<URI::Heuristic>
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
