@@ -1,4 +1,4 @@
-package URI;  # $Date: 2002/07/02 15:58:46 $
+package URI;  # $Date: 2002/07/06 03:51:57 $
 
 use strict;
 use vars qw($VERSION);
@@ -738,6 +738,13 @@ C<URI> objects belonging to the ssh scheme support the common,
 generic and server methods. In addition they provide methods to
 access the userinfo sub-components: $uri->user and $uri->password.
 
+=item B<urn>:
+
+The syntax of Uniform Resource Names is specified in RFC 2141.  C<URI>
+objects belonging to the urn scheme common methods and the methods:
+$uri->nid and $uri->nss that returns the Namespace Identifier and the
+Namespace Specific String respectively.  The Namespace Identifier
+basically works like the Scheme identifier of URIs.
 
 =back
 
@@ -805,6 +812,10 @@ L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
+
+http://www.iana.org/assignments/uri-schemes
+
+http://www.iana.org/assignments/urn-namespaces
 
 http://www.w3.org/Addressing/
 
