@@ -21,6 +21,9 @@ sub _group
     my $old = $self->path;
     if (@_) {
 	my($group,$from,$to) = @_;
+	if ($group =~ /\@/) {
+            $group =~ s/^<(.*)>$/$1/;  # "<" and ">" should not be part of it
+	}
 	$group =~ s,%,%25,g;
 	$group =~ s,/,%2F,g;
 	my $path = $group;
@@ -32,7 +35,7 @@ sub _group
     }
 
     $old =~ s,^/,,;
-    if ($old =~ s,/(.*),, && wantarray) {
+    if ($old !~ /\@/ && $old =~ s,/(.*),, && wantarray) {
 	my $extra = $1;
 	return (uri_unescape($old), split(/-/, $extra));
     }
