@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.3 1998/04/09 17:04:58 aas Exp $
+package URI;  # $Id: URI.pm,v 1.4 1998/04/09 18:26:57 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -30,6 +30,7 @@ my $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 use Carp ();
 use URI::Escape ();
 
+use overload ( '""' => 'as_string', 'fallback' => 1 );
 
 sub new
 {
