@@ -8,7 +8,7 @@ new start with new class names.  This also allows us to simplify the
 implementation by getting rid of some methods since we don't really
 have to be backwards compatible.  The old modules can still be used
 for old code.  The new draft also allows the parser implemented by a
-single regual expression which should also help making it faster than
+single regular expression which should also help making it faster than
 the old modules.
 
 The main change proposed is to use 'URI' as the main class name.  The
@@ -45,7 +45,8 @@ Main user visible changes from URI::URL are:
 
    * URI::URL::strict() is replaced by a global variable $URI::STRICT
 
-Comments welcomed?
+Comments welcomed?  These modules are discussed on the
+<libwww-perl@ics.uci.edu> mailing list.
 
 --
 Copyright 1998 Gisle Aas.
