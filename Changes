@@ -1,3 +1,13 @@
+2004-10-05   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.34
+
+   URI->canonical will now always unescape any escaped unreserved
+   chars.  Previously this only happened for the http and https scheme.
+   Patch contributed by Eric Promislow <ericp@ActiveState.com>.
+
+
+
 2004-09-19   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.33
