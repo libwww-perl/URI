@@ -96,7 +96,7 @@ __END__
 
 =head1 NAME
 
-URI::QueryParam - Additional query methods
+URI::QueryParam - Additional query methods for URIs
 
 =head1 SYNOPSIS
 
@@ -105,6 +105,11 @@ URI::QueryParam - Additional query methods
 
   $u = URI->new("", "http");
   $u->query_param(foo => 1, 2, 3);
+  print $u->query;    # prints foo=1&foo=2&foo=3
+
+  for my $key ($u->query_param) {
+      print "$key: ", join(", ", $u->query_param($key)), "\n";
+  }
 
 =head1 DESCRIPTION
 
@@ -112,18 +117,24 @@ Loading the C<URI::QueryParam> module will add some extra methods to
 URIs that support query methods.  These methods provide an alternative
 interface to the $u->query_form data.
 
-The provided param_* methods on pupose made identical to the interface
-of the corresponding C<CGI.pm> methods.
+The provided query_param_* methods on pupose made identical to the
+interface of the corresponding C<CGI.pm> methods.
 
 The following additional methods are made available:
 
 =over
 
-=item $u->query_param([$key, [$value,...])
+=item @keys = $u->query_param
 
-If $u->query_param is called with no argments it returns all the distinct
-parameter keys of the URI.  In scalar context it returns the number of
-distinct keys.
+=item @values = $u->query_param( $key )
+
+=item $first_value = $u->query_param( $key )
+
+=item $u->query_param( $key, $value,... )
+
+If $u->query_param is called with no argments it returns all the
+distinct parameter keys of the URI.  In scalar context it returns the
+number of distinct keys.
 
 When a $key argument is given it returns the parameter values with the
 given key.  In scalar context only the first parameter value is
@@ -144,18 +155,22 @@ can be explained as a more efficient version of:
 
 But it does not return the old value.
 
-=item $u->query_param_delete($key)
+=item @values = $u->query_param_delete($key)
+
+=item $first_value = $u->query_param_delete($key)
 
 This method will delete all key/value pairs with the given key.
 
 The old values are returned.  In scalar context only the first value
 is returned.
 
-=item $u->query_form_hash([$new]);
+=item $hashref = $u->query_form_hash
 
-This method will return a hash that represents the query key/value
-pairs.  If a key occurs multiple times, then the hash value will
-become an array reference.
+=item $u->query_form_hash( \%new_form )
+
+This method will return a reference to a hash that represents the
+query form's key/value pairs.  If a key occurs multiple times, then the hash
+value will become an array reference.
 
 Note that sequence information is lost.  It means that:
 
