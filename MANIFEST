@@ -16,6 +16,8 @@ URI/_server.pm
 URI/_userpass.pm
 URI/data.pm
 URI/file.pm
+URI/file/Base.pm
+URI/file/FAT.pm
 URI/file/Mac.pm
 URI/file/OS2.pm
 URI/file/Unix.pm
