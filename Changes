@@ -2,9 +2,13 @@
 
    Release 1.10
 
-   The $u->query_form method will not escape spaces in
-   keywords or values as '+' (instead of '%20').  This also
-   affect the $mailto_uri->header() method.
+   The $u->query_form method will now escape spaces in
+   form keys or values as '+' (instead of '%20').  This also
+   affect the $mailto_uri->header() method.  This is actually
+   the wrong thing to do, but this practise is now even
+   documented in official places like
+   http://www.w3.org/TR/html4/interact/forms.html#h-17.13.4.1
+   so we might as well follow the stream.
 
    URI::Heuristic did not work for domain-names with dashes '-'
    in them.  Fixed.
