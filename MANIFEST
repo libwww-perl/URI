@@ -1,4 +1,8 @@
 MANIFEST
 Makefile.PL
+README
 URI.pm
 URI/_generic.pm
+URI/http.pm
+URI/https.pm
+t/abs.t
