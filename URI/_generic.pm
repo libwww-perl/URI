@@ -1,6 +1,7 @@
 package URI::_generic;
 require URI;
-@ISA=qw(URI);
+require URI::_query;
+@ISA=qw(URI URI::_query);
 
 use strict;
 use URI::Escape qw(uri_unescape);
@@ -49,23 +50,6 @@ sub path
 	}
 
 	$$self .= $new_path . $rest;
-    }
-    $2;
-}
-
-sub query
-{
-    my $self = shift;
-    $$self =~ m,^([^?\#]*)(?:\?([^\#]*))?(.*)$,s or die;
-    
-    if (@_) {
-	my $q = shift;
-	$$self = $1;
-	if (defined $q) {
-	    $q =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
-	    $$self .= "?$q";
-	}
-	$$self .= $3;
     }
     $2;
 }
