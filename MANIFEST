@@ -52,6 +52,7 @@ t/old-absconf.t
 t/old-base.t
 t/old-relbase.t
 t/pop.t
+t/query.t
 t/roy-test.t
 t/roytest1.html
 t/roytest2.html
