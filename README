@@ -28,7 +28,8 @@ comp.lang.perl.modules USENET Newsgroup.  Bug reports and suggestions
 for improvements can be sent to the <libwww-perl@ics.uci.edu> mailing
 list.
 
-Copyright 1998 Gisle Aas.
+Copyright 1998-1999 Gisle Aas.
+Copyright 1998 Graham Barr.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
