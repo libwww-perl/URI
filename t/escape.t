@@ -33,8 +33,8 @@ print "not " unless uri_escape_utf8("|abcå") eq "%7Cabc%C3%A5";
 print "ok 7\n";
 
 if ($] < 5.008) {
-    print "ok 8  # skipped\n";
-    print "ok 9  # skipped\n";
+    print "ok 8  # skip perl-5.8 required\n";
+    print "ok 9  # skip perl-5.8 required\n";
 }
 else {
     eval { print uri_escape("abc" . chr(300)) };
