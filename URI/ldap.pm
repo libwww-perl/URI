@@ -10,23 +10,17 @@ use URI::Escape qw(uri_escape uri_unescape);
 
 use vars qw(@ISA $VERSION);
 
-$VERSION = "1.02";
+$VERSION = "1.99";
 
-if (! eval { require URI::_generic } && eval { require URI::URL::_generic }) {
-  @ISA = qw(URI::URL::_generic);
-  @URI::URL::ldap::ISA = qw(URI::ldap);
-}
-else {
-  require URI::_server;
-  @ISA = qw(URI::_server);
-}
+require URI::_server;
+@ISA=qw(URI::_server);
 
 sub default_port { 389 }
 
 sub _ldap_elem {
   my $self  = shift;
   my $elem  = shift;
-  my $query = $self->equery;
+  my $query = $self->query;
   my @bits  = (split(/\?/,defined($query) ? $query : ""),("")x4);
   my $old   = $bits[$elem];
 
@@ -34,7 +28,7 @@ sub _ldap_elem {
     $bits[$elem] = shift;
     $query = join("?",@bits);
     $query =~ s/\?+$//;
-    $self->equery($query);
+    $self->query($query);
   }
 
   $old;
@@ -42,15 +36,14 @@ sub _ldap_elem {
 
 sub dn {
   my $old = shift->path(@_);
-  return unless defined wantarray && defined $old;
   $old =~ s:^/::;
-  $old;
+  uri_unescape($old);
 }
 
 sub attributes {
   my $self = shift;
   my $old = _ldap_elem($self,0, @_ ? join(",", map { uri_escape($_) } @_) : ());
-  return unless defined wantarray && defined $old;
+  return $old unless wantarray;
   map { uri_unescape($_) } split(/,/,$old);
 }
 
@@ -58,14 +51,14 @@ sub scope {
   my $self = shift;
   my $old = _ldap_elem($self,1, map { uri_escape($_) } @_);
   return unless defined wantarray && defined $old;
-  uri_unescape($old);
+  uri_unescape($old) || "base";
 }
 
 sub filter {
   my $self = shift;
   my $old = _ldap_elem($self,2, map { uri_escape($_) } @_);
   return unless defined wantarray && defined $old;
-  uri_unescape($old);
+  uri_unescape($old) || "(objectClass=*)";
 }
 
 sub extensions {
@@ -77,7 +70,7 @@ sub extensions {
 			 keys %ext));
   }
   my $old = _ldap_elem($self,3, @ext);
-  return unless defined wantarray && defined $old;
+  return $old unless wantarray;
   map { uri_unescape($_) } map { /^([^=]+)=(.*)$/ } split(/,/,$old);
 }
 
@@ -87,67 +80,72 @@ __END__
 
 =head1 NAME
 
-URI::URL::ldap - LDAP Uniform Resource Locators
+URI::ldap - LDAP Uniform Resource Locators
 
 =head1 SYNOPSIS
 
-  use URI::URL::ldap;
+  use URI;
+
+  $uri = URI->new("ldap:$uri_string");
+  $dn     = $uri->dn;
+  $filter = $uri->filter;
+  @attr   = $uri->attributes;
+  $scope  = $uri->scope;
+  %extn   = $uri->extensions;
   
-  $url = URI::URL::ldap->new($url_string);
-  
-  $dn     = $url->dn;
-  $filter = $url->filter;
-  @attr   = $url->attributes;
-  $scope  = $url->scope;
-  %extn   = $url->extensions;
-  
-  $url = URI::URL::ldap->new;
-  
-  $url->host("ldap.itd.umich.edu");
-  $url->dn("o=University of Michigan,c=US");
-  $url->attributes(qw(postalAddress));
-  $url->scope('sub');
-  $url->filter('(cn=Babs Jensen)');
-  print $url->as_string,"\n";
+  $uri = URI->new("ldap:");  # start empty
+  $uri->host("ldap.itd.umich.edu");
+  $uri->dn("o=University of Michigan,c=US");
+  $uri->attributes(qw(postalAddress));
+  $uri->scope('sub');
+  $uri->filter('(cn=Babs Jensen)');
+  print $uri->as_string,"\n";
 
 =head1 DESCRIPTION
 
-C<URI::URL::ldap> provides an interface to parse an LDAP URL in its
-constituent parts and also build a URL as described in
-L<RFC-2255|http://www.cis.ohio-state.edu/htbin/rfc/rfc2255.html>
+C<URI::ldap> provides an interface to parse an LDAP URI in its
+constituent parts and also build a URI as described in
+RFC 2255.
 
 =head1 METHODS
 
-C<URI::URL::ldap> support all methods defined by L<URI::URL>, plus the
-following.
+C<URI::ldap> support all the generic and server methods defined by
+L<URI>, plus the following.
 
-Each of the methods can be used to set or get the value in the URL. If arguments
-are given then a new value will be set for the given part of the URL.
+Each of the following methods can be used to set or get the value in
+the URI. The values are passed in unescaped form.  None of these will
+return undefined values, but elements without a default can be empty.
+If arguments are given then a new value will be set for the given part
+of the URI.
 
 =over 4
 
-=item dn
+=item $uri->dn( [$new_dn] )
 
-Set or get the DN part of the URL
+Set or get the I<Distinguised Name> part of the URI.  The DN
+identifies the base object of the LDAP search.
 
-=item attributes
+=item $uri->attributes( [@new_attrs] )
 
-Set or get the list of attribute names which will be returned by the search.
+Set or get the list of attribute names which will be
+returned by the search.
 
-=item scope
+=item $uri->scope( [$new_scope] )
 
 Set or get the scope that the search will use. The value can be one of
-C<base>, C<one> or C<sub>. If none is given the it will default to C<base>
+C<"base">, C<"one"> or C<"sub">. If none is given then it will default
+to C<"base">.
 
-=item filter
+=item $uri->filter( [$new_filter] )
 
-Set or get the filter that the search will use.
+Set or get the filter that the search will use. If none is given then
+it will default to C<"(objectClass=*)">.
 
-=item extensions
+=item $uri->extensions( [$etype => $evalue,...] )
 
-Set or get the extensions used for the search. The list passed should be in the
-form type1, value1, type2, value2 ... This is also the form of list that
-will be returned.
+Set or get the extensions used for the search. The list passed should
+be in the form etype1 => evalue1, etype2 => evalue2,... This is also
+the form of list that will be returned.
 
 =back
 
@@ -158,6 +156,8 @@ L<RFC-2255|http://www.cis.ohio-state.edu/htbin/rfc/rfc2255.html>
 =head1 AUTHOR
 
 Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
+
+Slightly modified by Gisle Aas to fit into the URI distribution.
 
 =head1 COPYRIGHT
 
