@@ -1,3 +1,16 @@
+2002-09-02   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.22
+
+   Added URI::QueryParam module.  It contains some
+   extra methods to manipulate the query form
+   key/value pairs.
+
+   Added support for the sip: and sips: URI scheme.
+   Contributed by Ryan Kereliuk <ryker@ryker.org>.
+
+
+
 2002-08-04   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.21
