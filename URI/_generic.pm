@@ -126,13 +126,13 @@ sub abs
     if (my $scheme = $self->scheme) {
 	return $self unless $URI::ABS_ALLOW_RELATIVE_SCHEME;
 	$base = URI->new($base) unless ref $base;
-	return $self unless lc($scheme) eq lc($base->scheme);
+	return $self unless $scheme eq $base->scheme;
     }
 
     $base = URI->new($base) unless ref $base;
     my $abs = $self->clone;
     $abs->scheme($base->scheme);
-    return $abs if $$self =~ m,^(?:$URI::scheme_re:)?//,;
+    return $abs if $$self =~ m,^(?:$URI::scheme_re:)?//,o;
     $abs->authority($base->authority);
 
     my $path = $self->path;
