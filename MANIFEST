@@ -11,6 +11,7 @@ URI/URL.pm
 URI/WithBase.pm
 URI/_foreign.pm
 URI/_generic.pm
+URI/_ldap.pm
 URI/_login.pm
 URI/_query.pm
 URI/_segment.pm
@@ -30,6 +31,8 @@ URI/gopher.pm
 URI/http.pm
 URI/https.pm
 URI/ldap.pm
+URI/ldapi.pm
+URI/ldaps.pm
 URI/mailto.pm
 URI/mms.pm
 URI/news.pm
