@@ -141,7 +141,9 @@ given key.  In scalar context only the first parameter value is
 returned.
 
 If additional arguments are given they are used to update successive
-parameters with the given key.
+parameters with the given key.  If any of the values provided are
+array references then the array is dereferenced to get the actual
+values.
 
 =item $u->query_param_append($key, $value,...)
 
@@ -153,16 +155,21 @@ can be explained as a more efficient version of:
                    $u->query_param($key),
                    $value,...);
 
-But it does not return the old value.
+One difference is that this expression would return the old values
+of $key, while the query_param_append() method will not.
 
 =item @values = $u->query_param_delete($key)
 
 =item $first_value = $u->query_param_delete($key)
 
 This method will delete all key/value pairs with the given key.
-
 The old values are returned.  In scalar context only the first value
 is returned.
+
+Using the query_param_delete() method is slightly more efficient than
+the equivalent:
+
+   $u->query_param($key, []);
 
 =item $hashref = $u->query_form_hash
 
@@ -177,6 +184,8 @@ Note that sequence information is lost.  It means that:
    $u->query_form_hash($u->query_form_hash)
 
 is not necessarily a no-op as it might reorder the key/value pairs.
+The values returned by the query_param() method should stay the same
+though.
 
 =back
 
