@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.20 2001/10/26 22:55:26 gisle Exp $
+# $Id: Escape.pm,v 3.21 2002/07/19 00:44:56 gisle Exp $
 #
 
 package URI::Escape;
@@ -114,7 +114,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.20 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.21 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -154,11 +154,11 @@ sub uri_unescape
 	# not executed for the common case of a single argument
 	my @str = ($str, @_);  # need to copy
 	foreach (@str) {
-	  s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg
+	    s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 	}
 	return @str;
     }
-    $str =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+    $str =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg if defined $str;
     $str;
 }
 
