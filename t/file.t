@@ -3,13 +3,17 @@ print "1..10\n";
 use URI::file;
 
 @tests =  (
-[ "file",          "unix",     "win32",          "mac" ],
-[ "file:/foo/bar", "/foo/bar", "\\foo\\bar",     "foo:bar", ],
-[ "foo/bar",       "foo/bar",  "foo\\bar",       ":foo:bar",],
-[ "file://foo/bar","!/bar",     "\\\\foo\\bar",  "!bar"],
-[ "../%2E%2E",     undef,      undef,            "::.."],
-[ "file://a:/",    "/",        "A:\\",           undef],
-[ "file:/",        "/",        "\\",             undef],
+[ "file",          "unix",       "win32",         "mac" ],
+[ "file:/foo/bar", "/foo/bar",   "\\foo\\bar",    "!foo:bar", ],
+[ "foo/bar",       "foo/bar",    "foo\\bar",      ":foo:bar",],
+[ "file://foo/bar","!//foo/bar", "\\\\foo\\bar",  "!foo:bar"],
+[ "file://a:/",    "!//a:/",     "!A:\\",         "a:"],
+[ "file:/",        "/",          "\\",             undef],
+[ "file://A:relative/", "!//A:relative/", "A:",    undef],
+[ ".",             ".",          ".",              ":"],
+[ "..",            "..",         "..",             "::"],
+[ "%2E",           "!.",          "!.",            ":."],
+[ "../%2E%2E",     "!../..",      "!..\\..",       "::.."],
 );
 
 @os = @{shift @tests};
