@@ -182,7 +182,7 @@ sub rel {
 
     #my($scheme, $auth, $path) = @{$rel}{qw(scheme authority path)};
     my $scheme = $rel->scheme;
-    my $auth   = $rel->authority;
+    my $auth   = $rel->canonical->authority;
     my $path   = $rel->path;
 
     if (!defined($scheme) && !defined($auth)) {
@@ -192,7 +192,7 @@ sub rel {
 
     #my($bscheme, $bauth, $bpath) = @{$base}{qw(scheme authority path)};
     my $bscheme = $base->scheme;
-    my $bauth   = $base->authority;
+    my $bauth   = $base->canonical->authority;
     my $bpath   = $base->path;
 
     for ($bscheme, $bauth, $auth) {
