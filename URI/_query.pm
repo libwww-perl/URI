@@ -8,7 +8,7 @@ sub query
 {
     my $self = shift;
     $$self =~ m,^([^?\#]*)(?:\?([^\#]*))?(.*)$,s or die;
-    
+
     if (@_) {
 	my $q = shift;
 	$$self = $1;
@@ -31,16 +31,19 @@ sub query_form {
         while (my($key,$vals) = splice(@_, 0, 2)) {
             $key = '' unless defined $key;
 	    $key =~ s/([;\/?:@&=+,\$%])/$URI::Escape::escapes{$1}/g;
+	    $key =~ s/ /+/g;
 	    $vals = [ref($vals) ? @$vals : $vals];
             for my $val (@$vals) {
                 $val = '' unless defined $val;
 		$val =~ s/([;\/?:@&=+,\$%])/$URI::Escape::escapes{$1}/g;
+                $val =~ s/ /+/g;
                 push(@query, "$key=$val");
             }
         }
         $self->query(join('&', @query));
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
+    return unless $old =~ /=/; # not a form
     map { s/\+/ /g; uri_unescape($_) }
          map { /=/ ? split(/=/, $_, 2) : ($_ => '')} split(/&/, $old);
 }
