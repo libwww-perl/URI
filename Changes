@@ -1,3 +1,17 @@
+1999-08-03   Gisle Aas <gisle@aas.no>
+
+   Release 1.04
+
+   Avoid testing for defined(@ISA) and defined(%class::).  Patch
+   by Nathan Torkington <gnat@frii.com>.
+
+   $uri->abs() did wrong when the fragment contained a "?"
+   character.
+
+   Typo in URI::ldap spotted by Graham Barr.
+
+
+
 1999-06-24   Gisle Aas <gisle@aas.no>
 
    Release 1.03
