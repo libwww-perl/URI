@@ -36,8 +36,17 @@ sub path
 	my $new_path = shift;
 	$new_path = "" unless defined $new_path;
 	$new_path =~ s/([^$URI::ppchar])/$URI::Escape::escapes{$1}/go;
-	$$self .= "/" if length($$self) &&
-                         length($new_path) && $new_path !~ m,^/,;
+	if (length($$self)) {
+	    $$self .= "/" if length($new_path) && $new_path !~ m,^/,;	    
+	} else {
+	    if ($new_path =~ m,^//,) {
+		warn "Path starting with double slash is confusing";
+	    } elsif ($new_path =~ m,^[^:/?\#]+:,) {
+		warn "Path might look like scheme, './' prepended";
+		$new_path = "./$newpath";
+	    }
+	}
+
 	$$self .= $new_path . $rest;
     }
     $2;
