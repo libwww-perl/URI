@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.24"; # $Date: 2003/07/24 15:02:12 $
+$VERSION = "1.24"; # $Date: 2003/07/24 15:23:19 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -862,11 +862,14 @@ As an alternative to this module, the following (official) regular
 expression can be used to decode a URI:
 
   my($scheme, $authority, $path, $query, $fragment) =
-  $uri =~ m|^(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?|;
+  $uri =~ m|(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?|;
+
+The C<URI::Split> module provide the function uri_split() as a
+readable alternative.
 
 =head1 SEE ALSO
 
-L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
+L<URI::file>, L<URI::WithBase>, L<URI::Escape>, L<URI::Split>, L<URI::Heuristic>
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
