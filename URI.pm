@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.28"; # $Date: 2003/11/30 13:52:35 $
+$VERSION = "1.28"; # $Date: 2003/12/31 10:58:56 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -768,6 +768,13 @@ setting of other mail header fields and the message body.
 C<URI> objects belonging to the mailto scheme support the common
 methods and the generic query methods.  In addition they support the
 following mailto specific methods: $uri->to, $uri->headers.
+
+=item B<mms>:
+
+The I<mms> URL specification can be found at L<http://sdp.ppona.com/>
+C<URI> objects belonging to the mms scheme support the common,
+generic, and server methods, with the exception of userinfo and
+query-related sub-components.
 
 =item B<news>:
 

@@ -31,6 +31,7 @@ URI/http.pm
 URI/https.pm
 URI/ldap.pm
 URI/mailto.pm
+URI/mms.pm
 URI/news.pm
 URI/nntp.pm
 URI/pop.pm
@@ -60,6 +61,7 @@ t/http.t
 t/ldap.t
 t/mailto.t
 t/mix.t
+t/mms.t
 t/news.t
 t/old-absconf.t
 t/old-base.t
