@@ -5,7 +5,8 @@ sub usage {
     die "Usage: $prog <uri> [<method> [<args>]...]\n";
 }
 
-my $uri = shift || usage();
+usage() unless @ARGV;
+my $uri = shift;
 my $orig = $uri;
 
 require URI;
@@ -17,12 +18,26 @@ $uri = URI->new(@ctor_arg);
 
 if (@ARGV) {
     my $method = shift;
+    my $list_context = ($method =~ s/^\@//);
     #print "URI->new(\"$uri\")->$method ==> ";
-    my $result = $uri->$method(@ARGV);
-    if (defined $result) {
-	print "$result\n";
-    } else {
-	print "<undef>\n";
+    for (@ARGV) {
+	undef($_) if $_ eq "UNDEF";
     }
+
+    my @result;
+    if ($list_context) {
+	@result = $uri->$method(@ARGV);
+    } else {
+	@result = scalar($uri->$method(@ARGV));
+    }
+
+    for (@result) {
+	if (defined) {
+	    $_ = "«$_»" if /^\s*$/;
+	} else {
+	    $_ = "<undef>";
+	}
+    }
+    print join(" ", @result), "\n";
 }
 print "$uri\n" unless $orig eq $uri;
