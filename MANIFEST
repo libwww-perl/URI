@@ -68,6 +68,7 @@ t/mms.t
 t/news.t
 t/old-absconf.t
 t/old-base.t
+t/old-file.t
 t/old-relbase.t
 t/pop.t
 t/query.t
