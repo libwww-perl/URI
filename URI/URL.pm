@@ -197,6 +197,97 @@ This module is provided for backwards compatibility with modules that
 depend on the interface provided by the C<URI::URL> class that used to
 be distributed with the libwww-perl library.
 
+The following differences compared to the C<URI> class interface exists:
+
+=over 3
+
+=item *
+
+The URI::URL module exports the url() function as an alternative
+constructor interface.
+
+=item *
+
+The constructor takes an optional $base argument.  See L<URI::WithBase>.
+
+=item *
+
+The URI::URL->newlocal class method is the same as URI::file->new_abs
+
+=item *
+
+URI::URL::strict(1)
+
+=item *
+
+$url->print_on method
+
+=item *
+
+$url->crack method
+
+=item *
+
+$url->full_path; same as ($uri->abs_path || "/")
+
+=item *
+
+$url->netloc; same as $uri->authority
+
+=item *
+
+$url->epath, $url->equery; same as $uri->path, $uri->query
+
+=item *
+
+$url->path and $url->query pass unescaped strings.
+
+=item *
+
+$url->path_components; same as $uri->path_segments (if you don't
+consider path segment parameters).
+
+=item *
+
+$url->params and $url->eparams methods.
+
+=item *
+
+$url->base method.  See L<URI::WithBase>.
+
+=item *
+
+$url->abs and $url->rel have an optional $base argument.  See
+L<URI::WithBase>.
+
+=item *
+
+$url->frag; same as $uri->fragment
+
+=item *
+
+$url->keywords; same as $uri->query_keywords;
+
+=item *
+
+$url->localpath with friends map to $uri->file
+
+=item *
+
+$url->address and $url->encoded822addr; same as $uri->to for mailto URI.
+
+=item *
+
+$url->groupart method for news URI.
+
+=item *
+
+$url->article; same as $uri->message
+
+=back
+
+
+
 =head1 SEE ALSO
 
 L<URI>, L<URI::WithBase>
