@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.11 1998/09/12 11:13:37 aas Exp $
+# $Id: Escape.pm,v 3.12 1998/09/12 11:38:53 aas Exp $
 #
 
 package URI::Escape;
@@ -19,16 +19,27 @@ URI::Escape - Escape and unescape unsafe characters
 =head1 DESCRIPTION
 
 This module provide functions to escape and unescape URI strings as
-defined by RFC 2396.
+defined by RFC 2396.  URIs consist of a restricted set of characters,
+denoted as C<uric> in RFC 2396.  The restricted set of characters
+consists of digits, letters, and a few graphic symbols chosen from
+those common to most of the character encodings and input facilities
+available to Internet users:
 
+  "A" .. "Z", "a" .. "z", "0" .. "9",
+  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",",   # reserved
+  "-", "_", ".", "!", "~", "*", "'", "(", ")"
 
-URIs consist of a restricted set of characters, primarily chosen to
-aid transcribability and usability both in computer systems and in
-non-computer communications.
+In addition any byte (octet) can be represented in a URI by an escape
+sequence; a triplet consisting of the character "%" followed by two
+hexadecimal digits.  Bytes can also be represented directly by a
+character using the US-ASCII character for that octet (iff the
+character is part of C<uric>).
 
-In addition any byte can be represented by an escape sequence; a
-triplet consisting of the character "%" followed by two hexadecimal
-digits.
+Some of the C<uric> characters are I<reserved> for usage as delimiters
+or part of certains URI components.  These must be escaped if they are
+to be treated as ordinary byte data.  Read RFC 2396 for further details.
+
+The functions provided (and exported by default) from this module are:
 
 =over 4
 
@@ -47,17 +58,12 @@ character class (between [ ]).  E.g.:
   "^A-Za-z"                     # everything not a letter
 
 The default set of characters to be escaped is all those which are
-I<not> part of the C<uric> character class as defined by RFC 2396,
-i.e. everything not mentioned below:
-
-  "A" .. "Z", "a" .. "z", "0" .. "9",
-  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",",
-  "-", "_", ".", "!", "~", "*", "'", "(", ")"
+I<not> part of the C<uric> character class shown above.
 
 =item uri_unescape($string)
 
-Returns a string with all %XX sequences replaced with the actual
-character.
+Returns a string with all %XX sequences replaced with the actual byte
+(octet).
 
 This does the same as:
 
@@ -69,12 +75,16 @@ cleaner and is a few characters less to type.
 
 In a simple benchmark test I made I got something like 40% slowdown by
 calling the function (instead of the inline RE above) if a few chars
-where unescaped and something like 700% slowdown if none where.
+where unescaped and something like 700% slowdown if none where.  If
+you are going to unescape a lot of times it might be a good idea to
+inline the RE.
 
 =back
 
-The module can also export the %escapes hash which contains the
-mapping from all characters to the corresponding escape code.
+The module can also export the C<%escapes> hash which contains the
+mapping from all 256 bytes to the corresponding escape code.  Lookup
+in this hash is faster than to evaluate C<sprintf("%%%02X", ord($byte))>
+each time.
 
 =head1 SEE ALSO
 
@@ -97,7 +107,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.11 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.12 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
