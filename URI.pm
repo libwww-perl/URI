@@ -1,10 +1,10 @@
-package URI;  # $Id: URI.pm,v 1.15 1998/09/14 15:01:55 aas Exp $
+package URI;  # $Id: URI.pm,v 1.16 1998/09/14 18:59:04 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
-$VERSION = "0.09_01";
+$VERSION = "0.09_02";
 
 $DEFAULT_SCHEME ||= "http";
 
@@ -445,17 +445,44 @@ common/generic syntax for hierarchical namespaces.
 
 =item $uri->authority( [$new_authority] )
 
+This method can be used to get and set the escaped authority component
+of the $uri.
+
 =item $uri->path( [$new_path] )
+
+This method can be used to get and set the escaped path component of
+the $uri.  The path will never be undefined, but it can be the empty
+string.
 
 =item $uri->path_query( [$new_path_query] )
 
+This method can be used to get and set the escaped path and query
+components as a single entity.  The path and the query should be
+separated by a "?" character.
+
 =item $uri->path_segments( [$segment,...] )
+
+This method can be used to get and set the path.  In scalar context it
+returns the same value as $uri->path.  In list context it will return
+the unescaped path segments that make up the path.  Path segments that
+have parameters are returned as an anonymous array, but this array use
+overloading, so it can be treated as a string too.
 
 =item $uri->query( [$new_query] )
 
+This method can be used to get and set the escaped query component of
+the $uri.
+
 =item $uri->query_form( [$key => $value,...] )
 
+This method can be used to get and set query components that use the
+I<application/x-www-form-urlencoded> format.
+
 =item $uri->query_keywords( [$keywords,...] )
+
+This method can be used to get and set query components that use the
+keywords separated by "+" format.
+
 
 =back
 
@@ -469,13 +496,24 @@ methods.
 
 =item $uri->userinfo( [$new_userinfo] )
 
+This method can be used to get and set the escaped userinfo part of
+the authority componenent.
+
 =item $uri->host( [$new_host] )
+
+This method can be used to get and set the unescaped hostname.
 
 =item $uri->port( [ $new_port] )
 
-$uri->_port()
+This method will return the port specified in the URI or the default
+port for the URI scheme if no port is specified. If you don't want the
+default port you can use the $uri->_port method instead.
 
-=item $uri->default_port;
+=item $uri->default_port
+
+This method will return the default port the URI scheme that $uri
+belongs to.  For http this will be the number 80, for ftp this will be
+the number 21, etc.
 
 =back
 
@@ -624,5 +662,7 @@ Cutter.
 C<URI::URL> was developed by Gisle Aas, Tim Bunce, Roy Fielding and
 Martijn Koster with input from other people on the libwww-perl mailing
 list.
+
+C<URI> and related subclasses was developed by Gisle Aas.
 
 =cut
