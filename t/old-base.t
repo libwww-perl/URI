@@ -582,7 +582,7 @@ sub escape_test {
     $url->_expect('as_string',
 		  'http%3A%2F%2Fweb%2Ftry%20%25%3F%23%22%20those');
 
-    my $all = pack('c*',0..255);
+    my $all = pack('C*',0..255);
     my $esc = uri_escape($all);
     my $new = uri_unescape($esc);
     die "uri_escape->uri_unescape mismatch" unless $all eq $new;
