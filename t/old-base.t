@@ -678,7 +678,7 @@ sub newlocal_test {
 
     # Test access methods for file URLs
     $url = new URI::URL 'file:/c:/dos';
-    $url->_expect('dos_path', 'C:\\dos');
+    $url->_expect('dos_path', 'C:\\DOS');
     $url->_expect('unix_path', '/c:/dos');
     #$url->_expect('vms_path', '[C:]DOS');
     $url->_expect('mac_path',  'UNDEF');
@@ -707,7 +707,7 @@ sub newlocal_test {
     $url = new URI::URL 'file:foo/b%61r/Note.txt';
     $url->_expect('unix_path', 'foo/bar/Note.txt');
     $url->_expect('mac_path', ':foo:bar:Note.txt');
-    $url->_expect('dos_path', 'foo\\bar\\Note.txt');
+    $url->_expect('dos_path', 'FOO\\BAR\\NOTE.TXT');
     #$url->_expect('vms_path', '[.FOO.BAR]NOTE.TXT');
 
     # The VMS path found in RFC 1738 (section 3.10)
