@@ -9,7 +9,11 @@ my $uri = shift || usage();
 my $orig = $uri;
 
 require URI;
-$uri = URI->new($uri);
+
+my @ctor_arg = ($uri);
+push(@ctor_arg, shift) while @ARGV && $ARGV[0] =~ s/^\+//;
+
+$uri = URI->new(@ctor_arg);
 
 if (@ARGV) {
     my $method = shift;
@@ -22,4 +26,3 @@ if (@ARGV) {
     }
 }
 print "$uri\n" unless $orig eq $uri;
-
