@@ -3,7 +3,7 @@
    Release 1.24
 
    Relative URIs that start with the query string directly (i.e. "?q")
-   are not absolutized as specified in rfc2396bis.  See:
+   are now absolutized as specified in rfc2396bis.  See:
    http://www.apache.org/~fielding/uri/rev-2002/issues.html#003-relative-query
    
    Added URI::Split module.  It's a lightweight module that can be
