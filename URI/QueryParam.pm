@@ -45,7 +45,7 @@ sub query_param {
 	$self->query_form(@new);
     }
 
-    return wantarray ? @old[@i] : @i ? $old[$i[0]] : undef;
+    return wantarray ? @old[map $_+1, @i] : @i ? $old[$i[0]+1] : undef;
 }
 
 sub query_param_append {
