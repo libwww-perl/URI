@@ -1,5 +1,25 @@
 1998-09-08   Gisle Aas <aas@sn.no>
 
+   Release 0.06
+
+   Implemented gopher URLs
+
+   Implemented ftp URLs
+
+   Second ctor argument can be a plain scheme name.  If it is an
+   object, then we use the class of the object as implementor.
+
+   Protect literal % in various places by escaping
+
+   Path segments with parameters is not arrays of class URI::_segment,
+   which overload stingify operator.
+
+   URI::http->canonical will now unescape unreserved characters.
+
+
+
+1998-09-08   Gisle Aas <aas@sn.no>
+
    Release 0.05
 
    Implemented news URLs (together with snews/nntp)
