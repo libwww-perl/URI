@@ -37,6 +37,8 @@ URI/rsync.pm
 URI/snews.pm
 URI/ssh.pm
 URI/telnet.pm
+URI/urn.pm
+URI/urn/isbn.pm
 rfc2396.txt
 t/abs.t
 t/clone.t
