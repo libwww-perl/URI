@@ -1,3 +1,13 @@
+2000-02-14   Gisle Aas <gisle@aas.no>
+
+   Release 1.05
+
+   QNX file support by Norton Allen <allen@huarp.harvard.edu>.
+
+   Support for rsync:-URI by Dave Beckett <D.J.Beckett@ukc.ac.uk>
+
+
+
 1999-08-03   Gisle Aas <gisle@aas.no>
 
    Release 1.04
