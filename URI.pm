@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.2 1998/04/09 12:51:31 aas Exp $
+package URI;  # $Id: URI.pm,v 1.3 1998/04/09 17:04:58 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -40,11 +40,11 @@ sub new
 	$self->base($base) if $base
     } else {
 	$url = "" unless defined $url;
-        # RFC 1738 appendix suggest that we just ignore extra whitespace
+	# Get rid of potential wrapping
+        $url =~ s/^<(?:URL:)?(.*)>$/$1/;  # 
+	$url =~ s/^"(.*)"$/$1/;
         $url =~ s/^\s+//;
 	$url =~ s/\s+$//;
-        # Also get rid of any <URL: > wrapper
-        $url =~ s/^<(?:URL:)?(.*)>$/$1/;
 
 	# We need a scheme to determine which class to use
         my $scheme;
