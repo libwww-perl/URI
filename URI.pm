@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.12 1998/09/12 18:45:09 aas Exp $
+package URI;  # $Id: URI.pm,v 1.13 1998/09/13 20:45:35 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -261,29 +261,130 @@ sub rel { $_[0]; }
 
 __END__
 
-# This is set up as an alias for various methods
-sub _bad_access_method
-{
-    my $self = shift;
-    my $type = ref($self) || "URI";
-    if ($STRICT) {
-	Carp::croak("Illegal method called for $type");
-    }
-    if ($^W && @_) {
-	Carp::carp("Setting not effective for $type");
-    }
-    undef;
-}
+=head1 NAME
 
-# generic-URI accessor methods
-*authority      = \&_bad_access_method;
-*userinfo       = \&_bad_access_method;
-*host           = \&_bad_access_method;
-*port           = \&_bad_access_method;
-*abs_path_query = \&_bad_access_method;
-*path           = \&_bad_access_method;
-*path_segments  = \&_bad_access_method;
-*query          = \&_bad_access_method;
+URI - Uniform Resource Identifiers (absolute and relative)
 
+=head1 SYNOPSIS
 
-1;
+ $u1 = URI->new("http://www.perl.com");
+ $u2 = URI->new("foo", "http");
+ $u3 = $u2->abs($u1);
+ $u4 = $u3->clone;
+ $u5 = URI->new("HTTP://WWW.perl.com:80")->canonical;
+
+ $str = $u->as_string;
+ $str = "$u";
+
+ $scheme = $u->scheme;
+ $opaque = $u->opaque;
+ $path   = $u->path;
+ $frag   = $u->fragment;
+
+ $u->scheme("ftp");
+ $u->host("ftp.perl.com");
+ $u->path("cpan/");
+
+=head1 DESCRIPTION
+
+This module implements the C<URI> class.  Objects of this class
+represent Uniform Resource Identifiers (URI) references as specified
+in RFC 2396.
+
+A Uniform Resource Identifier is a compact string of characters for
+identifying an abstract or physical resource.  A Uniform Resource
+Identifier can be further classified either a Uniform Resource Locator
+(URL) or a Uniform Resource Name (URN).  The distinction between URL
+and URN is not reflected in the abstractions provided by the C<URI>
+class.
+
+The following methods are provided:
+
+=over 4
+
+=item $uri = URI->new( $str, [$scheme] )
+
+=item $uri->clone
+
+=item $uri->scheme( [$new_scheme] )
+
+$uri->_scheme
+
+=item $uri->opaque( [$new_opaque] )
+
+=item $uri->path( [$new_path] )
+
+=item $uri->fragment( [$new_frag] )
+
+=item $uri->as_string
+
+=item $uri->eq( $other_uri )
+
+=item $uri->abs( $base_uri )
+
+=item $uri->rel( $base_uri )
+
+=back
+
+Generic methods:
+
+=over 4
+
+=item $uri->query( [$new_query] )
+
+=item $uri->query_form( [$key => $value,...] )
+
+=item $uri->query_keywords( [$keywords,...] )
+
+=item $uri->authority( [$new_authority] )
+
+=item $uri->path_query( [$new_path_query] )
+
+=item $uri->path_segments( [$segment,...] )
+
+=back
+
+Server methods:
+
+=over 4
+
+=item $uri->userinfo( [$new_userinfo] )
+
+=item $uri->host( [$new_host] )
+
+=item $uri->port( [ $new_port] )
+
+$uri->_port()
+
+=item $uri->default_port;
+
+=back
+
+=head1 SEE ALSO
+
+L<URI::WithBase>, L<URI::Escape>, L<URI::Heuristic>
+
+RFC 2396
+
+=head1 COPYRIGHT
+
+Copyright 1995-1998 Gisle Aas.
+
+Copyright 1995 Martijn Koster.
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHORS / ACKNOWLEDGMENTS
+
+This module is based on the C<URI::URL> module, which in turn was
+(distantly) based on the C<wwwurl.pl> code in the libwww-perl for
+perl4 developed by Roy Fielding, as part of the Arcadia project at the
+University of California, Irvine, with contributions from Brooks
+Cutter.
+
+C<URI::URL> was developed by Gisle Aas, Tim Bunce, Roy Fielding and
+Martijn Koster with input from other people on the libwww-perl mailing
+list.
+
+=cut
