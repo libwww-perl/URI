@@ -1,0 +1,11 @@
+^blib/
+\.old$
+\.bak$
+Makefile$
+^MANIFEST.SKIP$
+^#
+/#
+~$
+\b(RCS|CVS)/[^/]+$
+\.cvsignore$
+pm_to_blib$
