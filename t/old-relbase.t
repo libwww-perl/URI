@@ -1,4 +1,4 @@
-print "1..3\n";
+print "1..5\n";
 
 use URI::URL;
 
@@ -22,3 +22,13 @@ print "ok 2\n";
 print "not " unless $a3 eq "http://www.acme.com/foo/zoo/foo";
 print "ok 3\n";
 
+# We used to have problems with URI::URL as the base class :-(
+$u4 = url("foo", "URI::URL");
+$a4 = $u4->abs;
+print "$a4\n";
+print "not " unless $u4 eq "foo" && $a4 eq "uri:/foo";
+print "ok 4\n";
+
+# Test new_abs for URI::URL objects
+print "not " unless URI::URL->new_abs("foo", "http://foo/bar") eq "http://foo/foo";
+print "ok 5\n";
