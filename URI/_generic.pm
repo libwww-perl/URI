@@ -7,6 +7,9 @@ use strict;
 use vars qw(@ISA);
 use URI::Escape qw(uri_unescape);
 
+URI::_generic->make_accessor_methods(qw(authority path query));
+
+
 sub _parse
 {
     my URI::_generic $self = shift;
@@ -24,6 +27,7 @@ sub _parse
     $self->{'query'}     = $4  if defined $4;
     $self->{'fragment'}  = $5  if defined $5;
 }
+
 
 sub _as_string
 {
@@ -61,19 +65,6 @@ sub _as_string
     $str;
 }
 
-# Create a few accessor methods...
-use vars qw(%FIELDS);
-my $code = "";
-for (qw(authority path query)) {
-    my $fno = $FIELDS{$_} || die "No such field: $_";
-    $code .= "sub $_ { shift->_elem($fno, \@_) };\n";
-}
-print "$code\n";
-eval $code; die $@ if $@;
-
-#sub authority { shift->_elem("authority", @_) } #XXX
-#sub path      { shift->_elem("path",      @_) } #XXX
-#sub query     { shift->_elem("query",     @_) } #XXX
 
 sub userinfo
 {
@@ -94,6 +85,7 @@ sub userinfo
     return undef if !defined($old) || $old !~ /^([^@]*)@/;
     return $1;
 }
+
 
 sub host
 {
@@ -118,6 +110,7 @@ sub host
     return $1;
 }
 
+
 sub port
 {
     my URI::_generic $self = shift;
@@ -135,7 +128,9 @@ sub port
     $self->default_port;
 }
 
+
 sub default_port { undef }
+
 
 sub abs_path
 {
@@ -163,6 +158,7 @@ sub abs_path
     $path;
 }
 
+
 sub path_segments
 {
     my URI::_generic $self = shift;
@@ -185,12 +181,14 @@ sub path_segments
     map {/;/ ? _split_segment($_) : uri_unescape($_) } split('/', $path, -1);
 }
 
+
 sub _split_segment
 {
     my @segment = split(';', shift, -1);
     $segment[0] = uri_unescape($segment[0]);
     \@segment;
 }
+
 
 sub abs
 {

@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.6 1998/09/03 14:12:06 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7 1998/09/03 20:58:38 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -134,7 +134,7 @@ sub implementor
     unless (defined @{"${ic}::ISA"}) {
         # Try to load it
         eval "require $ic";
-        die $@ if $@ && $@ !~ /Can\'t locate/;
+        die $@ if $@ && $@ !~ /Can\'t locate $ic/;
         return unless defined @{"${ic}::ISA"};
     }
 
@@ -180,24 +180,37 @@ sub scheme
     $old;
 }
 
-sub _elem
+sub _accessor
 {
-    my URI $self = shift;
-    my $idx  = shift;
-    my $old = $self->[$idx];
-    if ($@) {
-	$self->[$idx] = shift;
-	$self->{xstr} = undef;
-    }
-    $old;
+    my $class = shift;
+    my $fno   = shift;
+    sub {
+	my URI $self = shift;
+	print "$self --> @_\n";
+	my $old = $self->[$fno];
+	if (@_) {
+	    $self->[$fno] = shift;
+	    $self->{xstr} = undef;
+	}
+	$old;
+    };
 }
 
-# Make accessor function for 'fragment'
-use vars qw(%FIELDS);
-my $code = "sub fragment { shift->_elem($FIELDS{fragment}, \@_); }";
-#print "$code\n";
-eval $code; die $@ if $@;
+sub make_accessor_methods
+{
+    my $class = shift;
+    no strict 'refs';
+    my $fields = \%{"$class\::FIELDS"};
+    my $field;
+    for $field (@_) {
+	my $fno = $fields->{$field} ||
+	    die "No field called '$field' for class $class";
+	#print "$class\::$field --> $fno\n";
+	*{"$class\::$field"} = $class->_accessor($fno);
+    }
+}
 
+URI->make_accessor_methods(qw(fragment));
 
 
 sub as_string
