@@ -4,6 +4,7 @@ Makefile.PL
 README
 URI.pm
 URI/_generic.pm
+URI/_server.pm
 URI/http.pm
 URI/https.pm
 t/abs.t
