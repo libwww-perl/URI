@@ -18,6 +18,8 @@ sub split_path
 	    @pre = ("..") x (length($1) - 1);
 	}
 	return(@pre, "") unless length($path);
+	# XXX if $path now contains a sequence of "." and ".." we are
+	# now in trouble...
     } else {
 	@pre = ("");
     }
