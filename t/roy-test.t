@@ -35,4 +35,5 @@ for $i (1..5) {
            $no++;
        }
    }
+   close(FILE);
 }
