@@ -23,7 +23,10 @@ sub split_path
     } else {
 	@pre = ("");
     }
-    (@pre, split(/:/, $path, -1));
+    (@pre, map { ($_ eq ".")  ? "%2E"    :
+                 ($_ eq "..") ? "%2E%2E" :
+		                do { s/%/%25/g; s/;/%3B/g; $_ }
+               } split(/:/, $path, -1));
 }
 
 sub file
