@@ -32,7 +32,7 @@ sub _group
     $old =~ s,^/,,;
     if ($old =~ s,/(.*),, && wantarray) {
 	my $extra = $1;
-	return uri_unescape($old), split(/-/, $extra);
+	return (uri_unescape($old), split(/-/, $extra));
     }
     uri_unescape($old);
 }
@@ -44,9 +44,9 @@ sub group
     if (@_) {
 	die "Group name can't contain '\@'" if $_[0] =~ /\@/;
     }
-    my $old = $self->_group(@_);
-    return if $old =~ /\@/;
-    return $old;
+    my @old = $self->_group(@_);
+    return if $old[0] =~ /\@/;
+    wantarray ? @old : $old[0];
 }
 
 sub message
