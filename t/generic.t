@@ -14,7 +14,7 @@ print "not " unless "$foo" eq "Foo:opaque#frag";
 print "ok 3\n";
 
 # Try accessors
-print "not " unless $foo->scheme eq "Foo";
+print "not " unless $foo->_scheme eq "Foo" && $foo->scheme eq "foo";
 print "ok 4\n";
 
 print "not " unless $foo->opaque eq "opaque";
@@ -29,7 +29,7 @@ print "ok 7\n";
 # Try modificators
 $old = $foo->scheme("bar");
 
-print "not " unless $old eq "Foo" && $foo eq "bar:opaque#frag";
+print "not " unless $old eq "foo" && $foo eq "bar:opaque#frag";
 print "ok 8\n";
 
 $old = $foo->scheme("");
