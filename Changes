@@ -3,7 +3,7 @@
    Release 1.23
 
    Use anchored DNS lookups in URI::Heuristic as suggested
-   by Malcolm Weir <malc@gelt.org>
+   by Malcolm Weir <malc@gelt.org>.
 
 
 
