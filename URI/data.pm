@@ -19,11 +19,13 @@ sub media_type
     if (@_) {
 	my $new = shift;
 	$new = "" unless defined $new;
+	$new =~ s/,/%2C/g;  # protect ,
 	$base64 = "" unless defined $base64;
 	$opaque =~ s/^[^,]*,?/$new$base64,/;
 	$self->opaque_part($opaque);
     }
-    $old || "text/plain;charset=US-ASCII";
+    return uri_unescape($old) if $old;  # media_type can't really be "0"
+    "text/plain;charset=US-ASCII";      # default type
 }
 
 sub data
