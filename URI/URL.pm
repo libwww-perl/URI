@@ -201,13 +201,13 @@ This module is provided for backwards compatibility with modules that
 depend on the interface provided by the C<URI::URL> class that used to
 be distributed with the libwww-perl library.
 
-The following differences compared to the C<URI> class interface exists:
+The following differences compared to the C<URI> class interface exist:
 
 =over 3
 
 =item *
 
-The URI::URL module exports the url() function as an alternative
+The URI::URL module exports the url() function as an alternate
 constructor interface.
 
 =item *

@@ -90,7 +90,7 @@ URI::data - URI that contain immediate data
 
 =head1 DESCRIPTION
 
-The C<URI::data> class support C<URI> objects belonging to the I<data>
+The C<URI::data> class supports C<URI> objects belonging to the I<data>
 URI scheme.  The I<data> URI scheme is specified in RFC 2397.  It
 allows inclusion of small data items as "immediate" data, as if it had
 been included externally.  Examples:
@@ -121,7 +121,7 @@ C<"text/plain;charset=US-ASCII"> is returned.
 This method can be used to get or set the data contained in the URI.
 The data is passed unescaped (in binary form).  The decision about
 whether to base64 encode the data in the URI is taken automatically
-based on what encoding produce the shortest URI string.
+based on what encoding produces the shortest URI string.
 
 =back
 

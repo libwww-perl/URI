@@ -119,12 +119,12 @@ This method can be used to get or set the value of the base attribute.
 
 =item $uri->abs( [$base_uri] )
 
-The $base_uri argument is now made optional as the object carry it's
+The $base_uri argument is now made optional as the object carries it's
 base with it.
 
 =item $uri->rel( [$base_uri] )
 
-The $base_uri argument is now made optional as the object carry it's
+The $base_uri argument is now made optional as the object carries it's
 base with it.
 
 =back

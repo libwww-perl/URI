@@ -92,14 +92,14 @@ URI::file - URI that map to local file names
 
 =head1 DESCRIPTION
 
-The C<URI::file> class support C<URI> objects belonging to the I<file>
+The C<URI::file> class supports C<URI> objects belonging to the I<file>
 URI scheme.  This scheme allows us to map the conventional file names
 found on various computer systems to the URI name space.  An old
 specification of the I<file> URI scheme is found in RFC 1738.  Some
-more old background information is also to be found in RFC 1630. Newer
-specifications are as far as I know missing.
+older background information is also in RFC 1630. There are no newer
+specifications as far as I know.
 
-If you want to simply construct I<file> URI objects from URI strings
+If you want simply to construct I<file> URI objects from URI strings,
 use the normal C<URI> constructor.  If you want to construct I<file>
 URI objects from the actual file names used by various systems, then
 use one of the following C<URI::file> constructors:
@@ -110,9 +110,9 @@ use one of the following C<URI::file> constructors:
 
 Maps a file name to the I<file:> URI name space, creates an URI object
 and returns it.  The $filename is interpreted as one belonging to the
-indicated operating system; $os, which defaults to the value of the
+indicated operating system ($os), which defaults to the value of the
 $^O variable.  The $filename can be either absolute or relative, and
-the corresponding type of URI object is returned.
+the corresponding type of URI object for $os is returned.
 
 =item $u = URI::file->new_abs( $filename, [$os] )
 
@@ -137,7 +137,7 @@ the common and generic methods described in L<URI>):
 
 =item $u->file( [$os] )
 
-This method return a file name.  It maps back from the URI name space
+This method return a file name.  It maps from the URI name space
 to the file name space of the indicated operating system.
 
 It might return U<undef> if the name can not be represented in the
@@ -145,16 +145,16 @@ indicated file system.
 
 =item $u->dir( [$os] )
 
-Some systems use a different names for directories than for plain
+Some systems use a different form for names of directories than for plain
 files.  Use this method if you know you want to use the name for
-accessing a directory.
+a directory.
 
 =back
 
 The C<URI::file> module can be used to map generic file names to names
-suitable for the current system.  As such it can work as a nice
+suitable for the current system.  As such, it can work as a nice
 replacement for the C<File::Spec> module.  For instance the following
-code will translate the Unix style file name F<Foo/Bar.pm> to some name
+code will translate the Unix style file name F<Foo/Bar.pm> to a name
 suitable for the local system.
 
   $file = URI::file->new("Foo/Bar.pm", "unix")->file;
@@ -164,13 +164,13 @@ suitable for the local system.
 
 =head1 MAPPING NOTES
 
-Most computer systems today have hierarchical organized file systems.
+Most computer systems today have hierarchically organized file systems.
 Mapping the names used in these systems to the generic URI syntax
-allow us to work with relative file URIs that behave as they should
+allows us to work with relative file URIs that behave as they should
 when resolved using the generic algorithm for URIs (specified in RFC
 2396).  Mapping a file name to the generic URI syntax involves mapping
 the path separator character to "/" and encoding of any reserved
-character that can appear in the path segments of the file names.  If
+characters that appear in the path segments of the file names.  If
 path segments consisting of the strings "." or ".." have a
 different meaning than what is specified for generic URIs, then these
 must be encoded as well.
@@ -185,12 +185,12 @@ Another common use of the authority field is to encode the host that
 this file name is valid on.  The host name "localhost" is special and
 generally have the same meaning as an missing or empty authority
 field.  This use will be in conflict with using it as a device
-specification, but can often be resolved by device specifications
-having characters into legal in plain host names.
+specification, but can often be resolved for device specifications
+having characters not legal in plain host names.
 
 File name to URI mapping in normally not one-to-one.  There are
 usually many URI that map to the same file name.  For instance an
-authority of "localhost" maps the same as a URI with missing or empty
+authority of "localhost" maps the same as a URI with a missing or empty
 authority.
 
 Example 1: The Mac use ":" as path separator, but not in the same way

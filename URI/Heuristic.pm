@@ -1,6 +1,6 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.10 1999/03/19 21:12:45 gisle Exp $
+# $Id: Heuristic.pm,v 4.11 1999/03/20 07:34:27 gisle Exp $
 
 =head1 NAME
 
@@ -17,7 +17,7 @@ uf_uristr - Expand URI using heuristics
 
 =head1 DESCRIPTION
 
-This module provide functions that expand strings into real absolute
+This module provides functions that expand strings into real absolute
 URIs using some builtin heuristics.  Strings that already represent
 absolute URIs (i.e. start with a C<scheme:> part) are never modified
 and are returned unchanged.  The main use of these functions are to
@@ -89,7 +89,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.10 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 4.11 $ =~ /(\d+)\.(\d+)/);
 
 eval {
     require Net::Domain;
