@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.27"; # $Date: 2003/10/06 10:38:31 $
+$VERSION = "1.27"; # $Date: 2003/11/30 11:57:31 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -352,7 +352,9 @@ The following methods construct new C<URI> objects:
 
 =over 4
 
-=item $uri = URI->new( $str, [$scheme] )
+=item $uri = URI->new( $str )
+
+=item $uri = URI->new( $str, $scheme )
 
 This class method constructs a new URI object.  The string
 representation of a URI is given as argument together with an optional
@@ -381,11 +383,15 @@ denote a relative or absolute URI.  If relative, then it will be
 absolutized using $base_uri as base. The $base_uri must be an absolute
 URI.
 
-=item $uri = URI::file->new( $filename, [$os] )
+=item $uri = URI::file->new( $filename )
+
+=item $uri = URI::file->new( $filename, $os )
 
 This constructs a new I<file> URI from a file name.  See L<URI::file>.
 
-=item $uri = URI::file->new_abs( $filename, [$os] )
+=item $uri = URI::file->new_abs( $filename )
+
+=item $uri = URI::file->new_abs( $filename, $os )
 
 This constructs a new absolute I<file> URI from a file name.  See
 L<URI::file>.
@@ -423,7 +429,9 @@ The common methods available for all URI are:
 
 =over 4
 
-=item $uri->scheme( [$new_scheme] )
+=item $uri->scheme
+
+=item $uri->scheme( $new_scheme )
 
 This method sets and returns the scheme part of the $uri.  If the $uri is
 relative, then $uri->scheme returns C<undef>.  If called with an
@@ -440,20 +448,26 @@ returned by $uri->scheme is always lowercase.  If you want the scheme
 just as it was written in the URI in its original case,
 you can use the $uri->_scheme method instead.
 
-=item $uri->opaque( [$new_opaque] )
+=item $uri->opaque
+
+=item $uri->opaque( $new_opaque )
 
 This method sets and returns the scheme specific part of the $uri 
 (everything between the scheme and the fragment)
 as an escaped string.
 
-=item $uri->path( [$new_path] )
+=item $uri->path
+
+=item $uri->path( $new_path )
 
 This method sets and returns the same value as $uri->opaque unless the URI
 supports the generic syntax for hierarchical namespaces.
 In that case the generic method is overridden to set and return
 the part of the URI between the I<host name> and the I<fragment>.
 
-=item $uri->fragment( [$new_frag] )
+=item $uri->fragment
+
+=item $uri->fragment( $new_frag )
 
 This method returns the fragment identifier of a URI reference
 as an escaped string.
@@ -514,24 +528,32 @@ methods:
 
 =over 4
 
-=item $uri->authority( [$new_authority] )
+=item $uri->authority
+
+=item $uri->authority( $new_authority )
 
 This method sets and returns the escaped authority component
 of the $uri.
 
-=item $uri->path( [$new_path] )
+=item $uri->path
+
+=item $uri->path( $new_path )
 
 This method sets and returns the escaped path component of
 the $uri (the part between the host name and the query or fragment).
 The path will never be undefined, but it can be the empty string.
 
-=item $uri->path_query( [$new_path_query] )
+=item $uri->path_query
+
+=item $uri->path_query( $new_path_query )
 
 This method sets and returns the escaped path and query
 components as a single entity.  The path and the query are
 separated by a "?" character, but the query can itself contain "?".
 
-=item $uri->path_segments( [$segment,...] )
+=item $uri->path_segments
+
+=item $uri->path_segments( $segment, ... )
 
 This method sets and returns the path.  In scalar context it returns
 the same value as $uri->path.  In list context it will return the
@@ -542,19 +564,25 @@ parameter strings.  Such an anonymous array uses overloading so it can
 be treated as a string too, but this string does not include the
 parameters.
 
-=item $uri->query( [$new_query] )
+=item $uri->query
+
+=item $uri->query( $new_query )
 
 This method sets and returns the escaped query component of
 the $uri.
 
-=item $uri->query_form( [$key => $value,...] )
+=item $uri->query_form
+
+=item $uri->query_form( $key1 => $val1, $key2 => $val2, ... )
 
 This method sets and returns query components that use the
 I<application/x-www-form-urlencoded> format.  Key/value pairs are
 separated by "&" and the key is separated from the value with a "="
 character.
 
-=item $uri->query_keywords( [$keywords,...] )
+=item $uri->query_keywords
+
+=item $uri->query_keywords( $keywords, ... )
 
 This method sets and returns query components that use the
 keywords separated by "+" format.
@@ -569,7 +597,9 @@ methods.
 
 =over 4
 
-=item $uri->userinfo( [$new_userinfo] )
+=item $uri->userinfo
+
+=item $uri->userinfo( $new_userinfo )
 
 This method sets and returns the escaped userinfo part of the
 authority componenent.
@@ -579,14 +609,18 @@ a colon.  This practice is not recommended. Embedding passwords in
 clear text (such as URI) has proven to be a security risk in almost
 every case where it has been used.
 
-=item $uri->host( [$new_host] )
+=item $uri->host
+
+=item $uri->host( $new_host )
 
 This method sets and returns the unescaped hostname.
 
 If the $new_host string ends with a colon and a number, then this
 number will also set the port.
 
-=item $uri->port( [ $new_port] )
+=item $uri->port
+
+=item $uri->port( $new_port )
 
 This method sets and returns the port.  The port is simple integer
 that should be greater than 0.
@@ -595,7 +629,9 @@ If no explicit port is specified in the URI, then the default port of
 the URI scheme is returned. If you don't want the default port
 substituted, then you can use the $uri->_port method instead.
 
-=item $uri->host_port( [ $new_host_port ] )
+=item $uri->host_port
+
+=item $uri->host_port( $new_host_port )
 
 This method sets and returns the host and port as a single
 unit.  The returned value will include a port, even if it matches the
