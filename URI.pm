@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.28"; # $Date: 2004/01/01 18:37:10 $
+$VERSION = "1.28"; # $Date: 2004/01/01 19:49:05 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -757,6 +757,12 @@ C<URI> objects belonging to the ldap scheme support the common,
 generic and server methods as well as specific ldap methods; $uri->dn,
 $uri->attributes, $uri->scope, $uri->filter, $uri->extensions.  See
 L<URI::ldap> for details.
+
+=item B<ldapi>:
+
+Like the I<ldap> URI scheme, but will use a Unix domain socket.  The
+server methods are not supported.  The escaped socket path is
+available as $uri->authority.
 
 =item B<ldaps>:
 
