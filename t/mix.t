@@ -1,4 +1,4 @@
-print "1..5\n";
+print "1..6\n";
 
 # Test mixing of URI and URI::WithBase objects
 use URI;
@@ -30,7 +30,7 @@ print "not " unless $a->isa("URI") &&
                     $d->isa("URI");
 print "ok 1\n";
 
-print "not " unless ref($b->base) eq ref($uw) && $b->base eq $uw;
+print "not " if $b->base && $c->base;
 print "ok 2\n";
 
 $a = URI::URL->new($rel, $u);
@@ -44,6 +44,15 @@ print "not " unless ref($a) eq "URI::URL" &&
                     ref($d) eq "URI::URL";
 print "ok 3\n";
 
+print "not " unless ref($b->base) eq ref($uw) &&
+                    $b->base eq $uw &&
+                    ref($c->base) eq ref($uu) &&
+                    $c->base eq $uu &&
+                    $d->base eq $str;
+print "ok 4\n";
+
+
+
 $a = URI->new($uu, $u);
 $b = URI->new($uu, $uw);
 $c = URI->new($uu, $uu);
@@ -54,7 +63,7 @@ print "not " unless ref($a) eq ref($b) &&
                     ref($b) eq ref($c) &&
                     ref($c) eq ref($d) &&
                     ref($d) eq ref($u);
-print "ok 4\n";
+print "ok 5\n";
 
 $a = URI::URL->new($u, $u);
 $b = URI::URL->new($u, $uw);
@@ -65,4 +74,4 @@ print "not " unless ref($a) eq "URI::URL" &&
                     ref($b) eq "URI::URL" &&
                     ref($c) eq "URI::URL" &&
                     ref($d) eq "URI::URL";
-print "ok 5\n";
+print "ok 6\n";
