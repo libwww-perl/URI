@@ -4,7 +4,7 @@ use URI;
 
 $foo = URI->new("Foo:opaque#frag");
 
-print "not " unless ref($foo) eq "URI::_generic";
+print "not " unless ref($foo) eq "URI::_foreign";
 print "ok 1\n";
 
 print "not " unless $foo->as_string eq "Foo:opaque#frag";
