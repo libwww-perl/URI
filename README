@@ -27,7 +27,7 @@ Main user visible changes from URI::URL are:
 
    * user/password --> userinfo
 
-   * full_path  --> abs_path_query
+   * full_path is gone (but path_query() is quite close).
 
    * path_components --> path_segments.  If a path segment has
      parameters then this segment is represented by an array reference.
