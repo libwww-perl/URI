@@ -65,7 +65,7 @@ sub port
 
 sub default_port { undef }
 
-sub canonical_notyet
+sub canonical
 {
     my $self = shift;
     my $scheme = $self->scheme;
