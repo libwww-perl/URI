@@ -1,5 +1,7 @@
 package URI::WithBase;
 
+use strict;
+use vars qw($AUTOLOAD);
 use URI;
 
 use overload '""' => "as_string", fallback => 1;
