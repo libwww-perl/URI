@@ -3,8 +3,6 @@
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
 
-use Carp;
-
 # _expect()
 #
 # Handy low-level object method tester which we insert as a method
@@ -19,7 +17,7 @@ sub URI::URL::_expect {
     warn "'$self'->$method(@args) = '$result' " .
 		"(expected '$expect')\n";
     $self->print_on('STDERR');
-    confess "Test Failed";
+    die "Test Failed";
 }
 
 package main;
@@ -52,30 +50,36 @@ print "1..8\n";  # for Test::Harness
 
 print "Self tests for URI::URL version $URI::URL::VERSION...\n";
 
-scheme_parse_test();
+eval { scheme_parse_test(); };
+print "not " if $@;
 print "ok 1\n";
 
-parts_test();
+eval { parts_test(); };
+print "not " if $@;
 print "ok 2\n";
 
-escape_test();
+eval { escape_test(); };
+print "not " if $@;
 print "ok 3\n";
 
-newlocal_test();
+eval { newlocal_test(); };
+print "not " if $@;
 print "ok 4\n";
 
-absolute_test();
+eval { absolute_test(); };
+print "not " if $@;
 print "ok 5\n";
 
-eq_test();
+eval { eq_test(); };
+print "not " if $@;
 print "ok 6\n";
 
-# Let's test makeing our own things
+# Let's test making our own things
 URI::URL::strict(0);
 # This should work after URI::URL::strict(0)
 $url = new URI::URL "x-myscheme:something";
 # Since no implementor is registered for 'x-myscheme' then it will
-# be handeled by the URI::URL::_generic class
+# be handled by the URI::URL::_generic class
 $url->_expect('as_string' => 'x-myscheme:something');
 $url->_expect('path' => 'something');
 URI::URL::strict(1);
@@ -671,8 +675,10 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
     $url = newlocal URI::URL;
-    $url->_expect('as_string', URI::URL->new("file:$dir/")->as_string);
+    my $ss = $isMSWin32 ? '//' : '';
+    $url->_expect('as_string', URI::URL->new("file:$ss$dir/")->as_string);
 
     print "Local directory is ". $url->local_path . "\n";
 
@@ -697,8 +703,9 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
     $url = newlocal URI::URL 'foo';
-    $url->_expect('as_string', "file:$dir/foo");
+    $url->_expect('as_string', "file:$ss$dir/foo");
 
     # relative dir
     chdir($tmpdir) or die $!;
@@ -710,8 +717,9 @@ sub newlocal_test {
         $dir =~ s#/$##;
     }
     $dir = uri_escape($dir, ':');
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
     $url = newlocal URI::URL 'bar/';
-    $url->_expect('as_string', "file:$dir/bar/");
+    $url->_expect('as_string', "file:$ss$dir/bar/");
 
     # 0
     if ($^O ne 'VMS') {
@@ -719,8 +727,9 @@ sub newlocal_test {
     $dir = `$pwd`; $dir =~ tr|\\|/|;
         chomp $dir;
         $dir = uri_escape($dir, ':');
+    $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32;
     $url = newlocal URI::URL '0';
-    $url->_expect('as_string', "file:${dir}0");
+    $url->_expect('as_string', "file:$ss${dir}0");
     }
 
     # Test access methods for file URLs
