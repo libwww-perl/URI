@@ -1,4 +1,4 @@
-package URI;  # $Date: 2002/05/09 06:49:13 $
+package URI;  # $Date: 2002/07/02 15:58:46 $
 
 use strict;
 use vars qw($VERSION);
@@ -775,7 +775,7 @@ examples:
   URI->new("../../../foo")->abs("http://host/a/b")
       ==> "http://host/../../foo"
 
-  local $URI::URL::ABS_REMOTE_LEADING_DOTS = 1;
+  local $URI::ABS_REMOTE_LEADING_DOTS = 1;
   URI->new("../../../foo")->abs("http://host/a/b")
       ==> "http://host/foo"
 
