@@ -6,13 +6,16 @@ URI objects can be used to access and manipulate the various
 components that make up these strings.  There are also methods to
 combine URIs in various ways.
 
-The URI class replace the URI::URL class that used to be distributed
+The URI class replaces the URI::URL class that used to be distributed
 with libwww-perl.  This package contains an emulation of the old
-URI::URL interface.  The emulated URI::URL implement both the old and
+URI::URL interface.  The emulated URI::URL implements both the old and
 the new interface.
 
+Some tests require an Internet connection to work and are skipped
+if one is not active.
+
 You need perl5.004 or better to install this package.  You should also
-have the MIME::Base64 module installed.  Installation otherwise as
+have the MIME::Base64 module installed.  Installation is otherwise as
 usual:
 
   perl Makefile.PL
