@@ -82,14 +82,17 @@ sub canonical
 {
     my $self = shift;
     my $other = $self->SUPER::canonical;
+
+    # The stuff below is not as efficient as one might hope...
+
     $other = $other->clone if $other == $self;
 
-    # Should perhaps normalize the DN, but getting that right is not easy...
+    $other->dn(_normalize_dn($other->dn));
 
-    # Should really know about "postalAddress", etc...
+    # Should really know about mixed case "postalAddress", etc...
     $other->attributes(map lc, $other->attributes);
 
-    # Scope
+    # Lowecase scope, remove default
     my $old_scope = $other->scope;
     my $new_scope = lc($old_scope);
     $new_scope = "" if $new_scope eq "base";
@@ -100,14 +103,32 @@ sub canonical
     $other->filter("") if lc($old_filter) eq "(objectClass=*)" ||
 	                  lc($old_filter) eq "objectclass=*";
 
-    # Lowercase extentions types
+    # Lowercase extensions types and deal with known extension values
     my @ext = $other->extensions;
     for (my $i = 0; $i < @ext; $i += 2) {
-	$ext[$i] = lc($ext[$i]);
+	my $etype = $ext[$i] = lc($ext[$i]);
+	if ($etype =~ /^!?bindname$/) {
+	    $ext[$i+1] = _normalize_dn($ext[$i+1]);
+	}
     }
     $other->extensions(@ext) if @ext;
     
     $other;
+}
+
+sub _normalize_dn  # RFC 2253
+{
+    my $dn = shift;
+
+    return $dn;
+    # The code below will fail if the "+" or "," is embedding in a quoted
+    # string or simply escaped...
+
+    my @dn = split(/([+,])/, $dn);
+    for (@dn) {
+	s/^([a-zA-Z]+=)/lc($1)/e;
+    }
+    join("", @dn);
 }
 
 1;
