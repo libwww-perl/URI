@@ -66,7 +66,7 @@ sub port
 {
     my $self = shift;
     my $port = $self->_port(@_);
-    $port = $self->default_port unless defined $port;
+    $port = $self->default_port if !defined($port) || $port eq "";
     $port;
 }
 
