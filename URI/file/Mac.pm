@@ -8,8 +8,18 @@ sub extract_host
 sub split_path
 {
     my($class, $path) = @_;
-    $path = ":$path" unless $path =~ s/^://;
-    split(/:/, $path);
+    my @pre;
+    if ($path =~ s/^(:+)//) {
+	if (length($1) == 1) {
+	    @pre = (".") unless length($path);
+	} else {
+	    @pre = ("..") x (length($1) - 1);
+	}
+	return(@pre, "") unless length($path);
+    } else {
+	@pre = ("");
+    }
+    (@pre, split(/:/, $path, -1));
 }
 
 1;
