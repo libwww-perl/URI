@@ -19,7 +19,8 @@ sub media_type
     if (@_) {
 	my $new = shift;
 	$new = "" unless defined $new;
-	$new =~ s/,/%2C/g;  # protect ,
+	$new =~ s/,/%2C/g;  # protect
+	$new =~ s/%/%25/g;
 	$base64 = "" unless defined $base64;
 	$opaque =~ s/^[^,]*,?/$new$base64,/;
 	$self->opaque($opaque);
@@ -48,6 +49,8 @@ sub data
 	if ($base64_len < $urienc_len || $_[0]) {
 	    $enc .= ";base64";
 	    $new = encode_base64($new, "");
+	} else {
+	    $new =~ s/%/%25/g;
 	}
 	$self->opaque("$enc,$new");
     }
@@ -57,10 +60,13 @@ sub data
 
 # I could not find a better way to interpolate the tr/// chars from
 # a variable.
+my $ENC = $URI::uric;
+$ENC =~ s/%//;
+
 eval <<EOT; die $@ if $@;
 sub _uric_count
 {
-    \$_[0] =~ tr/$URI::uric//;
+    \$_[0] =~ tr/$ENC//;
 }
 EOT
 
