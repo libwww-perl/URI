@@ -26,6 +26,7 @@ URI/ftp.pm
 URI/gopher.pm
 URI/http.pm
 URI/https.pm
+URI/ldap.pm
 URI/mailto.pm
 URI/news.pm
 URI/nntp.pm
@@ -40,6 +41,7 @@ t/file.t
 t/generic.t
 t/heuristic.t
 t/http.t
+t/ldap.t
 t/mailto.t
 t/mix.t
 t/news.t
