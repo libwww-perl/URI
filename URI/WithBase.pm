@@ -6,13 +6,22 @@ use URI;
 
 use overload '""' => "as_string", fallback => 1;
 
+sub as_string;
+
 sub new
 {
     my($class, $uri, $base) = @_;
-    bless [URI->new($uri, $base), $base], $class;
+    my $ibase = $base && UNIVERSAL::isa($base, "URI::WithBase") ?
+	$base->[0] : $base;
+    bless [URI->new($uri, $ibase), $base], $class;
 }
 
-sub as_string;
+sub eq
+{
+    my($self, $other) = @_;
+    $other = $other->[0] if UNIVERSAL::isa($other, "URI::WithBase");
+    $self->[0]->eq($other);
+}
 
 sub AUTOLOAD
 {
