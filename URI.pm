@@ -1,8 +1,8 @@
-package URI;  # $Id: URI.pm,v 1.29 1999/08/02 22:45:52 gisle Exp $
+package URI;  # $Id: URI.pm,v 1.30 2000/02/14 15:27:33 gisle Exp $
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.04";
+$VERSION = "1.05";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -778,7 +778,7 @@ Berners-Lee, Fielding, Masinter, August 1998.
 
 =head1 COPYRIGHT
 
-Copyright 1995-1999 Gisle Aas.
+Copyright 1995-2000 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
