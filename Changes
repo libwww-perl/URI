@@ -1,3 +1,23 @@
+1998-09-08   Gisle Aas <aas@sn.no>
+
+   Release 0.05
+
+   Implemented news URLs (together with snews/nntp)
+
+   Implemented pop URLs (RFC 2384)
+
+   Can now use '==' to compare if two URI objects are the same or not.
+
+   $u->opaque_part renamed as $u->opaque
+
+   Better canonicalization
+
+   Faster $u->abs (especially for URI that already are absolute)
+
+   $u->query_form will keep more chars unescaped
+
+
+
 1998-09-06   Gisle Aas <aas@sn.no>
 
    Release 0.04
