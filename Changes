@@ -1,3 +1,13 @@
+2001-07-18   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.13
+
+   The module failed on perl5.004 because \z is not supported
+   in regexps.  The Makefile.PL will now try to patch the module
+   to be compatible.
+
+
+
 2001-04-23   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.12
