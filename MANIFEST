@@ -7,3 +7,4 @@ URI/_generic.pm
 URI/http.pm
 URI/https.pm
 t/abs.t
+t/generic.t
