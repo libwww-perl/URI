@@ -1,54 +1,30 @@
-This is an attempt to update and simplify the URI::URL classes based
-on RFC 2396 "Uniform Resource Identifiers (URI): Generic Syntax"
+This package contains the URI.pm module with friends.  The module
+implements the URI class.  Objects of this class represent Uniform
+Resource Identifier (URI) references as specified in RFC 2396.
 
-Some basic terminology has changed so it might make sense to make a
-new start with new class names.  This also allows us to simplify the
-implementation by getting rid of some methods since we don't really
-have to be backwards compatible.  The old modules can still be used
-for old code.  The new draft also allows the parser implemented by a
-single regular expression which should also help making it faster than
-the old modules.
+URI objects can be used to access and manipulate the various
+components that make up these strings.  There are also methods to
+combine URIs in various ways.
 
-The main change proposed is to use 'URI' as the main class name.  The
-URI and URI::_generic class implement Uniform Resource Identifiers
-parsing and resolving of relative URIs as specified by RFC 2396.
+The URI class replace the URI::URL class that used to be distributed
+with libwww-perl.  This package contains an emulation of the old
+URI::URL interface.  The emulated URI::URL implement both the old and
+the new interface.
 
-Main user visible changes from URI::URL are:
+You need perl5.004 or better to install this package.  You should also
+have the MIME::Base64 module installed.  Installation otherwise as
+usual:
 
-   * Don't export url() constructor function.  URI->new is short
-     enough.
-     
-   * No base() attribute, also means that abs() and rel() needs
-     mandatory $base argument.
+  perl Makefile.PL
+  make
+  make test
+  make install
 
-   * netloc --> authority
+Questions about how to use this library should be directed to the
+comp.lang.perl.modules USENET Newsgroup.  Bug reports and suggestions
+for improvements can be sent to the <libwww-perl@ics.uci.edu> mailing
+list.
 
-   * user/password --> userinfo
-
-   * full_path is gone (but path_query() is quite close).
-
-   * path_components --> path_segments.  If a path segment has
-     parameters then this segment is represented by an array reference.
-
-   * frag --> fragment.  The returned fragment is still escaped?
-
-   * params() is gone.
-
-   * All the epath/equery/eparam methods are gone.  The corresponding
-     method without e-prefix now returns escaped strings
-
-   * crack is gone
-
-   * newlocal --> URI::file->new_abs
-
-   * print_on is gone
-
-   * URI::URL::strict() is replaced by a global variable $URI::STRICT
-
-Comments welcomed?  These modules are discussed on the
-<libwww-perl@ics.uci.edu> mailing list.
-
---
 Copyright 1998 Gisle Aas.
 
 This library is free software; you can redistribute it and/or
