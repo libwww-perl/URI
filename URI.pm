@@ -1,4 +1,4 @@
-package URI;  # $Id: URI.pm,v 1.7.2.1 1998/09/04 20:06:08 aas Exp $
+package URI;  # $Id: URI.pm,v 1.7.2.2 1998/09/04 21:02:05 aas Exp $
 
 use strict;
 use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
@@ -155,6 +155,8 @@ sub scheme
 	my $newself = URI->new("$new:$$self");
 	$$self = $$newself; 
 	bless $self, ref($newself);
+    } elsif ($$self =~ m/^$scheme_re:/) {
+	warn "Opaque part look like scheme";
     }
 
     return $old;
