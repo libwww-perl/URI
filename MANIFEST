@@ -19,4 +19,5 @@ t/data.t
 t/generic.t
 t/http.t
 t/mailto.t
+t/news.t
 t/pop.t
