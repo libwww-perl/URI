@@ -100,7 +100,7 @@ sub canonical
 
     # Remove filter if default
     my $old_filter = $other->filter;
-    $other->filter("") if lc($old_filter) eq "(objectClass=*)" ||
+    $other->filter("") if lc($old_filter) eq "(objectclass=*)" ||
 	                  lc($old_filter) eq "objectclass=*";
 
     # Lowercase extensions types and deal with known extension values
