@@ -1,5 +1,5 @@
 #
-# $Id: Escape.pm,v 3.17 2001/05/15 02:53:49 gisle Exp $
+# $Id: Escape.pm,v 3.18 2001/05/15 03:41:38 gisle Exp $
 #
 
 package URI::Escape;
@@ -19,14 +19,15 @@ URI::Escape - Escape and unescape unsafe characters
 =head1 DESCRIPTION
 
 This module provides functions to escape and unescape URI strings as
-defined by RFC 2396.  URIs consist of a restricted set of characters,
+defined by RFC 2396 (and updated by RFC 2732).
+URIs consist of a restricted set of characters,
 denoted as C<uric> in RFC 2396.  The restricted set of characters
 consists of digits, letters, and a few graphic symbols chosen from
 those common to most of the character encodings and input facilities
 available to Internet users:
 
   "A" .. "Z", "a" .. "z", "0" .. "9",
-  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",",   # reserved
+  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",", "[", "]",   # reserved
   "-", "_", ".", "!", "~", "*", "'", "(", ")"
 
 In addition any byte (octet) can be represented in a URI by an escape
@@ -110,7 +111,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.17 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 3.18 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
 
@@ -135,8 +136,8 @@ sub uri_escape
 	}
 	&{$subst{$patn}}($text);
     } else {
-	# Default unsafe characters. (RFC 2396 ^uric)
-	$text =~ s/([^;\/?:@&=+\$,A-Za-z0-9\-_.!~*'()])/$escapes{$1}/g;
+	# Default unsafe characters. (RFC 2732 ^uric)
+	$text =~ s/([^;\/?:@&=+\$,A-Za-z0-9\-_.!~*'()[\]])/$escapes{$1}/g;
     }
     $text;
 }

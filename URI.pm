@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/05/14 21:52:51 $
+package URI;  # $Date: 2001/05/15 03:41:38 $
 
 use strict;
 use vars qw($VERSION);
@@ -302,7 +302,7 @@ URI - Uniform Resource Identifiers (absolute and relative)
 
 This module implements the C<URI> class.  Objects of this class
 represent "Uniform Resource Identifier references" as specified in RFC
-2396.
+2396 (and updated by RFC 2732).
 
 A Uniform Resource Identifier is a compact string of characters for
 identifying an abstract or physical resource.  A Uniform Resource
