@@ -143,6 +143,6 @@ L<URI>
 
 =head1 COPYRIGHT
 
-Copyright 1998 Gisle Aas.
+Copyright 1998-2000 Gisle Aas.
 
 =cut
