@@ -6,7 +6,7 @@ require URI::file::Base;
 use strict;
 use URI::Escape qw(uri_unescape);
 
-sub extract_path
+sub _file_extract_path
 {
     my($class, $path) = @_;
 
@@ -18,7 +18,7 @@ sub extract_path
     return $path;
 }
 
-sub file_is_absolute {
+sub _file_is_absolute {
     my($class, $path) = @_;
     return $path =~ m,^/,;
 }
@@ -33,7 +33,7 @@ sub file
     if (defined($auth)) {
 	if (lc($auth) ne "localhost" && $auth ne "") {
 	    $auth = uri_unescape($auth);
-	    unless ($class->is_this_host($auth)) {
+	    unless ($class->_file_is_localhost($auth)) {
 		push(@path, "", "", $auth);
 	    }
 	}

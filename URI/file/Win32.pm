@@ -6,11 +6,11 @@ require URI::file::Base;
 use strict;
 use URI::Escape qw(uri_unescape);
 
-sub extract_authority
+sub _file_extract_authority
 {
     my $class = shift;
 
-    return $class->SUPER::extract_authority($_[0])
+    return $class->SUPER::_file_extract_authority($_[0])
 	if defined $URI::file::DEFAULT_AUTHORITY;
 
     return $1 if $_[0] =~ s,^\\\\([^\\]+),,;  # UNC
@@ -24,7 +24,7 @@ sub extract_authority
     return undef;
 }
 
-sub extract_path
+sub _file_extract_path
 {
     my($class, $path) = @_;
     $path =~ s,\\,/,g;
@@ -38,8 +38,8 @@ sub extract_path
     return $path;
 }
 
-sub file_is_absolute {
-    my($self, $path) = @_;
+sub _file_is_absolute {
+    my($class, $path) = @_;
     return $path =~ m,^[a-zA-Z]:, || $path =~ m,^[/\\],;
 }
 

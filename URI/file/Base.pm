@@ -11,8 +11,8 @@ sub new
 
     my($auth, $escaped_auth, $escaped_path);
 
-    ($auth, $escaped_auth) = $class->extract_authority($path);
-    ($path, $escaped_path) = $class->extract_path($path);
+    ($auth, $escaped_auth) = $class->_file_extract_authority($path);
+    ($path, $escaped_path) = $class->_file_extract_path($path);
 
     if (defined $auth) {
 	$auth =~ s,%,%25,g unless $escaped_auth;
@@ -37,24 +37,24 @@ sub new
     URI->new($uri, "file");
 }
 
-sub extract_authority
+sub _file_extract_authority
 {
     my($class, $path) = @_;
-    return undef unless $class->file_is_absolute($path);
+    return undef unless $class->_file_is_absolute($path);
     return $URI::file::DEFAULT_AUTHORITY;
 }
 
-sub extract_path
+sub _file_extract_path
 {
     return undef;
 }
 
-sub file_is_absolute
+sub _file_is_absolute
 {
     return 0;
 }
 
-sub is_this_host
+sub _file_is_localhost
 {
     shift; # class
     my $host = lc(shift);
