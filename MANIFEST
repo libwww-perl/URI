@@ -10,6 +10,7 @@ URI/data.pm
 URI/http.pm
 URI/https.pm
 URI/mailto.pm
+URI/pop.pm
 t/abs.t
 t/data.t
 t/http.t
