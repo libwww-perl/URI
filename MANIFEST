@@ -37,6 +37,7 @@ t/generic.t
 t/heuristic.t
 t/http.t
 t/mailto.t
+t/mix.t
 t/news.t
 t/old-absconf.t
 t/old-base.t
