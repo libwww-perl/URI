@@ -1,27 +1,27 @@
-package URI;
+package URI;  # $Id: URI.pm,v 1.2 1998/04/09 12:51:31 aas Exp $
 
 use strict;
-use vars qw($DEFAULT_SCHEME $STRICT_URL $DEBUG);
+use vars qw($VERSION $DEFAULT_SCHEME $STRICT $DEBUG);
+
+$VERSION = "0.01";
 
 $DEFAULT_SCHEME ||= "http";
-#$STRICT_URL = 0;
+#$STRICT = 0;
 #$DEBUG = 0;
 $DEBUG = 1;
 
 my %implements;  # mapping from scheme to implementor class
 
-# official character classes
+# Some "official" character classes
 my $reserved   = q(;/?:@&=+$,);
-my $mark       = q(-_.!~*'());                                    #';
+my $mark       = q(-_.!~*'());                                    #'; emacs
 my $unreserved = "A-Za-z0-9\Q$mark\E";
 
 use vars qw($uric $pchar $achar $ppchar);
-$uric  = "\Q$reserved\E$unreserved%";
-$pchar = $uric;  $pchar =~ s,\\[/?;],,g;
-
-$achar = $uric;   $achar =~ s,\\[/?],,g;
+$uric   = "\Q$reserved\E$unreserved%";
+$pchar  = $uric;  $pchar =~ s,\\[/?;],,g;
+$achar  = $uric;  $achar =~ s,\\[/?],,g;
 $ppchar = $uric;  $ppchar =~ s,\\?,,g;
-
 
 my $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
@@ -29,6 +29,7 @@ my $scheme_re = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
 use Carp ();
 use URI::Escape ();
+
 
 sub new
 {
@@ -53,7 +54,7 @@ sub new
                 $scheme = $base->scheme;
 	    } elsif ($base && $base =~ m/^($scheme_re):/o) {
                 $scheme = $1;
-	    } elsif ($DEFAULT_SCHEME && !$STRICT_URL) {
+	    } elsif ($DEFAULT_SCHEME && !$STRICT) {
 		$scheme = $DEFAULT_SCHEME;
 	    } else {
 		Carp::croak("Unable to determine scheme for '$url'");
@@ -62,7 +63,7 @@ sub new
 	my $impclass = implementor($scheme);
         unless ($impclass) {
             Carp::croak("URI scheme '$scheme' is not supported")
-		if $STRICT_URL;
+		if $STRICT;
             # use generic as fallback
             require URI::_generic;
             $impclass = 'URI::_generic';
@@ -73,6 +74,7 @@ sub new
     }
     $self;
 }
+
 
 sub _init
 {
@@ -85,6 +87,7 @@ sub _init
     $self->_parse($str);
     $self;
 }
+
 
 sub _parse
 {
@@ -133,12 +136,14 @@ sub implementor
     $ic;
 }
 
+
 sub _init_implementor
 {
     my($class, $scheme) = @_;
     # Remember that one implementor class may actually
-    # serve to implement several URL schemes.
+    # serve to implement several URI schemes.
 }
+
 
 sub clone
 {
@@ -146,6 +151,7 @@ sub clone
     # this work as long as none of the components are references themselves
     bless { %$self }, ref $self;
 }
+
 
 sub _elem
 {
@@ -180,6 +186,7 @@ sub scheme
     $old;
 }
 
+
 sub fragment
 {
     shift->_elem("fragment", @_);
@@ -194,6 +201,7 @@ sub as_string
     }
     $self->{'_str'} = $self->_as_string;  # set cache and return
 }
+
 
 sub _as_string
 {
@@ -210,15 +218,61 @@ sub _as_string
     $str;
 }
 
+
+sub base {
+    my $self = shift;
+    my $base  = $self->{'_base'};
+
+    if (@_) { # set
+	my $new_base = shift;
+	$new_base = $new_base->abs if ref($new_base);  # unsure absoluteness
+	$self->{_base} = $new_base;
+    }
+    return unless defined wantarray;
+
+    # The base attribute supports 'lazy' conversion from URI strings
+    # to URI objects. Strings may be stored but when a string is
+    # fetched it will automatically be converted to a URI object.
+    # The main benefit is to make it much cheaper to say:
+    #   URI->new($random_url_string, 'http:')
+    if (defined($base) && !ref($base)) {
+	$self->{'_base'} = $base = URI->new($base);
+    }
+    $base;
+}
+
+
+# Compare two URIs, subclasses will provide a more correct implementation
+sub eq {
+    my($self, $other) = @_;
+    $other = URI->new($other, $self) unless ref $other;
+    # XXX schemes should be compared case-insensitively
+    ref($self) eq ref($other) &&                # same class
+	$self->as_string eq $other->as_string;  # same string
+}
+
+# This is set up as an alias for various methods
+sub _bad_access_method
+{
+    my $self = shift;
+    if ($STRICT) {
+	Carp::croak("Illegal method called for $self->{'_scheme'} URI")
+    }
+    if ($^W && @_) {
+	Carp::carp("Setting not effective for $self->{'_scheme'} URI");
+    }
+    undef;
+}
+
 # generic-URI accessor methods
-sub authority;
-sub userinfo;
-sub host;
-sub port;
-sub abs_path;
-sub path;
-sub path_segments;
-sub query;
+*authority = \&_bad_access_method;
+*userinfo  = \&_bad_access_method;
+*host      = \&_bad_access_method;
+*port      = \&_bad_access_method;
+*abs_path  = \&_bad_access_method;
+*path      = \&_bad_access_method;
+*path_segments = \&_bad_access_method;
+*query     = \&_bad_access_method;
 
 # generic-URI transformation methods
 sub abs { shift->clone; }
