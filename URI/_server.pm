@@ -47,7 +47,7 @@ sub host
     return $1;
 }
 
-sub port
+sub _port
 {
     my $self = shift;
     my $old = $self->authority;
@@ -59,23 +59,34 @@ sub port
 	$self->authority($new);
     }
     return $1 if defined($old) && $old =~ /:(\d+)$/;
-    $self->default_port;
+    return;
 }
+
+sub port
+{
+    my $self = shift;
+    $self->_port(@_) || $self->default_port;
+}
+
 
 sub default_port { undef }
 
 sub canonical
 {
     my $self = shift;
-    my $scheme = $self->scheme;
-    my $host = $self->host;
-    if ($scheme =~ /[A-Z]/ || $host =~ /[A-Z]/) {
-	my $other = $self->clone;
-	$other->scheme(lc $scheme);
-	$other->host(lc $host);
+    my $other = $self->SUPER::canonical;
+    my $host = $other->host || "";
+    my $port = $other->_port;
+    my $uc_host = $host =~ /[A-Z]/;
+    my $def_port = defined($port) && ($port eq "" ||
+                                      $port == $self->default_port);
+    if ($uc_host || $def_port) {
+	$other = $other->clone if $other == $self;
+	$other->host(lc $host) if $uc_host;
+	$other->port(undef) if $def_port;
 	return $other;
     }
-    $self;
+    $other;
 }
 
 1;
