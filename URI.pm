@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.28"; # $Date: 2003/12/31 10:58:56 $
+$VERSION = "1.28"; # $Date: 2004/01/01 18:37:10 $
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME);
 
@@ -757,6 +757,10 @@ C<URI> objects belonging to the ldap scheme support the common,
 generic and server methods as well as specific ldap methods; $uri->dn,
 $uri->attributes, $uri->scope, $uri->filter, $uri->extensions.  See
 L<URI::ldap> for details.
+
+=item B<ldaps>:
+
+Like the I<ldap> URI scheme, but will use an SSL connection.
 
 =item B<mailto>:
 
