@@ -1,3 +1,12 @@
+eval {
+    require MIME::Base64;
+};
+if ($@) {
+    print "1..0\n";
+    print $@;
+    exit;
+}
+
 print "1..21\n";
 
 use URI;
