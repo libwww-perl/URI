@@ -11,8 +11,11 @@ sub as_string;
 sub new
 {
     my($class, $uri, $base) = @_;
-    my $ibase = $base && UNIVERSAL::isa($base, "URI::WithBase") ?
-	$base->[0] : $base;
+    my $ibase = $base;
+    if ($base && UNIVERSAL::isa($base, "URI::WithBase")) {
+	$base = $base->abs;
+	$ibase = $base->[0];
+    }
     bless [URI->new($uri, $ibase), $base], $class;
 }
 
@@ -63,14 +66,14 @@ sub clone
 sub abs
 {
     my $self = shift;
-    my $base = shift || $self->base;
+    my $base = shift || $self->base || return $self->clone;
     bless [$self->[0]->abs($base, @_), $base], ref($self);
 }
 
 sub rel
 {
     my $self = shift;
-    my $base = shift || $self->base;
+    my $base = shift || $self->base || return $self->clone;
     bless [$self->[0]->rel($base, @_), $base], ref($self);
 }
 
