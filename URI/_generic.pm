@@ -120,10 +120,9 @@ sub abs
 {
     my $self = shift;
     my $base = shift || die "Missing base argument";
-    my $allow_scheme = shift;
 
     if (my $scheme = $self->scheme) {
-	return $self unless $allow_scheme;
+	return $self unless $URI::ABS_ALLOW_RELATIVE_SCHEME;
 	$base = URI->new($base) unless ref $base;
 	return $self unless lc($scheme) eq lc($base->scheme);
     }
@@ -165,6 +164,9 @@ sub abs
 	}
     }
     $p[-1] = "" if @p && $p[-1] eq ".";  # trailing "/."
+    if ($URI::ABS_REMOTE_LEADING_DOTS) {
+        shift @p while @p && $p[0] =~ /^\.\.?$/;
+    }
     $abs->path("/" . join("/", @p));
     $abs;
 }
