@@ -25,23 +25,44 @@ $d = URI->new($rel, $str);
 
 #Dump();
 print "not " unless $a->isa("URI") &&
-                    ref($b) eq "URI::WithBase" &&
-                    ref($c) eq "URI::URL" &&
+                    ref($b) eq ref($uw) &&
+                    ref($c) eq ref($uu) &&
                     $d->isa("URI");
 print "ok 1\n";
+
+print "not " unless ref($b->base) eq ref($uw) && $b->base eq $uw;
+print "ok 2\n";
 
 $a = URI::URL->new($rel, $u);
 $b = URI::URL->new($rel, $uw);
 $c = URI::URL->new($rel, $uu);
 $d = URI::URL->new($rel, $str);
 
+print "not " unless ref($a) eq "URI::URL" &&
+                    ref($b) eq "URI::URL" &&
+                    ref($c) eq "URI::URL" &&
+                    ref($d) eq "URI::URL";
+print "ok 3\n";
+
 $a = URI->new($uu, $u);
 $b = URI->new($uu, $uw);
 $c = URI->new($uu, $uu);
 $d = URI->new($uu, $str);
+
+#Dump();
+print "not " unless ref($a) eq ref($b) &&
+                    ref($b) eq ref($c) &&
+                    ref($c) eq ref($d) &&
+                    ref($d) eq ref($u);
+print "ok 4\n";
 
 $a = URI::URL->new($u, $u);
 $b = URI::URL->new($u, $uw);
 $c = URI::URL->new($u, $uu);
 $d = URI::URL->new($u, $str);
 
+print "not " unless ref($a) eq "URI::URL" &&
+                    ref($b) eq "URI::URL" &&
+                    ref($c) eq "URI::URL" &&
+                    ref($d) eq "URI::URL";
+print "ok 5\n";
