@@ -1,4 +1,4 @@
-package URI;  # $Date: 2001/04/23 22:45:48 $
+package URI;  # $Date: 2001/04/27 14:04:23 $
 
 use strict;
 use vars qw($VERSION);
@@ -648,8 +648,7 @@ $uri->selector, $uri->search, $uri->string.
 
 =item B<http>:
 
-The I<http> URI scheme is specified in
-<draft-ietf-http-v11-spec-rev-06> (which will become an RFC soon).
+The I<http> URI scheme is specified in RFC 2616.
 The scheme is used to reference resources hosted by HTTP servers.
 
 C<URI> objects belonging to the http scheme support the common,
@@ -665,7 +664,7 @@ port is different.
 =item B<ldap>:
 
 The I<ldap> URI scheme is specified in RFC 2255.  LDAP is the
-Lightweight Directory Access Protocol.  A ldap URI describes an LDAP
+Lightweight Directory Access Protocol.  An ldap URI describes an LDAP
 search operation to perform to retrieve information from an LDAP
 directory.
 
@@ -783,6 +782,14 @@ them. E.g.:
 
    /(...)/ || die;
    $u->query("$1");
+
+=head1 PARSING URIs WITH REGEXP
+
+As an alternative to this module, the following (official) regular
+expression can be used to decode a URI:
+
+  my($scheme, $authority, $path, $query, $fragment) =
+  $uri =~ m|^(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?|;
 
 =head1 SEE ALSO
 
