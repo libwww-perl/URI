@@ -19,8 +19,8 @@ sub media_type
     if (@_) {
 	my $new = shift;
 	$new = "" unless defined $new;
-	$new =~ s/,/%2C/g;  # protect
 	$new =~ s/%/%25/g;
+	$new =~ s/,/%2C/g;
 	$base64 = "" unless defined $base64;
 	$opaque =~ s/^[^,]*,?/$new$base64,/;
 	$self->opaque($opaque);
