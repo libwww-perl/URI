@@ -49,7 +49,7 @@ if (gethostbyname("www.netscape.com")) {
     print "ok 6\n";
 
     $URI::Heuristic::MY_COUNTRY = "uk";
-    print "not " unless uf_urlstr("perl/camel.gif") eq "http://www.perl.co.uk/camel.gif";
+    print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
     print "ok 7\n";
    
     $ENV{URL_GUESS_PATTERN} = "www.ACME.org www.ACME.com";
