@@ -5,11 +5,11 @@ eval {
     print "1..3\n";
 };
 if ($@) {
-    print "1..0\n";
+    print "1..0 # skipped: Needs the Storable module installed\n";
     exit;
 }
 
-system($^X, "-Mblib", "t/storable-test.pl", "store");
-system($^X, "-Mblib", "t/storable-test.pl", "retrieve");
+system($^X, "-Iblib/lib", "t/storable-test.pl", "store");
+system($^X, "-Iblib/lib", "t/storable-test.pl", "retrieve");
 
 unlink('urls.sto');

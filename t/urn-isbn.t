@@ -4,7 +4,7 @@ eval {
     require Business::ISBN;
 };
 if ($@) {
-    print "1..0\n\n";
+    print "1..0 # Skipped: Needs the Business::ISBN module installed\n\n";
     print $@;
     exit;
 }
