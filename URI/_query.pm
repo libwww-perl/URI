@@ -65,4 +65,7 @@ sub query_keywords
     map { uri_unescape($_) } split(/\+/, $old, -1);
 }
 
+# Some URI::URL compatibility stuff
+*equery = \&query;
+
 1;
