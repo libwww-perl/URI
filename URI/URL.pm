@@ -30,7 +30,9 @@ sub new
 
 sub newlocal
 {
-    die "NYI";
+    my $class = shift;
+    require URI::file;
+    bless [URI::file->new_abs(shift)], $class;
 }
 
 sub strict
@@ -160,6 +162,13 @@ sub abs
 
 sub frag { shift->fragment(@_); }
 sub keywords { shift->query_keywords(@_); }
+
+# file:
+sub local_path { shift->file; }
+sub unix_path  { shift->file("unix"); }
+sub dos_path   { shift->file("dos");  }
+sub mac_path   { shift->file("mac");  }
+sub vms_path   { shift->file("vms");  }
 
 # mailto:
 sub address { shift->to(@_); }
