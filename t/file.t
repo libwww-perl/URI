@@ -1,4 +1,4 @@
-#!perl -w
+#!perl -Tw
 
 use URI::file;
 

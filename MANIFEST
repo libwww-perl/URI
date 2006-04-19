@@ -54,6 +54,7 @@ URI/urn/oid.pm
 rfc2396.txt
 t/abs.t
 t/clone.t
+t/cwd.t
 t/data.t
 t/escape.t
 t/file.t
