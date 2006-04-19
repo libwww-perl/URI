@@ -9,7 +9,7 @@ if ($@) {
     exit;
 }
 
-print "1..21\n";
+print "1..22\n";
 
 use URI;
 
@@ -106,3 +106,5 @@ $old = $u->data("new");
 print "not " unless $old eq "" && $u eq "data:bar%2Cb%E5z,new";
 print "ok 21\n";
 
+print "not " unless URI->new('data:;base64,%51%6D%70%76%5A%58%4A%75')->data eq "Bjoern";
+print "ok 22\n";
