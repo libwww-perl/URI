@@ -907,7 +907,8 @@ The C<urn:isbn:> namespace contains International Standard Book
 Numbers (ISBNs) and is described in RFC 3187.  A C<URI> object belonging
 to this namespace has the following extra methods (if the
 Business::ISBN module is available): $uri->isbn,
-$uri->isbn_publisher_code, $uri->isbn_country_code, $uri->isbn_as_ean.
+$uri->isbn_publisher_code, $uri->isbn_group_code (formerly isbn_country_code,
+which is still supported by issues a deprecation warning), $uri->isbn_as_ean.
 
 =item B<urn>:B<oid>:
 

@@ -25,13 +25,13 @@ print "ok 2\n";
 print "not " unless $u->isbn eq "0-395-36341-1";
 print "ok 3\n";
 
-print "not " unless $u->isbn_country_code == 0;
+print "not " unless $u->isbn_group_code == 0;
 print "ok 4\n";
 
 print "not " unless $u->isbn_publisher_code == 395;
 print "ok 5\n";
 
-print "not " unless $u->isbn_as_ean eq "9780395363416";
+print "not " unless $u->isbn13 eq "9780395363416";
 print "ok 6\n";
 
 print "not " unless $u->nss eq "0395363411";
