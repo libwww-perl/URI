@@ -147,8 +147,8 @@ use vars qw(%escapes);
 
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(uri_escape uri_unescape);
-@EXPORT_OK = qw(%escapes uri_escape_utf8);
+@EXPORT = qw(uri_escape uri_unescape uri_escape_utf8);
+@EXPORT_OK = qw(%escapes);
 $VERSION = sprintf("%d.%02d", q$Revision: 3.28 $ =~ /(\d+)\.(\d+)/);
 
 use Carp ();
