@@ -1,7 +1,3 @@
-#
-# $Id: Escape.pm,v 3.28 2004/11/05 13:58:31 gisle Exp $
-#
-
 package URI::Escape;
 use strict;
 
@@ -149,7 +145,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape uri_escape_utf8);
 @EXPORT_OK = qw(%escapes);
-$VERSION = sprintf("%d.%02d", q$Revision: 3.28 $ =~ /(\d+)\.(\d+)/);
+$VERSION = "3.29";
 
 use Carp ();
 

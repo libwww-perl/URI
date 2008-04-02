@@ -1,7 +1,5 @@
 package URI::Heuristic;
 
-# $Id: Heuristic.pm,v 4.17 2004/01/14 13:33:44 gisle Exp $
-
 =head1 NAME
 
 URI::Heuristic - Expand URI using heuristics
@@ -89,7 +87,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = sprintf("%d.%02d", q$Revision: 4.17 $ =~ /(\d+)\.(\d+)/);
+$VERSION = "4.18";
 
 sub MY_COUNTRY() {
     for ($MY_COUNTRY) {
