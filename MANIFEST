@@ -59,6 +59,7 @@ t/escape.t
 t/file.t
 t/ftp.t
 t/generic.t
+t/gopher.t
 t/heuristic.t
 t/http.t
 t/ldap.t
