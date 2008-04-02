@@ -1,3 +1,21 @@
+2008-04-03   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.36
+
+   <gerard@tty.nl>: Escape Unicode strings as UTF-8.
+
+   Bjoern Hoehrmann <derhoermi@gmx.net>: fixed URL encoded data: URLs
+
+   GAAS: uri_escape_utf8() now exported by default as documented.
+
+   BDFOY: Test fails with Business::ISBN installed [RT#33220]
+
+   JDHEDDEN: lc(undef) reports warning in blead [RT#32742]
+
+   GEOFFR: add some tests for gopher URIs [RT#29211]
+
+
+
 2004-11-05   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.35

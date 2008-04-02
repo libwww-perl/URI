@@ -997,7 +997,7 @@ http://www.w3.org/Addressing/
 
 =head1 COPYRIGHT
 
-Copyright 1995-2003 Gisle Aas.
+Copyright 1995-2004,2008 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
