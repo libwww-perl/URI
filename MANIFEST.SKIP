@@ -11,6 +11,6 @@ Makefile$
 ^#
 /#
 ~$
-\b(RCS|CVS)/[^/]+$
-\.cvsignore$
+\.git/
+\.gitignore$
 pm_to_blib$
