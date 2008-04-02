@@ -73,7 +73,8 @@ sub _init
 {
     my $class = shift;
     my($str, $scheme) = @_;
-    $str =~ s/([^$uric\#])/$URI::Escape::escapes{$1}/go;
+    # find all funny characters and encode the bytes.
+    $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
     $str = "$scheme:$str" unless $str =~ /^$scheme_re:/o ||
                                  $class->_no_scheme_ok;
     my $self = bless \$str, $class;
@@ -204,7 +205,7 @@ sub opaque
 
     my $new_opaque = shift;
     $new_opaque = "" unless defined $new_opaque;
-    $new_opaque =~ s/([^$uric])/$URI::Escape::escapes{$1}/go;
+    $new_opaque =~ s/([^$uric])/ URI::Escape::escape_char($1)/ego;
 
     $$self = defined($old_scheme) ? $old_scheme : "";
     $$self .= $new_opaque;
@@ -229,7 +230,7 @@ sub fragment
 
     my $new_frag = shift;
     if (defined $new_frag) {
-	$new_frag =~ s/([^$uric])/$URI::Escape::escapes{$1}/go;
+	$new_frag =~ s/([^$uric])/ URI::Escape::escape_char($1) /ego;
 	$$self .= "#$new_frag";
     }
     $old;

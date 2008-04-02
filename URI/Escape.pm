@@ -211,4 +211,8 @@ sub uri_unescape
     $str;
 }
 
+sub escape_char {
+    return join '', @URI::Escape::escapes{$_[0] =~ /(\C)/g};
+}
+
 1;

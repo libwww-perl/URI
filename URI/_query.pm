@@ -13,7 +13,7 @@ sub query
 	my $q = shift;
 	$$self = $1;
 	if (defined $q) {
-	    $q =~ s/([^$URI::uric])/$URI::Escape::escapes{$1}/go;
+	    $q =~ s/([^$URI::uric])/ URI::Escape::escape_char($1)/ego;
 	    $$self .= "?$q";
 	}
 	$$self .= $3;
@@ -40,12 +40,12 @@ sub query_form {
         my @query;
         while (my($key,$vals) = splice(@new, 0, 2)) {
             $key = '' unless defined $key;
-	    $key =~ s/([;\/?:@&=+,\$\[\]%])/$URI::Escape::escapes{$1}/g;
+	    $key =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
 	    $key =~ s/ /+/g;
 	    $vals = [ref($vals) eq "ARRAY" ? @$vals : $vals];
             for my $val (@$vals) {
                 $val = '' unless defined $val;
-		$val =~ s/([;\/?:@&=+,\$\[\]%])/$URI::Escape::escapes{$1}/g;
+		$val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
                 $val =~ s/ /+/g;
                 push(@query, "$key=$val");
             }
@@ -67,7 +67,7 @@ sub query_keywords
         # Try to set query string
 	my @copy = @_;
 	@copy = @{$copy[0]} if @copy == 1 && ref($copy[0]) eq "ARRAY";
-	for (@copy) { s/([;\/?:@&=+,\$\[\]%])/$URI::Escape::escapes{$1}/g; }
+	for (@copy) { s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg; }
 	$self->query(@copy ? join('+', @copy) : undef);
     }
     return if !defined($old) || !defined(wantarray);

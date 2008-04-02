@@ -91,4 +91,5 @@ t/storable.t
 t/storable-test.pl
 t/urn-isbn.t
 t/urn-oid.t
+t/utf8.t
 uri-test
