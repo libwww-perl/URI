@@ -45,7 +45,7 @@ if (gethostbyname("www.netscape.com")) {
     # DNS probably work, lets run test 6..8
 
     $URI::Heuristic::MY_COUNTRY = "bv";
-    print "not " unless uf_urlstr("perl/camel.gif") eq "http://www.perl.com/camel.gif";
+    print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(com|org)/camel\.gif$,;
     print "ok 6\n";
 
     $URI::Heuristic::MY_COUNTRY = "uk";
