@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..18\n";
+print "1..23\n";
 
 use strict;
 use URI ();
@@ -79,6 +79,30 @@ print "ok 17\n";
 $u->query_form(a => { foo => 1 });
 print "not " unless "$u" =~ /^\?a=HASH\(/;
 print "ok 18\n";
+
+$u->query_form(a => 1, b => 2, ';');
+print "not " unless $u eq "?a=1;b=2";
+print "ok 19\n";
+
+$u->query_form(a => 1, c => 2);
+print "not " unless $u eq "?a=1;c=2";
+print "ok 20\n";
+
+$u->query_form(a => 1, c => 2, '&');
+print "not " unless $u eq "?a=1&c=2";
+print "ok 21\n";
+
+$u->query_form([a => 1, b => 2], ';');
+print "not " unless $u eq "?a=1;b=2";
+print "ok 22\n";
+
+$u->query_form([]);
+{
+    local $URI::DEFAULT_QUERY_FORM_DELIMITER = ';';
+    $u->query_form(a => 1, b => 2);
+}
+print "not " unless $u eq "?a=1;b=2";
+print "ok 23\n";
 
 __END__
 # Some debugging while writing new tests
