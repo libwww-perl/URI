@@ -1,3 +1,18 @@
+2008-06-16   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.37
+
+   Gisle Aas (1):
+      Support ";" delimiter in $u->query_form
+
+   Jan Dubois (1):
+      We get different test result when www.perl.com doesn't resolve.
+
+   Kenichi Ishigaki (1):
+      URI::Heuristic didn't work for generic country code [RT#35156]
+
+
+
 2008-04-03   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.36
