@@ -159,9 +159,9 @@
    the 'userinfo' delimiter.
 
    Make URI->query_form escape '[' and ']'.  These chars where added
-   to the reserved set in RFC 2732.  This also match MSIE behaviour.
+   to the reserved set in RFC 2732.  This also matches MSIE behaviour.
 
-   Silience warning from 'sip' support class.
+   Silence warning from 'sip' support class.
 
 
 
@@ -552,7 +552,7 @@
    Included URI::Escape and URI::Heuristic from LWP.  URI::Escape
    updated with new default set of characters to escape (according
    to RFC 2396) and a faster uri_unescape() function.  URI::Heuristic
-   with new funtion that returns an URI object.
+   updated with a new function that returns an URI object.
 
    First argument to URI->new is always treated as a string now.
 
@@ -623,8 +623,8 @@
 
    Protect literal % in various places by escaping
 
-   Path segments with parameters is not arrays of class URI::_segment,
-   which overload stingify operator.
+   Path segments with parameters are not arrays of class URI::_segment,
+   which overloads the stringify operator.
 
    URI::http->canonical will now unescape unreserved characters.
 

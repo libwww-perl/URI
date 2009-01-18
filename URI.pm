@@ -107,7 +107,7 @@ sub implementor
     # preloaded (with 'use') implementation
     $ic = "URI::$scheme";  # default location
 
-    # turn scheme into a valid perl identifier by a simple tranformation...
+    # turn scheme into a valid perl identifier by a simple transformation...
     $ic =~ s/\+/_P/g;
     $ic =~ s/\./_O/g;
     $ic =~ s/\-/_/g;
@@ -622,7 +622,7 @@ All the following statements have the same effect:
 
 The $delim parameter can be passed as ";" to force the key/value pairs
 to be delimited by ";" instead of "&" in the query string.  This
-practice is often recommened for URLs embedded in HTML or XML
+practice is often recommended for URLs embedded in HTML or XML
 documents as this avoids the trouble of escaping the "&" character.
 You might also set the $URI::DEFAULT_QUERY_FORM_DELIMITER variable to
 ";" for the same global effect.
