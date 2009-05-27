@@ -1,3 +1,18 @@
+2009-05-27   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.38
+
+   Ville Skytt√§ (3):
+      Spelling fixes.
+
+   Tatsuhiko Miyagawa (1):
+      skip DNS test if wildcard domain catcher (e.g. OpenDNS) is there
+
+   Gisle Aas (1):
+      Avoid "Insecure $ENV{PATH} while running with -T switch" error with perl-5.6.
+
+
+
 2008-06-16   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.37
@@ -84,7 +99,7 @@
    Added uri_escape_utf8() function to URI::Escape module.
 
    Fixed abs/rel behaviour for sip: URIs.  Fixed by
-   Ville Skytt‰ <ville.skytta@iki.fi>.
+   Ville Skytt√§ <ville.skytta@iki.fi>.
 
    Avoid croaking on code like $u->query_form(a => { foo => 1 }).
    It will still not really do anything useful.
@@ -231,7 +246,7 @@
    CPAN-RT-Bug #1224.
 
    The host for URI::file was not unescaped.
-   Patch by Ville Skytt‰ <ville.skytta@iki.fi>.
+   Patch by Ville Skytt√§ <ville.skytta@iki.fi>.
 
 
 
@@ -269,7 +284,7 @@
 
    Don't try to come up with the e-mail address of the user as
    the anonymous password.
-   Patch by Eduardo PÈrez <eperez@dei.inf.uc3m.es>.
+   Patch by Eduardo P√©rez <eperez@dei.inf.uc3m.es>.
 
 
 
