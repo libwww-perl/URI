@@ -1,3 +1,12 @@
+2009-08-13   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.39
+
+   Even stricter test for working DNS, hopefully this gets rid of the rest of
+   the heuristics.t failures.
+
+
+
 2009-05-27   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.38
