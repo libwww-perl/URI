@@ -41,7 +41,7 @@ print "not " unless uf_urlstr("C:\\CONFIG.SYS") eq "file:C:\\CONFIG.SYS";
 }
 print "ok 5\n";
 
-if (gethostbyname("www.perl.com") && gethostbyname("www.perl.org.uk") && !gethostbyname("perl.bv")) {
+if (gethostbyname("www.perl.com") && gethostbyname("www.perl.co.uk") && !gethostbyname("www.perl.bv")) {
     # DNS work, lets run test 6..8
 
     $URI::Heuristic::MY_COUNTRY = "bv";

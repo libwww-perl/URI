@@ -1,3 +1,11 @@
+2009-08-14   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.40
+
+   Even stricter test for working DNS, 2nd try.
+
+
+
 2009-08-13   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.39
