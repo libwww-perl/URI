@@ -68,6 +68,7 @@ t/mailto.t
 t/mix.t
 t/mms.t
 t/news.t
+t/num_eq.t
 t/old-absconf.t
 t/old-base.t
 t/old-file.t

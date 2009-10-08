@@ -22,11 +22,15 @@ use Carp ();
 use URI::Escape ();
 
 use overload ('""'     => sub { ${$_[0]} },
-	      '=='     => sub { overload::StrVal($_[0]) eq
-                                overload::StrVal($_[1])
-                              },
+              '=='     => sub { _obj_eq(@_) },
+              '!='     => sub { !_obj_eq(@_) },
               fallback => 1,
              );
+
+# Check if two objects are the same object
+sub _obj_eq {
+    return overload::StrVal($_[0]) eq overload::StrVal($_[1]);
+}
 
 sub new
 {
