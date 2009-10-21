@@ -256,6 +256,15 @@ sub as_string
 }
 
 
+sub as_unicode
+{
+    my $self = shift;
+    my $str = $$self;
+    $str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg;  # XXX really want all unreserved chars
+    return Encode::decode("UTF-8", $str);
+}
+
+
 sub canonical
 {
     # Make sure scheme is lowercased, that we don't escape unreserved chars,
@@ -493,10 +502,15 @@ as an escaped string.
 
 =item $uri->as_string
 
-Returns a URI object to a plain string.  URI objects are
+Returns a URI object to a plain ASCII string.  URI objects are
 also converted to plain strings automatically by overloading.  This
 means that $uri objects can be used as plain strings in most Perl
 constructs.
+
+=item $uri->as_unicode
+
+Returns a URI object as a Unicode string where unreserved chars
+are unescaped.
 
 =item $uri->canonical
 

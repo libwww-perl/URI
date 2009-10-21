@@ -11,10 +11,10 @@ try("http://➡.ws/");
 try("http://➡.ws/");
 try("http://@➡.ws:8080/");
 try("http://Bücher.ch");
-try("http://example.com/");
+try("http://example.com/Bücher");
 
 sub try {
     my $u = shift;
     $u = URI->new($u);
-    print "$u --> ", $u->host, " --> ", encode_utf8($u->host_unicode), "\n";
+    print "$u --> ", encode_utf8($u->as_unicode), " --> ", $u->host, " --> ", encode_utf8($u->host_unicode), "\n";
 }
