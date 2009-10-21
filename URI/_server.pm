@@ -5,6 +5,26 @@ require URI::_generic;
 use strict;
 use URI::Escape qw(uri_unescape);
 
+sub _uric_escape {
+    my($class, $str) = @_;
+    if ($str =~ m,^((?:$URI::scheme_re:)?)(?://([^/?\#]*))?(.*)$,os) {
+	my($scheme, $host, $rest) = ($1, $2, $3);
+	my $ui = $host =~ s/(.*@)// ? $1 : "";
+	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+	if (_host_escape($host)) {
+	    $str = "$scheme//$ui$host$port$rest";
+	}
+    }
+    return $class->SUPER::_uric_escape($str);
+}
+
+sub _host_escape {
+    return unless $_[0] =~ /[^URI::uric]/;
+    require IDNA::Punycode;
+    $_[0] = IDNA::Punycode::encode_punycode($_[0]);
+    return 1;
+}
+
 sub userinfo
 {
     my $self = shift;
@@ -43,6 +63,7 @@ sub host
 		$port = $1;
 	    }
 	    $new = "[$new]" if $new =~ /:/ && $new !~ /^\[/; # IPv6 address
+	    _host_escape($new);
 	}
 	$self->authority("$ui$new$port");
     }
@@ -51,6 +72,17 @@ sub host
     $old =~ s/:\d+$//;          # remove the port
     $old =~ s{^\[(.*)\]$}{$1};  # remove brackets around IPv6 (RFC 3986 3.2.2)
     return uri_unescape($old);
+}
+
+sub host_unicode
+{
+    my $self = shift;
+    my $old = $self->host(@_);
+    if ($old =~ /^xn--/) {
+	require IDNA::Punycode;
+	$old = IDNA::Punycode::decode_punycode($old);
+    }
+    return $old;
 }
 
 sub _port

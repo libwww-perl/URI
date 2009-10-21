@@ -4,6 +4,17 @@
 use utf8;
 use strict;
 use URI;
+use Encode qw(encode_utf8);
 
-my $u = URI->new("http://➡.ws/");
-print $u, "\n";
+try("http://➡.ws/");
+try("http://➡.ws/");
+try("http://➡.ws/");
+try("http://@➡.ws:8080/");
+try("http://Bücher.ch");
+try("http://example.com/");
+
+sub try {
+    my $u = shift;
+    $u = URI->new($u);
+    print "$u --> ", $u->host, " --> ", encode_utf8($u->host_unicode), "\n";
+}

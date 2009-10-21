@@ -78,11 +78,19 @@ sub _init
     my $class = shift;
     my($str, $scheme) = @_;
     # find all funny characters and encode the bytes.
-    $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    $str = $class->_uric_escape($str);
     $str = "$scheme:$str" unless $str =~ /^$scheme_re:/o ||
                                  $class->_no_scheme_ok;
     my $self = bless \$str, $class;
     $self;
+}
+
+
+sub _uric_escape
+{
+    my($class, $str) = @_;
+    $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    return $str;
 }
 
 
