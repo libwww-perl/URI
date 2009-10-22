@@ -44,7 +44,8 @@ sub host
     }
     return undef unless defined $old;
     $old =~ s/.*@//;
-    $old =~ s/:\d+$//;
+    $old =~ s/:\d+$//;          # remove the port
+    $old =~ s{^\[(.*)\]$}{$1};  # remove brackets around IPv6 (RFC 3986 3.2.2)
     return uri_unescape($old);
 }
 
@@ -79,6 +80,7 @@ sub host_port
     return undef unless defined $old;
     $old =~ s/.*@//;        # zap userinfo
     $old =~ s/:$//;         # empty port does not could
+    $old =~ s{^\[(.*)\]}{$1};   # strip brackets around IPv6 address
     $old .= ":" . $self->port unless $old =~ /:/;
     $old;
 }
