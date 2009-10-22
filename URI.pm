@@ -811,6 +811,10 @@ C<URI> objects belonging to the mailto scheme support the common
 methods and the generic query methods.  In addition, they support the
 following mailto-specific methods: $uri->to, $uri->headers.
 
+Note that the "foo@example.com" part of a mailto is I<not> the
+C<userinfo> and C<host> but instead the C<path>.  This allowed a
+mailto to contain multiple comma-seperated email addresses.
+
 =item B<mms>:
 
 The I<mms> URL specification can be found at L<http://sdp.ppona.com/>
