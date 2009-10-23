@@ -38,7 +38,11 @@ sub host
 	$new = "" unless defined $new;
 	if (length $new) {
 	    $new =~ s/[@]/%40/g;   # protect @
-	    $port = $1 if $new =~ s/(:\d+)$//;
+	    if ($new =~ /^[^:]*:\d*\z/ || $new =~ /]:\d*\z/) {
+		$new =~ s/(:\d*)\z// || die "Assert";
+		$port = $1;
+	    }
+	    $new = "[$new]" if $new =~ /:/ && $new !~ /^\[/; # IPv6 address
 	}
 	$self->authority("$ui$new$port");
     }
@@ -79,9 +83,8 @@ sub host_port
     $self->host(shift) if @_;
     return undef unless defined $old;
     $old =~ s/.*@//;        # zap userinfo
-    $old =~ s/:$//;         # empty port does not could
-    $old =~ s{^\[(.*)\]}{$1};   # strip brackets around IPv6 address
-    $old .= ":" . $self->port unless $old =~ /:/;
+    $old =~ s/:$//;         # empty port should be treated the same a no port
+    $old .= ":" . $self->port unless $old =~ /:\d+$/;
     $old;
 }
 
