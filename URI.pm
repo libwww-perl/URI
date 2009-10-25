@@ -680,6 +680,11 @@ Sets and returns the unescaped hostname.
 If the $new_host string ends with a colon and a number, then this
 number also sets the port.
 
+For IPv6 addresses the brackets around the raw address is removed in the return
+value from $uri->host.  When setting the host attribute to an IPv6 address you
+can use a raw address or one enclosed in brackets.  The address needs to be
+enclosed in brackets if you want to pass in a new port value as well.
+
 =item $uri->port
 
 =item $uri->port( $new_port )
@@ -699,6 +704,10 @@ Sets and returns the host and port as a single
 unit.  The returned value includes a port, even if it matches the
 default port.  The host part and the port part are separated by a
 colon: ":".
+
+For IPv6 addresses the bracketing is preserved; thus
+URI->new("http://[::1]/")->host_port returns "[::1]:80".  Contrast this with
+$uri->host which will remove the brackets.
 
 =item $uri->default_port
 
