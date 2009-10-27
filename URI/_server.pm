@@ -20,8 +20,8 @@ sub _uric_escape {
 
 sub _host_escape {
     return unless $_[0] =~ /[^URI::uric]/;
-    require IDNA::Punycode;
-    $_[0] = join(".", map IDNA::Punycode::encode_punycode($_), split(/\./, $_[0]));
+    require URI::_idna;
+    $_[0] = URI::_idna::encode($_[0]);
     return 1;
 }
 
@@ -33,8 +33,8 @@ sub as_unicode {
 	    my($scheme, $host, $rest) = ($1, $2, $3);
 	    my $ui = $host =~ s/(.*@)// ? $1 : "";
 	    my $port = $host =~ s/(:\d+)\z// ? $1 : "";
-	    require IDNA::Punycode;
-	    $host = join(".", map IDNA::Punycode::decode_punycode($_), split(/\./, $host));
+	    require URI::_idna;
+	    $host = URI::_idna::encode($host);
 	    $str = "$scheme//$ui$host$port$rest";
 	}
     }
@@ -95,8 +95,8 @@ sub host_unicode
     my $self = shift;
     my $old = $self->host(@_);
     if ($old =~ /(^|\.)xn--/) {
-	require IDNA::Punycode;
-	$old = join(".", map IDNA::Punycode::decode_punycode($_), split(/\./, $old));
+	require URI::_idna;
+	$old = URI::_idna::decode($old);
     }
     return $old;
 }
