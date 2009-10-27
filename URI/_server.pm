@@ -7,7 +7,7 @@ use URI::Escape qw(uri_unescape);
 
 sub _uric_escape {
     my($class, $str) = @_;
-    if ($str =~ m,^((?:$URI::scheme_re:)?)(?://([^/?\#]*))?(.*)$,os) {
+    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
 	my($scheme, $host, $rest) = ($1, $2, $3);
 	my $ui = $host =~ s/(.*@)// ? $1 : "";
 	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
@@ -29,7 +29,7 @@ sub as_unicode {
     my $self = shift;
     my $str = $self->SUPER::as_unicode;
     if ($str =~ /\bxn--/) {
-	if ($str =~ m,^((?:$URI::scheme_re:)?)(?://([^/?\#]*))?(.*)$,os) {
+	if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
 	    my($scheme, $host, $rest) = ($1, $2, $3);
 	    my $ui = $host =~ s/(.*@)// ? $1 : "";
 	    my $port = $host =~ s/(:\d+)\z// ? $1 : "";
