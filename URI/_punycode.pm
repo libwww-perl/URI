@@ -101,7 +101,8 @@ sub encode_punycode {
     my @output;
     my @basic = grep /$BasicRE/, @input;
     my $h = my $b = @basic;
-    push @output, @basic, $Delimiter if $b > 0;
+    push @output, @basic;
+    push @output, $Delimiter if $b && $h < @input;
     warn "basic codepoints: (@output)" if $DEBUG;
 
     while ($h < @input) {
