@@ -190,13 +190,14 @@ C<eval>.
 
 =head1 AUTHOR
 
-Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
+Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt> is the author of
+IDNA::Punycode v0.02 which was the basis for this module.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-RFC 3492
+L<IDNA::Punycode>, RFC 3492
 
 =cut
