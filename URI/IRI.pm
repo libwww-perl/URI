@@ -7,6 +7,7 @@ use overload '""' => sub { shift->as_string };
 
 sub new {
     my($class, $uri, $scheme) = @_;
+    utf8::upgrade($uri);
     return bless {
 	uri => URI->new($uri, $scheme),
     }, $class;
