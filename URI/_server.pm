@@ -90,7 +90,7 @@ sub host
     return uri_unescape($old);
 }
 
-sub host_unicode
+sub ihost
 {
     my $self = shift;
     my $old = $self->host(@_);

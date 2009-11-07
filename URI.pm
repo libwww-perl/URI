@@ -711,6 +711,10 @@ value from $uri->host.  When setting the host attribute to an IPv6 address you
 can use a raw address or one enclosed in brackets.  The address needs to be
 enclosed in brackets if you want to pass in a new port value as well.
 
+=item $uri->ihost
+
+Returns the host in Unicode form.  Any IDNA A-labels are turned into U-labels.
+
 =item $uri->port
 
 =item $uri->port( $new_port )
