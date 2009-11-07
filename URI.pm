@@ -270,8 +270,24 @@ sub as_iri
 	}
     }
     if ($str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg) {
+	# All this crap because the more obvious:
+	#
+	#   Encode::decode("UTF-8", $str, sub { sprintf "%%%02X", shift })
+	#
+	# doesn't work.  Apparently passing a sub as CHECK only works
+	# for 'ascii' and similar direct encodings.
+
 	require Encode;
-	return Encode::decode("UTF-8", $str);
+	my $enc = Encode::find_encoding("UTF-8");
+	my $u = "";
+	while (length $str) {
+	    $u .= $enc->decode($str, Encode::FB_QUIET());
+	    if (length $str) {
+		# escape next char
+		$u .= URI::Escape::escape_char(substr($str, 0, 1, ""));
+	    }
+	}
+	$str = $u;
     }
     return $str;
 }

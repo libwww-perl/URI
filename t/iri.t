@@ -2,7 +2,7 @@
 
 use utf8;
 use strict;
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 use URI;
 
@@ -17,6 +17,9 @@ is $u->as_iri, "http://bücher.ch";
 $u = URI->new("http://example.com/Bücher");
 is $u, "http://example.com/B%C3%BCcher";
 is $u->as_iri, "http://example.com/Bücher";
+
+$u = URI->new("http://example.com/B%FCcher");  # latin1 encoded stuff
+is $u->as_iri, "http://example.com/B%FCcher";  # ...should not be decoded
 
 $u = URI->new("http://➡.ws/");
 is $u, "http://xn--hgi.ws/";
