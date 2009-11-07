@@ -260,8 +260,11 @@ sub as_iri
 {
     my $self = shift;
     my $str = $$self;
-    $str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg;  # XXX really want all unreserved chars
-    return Encode::decode("UTF-8", $str);
+    if ($str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg) {
+	require Encode;
+	return Encode::decode("UTF-8", $str);
+    }
+    return $str;
 }
 
 
