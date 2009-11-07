@@ -260,6 +260,15 @@ sub as_iri
 {
     my $self = shift;
     my $str = $$self;
+    if ($str =~ /\bxn--/ && $self->can("ihost")) {
+	my $ihost = $self->ihost;
+	if ($ihost) {
+	    my $u = $self->clone;
+	    $u->host("%%host%%");
+	    $str = $u->as_string;
+	    $str =~ s/%%host%%/$ihost/;
+	}
+    }
     if ($str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg) {
 	require Encode;
 	return Encode::decode("UTF-8", $str);
