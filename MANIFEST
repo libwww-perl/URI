@@ -67,6 +67,7 @@ t/gopher.t
 t/heuristic.t
 t/http.t
 t/idna.t
+t/iri.t
 t/ldap.t
 t/mailto.t
 t/mix.t
