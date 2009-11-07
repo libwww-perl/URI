@@ -16,5 +16,5 @@ try("http://example.com/Bücher");
 sub try {
     my $u = shift;
     $u = URI->new($u);
-    print "$u --> ", encode_utf8($u->as_unicode), " --> ", $u->host, " --> ", encode_utf8($u->host_unicode), "\n";
+    print "$u --> ", encode_utf8($u->as_iri), " --> ", $u->host, " --> ", encode_utf8($u->host_unicode), "\n";
 }

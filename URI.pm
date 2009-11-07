@@ -256,7 +256,7 @@ sub as_string
 }
 
 
-sub as_unicode
+sub as_iri
 {
     my $self = shift;
     my $str = $$self;
@@ -507,10 +507,11 @@ also converted to plain strings automatically by overloading.  This
 means that $uri objects can be used as plain strings in most Perl
 constructs.
 
-=item $uri->as_unicode
+=item $uri->as_iri
 
-Returns a URI object as a Unicode string where unreserved chars
-are unescaped.
+Returns a Unicode string representing the URI.  Escaped UTF-8 sequences
+representing non-ASCII characters are turned into their corresponding Unicode
+code point.
 
 =item $uri->canonical
 

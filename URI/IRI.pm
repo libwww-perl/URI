@@ -1,5 +1,7 @@
 package URI::IRI;
 
+# Experimental
+
 use strict;
 use URI ();
 
@@ -22,7 +24,7 @@ sub clone {
 
 sub as_string {
     my $self = shift;
-    return $self->{uri}->as_unicode;
+    return $self->{uri}->as_iri;
 }
 
 sub AUTOLOAD

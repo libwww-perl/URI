@@ -25,9 +25,9 @@ sub _host_escape {
     return 1;
 }
 
-sub as_unicode {
+sub as_iri {
     my $self = shift;
-    my $str = $self->SUPER::as_unicode;
+    my $str = $self->SUPER::as_iri;
     if ($str =~ /\bxn--/) {
 	if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
 	    my($scheme, $host, $rest) = ($1, $2, $3);
