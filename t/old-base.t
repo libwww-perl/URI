@@ -477,11 +477,11 @@ sub netloc_test {
     my $url = new URI::URL 'ftp://anonymous:p%61ss@håst:12345';
     $url->_expect('user', 'anonymous');
     $url->_expect('password', 'pass');
-    $url->_expect('host', 'håst');
+    $url->_expect('host', 'xn--hst-ula');
     $url->_expect('port', 12345);
     # Can't really know how netloc is represented since it is partially escaped
     #$url->_expect('netloc', 'anonymous:pass@hst:12345');
-    $url->_expect('as_string' => 'ftp://anonymous:pass@h%E5st:12345');
+    $url->_expect('as_string' => 'ftp://anonymous:pass@xn--hst-ula:12345');
 
     # The '0' is sometimes tricky to get right
     $url->user(0);

@@ -78,11 +78,19 @@ sub _init
     my $class = shift;
     my($str, $scheme) = @_;
     # find all funny characters and encode the bytes.
-    $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    $str = $class->_uric_escape($str);
     $str = "$scheme:$str" unless $str =~ /^$scheme_re:/o ||
                                  $class->_no_scheme_ok;
     my $self = bless \$str, $class;
     $self;
+}
+
+
+sub _uric_escape
+{
+    my($class, $str) = @_;
+    $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    return $str;
 }
 
 
@@ -245,6 +253,43 @@ sub as_string
 {
     my $self = shift;
     $$self;
+}
+
+
+sub as_iri
+{
+    my $self = shift;
+    my $str = $$self;
+    if ($str =~ /\bxn--/ && $self->can("ihost")) {
+	my $ihost = $self->ihost;
+	if ($ihost) {
+	    my $u = $self->clone;
+	    $u->host("%%host%%");
+	    $str = $u->as_string;
+	    $str =~ s/%%host%%/$ihost/;
+	}
+    }
+    if ($str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg) {
+	# All this crap because the more obvious:
+	#
+	#   Encode::decode("UTF-8", $str, sub { sprintf "%%%02X", shift })
+	#
+	# doesn't work.  Apparently passing a sub as CHECK only works
+	# for 'ascii' and similar direct encodings.
+
+	require Encode;
+	my $enc = Encode::find_encoding("UTF-8");
+	my $u = "";
+	while (length $str) {
+	    $u .= $enc->decode($str, Encode::FB_QUIET());
+	    if (length $str) {
+		# escape next char
+		$u .= URI::Escape::escape_char(substr($str, 0, 1, ""));
+	    }
+	}
+	$str = $u;
+    }
+    return $str;
 }
 
 
@@ -485,10 +530,16 @@ as an escaped string.
 
 =item $uri->as_string
 
-Returns a URI object to a plain string.  URI objects are
+Returns a URI object to a plain ASCII string.  URI objects are
 also converted to plain strings automatically by overloading.  This
 means that $uri objects can be used as plain strings in most Perl
 constructs.
+
+=item $uri->as_iri
+
+Returns a Unicode string representing the URI.  Escaped UTF-8 sequences
+representing non-ASCII characters are turned into their corresponding Unicode
+code point.
 
 =item $uri->canonical
 
@@ -684,6 +735,10 @@ For IPv6 addresses the brackets around the raw address is removed in the return
 value from $uri->host.  When setting the host attribute to an IPv6 address you
 can use a raw address or one enclosed in brackets.  The address needs to be
 enclosed in brackets if you want to pass in a new port value as well.
+
+=item $uri->ihost
+
+Returns the host in Unicode form.  Any IDNA A-labels are turned into U-labels.
 
 =item $uri->port
 

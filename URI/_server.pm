@@ -5,6 +5,42 @@ require URI::_generic;
 use strict;
 use URI::Escape qw(uri_unescape);
 
+sub _uric_escape {
+    my($class, $str) = @_;
+    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
+	my($scheme, $host, $rest) = ($1, $2, $3);
+	my $ui = $host =~ s/(.*@)// ? $1 : "";
+	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+	if (_host_escape($host)) {
+	    $str = "$scheme//$ui$host$port$rest";
+	}
+    }
+    return $class->SUPER::_uric_escape($str);
+}
+
+sub _host_escape {
+    return unless $_[0] =~ /[^URI::uric]/;
+    require URI::_idna;
+    $_[0] = URI::_idna::encode($_[0]);
+    return 1;
+}
+
+sub as_iri {
+    my $self = shift;
+    my $str = $self->SUPER::as_iri;
+    if ($str =~ /\bxn--/) {
+	if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
+	    my($scheme, $host, $rest) = ($1, $2, $3);
+	    my $ui = $host =~ s/(.*@)// ? $1 : "";
+	    my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+	    require URI::_idna;
+	    $host = URI::_idna::encode($host);
+	    $str = "$scheme//$ui$host$port$rest";
+	}
+    }
+    return $str;
+}
+
 sub userinfo
 {
     my $self = shift;
@@ -43,6 +79,7 @@ sub host
 		$port = $1;
 	    }
 	    $new = "[$new]" if $new =~ /:/ && $new !~ /^\[/; # IPv6 address
+	    _host_escape($new);
 	}
 	$self->authority("$ui$new$port");
     }
@@ -51,6 +88,17 @@ sub host
     $old =~ s/:\d+$//;          # remove the port
     $old =~ s{^\[(.*)\]$}{$1};  # remove brackets around IPv6 (RFC 3986 3.2.2)
     return uri_unescape($old);
+}
+
+sub ihost
+{
+    my $self = shift;
+    my $old = $self->host(@_);
+    if ($old =~ /(^|\.)xn--/) {
+	require URI::_idna;
+	$old = URI::_idna::decode($old);
+    }
+    return $old;
 }
 
 sub _port

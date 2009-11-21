@@ -5,14 +5,17 @@ README
 URI.pm
 URI/Escape.pm
 URI/Heuristic.pm
+URI/IRI.pm
 URI/QueryParam.pm
 URI/Split.pm
 URI/URL.pm
 URI/WithBase.pm
 URI/_foreign.pm
 URI/_generic.pm
+URI/_idna.pm
 URI/_ldap.pm
 URI/_login.pm
+URI/_punycode.pm
 URI/_query.pm
 URI/_segment.pm
 URI/_server.pm
@@ -63,6 +66,8 @@ t/generic.t
 t/gopher.t
 t/heuristic.t
 t/http.t
+t/idna.t
+t/iri.t
 t/ldap.t
 t/mailto.t
 t/mix.t
@@ -74,6 +79,7 @@ t/old-base.t
 t/old-file.t
 t/old-relbase.t
 t/pop.t
+t/punycode.t
 t/query.t
 t/query-param.t
 t/rel.t
