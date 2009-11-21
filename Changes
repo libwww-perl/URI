@@ -1,3 +1,47 @@
+2009-11-21   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.50
+
+   The main news in this release is the initial attempt at providing
+   support to IRIs.  URI objects now support the 'as_iri' and 'ihost'
+   methods.
+
+   Gisle Aas (28):
+      Added more tests for setting IPv6 addresses using the host method
+      Document how the host methods deal with IPv6 addresses
+      A "test case" to start IDNA prototype from
+      Escape IDNA hostnames
+      Introduce the as_unicode method
+      Make as_unicode undo punycode for server URLs
+      An IRI class might be helpful (RFC 3987)
+      Must punycode each part of the domain name separately
+      Include initial private Punycode module
+      Get URI::_punycode working
+      punycode of plain ascii should not edit with "-"
+      Some more tests from RFC 3492
+      Add private URI::_idna module based on encodings/idna.py
+      Start using URI::_idna for encoding of URIs
+      Avoid various use of undef warnings
+      Fix test affected by IDNA
+      Keep reference to IDNA::Punycode in the URI::_punycode docs
+      Ensure upgraded strings as input
+      Update manifest with the new idna/punycode files
+      Rename as_unicde to as_iri
+      draft-duerst-iri-bis-07: The proposed RFC 3987 update
+      Load Encode when its used
+      Rename host_unicode as ihost
+      Add basic iri test
+      Hack to make as_iri turn A-labels into U-labels
+      Make as_iri leave escapes not forming valid UTF-8 sequences
+      Merge branch 'iri'
+      Don't include RFCs in the cpan tarball
+
+   Michael G. Schwern (3):
+      Fix != overloading to match ==
+      Note that mailto does not contain a host() and this is not a bug.
+      Strip brackets off IPv6 hosts [RT#34309]
+
+
 2009-08-14   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.40

@@ -2,7 +2,7 @@ package URI;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.40";
+$VERSION = "1.50";
 
 use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME $DEFAULT_QUERY_FORM_DELIMITER);
 
@@ -1087,7 +1087,7 @@ http://www.w3.org/Addressing/
 
 =head1 COPYRIGHT
 
-Copyright 1995-2004,2008 Gisle Aas.
+Copyright 1995-2009 Gisle Aas.
 
 Copyright 1995 Martijn Koster.
 
