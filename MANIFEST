@@ -54,7 +54,6 @@ URI/tn3270.pm
 URI/urn.pm
 URI/urn/isbn.pm
 URI/urn/oid.pm
-rfc2396.txt
 t/abs.t
 t/clone.t
 t/cwd.t
