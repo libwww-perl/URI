@@ -1,3 +1,12 @@
+2009-11-23   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.51
+
+   Fixup a test that was broken on Windows
+
+
+
+
 2009-11-21   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.50
@@ -40,6 +49,7 @@
       Fix != overloading to match ==
       Note that mailto does not contain a host() and this is not a bug.
       Strip brackets off IPv6 hosts [RT#34309]
+
 
 
 2009-08-14   Gisle Aas <gisle@ActiveState.com>
