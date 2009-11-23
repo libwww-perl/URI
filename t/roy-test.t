@@ -2,19 +2,16 @@
 
 print "1..102\n";
 
-if (-d "t") {
-   chdir("t") || die "Can't chdir 't': $!";
-   # fix all relative library locations
-   foreach (@INC) {
-      $_ = "../$_" unless m,^/,;
-   }
-}
-
 use URI;
+use File::Spec::Functions qw(catfile);
+
 $no = 1;
 
+my @prefix;
+push(@prefix, "t") if -d "t";
+
 for $i (1..5) {
-   my $file = "roytest$i.html";
+   my $file = catfile(@prefix, "roytest$i.html");
 
    open(FILE, $file) || die "Can't open $file: $!";
    print "# $file\n";
