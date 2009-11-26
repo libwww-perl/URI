@@ -274,8 +274,8 @@ sub as_iri
 	#
 	#   Encode::decode("UTF-8", $str, sub { sprintf "%%%02X", shift })
 	#
-	# doesn't work.  Apparently passing a sub as CHECK only works
-	# for 'ascii' and similar direct encodings.
+	# doesn't work before Encode 2.39.  Wait for a standard release
+	# to bundle that version.
 
 	require Encode;
 	my $enc = Encode::find_encoding("UTF-8");
