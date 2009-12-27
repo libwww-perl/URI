@@ -34,7 +34,7 @@ sub as_iri {
 	    my $ui = $host =~ s/(.*@)// ? $1 : "";
 	    my $port = $host =~ s/(:\d+)\z// ? $1 : "";
 	    require URI::_idna;
-	    $host = URI::_idna::encode($host);
+	    $host = URI::_idna::decode($host);
 	    $str = "$scheme//$ui$host$port$rest";
 	}
     }
