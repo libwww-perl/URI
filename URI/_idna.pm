@@ -67,12 +67,12 @@ sub ToUnicode {
     my $label = shift;
     $label = nameprep($label) unless $label =~ $ASCII;
     return $label unless $label =~ /^xn--/;
-    my $label1 = decode_punycode(substr($label, 4));
-    my $label2 = ToASCII($label);
+    my $result = decode_punycode(substr($label, 4));
+    my $label2 = ToASCII($result);
     if (lc($label) ne $label2) {
-	croak "IDNA does not round-trip: '$label' vs '$label2'";
+	croak "IDNA does not round-trip: '\L$label\E' vs '$label2'";
     }
-    return $label1;
+    return $result;
 }
 
 1;
