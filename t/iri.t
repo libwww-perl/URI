@@ -2,7 +2,7 @@
 
 use utf8;
 use strict;
-use Test::More tests => 11;
+use Test::More tests => 15;
 
 use URI;
 
@@ -26,3 +26,13 @@ is $u, "http://xn--hgi.ws/";
 is $u->host, "xn--hgi.ws";
 is $u->ihost, "➡.ws";
 is $u->as_iri, "http://➡.ws/";
+
+# try some URLs that can't be IDNA encoded (fallback to encoded UTF8 bytes)
+$u = URI->new("http://" . ("ü" x 128));
+is $u, "http://" . ("%C3%BC" x 128);
+is $u->host, ("\xC3\xBC" x 128);
+TODO: {
+    local $TODO = "should ihost decode UTF8 bytes?";
+    is $u->ihost, ("ü" x 128);
+}
+is $u->as_iri, "http://" . ("ü" x 128);
