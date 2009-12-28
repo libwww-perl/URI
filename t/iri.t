@@ -2,9 +2,10 @@
 
 use utf8;
 use strict;
-use Test::More tests => 15;
+use Test::More tests => 19;
 
 use URI;
+use URI::IRI;
 
 my $u;
 
@@ -20,6 +21,14 @@ is $u->as_iri, "http://example.com/Bücher";
 
 $u = URI->new("http://example.com/B%FCcher");  # latin1 encoded stuff
 is $u->as_iri, "http://example.com/B%FCcher";  # ...should not be decoded
+
+$u = URI->new("http://example.com/B\xFCcher");
+is $u->as_string, "http://example.com/B%FCcher";
+is $u->as_iri, "http://example.com/B%FCcher";
+
+$u = URI::IRI->new("http://example.com/B\xFCcher");
+is $u->as_string, "http://example.com/Bücher";
+is $u->as_iri, "http://example.com/Bücher";
 
 $u = URI->new("http://➡.ws/");
 is $u, "http://xn--hgi.ws/";
