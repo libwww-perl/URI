@@ -260,7 +260,7 @@ sub as_iri
 {
     my $self = shift;
     my $str = $$self;
-    if ($str =~ s/%([89A-F][0-9A-F])/chr(hex($1))/eg) {
+    if ($str =~ s/%([89a-fA-F][0-9a-fA-F])/chr(hex($1))/eg) {
 	# All this crap because the more obvious:
 	#
 	#   Encode::decode("UTF-8", $str, sub { sprintf "%%%02X", shift })

@@ -50,7 +50,10 @@ is $u->as_iri, "http://➡.ws/";
 # draft-duerst-iri-bis.txt examples (section 3.7.1):
 is(URI->new("http://www.example.org/D%C3%BCrst")->as_iri, "http://www.example.org/D\xFCrst");
 is(URI->new("http://www.example.org/D%FCrst")->as_iri, "http://www.example.org/D%FCrst");
+TODO: {
+    local $TODO = "some chars (like U+202E, RIGHT-TO-LEFT OVERRIDE) need to stay escaped";
 is(URI->new("http://xn--99zt52a.example.org/%e2%80%ae")->as_iri, "http://\x{7D0D}\x{8C46}.example.org/%e2%80%ae");
+}
 
 # try some URLs that can't be IDNA encoded (fallback to encoded UTF8 bytes)
 $u = URI->new("http://" . ("ü" x 128));
