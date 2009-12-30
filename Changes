@@ -1,9 +1,23 @@
+2009-12-30   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.52
+
+   Gisle Aas (7):
+      Encode::decode('UTF-8',...) with callback implemented in 2.39
+      %%host%% hack can be removed when URI::_server::as_iri works
+      Don't croak on IRIs that can't be IDNA encoded
+      IDNA roundtrip test on wrong variable
+      Check behaviour when feeded URI constructor Latin-1 chars
+      Add some test examples from draft-duerst-iri-bis.txt
+      Need to recognize lower case hex digits as well
+
+
+
 2009-11-23   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.51
 
    Fixup a test that was broken on Windows
-
 
 
 
