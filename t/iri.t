@@ -2,7 +2,7 @@
 
 use utf8;
 use strict;
-use Test::More tests => 19;
+use Test::More tests => 26;
 
 use URI;
 use URI::IRI;
@@ -30,11 +30,27 @@ $u = URI::IRI->new("http://example.com/B\xFCcher");
 is $u->as_string, "http://example.com/Bücher";
 is $u->as_iri, "http://example.com/Bücher";
 
+# draft-duerst-iri-bis.txt claims this should map to xn--rsum-bad.example.org
+$u = URI->new("http://r\xE9sum\xE9.example.org");
+is $u->as_string, "http://xn--rsum-bpad.example.org";
+
+$u = URI->new("http://xn--rsum-bad.example.org");
+is $u->as_iri, "http://r\x80sum\x80.example.org";
+
+$u = URI->new("http://r%C3%A9sum%C3%A9.example.org");
+is $u->as_string, "http://r%C3%A9sum%C3%A9.example.org";
+is $u->as_iri, "http://r\xE9sum\xE9.example.org";
+
 $u = URI->new("http://➡.ws/");
 is $u, "http://xn--hgi.ws/";
 is $u->host, "xn--hgi.ws";
 is $u->ihost, "➡.ws";
 is $u->as_iri, "http://➡.ws/";
+
+# draft-duerst-iri-bis.txt examples (section 3.7.1):
+is(URI->new("http://www.example.org/D%C3%BCrst")->as_iri, "http://www.example.org/D\xFCrst");
+is(URI->new("http://www.example.org/D%FCrst")->as_iri, "http://www.example.org/D%FCrst");
+is(URI->new("http://xn--99zt52a.example.org/%e2%80%ae")->as_iri, "http://\x{7D0D}\x{8C46}.example.org/%e2%80%ae");
 
 # try some URLs that can't be IDNA encoded (fallback to encoded UTF8 bytes)
 $u = URI->new("http://" . ("ü" x 128));
