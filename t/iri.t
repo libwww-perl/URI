@@ -9,6 +9,9 @@ use URI::IRI;
 
 my $u;
 
+binmode Test::More->builder->output, ":utf8";
+binmode Test::More->builder->failure_output, ":utf8";
+
 $u = URI->new("http://Bücher.ch");
 is $u, "http://xn--bcher-kva.ch";
 is $u->host, "xn--bcher-kva.ch";
