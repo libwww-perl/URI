@@ -3,13 +3,16 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 use URI::Escape;
 
 is uri_escape("|abcå"), "%7Cabc%E5";
 
 is uri_escape("abc", "b-d"), "a%62%63";
+
+# New escapes in RFC 3986
+is uri_escape("~*'()"), "~%2A%27%28%29";
 
 is uri_escape(undef), undef;
 
@@ -35,5 +38,3 @@ SKIP: {
 
     is uri_escape_utf8(chr(0xFFF)), "%E0%BF%BF";
 }
-
-

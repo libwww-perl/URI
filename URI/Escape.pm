@@ -15,26 +15,27 @@ URI::Escape - Escape and unescape unsafe characters
 =head1 DESCRIPTION
 
 This module provides functions to escape and unescape URI strings as
-defined by RFC 2396 (and updated by RFC 2732).
-A URI consists of a restricted set of characters,
-denoted as C<uric> in RFC 2396.  The restricted set of characters
-consists of digits, letters, and a few graphic symbols chosen from
-those common to most of the character encodings and input facilities
-available to Internet users:
+defined by RFC 3986.
 
-  "A" .. "Z", "a" .. "z", "0" .. "9",
-  ";", "/", "?", ":", "@", "&", "=", "+", "$", ",", "[", "]",   # reserved
-  "-", "_", ".", "!", "~", "*", "'", "(", ")"
+A URI consists of a restricted set of characters.  The restricted set
+of characters consists of digits, letters, and a few graphic symbols
+chosen from those common to most of the character encodings and input
+facilities available to Internet users.  They are made up of the
+"unreserved" and "reserved" character sets as defined in RFC 3986.
+
+   unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
+   reserved      = ":" / "/" / "?" / "#" / "[" / "]" / "@"
+                   "!" / "$" / "&" / "'" / "(" / ")"
+                 / "*" / "+" / "," / ";" / "="
 
 In addition, any byte (octet) can be represented in a URI by an escape
 sequence: a triplet consisting of the character "%" followed by two
 hexadecimal digits.  A byte can also be represented directly by a
-character, using the US-ASCII character for that octet (iff the
-character is part of C<uric>).
+character, using the US-ASCII character for that octet.
 
-Some of the C<uric> characters are I<reserved> for use as delimiters
-or as part of certain URI components.  These must be escaped if they are
-to be treated as ordinary data.  Read RFC 2396 for further details.
+Some of the characters are I<reserved> for use as delimiters or as
+part of certain URI components.  These must be escaped if they are to
+be treated as ordinary data.  Read RFC 3986 for further details.
 
 The functions provided (and exported by default) from this module are:
 
@@ -61,10 +62,10 @@ character class (between [ ]).  E.g.:
   "^A-Za-z"                     # everything not a letter
 
 The default set of characters to be escaped is all those which are
-I<not> part of the C<uric> character class shown above as well as the
-reserved characters.  I.e. the default is:
+I<not> part of the C<unreserved> character class shown above as well
+as the reserved characters.  I.e. the default is:
 
-  "^A-Za-z0-9\-_.!~*'()"
+    "^A-Za-z0-9\-\._~"
 
 =item uri_escape_utf8( $string )
 
@@ -156,6 +157,11 @@ for (0..255) {
 
 my %subst;  # compiled patternes
 
+my %Unsafe = (
+    RFC2732 => qr/[^A-Za-z0-9\-_.!~*'()]/,
+    RFC3986 => qr/[^A-Za-z0-9\-\._~"]/,
+);
+
 sub uri_escape
 {
     my($text, $patn) = @_;
@@ -169,8 +175,7 @@ sub uri_escape
 	}
 	&{$subst{$patn}}($text);
     } else {
-	# Default unsafe characters.  RFC 2732 ^(uric - reserved)
-	$text =~ s/([^A-Za-z0-9\-_.!~*'()])/$escapes{$1} || _fail_hi($1)/ge;
+	$text =~ s/($Unsafe{RFC3986})/$escapes{$1} || _fail_hi($1)/ge;
     }
     $text;
 }
