@@ -1,4 +1,4 @@
-require 5.004;
+require 5.006001;
 use ExtUtils::MakeMaker;
 
 if ("foo" !~ /\Afoo\z/) {
@@ -22,7 +22,7 @@ WriteMakefile(
     'ABSTRACT'     => 'Uniform Resource Identifiers (absolute and relative)',
     'AUTHOR'       => 'Gisle Aas <gisle@activestate.com>',
     'LICENSE'      => 'perl',
-    'MIN_PERL_VERSION' => 5.004,
+    'MIN_PERL_VERSION' => 5.006001,
     'PREREQ_PM'    => {	
 	'MIME::Base64' => 2,
     },

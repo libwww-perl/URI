@@ -10,7 +10,7 @@ combine URIs in various ways.
 Some tests require an Internet connection to work and are skipped if
 one is not active.
 
-You need perl5.004 or better to install this package.  You should also
+You need perl-5.6.1 or better to install this package.  You should also
 have the MIME::Base64 module installed.  Installation is otherwise as
 usual:
 
