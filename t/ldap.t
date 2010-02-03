@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..22\n";
+print "1..24\n";
 
 use strict;
 use URI;
@@ -89,26 +89,31 @@ print "ok 15\n";
 print "$uri\n";
 print $uri->canonical, "\n";
 
+print "not " if $uri->secure;
+print "ok 16\n";
+
 $uri = URI->new("ldaps://host/dn=base?cn,sn?sub?objectClass=*");
 
 print "not " unless $uri->host eq "host";
-print "ok 16\n";
-print "not " unless $uri->port eq 636;
 print "ok 17\n";
-print "not " unless $uri->dn eq "dn=base";
+print "not " unless $uri->port eq 636;
 print "ok 18\n";
+print "not " unless $uri->dn eq "dn=base";
+print "ok 19\n";
+print "not " unless $uri->secure;
+print "ok 20\n";
 
 $uri = URI->new("ldapi://%2Ftmp%2Fldap.sock/????x-mod=-w--w----");
 print "not " unless $uri->authority eq "%2Ftmp%2Fldap.sock";
-print "ok 19\n";
+print "ok 21\n";
 print "not " unless $uri->un_path eq "/tmp/ldap.sock";
-print "ok 20\n";
+print "ok 22\n";
 
 $uri->un_path("/var/x\@foo:bar/");
 print "not " unless $uri eq "ldapi://%2Fvar%2Fx%40foo%3Abar%2F/????x-mod=-w--w----";
-print "ok 21\n";
+print "ok 23\n";
 
 %ext = $uri->extensions;
 print "not " unless $ext{"x-mod"} eq "-w--w----";
-print "ok 22\n";
+print "ok 24\n";
 

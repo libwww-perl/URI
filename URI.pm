@@ -321,6 +321,8 @@ sub eq {
 sub abs { $_[0]; }
 sub rel { $_[0]; }
 
+sub secure { 0 }
+
 # help out Storable
 sub STORABLE_freeze {
        my($self, $cloning) = @_;
@@ -568,6 +570,11 @@ $uri and the $base_uri, and returned.
 Returns a relative URI reference if it is possible to
 make one that denotes the same resource relative to $base_uri.
 If not, then $uri is simply returned.
+
+=item $uri->secure
+
+Returns a TRUE value if the URI is considered to point to a resource on
+a secure channel, such as an SSL or TLS encrypted one.
 
 =back
 
