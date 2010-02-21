@@ -5,7 +5,7 @@ if (-f "OFFLINE") {
    exit;
 }
 
-print "1..16\n";
+print "1..19\n";
 
 use URI::Heuristic qw(uf_urlstr uf_url);
 if (shift) {
@@ -42,54 +42,68 @@ print "not " unless uf_urlstr("C:\\CONFIG.SYS") eq "file:C:\\CONFIG.SYS";
 print "ok 5\n";
 
 if (gethostbyname("www.perl.com") && gethostbyname("www.perl.co.uk") && !gethostbyname("www.perl.bv")) {
-    # DNS works, let's run tests 6..9
+    # DNS works, let's run tests 6..12
+
+    {
+        local $ENV{LC_ALL} = "en_GB.UTF-8";
+        print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
+        print "ok 6\n";
+
+        local $ENV{LC_ALL} = "C";
+        print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(com|org)/camel\.gif$,;
+        print "ok 7\n";
+
+        local $ENV{HTTP_ACCEPT_LANGUAGE} = "en-ca";
+        print "not " unless uf_urlstr("perl/camel.gif") eq "http://www.perl.ca/camel.gif";
+        print "ok 8\n";
+    }
 
     $URI::Heuristic::MY_COUNTRY = "bv";
     print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(com|org)/camel\.gif$,;
-    print "ok 6\n";
+    print "ok 9\n";
 
     # Backwards compatibility; uk != United Kingdom in ISO 3166
     $URI::Heuristic::MY_COUNTRY = "uk";
     print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
-    print "ok 7\n";
+    print "ok 10\n";
 
     $URI::Heuristic::MY_COUNTRY = "gb";
     print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
-    print "ok 8\n";
+    print "ok 11\n";
 
     $ENV{URL_GUESS_PATTERN} = "www.ACME.org www.ACME.com";
     print "not " unless uf_urlstr("perl") eq "http://www.perl.org";
-    print "ok 9\n";
+    print "ok 12\n";
 
 } else {
-    # don't make the inocent worry
-    print "Skipping test 6-9 because DNS does not work\n";
-    for (6..9) { print "ok $_\n"; }
+    # don't make the innocent worry
+    print "Skipping test 6-12 because DNS does not work\n";
+    for (6..12) { print "ok $_\n"; }
 
 }
 
 {
 local $ENV{URL_GUESS_PATTERN} = "";
 print "not " unless uf_urlstr("perl") eq "http://perl";
-print "ok 10\n";
-
-print "not " unless uf_urlstr("http:80") eq "http:80";
-print "ok 11\n";
-
-print "not " unless uf_urlstr("mailto:gisle\@aas.no") eq "mailto:gisle\@aas.no";
-print "ok 12\n";
-
-print "not " unless uf_urlstr("gisle\@aas.no") eq "mailto:gisle\@aas.no";
 print "ok 13\n";
 
-print "not " unless uf_urlstr("Gisle.Aas\@aas.perl.org") eq "mailto:Gisle.Aas\@aas.perl.org";
+print "not " unless uf_urlstr("http:80") eq "http:80";
 print "ok 14\n";
 
-print "not " unless uf_url("gopher.sn.no")->scheme eq "gopher";
+print "not " unless uf_urlstr("mailto:gisle\@aas.no") eq "mailto:gisle\@aas.no";
 print "ok 15\n";
 
-print "not " unless uf_urlstr("123.3.3.3:8080/foo") eq "http://123.3.3.3:8080/foo";
+print "not " unless uf_urlstr("gisle\@aas.no") eq "mailto:gisle\@aas.no";
 print "ok 16\n";
+
+print "not " unless uf_urlstr("Gisle.Aas\@aas.perl.org") eq "mailto:Gisle.Aas\@aas.perl.org";
+print "ok 17\n";
+
+print "not " unless uf_url("gopher.sn.no")->scheme eq "gopher";
+print "ok 18\n";
+
+print "not " unless uf_urlstr("123.3.3.3:8080/foo") eq "http://123.3.3.3:8080/foo";
+print "ok 19\n";
 }
 
 #
