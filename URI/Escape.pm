@@ -89,7 +89,7 @@ will be the same as:
 
 but will even work for perl-5.6 for chars in the 128 .. 255 range.
 
-Note: Javascript has a function called escape() that produces the
+Note: JavaScript has a function called escape() that produces the
 sequence "%uXXXX" for chars in the 256 .. 65535 range.  This function
 has really nothing to do with URI escaping but some folks got confused
 since it "does the right thing" in the 0 .. 255 range.  Because of
@@ -155,7 +155,7 @@ for (0..255) {
     $escapes{chr($_)} = sprintf("%%%02X", $_);
 }
 
-my %subst;  # compiled patternes
+my %subst;  # compiled patterns
 
 my %Unsafe = (
     RFC2732 => qr/[^A-Za-z0-9\-_.!~*'()]/,

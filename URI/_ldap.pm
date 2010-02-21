@@ -98,7 +98,7 @@ sub canonical
     # Should really know about mixed case "postalAddress", etc...
     $other->attributes(map lc, $other->attributes);
 
-    # Lowecase scope, remove default
+    # Lowercase scope, remove default
     my $old_scope = $other->scope;
     my $new_scope = lc($old_scope);
     $new_scope = "" if $new_scope eq "base";

@@ -874,8 +874,8 @@ methods and the generic query methods.  In addition, they support the
 following mailto-specific methods: $uri->to, $uri->headers.
 
 Note that the "foo@example.com" part of a mailto is I<not> the
-C<userinfo> and C<host> but instead the C<path>.  This allowed a
-mailto to contain multiple comma-seperated email addresses.
+C<userinfo> and C<host> but instead the C<path>.  This allows a
+mailto URI to contain multiple comma separated email addresses.
 
 =item B<mms>:
 

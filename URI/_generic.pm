@@ -180,7 +180,7 @@ sub abs
     $abs;
 }
 
-# The oposite of $url->abs.  Return a URI which is as relative as possible
+# The opposite of $url->abs.  Return a URI which is as relative as possible
 sub rel {
     my $self = shift;
     my $base = shift || Carp::croak("Missing base argument");

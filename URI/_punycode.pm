@@ -185,7 +185,7 @@ takes Punycode encoding and returns original Unicode string.
 
 =back
 
-These functions throws exceptionsn on failure. You can catch 'em via
+These functions throw exceptions on failure. You can catch 'em via
 C<eval>.
 
 =head1 AUTHOR
