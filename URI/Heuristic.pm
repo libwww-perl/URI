@@ -115,11 +115,13 @@ sub MY_COUNTRY() {
 %LOCAL_GUESSING =
 (
  'us' => [qw(www.ACME.gov www.ACME.mil)],
- 'uk' => [qw(www.ACME.co.uk www.ACME.org.uk www.ACME.ac.uk)],
+ 'gb' => [qw(www.ACME.co.uk www.ACME.org.uk www.ACME.ac.uk)],
  'au' => [qw(www.ACME.com.au www.ACME.org.au www.ACME.edu.au)],
  'il' => [qw(www.ACME.co.il www.ACME.org.il www.ACME.net.il)],
  # send corrections and new entries to <gisle@aas.no>
 );
+# Backwards compatibility; uk != United Kingdom in ISO 3166
+$LOCAL_GUESSING{uk} = $LOCAL_GUESSING{gb};
 
 
 sub uf_uristr ($)
