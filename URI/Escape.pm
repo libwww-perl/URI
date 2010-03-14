@@ -146,7 +146,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(uri_escape uri_unescape uri_escape_utf8);
 @EXPORT_OK = qw(%escapes);
-$VERSION = "3.29";
+$VERSION = "3.30";
 
 use Carp ();
 

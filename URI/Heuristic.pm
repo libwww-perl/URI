@@ -93,7 +93,7 @@ use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 require Exporter;
 *import = \&Exporter::import;
 @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = "4.18";
+$VERSION = "4.19";
 
 sub MY_COUNTRY() {
     for ($MY_COUNTRY) {

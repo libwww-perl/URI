@@ -1,3 +1,27 @@
+2010-03-14   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.53
+
+   Ville Skyttä (6):
+      Remove unneeded execute permissions.
+      Add $uri->secure() method.
+      Documentation and comment spelling fixes.
+      Fix heuristics when COUNTRY is set to "gb".
+      Use HTTP_ACCEPT_LANGUAGE, LC_ALL, and LANG in country heuristics.
+      POD linking improvements.
+
+   Michael G. Schwern (2):
+      Rewrite the URI::Escape tests with Test::More
+      Update URI::Escape for RFC 3986
+
+   Gisle Aas (1):
+      Bump MIN_PERL_VERSION to 5.6.1 [RT#54078]
+
+   Salvatore Bonaccorso (1):
+      Suppress wide caracters warnings in iri.t [RT#53737]
+
+
+
 2009-12-30   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.52
