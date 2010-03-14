@@ -45,15 +45,22 @@ if (gethostbyname("www.perl.com") && gethostbyname("www.perl.co.uk") && !gethost
     # DNS works, let's run tests 6..12
 
     {
-        local $ENV{LC_ALL} = "en_GB.UTF-8";
+        local $ENV{LC_ALL} = "";
+        local $ENV{LANG} = "";
+        local $ENV{HTTP_ACCEPT_LANGUAGE} = "";
+
+        $ENV{LC_ALL} = "en_GB.UTF-8";
+        undef $URI::Heuristic::MY_COUNTRY;
         print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
         print "ok 6\n";
 
-        local $ENV{LC_ALL} = "C";
+        $ENV{LC_ALL} = "C";
+        undef $URI::Heuristic::MY_COUNTRY;
         print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(com|org)/camel\.gif$,;
         print "ok 7\n";
 
-        local $ENV{HTTP_ACCEPT_LANGUAGE} = "en-ca";
+        $ENV{HTTP_ACCEPT_LANGUAGE} = "en-ca";
+        undef $URI::Heuristic::MY_COUNTRY;
         print "not " unless uf_urlstr("perl/camel.gif") eq "http://www.perl.ca/camel.gif";
         print "ok 8\n";
     }
