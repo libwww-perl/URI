@@ -2,7 +2,14 @@
 
 use utf8;
 use strict;
-use Test::More tests => 26;
+use Test::More;
+use Config;
+
+if (defined $Config{useperlio}) {
+    plan tests=>26;
+} else {
+    plan skip_all=>'this perl doesn\'t support PerlIO layers';
+}
 
 use URI;
 use URI::IRI;
