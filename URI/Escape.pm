@@ -159,7 +159,7 @@ my %subst;  # compiled patterns
 
 my %Unsafe = (
     RFC2732 => qr/[^A-Za-z0-9\-_.!~*'()]/,
-    RFC3986 => qr/[^A-Za-z0-9\-\._~"]/,
+    RFC3986 => qr/[^A-Za-z0-9\-\._~]/,
 );
 
 sub uri_escape

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 use URI::Escape;
 
@@ -13,6 +13,7 @@ is uri_escape("abc", "b-d"), "a%62%63";
 
 # New escapes in RFC 3986
 is uri_escape("~*'()"), "~%2A%27%28%29";
+is uri_escape("<\">"), "%3C%22%3E";
 
 is uri_escape(undef), undef;
 
