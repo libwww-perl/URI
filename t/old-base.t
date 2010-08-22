@@ -205,7 +205,7 @@ sub scheme_parse_test {
 
 	'file://host/fseg/fs?g/fseg'
 	# don't escape ? for file: scheme
-	=> {    'host'=>'host', 'path'=>'/fseg/fs?g/fseg',
+	=> {    'host'=>'host', 'path'=>'/fseg/fs',
 		'as_string'=>'file://host/fseg/fs?g/fseg' },
 
 	'gopher://host'
@@ -931,7 +931,7 @@ EOM
 	 ["abc",         "file:/test?aas", "file:/abc"],
 #	 ["gopher:",     "",               "gopher:"],
 #	 ["?foo",        "http://abc/a",   "http://abc/a?foo"],
-	 ["?foo",        "file:/abc",      "file:/?foo"],
+         ["?foo",        "file:/abc",      "file:/abc?foo"],
 	 ["#foo",        "http://abc/a",   "http://abc/a#foo"],
 	 ["#foo",        "file:a",         "file:a#foo"],
 	 ["#foo",        "file:/a",         "file:/a#foo"],

@@ -37,7 +37,6 @@ sub os_class
     $class;
 }
 
-sub path { shift->path_query(@_) }
 sub host { uri_unescape(shift->authority(@_)) }
 
 sub new
