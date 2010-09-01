@@ -1,3 +1,16 @@
+2010-09-01   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.55
+
+   Gisle Aas (2):
+      Treat ? as a reserved character in file: URIs
+      " is not a URI character [RT#56421]
+
+   Torsten F<C3><B6>rtsch (1):
+      Avoid test failure unless defined $Config{useperlio}
+
+
+
 2010-03-31   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.54
