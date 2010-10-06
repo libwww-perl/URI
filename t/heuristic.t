@@ -41,7 +41,7 @@ print "not " unless uf_urlstr("C:\\CONFIG.SYS") eq "file:C:\\CONFIG.SYS";
 }
 print "ok 5\n";
 
-if (gethostbyname("www.perl.com") && gethostbyname("www.perl.co.uk") && !gethostbyname("www.perl.bv")) {
+if (gethostbyname("www.perl.com") && gethostbyname("www.perl.co.uk") && gethostbyname("www.perl.su") && !gethostbyname("www.perl.bv")) {
     # DNS works, let's run tests 6..12
 
     {
