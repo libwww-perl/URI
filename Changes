@@ -1,3 +1,11 @@
+2010-10-06   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.56
+
+   Don't depend on DNS for the heuristics test
+
+
+
 2010-09-01   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.55
