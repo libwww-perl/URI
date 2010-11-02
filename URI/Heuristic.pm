@@ -180,6 +180,16 @@ sub uf_uristr ($)
 	if (s/^([-\w]+(?:\.[-\w]+)*)([\/:\?\#]|$)/$2/) {
 	    my $host = $1;
 
+	    my $scheme = "http";
+	    if (/^:(\d+)\b/) {
+		# Some more or less well known ports
+		if ($1 =~ /^[56789]?443$/) {
+		    $scheme = "https";
+		} elsif ($1 eq "21") {
+		    $scheme = "ftp";
+		}
+	    }
+
 	    if ($host !~ /\./ && $host ne "localhost") {
 		my @guess;
 		if (exists $ENV{URL_GUESS_PATTERN}) {
@@ -213,7 +223,7 @@ sub uf_uristr ($)
 		    print STDERR "no\n" if $DEBUG;
 		}
 	    }
-	    $_ = "http://$host$_";
+	    $_ = "$scheme://$host$_";
 
 	} else {
 	    # pure junk, just return it unchanged...
