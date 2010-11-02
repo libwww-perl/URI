@@ -152,11 +152,11 @@ sub uf_uristr ($)
     s/^\s+//;
     s/\s+$//;
 
-    if (/^(www|web|home)\./) {
+    if (/^(www|web|home)[a-z0-9-]*(?:\.|$)/i) {
 	$_ = "http://$_";
 
-    } elsif (/^(ftp|gopher|news|wais|http|https)\./) {
-	$_ = "$1://$_";
+    } elsif (/^(ftp|gopher|news|wais|https|http)[a-z0-9-]*(?:\.|$)/i) {
+	$_ = lc($1) . "://$_";
 
     } elsif ($^O ne "MacOS" && 
 	    (m,^/,      ||          # absolute file name
