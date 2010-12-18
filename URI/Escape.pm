@@ -167,15 +167,15 @@ sub uri_escape
     my($text, $patn) = @_;
     return undef unless defined $text;
     if (defined $patn){
-	unless (exists  $subst{$patn}) {
-	    # Because we can't compile the regex we fake it with a cached sub
-	    (my $tmp = $patn) =~ s,/,\\/,g;
-	    eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
-	    Carp::croak("uri_escape: $@") if $@;
-	}
-	&{$subst{$patn}}($text);
+    unless (exists  $subst{$patn}) {
+        # Because we can't compile the regex we fake it with a cached sub
+        (my $tmp = $patn) =~ s,/,\\/,g;
+        eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
+        Carp::croak("uri_escape: $@") if $@;
+    }
+    &{$subst{$patn}}($text);
     } else {
-	$text =~ s/($Unsafe{RFC3986})/$escapes{$1} || _fail_hi($1)/ge;
+    $text =~ s/($Unsafe{RFC3986})/$escapes{$1} || _fail_hi($1)/ge;
     }
     $text;
 }
@@ -189,10 +189,10 @@ sub uri_escape_utf8
 {
     my $text = shift;
     if ($] < 5.008) {
-	$text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
+    $text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
     }
     else {
-	utf8::encode($text);
+    utf8::encode($text);
     }
 
     return uri_escape($text, @_);
@@ -205,12 +205,12 @@ sub uri_unescape
     # for future extension"
     my $str = shift;
     if (@_ && wantarray) {
-	# not executed for the common case of a single argument
-	my @str = ($str, @_);  # need to copy
-	for (@str) {
-	    s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
-	}
-	return @str;
+    # not executed for the common case of a single argument
+    my @str = ($str, @_);  # need to copy
+    for (@str) {
+        s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+    }
+    return @str;
     }
     $str =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg if defined $str;
     $str;
