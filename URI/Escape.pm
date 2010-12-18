@@ -80,16 +80,10 @@ range will be escaped differently by this function compared to what
 uri_escape() would.  For chars in the 0 .. 127 range there is no
 difference.
 
-The call:
+Equivalent to:
 
-    $uri = uri_escape_utf8($string);
-
-will be the same as:
-
-    use Encode qw(encode);
-    $uri = uri_escape(encode("UTF-8", $string));
-
-but will even work for perl-5.6 for chars in the 128 .. 255 range.
+    utf8::encode($string);
+    my $uri = uri_escape($string);
 
 Note: JavaScript has a function called escape() that produces the
 sequence "%uXXXX" for chars in the 256 .. 65535 range.  This function
@@ -186,13 +180,7 @@ sub _fail_hi {
 
 sub uri_escape_utf8 {
     my $text = shift;
-    if ($] < 5.008) {
-        $text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
-    }
-    else {
-        utf8::encode($text);
-    }
-
+    utf8::encode($text);
     return uri_escape($text, @_);
 }
 

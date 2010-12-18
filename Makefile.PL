@@ -1,4 +1,4 @@
-require 5.006001;
+require 5.008001;
 use ExtUtils::MakeMaker;
 
 if ("foo" !~ /\Afoo\z/) {

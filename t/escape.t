@@ -31,11 +31,9 @@ use URI::Escape qw(uri_escape_utf8);
 
 is uri_escape_utf8("|abcå"), "%7Cabc%C3%A5";
 
-SKIP: {
-    skip "Perl 5.8.0 or higher required", 3 if $] < 5.008;
+skip "Perl 5.8.0 or higher required", 3 if $] < 5.008;
 
-    ok !eval { print uri_escape("abc" . chr(300)); 1 };
-    like $@, qr/^Can\'t escape \\x{012C}, try uri_escape_utf8\(\) instead/;
+ok !eval { print uri_escape("abc" . chr(300)); 1 };
+like $@, qr/^Can\'t escape \\x{012C}, try uri_escape_utf8\(\) instead/;
 
-    is uri_escape_utf8(chr(0xFFF)), "%E0%BF%BF";
-}
+is uri_escape_utf8(chr(0xFFF)), "%E0%BF%BF";
