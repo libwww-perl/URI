@@ -72,7 +72,7 @@ as the reserved characters.  I.e. the default is:
 =item uri_escape_utf8( $string, $unsafe )
 
 Works like uri_escape(), but will encode chars as UTF-8 before
-escaping them.  This makes this function able do deal with characters
+escaping them.  This makes this function able to deal with characters
 with code above 255 in $string.  Note that chars in the 128 .. 255
 range will be escaped differently by this function compared to what
 uri_escape() would.  For chars in the 0 .. 127 range there is no
