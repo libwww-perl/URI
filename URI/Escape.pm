@@ -207,7 +207,7 @@ sub uri_unescape
     if (@_ && wantarray) {
 	# not executed for the common case of a single argument
 	my @str = ($str, @_);  # need to copy
-	foreach (@str) {
+	for (@str) {
 	    s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 	}
 	return @str;
