@@ -3,7 +3,7 @@ use strict;
 
 =head1 NAME
 
-URI::Escape - Escape and unescape unsafe characters
+URI::Escape - Percent-encode and percent-decode unsafe characters
 
 =head1 SYNOPSIS
 
@@ -14,8 +14,10 @@ URI::Escape - Escape and unescape unsafe characters
 
 =head1 DESCRIPTION
 
-This module provides functions to escape and unescape URI strings as
-defined by RFC 3986.
+This module provides functions to percent-encode and percent-decode URI strings as
+defined by RFC 3986. Percent-encoding URI's is informally called "URI escaping".
+This is the terminology used by this module, which predates the formalization of the
+terms by the RFC by several years.
 
 A URI consists of a restricted set of characters.  The restricted set
 of characters consists of digits, letters, and a few graphic symbols
