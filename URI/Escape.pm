@@ -162,8 +162,7 @@ my %Unsafe = (
     RFC3986 => qr/[^A-Za-z0-9\-\._~]/,
 );
 
-sub uri_escape
-{
+sub uri_escape {
     my($text, $patn) = @_;
     return undef unless defined $text;
     if (defined $patn){
@@ -185,8 +184,7 @@ sub _fail_hi {
     Carp::croak(sprintf "Can't escape \\x{%04X}, try uri_escape_utf8() instead", ord($chr));
 }
 
-sub uri_escape_utf8
-{
+sub uri_escape_utf8 {
     my $text = shift;
     if ($] < 5.008) {
     $text =~ s/([^\0-\x7F])/do {my $o = ord($1); sprintf("%c%c", 0xc0 | ($o >> 6), 0x80 | ($o & 0x3f)) }/ge;
@@ -198,8 +196,7 @@ sub uri_escape_utf8
     return uri_escape($text, @_);
 }
 
-sub uri_unescape
-{
+sub uri_unescape {
     # Note from RFC1630:  "Sequences which start with a percent sign
     # but are not followed by two hexadecimal characters are reserved
     # for future extension"
