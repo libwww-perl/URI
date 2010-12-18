@@ -139,14 +139,12 @@ it under the same terms as Perl itself.
 
 =cut
 
-use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
-use vars qw(%escapes);
-
 require Exporter;
-@ISA = qw(Exporter);
-@EXPORT = qw(uri_escape uri_unescape uri_escape_utf8);
-@EXPORT_OK = qw(%escapes);
-$VERSION = "3.30";
+our @ISA = qw(Exporter);
+our %escapes;
+our @EXPORT = qw(uri_escape uri_unescape uri_escape_utf8);
+our @EXPORT_OK = qw(%escapes);
+our $VERSION = "3.30";
 
 use Carp ();
 
