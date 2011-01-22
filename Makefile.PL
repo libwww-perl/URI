@@ -35,6 +35,10 @@ WriteMakefile(
             'MailingList' => 'mailto:libwww@perl.org',
         }
     },
+    BUILD_REQUIRES => {
+	'Test' => 0,
+	'Test::More' => 0,
+    },
 );
 
 
