@@ -68,7 +68,7 @@ sub query_form {
         }
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
-    map { s/\+/ /g; uri_unescape($_) }
+    map { defined($_) ? do { s/\+/ /g; uri_unescape($_) } : undef }
          map { /=/ ? split(/=/, $_, 2) : ($_ => undef)} split(/[&;]/, $old);
 }
 
