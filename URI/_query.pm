@@ -46,14 +46,10 @@ sub query_form {
 	    $key =~ s/ /+/g;
 	    $vals = [ref($vals) eq "ARRAY" ? @$vals : $vals];
             for my $val (@$vals) {
-                if (defined $val) {
-		    $val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
-		    $val =~ s/ /+/g;
-		    push(@query, "$key=$val");
-		}
-                else {
-                    push(@query, $key);
-                }
+                $val = '' unless defined $val;
+		$val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
+                $val =~ s/ /+/g;
+                push(@query, "$key=$val");
             }
         }
         if (@query) {
@@ -68,8 +64,9 @@ sub query_form {
         }
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
-    map { defined($_) ? do { s/\+/ /g; uri_unescape($_) } : undef }
-         map { /=/ ? split(/=/, $_, 2) : ($_ => undef)} split(/[&;]/, $old);
+    return unless $old =~ /=/; # not a form
+    map { s/\+/ /g; uri_unescape($_) }
+         map { /=/ ? split(/=/, $_, 2) : ($_ => '')} split(/[&;]/, $old);
 }
 
 # Handle ...?dog+bones type of query

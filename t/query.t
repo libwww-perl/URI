@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Test::More tests => 26;
+use Test::More tests => 23;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -11,12 +11,7 @@ $u->query_form(a => 3, b => 4);
 is $u, "?a=3&b=4";
 
 $u->query_form(a => undef);
-is $u, "?a";
-is_deeply [$u->query_form], [a => undef];
-
-$u->query_form(a => '');
 is $u, "?a=";
-is_deeply [$u->query_form], [a => ''];
 
 $u->query_form("a[=&+#] " => " [=&+#]");
 is $u, "?a%5B%3D%26%2B%23%5D+=+%5B%3D%26%2B%23%5D";
@@ -37,7 +32,7 @@ is $u, "?%20+%2B+%3D+%5B+%5D";
 is join(":", @q), " :+:=:[:]";
 
 @q = $u->query_form;
-is_deeply \@q, ['  + = [ ]', undef];
+ok !@q;
 
 $u->query(" +?=#");
 is $u, "?%20+?=%23";

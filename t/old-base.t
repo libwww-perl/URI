@@ -346,7 +346,7 @@ sub parts_test {
     die "\$url->query_form did not work"
       unless $a{a} eq 'foo' && $a{b} eq 'bar';
 
-    $url->query_form(a => '', a => 'foo', '&=' => '&=+');
+    $url->query_form(a => undef, a => 'foo', '&=' => '&=+');
     $url->_expect('as_string' => 'http://web?a=&a=foo&%26%3D=%26%3D%2B');
 
     my @a = $url->query_form;
