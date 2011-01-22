@@ -22,7 +22,7 @@ WriteMakefile(
     'ABSTRACT'     => 'Uniform Resource Identifiers (absolute and relative)',
     'AUTHOR'       => 'Gisle Aas <gisle@activestate.com>',
     'LICENSE'      => 'perl',
-    'MIN_PERL_VERSION' => 5.006001,
+    'MIN_PERL_VERSION' => 5.008001,
     'PREREQ_PM'    => {	
 	'MIME::Base64' => 2,
     },
