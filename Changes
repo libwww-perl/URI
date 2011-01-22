@@ -1,3 +1,12 @@
+2011-01-23   Gisle Aas <gisle@ActiveState.com>
+
+  Release 1.58
+
+  This release reverts the patch in 1.57 that made query_form distingush
+  between empty and undef values.  It broke stuff. [RT#62708]
+
+
+
 2011-01-22   Gisle Aas <gisle@ActiveState.com>
 
   Release 1.57
