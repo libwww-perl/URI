@@ -473,7 +473,7 @@ argument, it updates the corresponding component in addition to
 returning the old value of the component.  Passing an undefined
 argument removes the component (if possible).  The description of
 each accessor method indicates whether the component is passed as
-an escaped or an unescaped string.  A component that can be further
+an escaped (percent-encoded) or an unescaped string.  A component that can be further
 divided into sub-parts are usually passed escaped, as unescaping might
 change its semantics.
 
@@ -1053,13 +1053,32 @@ delimited by ";" instead of "&" which is the default.
 
 =head1 BUGS
 
-Using regexp variables like $1 directly as arguments to the URI methods
+There are some things that are not quite right:
+
+=over
+
+=item *
+
+Using regexp variables like $1 directly as arguments to the URI accessor methods
 does not work too well with current perl implementations.  I would argue
 that this is actually a bug in perl.  The workaround is to quote
 them. Example:
 
    /(...)/ || die;
    $u->query("$1");
+
+
+=item *
+
+The escaping (percent encoding) of chars in the 128 .. 255 range passed to the
+URI constructor or when setting URI parts using the accessor methods depend on
+the state of the internal UTF8 flag (see utf8::is_utf8) of the string passed.
+If the UTF8 flag is set the UTF-8 encoded version of the character is percent
+encoded.  If the UTF8 flag isn't set the Latin-1 version (byte) of the
+character is percent encoded.  This basically exposes the internal encoding of
+Perl strings.
+
+=back
 
 =head1 PARSING URIs WITH REGEXP
 
