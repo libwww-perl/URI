@@ -5,7 +5,7 @@ use vars qw(@ISA $VERSION $DEFAULT_AUTHORITY %OS_CLASS);
 
 require URI::_generic;
 @ISA = qw(URI::_generic);
-$VERSION = "4.20";
+$VERSION = "4.21";
 
 use URI::Escape qw(uri_unescape);
 
