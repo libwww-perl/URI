@@ -90,6 +90,7 @@ sub _uric_escape
 {
     my($class, $str) = @_;
     $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    utf8::downgrade($str);
     return $str;
 }
 
@@ -218,6 +219,7 @@ sub opaque
     my $new_opaque = shift;
     $new_opaque = "" unless defined $new_opaque;
     $new_opaque =~ s/([^$uric])/ URI::Escape::escape_char($1)/ego;
+    utf8::downgrade($new_opaque);
 
     $$self = defined($old_scheme) ? $old_scheme : "";
     $$self .= $new_opaque;
@@ -243,6 +245,7 @@ sub fragment
     my $new_frag = shift;
     if (defined $new_frag) {
 	$new_frag =~ s/([^$uric])/ URI::Escape::escape_char($1) /ego;
+	utf8::downgrade($new_frag);
 	$$self .= "#$new_frag";
     }
     $old;
