@@ -1,3 +1,16 @@
+2011-08-15   Gisle Aas <gisle@ActiveState.com>
+
+  Release 1.59
+
+  Make sure accessor methods don't return utf8::upgraded() bytes
+  for URLs initialized from Unicode strings.
+
+  Version number increments.
+
+  Documentation tweaks.
+
+
+
 2011-01-23   Gisle Aas <gisle@ActiveState.com>
 
   Release 1.58
