@@ -1,10 +1,10 @@
 #!perl -w
 
-print "1..15\n";
+print "1..17\n";
 
 use URI;
 
-$u = URI->new("<http://www.perl.com/path?q=fôo>");
+$u = URI->new("<http://www.perl.com/path?q=fï¿½o>");
 
 #print "$u\n";
 print "not " unless $u eq "http://www.perl.com/path?q=f%F4o";
@@ -31,7 +31,7 @@ print "not " unless $u eq "http://www.perl.com/path?q=f%F4o";
 print "ok 6\n";
 
 @q = $u->query_form;
-print "not " unless @q == 2 && "@q" eq "q fôo";
+print "not " unless @q == 2 && "@q" eq "q fï¿½o";
 print "ok 7\n";
 
 $u->query_form(foo => "bar", bar => "baz");
@@ -61,3 +61,10 @@ $u = URI->new("http://%77%77%77%2e%70%65%72%6c%2e%63%6f%6d/%70%75%62/%61/%32%30%
 print "not " unless $u->canonical eq "http://www.perl.com/pub/a/2001/08/27/bjornstad.html";
 print "ok 15\n";
 
+$u = URI->new("http://www.perl.com/path?foo=%0A%0A%0A+++ \n &bar=b a z\n");
+print "not " unless $u eq "http://www.perl.com/path?foo=%0D%0A%0D%0A%0D%0A++++%0D%0A+&bar=b+a+z%0D%0A";
+print "ok 16\n";
+
+$u = URI->new("https://www.perl.com/path?foo=%0D%0A%0D%0A%0D%0A++++%0D%0A+&bar=b+a+z%0D%0A");
+print "not " unless $u eq "https://www.perl.com/path?foo=%0D%0A%0D%0A%0D%0A++++%0D%0A+&bar=b+a+z%0D%0A";
+print "ok 17\n";
