@@ -48,6 +48,7 @@ sub query_form {
 	    $vals = [ref($vals) eq "ARRAY" ? @$vals : $vals];
             for my $val (@$vals) {
                 $val = '' unless defined $val;
+		$val =~ s/(?<!\r)\n/\r\n/g;
 		$val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
                 $val =~ s/ /+/g;
                 push(@query, "$key=$val");
@@ -66,7 +67,7 @@ sub query_form {
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
     return unless $old =~ /=/; # not a form
-    map { s/\+/ /g; uri_unescape($_) }
+    map { s/\+/ /g; $_ = uri_unescape($_); s/\r\n/\n/g; $_ }
          map { /=/ ? split(/=/, $_, 2) : ($_ => '')} split(/[&;]/, $old);
 }
 

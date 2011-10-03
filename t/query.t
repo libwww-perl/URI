@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Test::More tests => 23;
+use Test::More tests => 26;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -79,3 +79,10 @@ $u->query_form([]);
     $u->query_form(a => 1, b => 2);
 }
 is $u, "?a=1;b=2";
+
+$u->query_form(a => "foo\nbar\n", b => "foo\rbar\nbaz\r\n");
+is $u, "?a=foo%0D%0Abar%0D%0A;b=foo%0Dbar%0D%0Abaz%0D%0A";
+
+my %h = $u->query_form;
+is $h{a}, "foo\nbar\n";
+is $h{b}, "foo\rbar\nbaz\n";
