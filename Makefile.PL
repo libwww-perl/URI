@@ -16,7 +16,7 @@ WriteMakefile(
             'Business::ISBN' => 0,
         },
         'resources' => {
-            'repository' => 'http://gitorious.org/projects/perl-uri',
+            'repository' => 'https://github.com/gisle/uri',
             'MailingList' => 'mailto:libwww@perl.org',
         }
     },
