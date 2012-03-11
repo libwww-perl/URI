@@ -11,7 +11,7 @@ use URI::file;
 	           "/foo/bar",   "\\foo\\bar",    "!foo:bar", ],
 [ "file:/foo/bar", "!/foo/bar",  "!\\foo\\bar",   "foo:bar", ],
 [ "foo/bar",       "foo/bar",    "foo\\bar",      ":foo:bar",],
-[ "file://foo/bar","!//foo/bar", "!\\\\foo\\bar", "!foo:bar"],
+[ "file://foo3445x/bar","!//foo3445x/bar", "!\\\\foo3445x\\bar", "!foo3445x:bar"],
 [ "file://a:/",    "!//a:/",     "!A:\\",         undef],
 [ "file:///A:/",   "/A:/",       "A:\\",          undef],
 [ "file:///",      "/",          "\\",            undef],
