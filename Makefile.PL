@@ -16,7 +16,7 @@ WriteMakefile(
             'Business::ISBN' => 0,
         },
         'resources' => {
-            'repository' => 'https://github.com/gisle/uri',
+            'repository' => 'https://github.com/libwww-perl/uri',
             'MailingList' => 'mailto:libwww@perl.org',
         }
     },
