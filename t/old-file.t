@@ -12,7 +12,7 @@ $URI::file::DEFAULT_AUTHORITY = undef;
 	           "!/foo/bar",  "!\\foo\\bar",   "!foo:bar", ],
 [ "file:/foo/bar", "/foo/bar",   "\\foo\\bar",    "foo:bar", ],
 [ "foo/bar",       "foo/bar",    "foo\\bar",      ":foo:bar",],
-[ "file://foo/bar","!//foo/bar", "\\\\foo\\bar",  "!foo:bar"],
+[ "file://foo3445x/bar","!//foo3445x/bar", "\\\\foo3445x\\bar",  "!foo3445x:bar"],
 [ "file://a:/",    "!//a:/",     "!A:\\",          undef],
 [ "file:/",        "/",          "\\",             undef],
 [ "file://A:relative/", "!//A:relative/", "A:",    undef],
