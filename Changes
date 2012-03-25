@@ -1,3 +1,24 @@
+2012-03-25   Gisle Aas <gisle@ActiveState.com>
+
+  Release 1.60
+
+  Gisle Aas (3):
+      Merge pull request #4 from hiratara/fix-repourl
+      Updated repository URL
+      Avoid failure if the local hostname is 'foo' [RT#75519]
+
+  Masahiro Honma (1):
+      Fix the URL of the repository.
+
+  Matt Lawrence (1):
+      Do not reverse the order of new parameters
+
+  Peter Rabbitson (1):
+      Fix RT#59274 - courtesy of a stupid 5.8.[12] join bug
+
+
+
+
 2011-08-15   Gisle Aas <gisle@ActiveState.com>
 
   Release 1.59
