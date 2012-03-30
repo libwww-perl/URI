@@ -16,7 +16,7 @@ print "not " unless "$foo" eq "Foo:opaque#frag";
 print "ok 3\n";
 
 # Try accessors
-print "not " unless $foo->_scheme eq "Foo" && $foo->scheme eq "foo";
+print "not " unless $foo->_scheme eq "Foo" && $foo->scheme eq "foo" && !$foo->has_recognized_scheme;
 print "ok 4\n";
 
 print "not " unless $foo->opaque eq "opaque";
@@ -188,7 +188,7 @@ print "ok 41\n";
 $foo = URI->new("", "http:");
 $foo->query("query");
 $foo->authority("auth");
-print "not " unless $foo eq "//auth?query";
+print "not " unless $foo eq "//auth?query" && $foo->has_recognized_scheme;
 print "ok 42\n";
 
 $foo->path("path");
@@ -197,7 +197,7 @@ print "ok 43\n";
 
 $foo = URI->new("");
 $old = $foo->path("foo");
-print "not " unless $old eq "" && $foo eq "foo";
+print "not " unless $old eq "" && $foo eq "foo" && !$foo->has_recognized_scheme;
 print "ok 44\n";
 
 $old = $foo->path("bar");

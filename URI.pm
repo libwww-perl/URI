@@ -197,6 +197,10 @@ sub scheme
     lc($scheme);
 }
 
+sub has_recognized_scheme {
+    my $self = shift;
+    return ref($self) !~ /^URI::_(?:foreign|generic)\z/;
+}
 
 sub opaque
 {
@@ -417,6 +421,11 @@ the $str argument before it is processed further.
 The constructor determines the scheme, maps this to an appropriate
 URI subclass, constructs a new object of that class and returns it.
 
+If the scheme isn't one of those that URI recognizes, you still get
+an URI object back that you can access the generic methods on.  The
+C<< $uri->has_recognized_scheme >> method can be used to test for
+this.
+
 The $scheme argument is only used when $str is a
 relative URI.  It can be either a simple string that
 denotes the scheme, a string containing an absolute URI reference, or
@@ -499,6 +508,14 @@ Letter case does not matter for scheme names.  The string
 returned by $uri->scheme is always lowercase.  If you want the scheme
 just as it was written in the URI in its original case,
 you can use the $uri->_scheme method instead.
+
+=item $uri->has_recognized_scheme
+
+Returns TRUE if the URI scheme is one that URI recognizes.
+
+It will also be TRUE for relative URLs where a recognized
+scheme was provided to the constructor, even if C<< $uri->scheme >>
+returns C<undef> for these.
 
 =item $uri->opaque
 
@@ -585,7 +602,7 @@ a secure channel, such as an SSL or TLS encrypted one.
 
 The following methods are available to schemes that use the
 common/generic syntax for hierarchical namespaces.  The descriptions of
-schemes below indicate which these are.  Unknown schemes are
+schemes below indicate which these are.  Unrecognized schemes are
 assumed to support the generic syntax, and therefore the following
 methods:
 
