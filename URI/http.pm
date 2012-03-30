@@ -12,8 +12,7 @@ sub canonical
     my $self = shift;
     my $other = $self->SUPER::canonical;
 
-    my $slash_path = defined($other->authority) &&
-        !length($other->path) && !defined($other->query);
+    my $slash_path = defined($other->authority) && !length($other->path);
 
     if ($slash_path) {
 	$other = $other->clone if $other == $self;

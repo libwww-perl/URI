@@ -1,6 +1,6 @@
 #!perl -w
 
-print "1..15\n";
+print "1..16\n";
 
 use URI;
 
@@ -60,4 +60,9 @@ print "ok 14\n";
 $u = URI->new("http://%77%77%77%2e%70%65%72%6c%2e%63%6f%6d/%70%75%62/%61/%32%30%30%31/%30%38/%32%37/%62%6a%6f%72%6e%73%74%61%64%2e%68%74%6d%6c");
 print "not " unless $u->canonical eq "http://www.perl.com/pub/a/2001/08/27/bjornstad.html";
 print "ok 15\n";
+
+# RFC 1738: "/" can't be ommited when <searchpart> is present.
+$u = URI->new("http://localhost?p=1");
+print "not " unless $u->canonical eq "http://localhost/?p=1";
+print "ok 16\n";
 
