@@ -19,7 +19,7 @@ sub _uric_escape {
 }
 
 sub _host_escape {
-    return unless $_[0] =~ /[^URI::uric]/;
+    return unless $_[0] =~ /[^$URI::uric]/;
     eval {
 	require URI::_idna;
 	$_[0] = URI::_idna::encode($_[0]);
