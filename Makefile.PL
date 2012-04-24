@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     'NAME'	   => 'URI',
-    'VERSION_FROM' => 'URI.pm',
+    'VERSION_FROM' => 'lib/URI.pm',
     'ABSTRACT'     => 'Uniform Resource Identifiers (absolute and relative)',
     'AUTHOR'       => 'Gisle Aas <gisle@activestate.com>',
     'LICENSE'      => 'perl',
