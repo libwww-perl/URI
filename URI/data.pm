@@ -3,6 +3,8 @@ package URI::data;  # RFC 2397
 require URI;
 @ISA=qw(URI);
 
+$VERSION = '1.61';
+
 use strict;
 
 use MIME::Base64 qw(encode_base64 decode_base64);
