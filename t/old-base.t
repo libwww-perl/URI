@@ -3,7 +3,7 @@
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
 
-# want compatiblity
+# want compatibility
 use URI::file;
 $URI::file::DEFAULT_AUTHORITY = undef;
 

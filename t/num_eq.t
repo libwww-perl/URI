@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Test URI's overloading of numeric comparision for checking object
+# Test URI's overloading of numeric comparison for checking object
 # equality
 
 use strict;
