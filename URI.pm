@@ -131,7 +131,7 @@ sub implementor
         # Try to load it
         eval "require $ic";
         die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
-        return unless @{"${ic}::ISA"};
+        return undef unless @{"${ic}::ISA"};
     }
 
     $ic->_init_implementor($scheme);
@@ -163,7 +163,7 @@ sub _scheme
     my $self = shift;
 
     unless (@_) {
-	return unless $$self =~ /^($scheme_re):/o;
+	return undef unless $$self =~ /^($scheme_re):/o;
 	return $1;
     }
 
@@ -193,7 +193,7 @@ sub _scheme
 sub scheme
 {
     my $scheme = shift->_scheme(@_);
-    return unless defined $scheme;
+    return undef unless defined $scheme;
     lc($scheme);
 }
 
@@ -239,7 +239,7 @@ sub fragment
 {
     my $self = shift;
     unless (@_) {
-	return unless $$self =~ /\#(.*)/s;
+	return undef unless $$self =~ /\#(.*)/s;
 	return $1;
     }
 

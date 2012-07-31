@@ -148,7 +148,8 @@ sub abs
 	my $abs = $base->clone;
 	my $query = $self->query;
 	$abs->query($query) if defined $query;
-	$abs->fragment($self->fragment);
+	my $fragment = $self->fragment;
+	$abs->fragment($fragment) if defined $fragment;
 	return $abs;
     }
 

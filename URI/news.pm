@@ -61,7 +61,7 @@ sub message
 	Carp::croak("Message must contain '\@'") unless $_[0] =~ /\@/;
     }
     my $old = $self->_group(@_);
-    return unless $old =~ /\@/;
+    return undef unless $old =~ /\@/;
     return $old;
 }
 

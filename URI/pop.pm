@@ -31,7 +31,7 @@ sub user
 	}
     }
 
-    return unless defined $old;
+    return undef unless defined $old;
     $old =~ s/;.*//;
     return uri_unescape($old);
 }
@@ -59,7 +59,7 @@ sub auth
 	
     }
 
-    return unless defined $old;
+    return undef unless defined $old;
     $old =~ s/^[^;]*//;
     return uri_unescape($1) if $old =~ /;auth=(.*)/i;
     return;

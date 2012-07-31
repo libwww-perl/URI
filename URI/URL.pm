@@ -105,7 +105,7 @@ sub eparams
 {
     my $self = shift;
     my @p = $self->path_segments;
-    return unless ref($p[-1]);
+    return undef unless ref($p[-1]);
     @p = @{$p[-1]};
     shift @p;
     join(";", @p);
