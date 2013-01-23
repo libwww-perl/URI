@@ -985,9 +985,14 @@ common, generic and server methods.
 =item B<ssh>:
 
 Information about ssh is available at L<http://www.openssh.com/>.
-C<URI> objects belonging to the ssh scheme support the common,
-generic and server methods. In addition, they provide methods to
-access the userinfo sub-components: $uri->user and $uri->password.
+C<URI> objects belonging to the ssh scheme support the common, generic
+and server methods. In addition, they provide methods to access the
+userinfo sub-components: $uri->user and $uri->password and
+$uri->c_params.
+
+C<c_params> accepts/returns an array reference with connection
+parameters as decribed on the RFC draft
+C<draft-ietf-secsh-scp-sftp-ssh-uri-04.txt>.
 
 =item B<urn>:
 
