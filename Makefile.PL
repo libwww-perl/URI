@@ -2,14 +2,14 @@ require 5.008001;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    'NAME'	   => 'URI',
+    'NAME'         => 'URI',
     'VERSION_FROM' => 'URI.pm',
     'ABSTRACT'     => 'Uniform Resource Identifiers (absolute and relative)',
     'AUTHOR'       => 'Gisle Aas <gisle@activestate.com>',
     'LICENSE'      => 'perl',
     'MIN_PERL_VERSION' => 5.008001,
-    'PREREQ_PM'    => {	
-	'MIME::Base64' => 2,
+    'PREREQ_PM'    => {
+        'MIME::Base64' => 2,
     },
     'META_MERGE' => {
         'recommends' => {
@@ -21,9 +21,9 @@ WriteMakefile(
         }
     },
     BUILD_REQUIRES => {
-	'ExtUtils::MakeMaker' => 0,
-	'Test' => 0,
-	'Test::More' => 0,
+        'ExtUtils::MakeMaker' => 0,
+        'Test' => 0,
+        'Test::More' => 0,
         'File::Temp' => 0,
     },
 );
