@@ -654,7 +654,7 @@ sub newlocal_test {
 	      ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
               ($^O eq 'VMS' ? 'show default' :
               (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'))));
-    my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : '/tmp');
+    my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : $ENV{TMPDIR} || '/tmp');
     if ( $^O eq 'qnx' ) {
 	$tmpdir = `/usr/bin/fullpath -t $tmpdir`;
 	chomp $tmpdir;
