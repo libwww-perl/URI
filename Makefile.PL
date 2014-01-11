@@ -24,6 +24,7 @@ WriteMakefile(
 	'ExtUtils::MakeMaker' => 0,
 	'Test' => 0,
 	'Test::More' => 0,
+        'File::Temp' => 0,
     },
 );
 

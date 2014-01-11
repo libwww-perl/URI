@@ -2,6 +2,7 @@
 
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
+use File::Temp 'tempdir';
 
 # want compatibility
 use URI::file;
@@ -654,7 +655,7 @@ sub newlocal_test {
 	      ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
               ($^O eq 'VMS' ? 'show default' :
               (-e '/bin/pwd' ? '/bin/pwd' : 'pwd'))));
-    my $tmpdir = ($^O eq 'MSWin32' ? $ENV{TEMP} : $ENV{TMPDIR} || '/tmp');
+    my $tmpdir = tempdir();
     if ( $^O eq 'qnx' ) {
 	$tmpdir = `/usr/bin/fullpath -t $tmpdir`;
 	chomp $tmpdir;
