@@ -1,10 +1,9 @@
 package URI::WithBase;
 
 use strict;
-use vars qw($AUTOLOAD $VERSION);
 use URI;
 
-$VERSION = "2.20";
+our $VERSION = "2.20";
 
 use overload '""' => "as_string", fallback => 1;
 
@@ -42,6 +41,7 @@ sub eq
     $self->[0]->eq($other);
 }
 
+our $AUTOLOAD;
 sub AUTOLOAD
 {
     my $self = shift;

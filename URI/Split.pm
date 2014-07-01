@@ -2,10 +2,9 @@ package URI::Split;
 
 use strict;
 
-use vars qw(@ISA @EXPORT_OK);
 require Exporter;
-@ISA = qw(Exporter);
-@EXPORT_OK = qw(uri_split uri_join);
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw(uri_split uri_join);
 
 use URI::Escape ();
 

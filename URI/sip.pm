@@ -9,13 +9,12 @@ package URI::sip;
 
 require URI::_server;
 require URI::_userpass;
-@ISA=qw(URI::_server URI::_userpass);
+our @ISA=qw(URI::_server URI::_userpass);
 
 use strict;
-use vars qw(@ISA $VERSION);
 use URI::Escape qw(uri_unescape);
 
-$VERSION = "1.61";
+our $VERSION = "1.61";
 
 sub default_port { 5060 }
 

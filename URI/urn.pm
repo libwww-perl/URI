@@ -6,7 +6,7 @@ require URI;
 use strict;
 use Carp qw(carp);
 
-use vars qw(%implementor);
+my %implementor;
 
 sub _init {
     my $class = shift;

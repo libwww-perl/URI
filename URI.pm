@@ -1,22 +1,20 @@
 package URI;
 
 use strict;
-use vars qw($VERSION);
-$VERSION = "1.61";
+our $VERSION = "1.61";
 
-use vars qw($ABS_REMOTE_LEADING_DOTS $ABS_ALLOW_RELATIVE_SCHEME $DEFAULT_QUERY_FORM_DELIMITER);
+our ($ABS_REMOTE_LEADING_DOTS, $ABS_ALLOW_RELATIVE_SCHEME, $DEFAULT_QUERY_FORM_DELIMITER);
 
 my %implements;  # mapping from scheme to implementor class
 
 # Some "official" character classes
 
-use vars qw($reserved $mark $unreserved $uric $scheme_re);
-$reserved   = q(;/?:@&=+$,[]);
-$mark       = q(-_.!~*'());                                    #'; emacs
-$unreserved = "A-Za-z0-9\Q$mark\E";
-$uric       = quotemeta($reserved) . $unreserved . "%";
+our $reserved   = q(;/?:@&=+$,[]);
+our $mark       = q(-_.!~*'());                                    #'; emacs
+our $unreserved = "A-Za-z0-9\Q$mark\E";
+our $uric       = quotemeta($reserved) . $unreserved . "%";
 
-$scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
+our $scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
 use Carp ();
 use URI::Escape ();

@@ -88,12 +88,13 @@ modify it under the same terms as Perl itself.
 
 use strict;
 
-use vars qw(@EXPORT_OK $VERSION $MY_COUNTRY %LOCAL_GUESSING $DEBUG);
 
 require Exporter;
 *import = \&Exporter::import;
-@EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
-$VERSION = "4.20";
+our @EXPORT_OK = qw(uf_uri uf_uristr uf_url uf_urlstr);
+our $VERSION = "4.20";
+
+our ($MY_COUNTRY, $DEBUG);
 
 sub MY_COUNTRY() {
     for ($MY_COUNTRY) {
@@ -131,7 +132,7 @@ sub MY_COUNTRY() {
     }
 }
 
-%LOCAL_GUESSING =
+our %LOCAL_GUESSING =
 (
  'us' => [qw(www.ACME.gov www.ACME.mil)],
  'gb' => [qw(www.ACME.co.uk www.ACME.org.uk www.ACME.ac.uk)],

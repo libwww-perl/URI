@@ -6,12 +6,11 @@ package URI::ldap;
 
 use strict;
 
-use vars qw(@ISA $VERSION);
-$VERSION = "1.61";
+our $VERSION = "1.61";
 
 require URI::_server;
 require URI::_ldap;
-@ISA=qw(URI::_ldap URI::_server);
+our @ISA=qw(URI::_ldap URI::_server);
 
 sub default_port { 389 }
 
