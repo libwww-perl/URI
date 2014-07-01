@@ -1,3 +1,24 @@
+2014-07-01   Karen Etheridge <ether@cpan.org>
+
+  Release 1.61
+
+  David Schmidt:
+      Fix test failure if local hostname is 'foo' [RT#75519]
+
+  Gisle Aas (2):
+      New 'has_recognized_scheme' interface [RT#71204]
+      Interfaces that return a single value now return undef rather than an
+      empty list in list context
+
+  Slaven Rezic:
+      Fix bad regex when parsing hostnames
+
+  Piotr Roszatycki:
+      Preferentially use $ENV{TMPDIR} for temporary test files over /tmp
+      (fixes tests on Android)
+
+
+
 2012-03-25   Gisle Aas <gisle@ActiveState.com>
 
   Release 1.60
