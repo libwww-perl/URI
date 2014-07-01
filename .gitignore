@@ -1,6 +1,11 @@
-rfc*.txt
-draft*.txt
-*.tar.gz
-pm_to_blib
-blib
-Makefile
+/pm_to_blib
+/blib/
+/Makefile
+/Makefile.old
+/MANIFEST.bak
+/MANIFEST.SKIP.bak
+/MYMETA.*
+/.ackrc
+!/.gitignore
+/URI-*/
+/URI-*.tar.gz
