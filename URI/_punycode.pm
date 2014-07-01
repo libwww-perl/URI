@@ -1,7 +1,7 @@
 package URI::_punycode;
 
 use strict;
-our $VERSION = "0.04";
+our $VERSION = "1.61";
 
 require Exporter;
 our @ISA    = qw(Exporter);
