@@ -3,8 +3,7 @@ package URI::data;  # RFC 2397
 use strict;
 use warnings;
 
-require URI;
-our @ISA=qw(URI);
+use parent 'URI';
 
 our $VERSION = '1.61';
 

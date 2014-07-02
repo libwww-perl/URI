@@ -3,8 +3,7 @@ package URI::http;
 use strict;
 use warnings;
 
-require URI::_server;
-our @ISA=qw(URI::_server);
+use parent 'URI::_server';
 
 sub default_port { 80 }
 

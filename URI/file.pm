@@ -3,8 +3,7 @@ package URI::file;
 use strict;
 use warnings;
 
-require URI::_generic;
-our @ISA = qw(URI::_generic);
+use parent 'URI::_generic';
 our $VERSION = "4.21";
 
 use URI::Escape qw(uri_unescape);

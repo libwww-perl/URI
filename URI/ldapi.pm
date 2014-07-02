@@ -3,9 +3,7 @@ package URI::ldapi;
 use strict;
 use warnings;
 
-require URI::_generic;
-require URI::_ldap;
-our @ISA=qw(URI::_ldap URI::_generic);
+use parent qw(URI::_ldap URI::_generic);
 
 require URI::Escape;
 

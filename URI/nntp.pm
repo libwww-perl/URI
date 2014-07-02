@@ -3,7 +3,6 @@ package URI::nntp;  # draft-gilman-news-url-01
 use strict;
 use warnings;
 
-require URI::news;
-our @ISA=qw(URI::news);
+use parent 'URI::news';
 
 1;

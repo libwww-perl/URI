@@ -5,8 +5,7 @@ use warnings;
 
 our $VERSION = "1.61";
 
-require Exporter;
-our @ISA    = qw(Exporter);
+use parent 'Exporter';
 our @EXPORT = qw(encode_punycode decode_punycode);
 
 use integer;

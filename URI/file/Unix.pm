@@ -3,8 +3,7 @@ package URI::file::Unix;
 use strict;
 use warnings;
 
-require URI::file::Base;
-our @ISA=qw(URI::file::Base);
+use parent 'URI::file::Base';
 
 use URI::Escape qw(uri_unescape);
 

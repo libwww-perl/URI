@@ -3,8 +3,7 @@ package URI::ldaps;
 use strict;
 use warnings;
 
-require URI::ldap;
-our @ISA=qw(URI::ldap);
+use parent 'URI::ldap';
 
 sub default_port { 636 }
 

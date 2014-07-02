@@ -3,8 +3,7 @@ package URI::file::QNX;
 use strict;
 use warnings;
 
-require URI::file::Unix;
-our @ISA=qw(URI::file::Unix);
+use parent 'URI::file::Unix';
 
 sub _file_extract_path
 {

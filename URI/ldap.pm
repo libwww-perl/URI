@@ -9,9 +9,7 @@ use warnings;
 
 our $VERSION = "1.61";
 
-require URI::_server;
-require URI::_ldap;
-our @ISA=qw(URI::_ldap URI::_server);
+use parent qw(URI::_ldap URI::_server);
 
 sub default_port { 389 }
 

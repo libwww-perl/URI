@@ -3,8 +3,7 @@ package URI::URL;
 use strict;
 use warnings;
 
-require URI::WithBase;
-our @ISA=qw(URI::WithBase);
+use parent 'URI::WithBase';
 
 our $VERSION = "5.04";
 

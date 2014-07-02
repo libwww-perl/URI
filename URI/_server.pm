@@ -3,8 +3,7 @@ package URI::_server;
 use strict;
 use warnings;
 
-require URI::_generic;
-our @ISA=qw(URI::_generic);
+use parent 'URI::_generic';
 
 use URI::Escape qw(uri_unescape);
 

@@ -3,8 +3,7 @@ package URI::file::OS2;
 use strict;
 use warnings;
 
-require URI::file::Win32;
-our @ISA=qw(URI::file::Win32);
+use parent 'URI::file::Win32';
 
 # The Win32 version translates k:/foo to file://k:/foo  (?!)
 # We add an empty host

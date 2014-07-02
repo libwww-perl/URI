@@ -10,9 +10,7 @@ package URI::sip;
 use strict;
 use warnings;
 
-require URI::_server;
-require URI::_userpass;
-our @ISA=qw(URI::_server URI::_userpass);
+use parent qw(URI::_server URI::_userpass);
 
 use URI::Escape qw(uri_unescape);
 

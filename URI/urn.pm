@@ -3,8 +3,7 @@ package URI::urn;  # RFC 2141
 use strict;
 use warnings;
 
-require URI;
-our @ISA=qw(URI);
+use parent 'URI';
 
 use Carp qw(carp);
 

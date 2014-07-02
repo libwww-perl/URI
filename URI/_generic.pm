@@ -3,9 +3,7 @@ package URI::_generic;
 use strict;
 use warnings;
 
-use URI;
-use URI::_query;
-our @ISA=qw(URI URI::_query);
+use parent qw(URI URI::_query);
 
 use URI::Escape qw(uri_unescape);
 use Carp ();

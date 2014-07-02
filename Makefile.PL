@@ -10,6 +10,7 @@ WriteMakefile(
     'MIN_PERL_VERSION' => 5.008001,
     'PREREQ_PM'    => {
         'MIME::Base64' => 2,
+        'parent'       => '0',
     },
     'META_MERGE' => {
         'recommends' => {
