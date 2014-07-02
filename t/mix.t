@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..6\n";
 
 # Test mixing of URI and URI::WithBase objects
@@ -7,23 +10,23 @@ use URI;
 use URI::WithBase;
 use URI::URL;
 
-$str = "http://www.sn.no/";
-$rel = "path/img.gif";
+my $str = "http://www.sn.no/";
+my $rel = "path/img.gif";
 
-$u  = URI->new($str);
-$uw = URI::WithBase->new($str, "http:");
-$uu = URI::URL->new($str);
+my $u  = URI->new($str);
+my $uw = URI::WithBase->new($str, "http:");
+my $uu = URI::URL->new($str);
+
+my $a = URI->new($rel, $u);
+my $b = URI->new($rel, $uw);
+my $c = URI->new($rel, $uu);
+my $d = URI->new($rel, $str);
 
 sub Dump
 {
    require Data::Dumper;
    print Data::Dumper->Dump([$a, $b, $c, $d], [qw(a b c d)]);
 }
-
-$a = URI->new($rel, $u);
-$b = URI->new($rel, $uw);
-$c = URI->new($rel, $uu);
-$d = URI->new($rel, $str);
 
 #Dump();
 print "not " unless $a->isa("URI") &&

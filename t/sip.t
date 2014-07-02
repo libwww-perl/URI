@@ -1,9 +1,11 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..11\n";
 
 use URI;
-use strict;
 
 my $u = URI->new('sip:phone@domain.ext');
 print "not " unless $u->user eq 'phone' &&

@@ -1,6 +1,10 @@
 package URI::ssh;
+
+use strict;
+use warnings;
+
 require URI::_login;
-@ISA=qw(URI::_login);
+our @ISA=qw(URI::_login);
 
 # ssh://[USER@]HOST[:PORT]/SRC
 

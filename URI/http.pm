@@ -1,9 +1,10 @@
 package URI::http;
 
-require URI::_server;
-@ISA=qw(URI::_server);
-
 use strict;
+use warnings;
+
+require URI::_server;
+our @ISA=qw(URI::_server);
 
 sub default_port { 80 }
 

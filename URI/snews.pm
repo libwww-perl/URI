@@ -1,7 +1,10 @@
 package URI::snews;  # draft-gilman-news-url-01
 
+use strict;
+use warnings;
+
 require URI::news;
-@ISA=qw(URI::news);
+our @ISA=qw(URI::news);
 
 sub default_port { 563 }
 

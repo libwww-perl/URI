@@ -1,5 +1,8 @@
 #!/usr/bin/perl -w
 
+use strict;
+use warnings;
+
 sub usage {
     my $prog = $0; $prog =~ s,.*/,,;
     die "Usage: $prog <uri> [<method> [<args>]...]\n";

@@ -1,5 +1,8 @@
 #!/local/bin/perl -w
 
+use strict;
+use warnings;
+
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
 use File::Temp 'tempdir';
@@ -30,7 +33,7 @@ package main;
 # Must ensure that there is no relative paths in @INC because we will
 # chdir in the newlocal tests.
 unless ($^O eq "MacOS") {
-chomp($pwd = ($^O =~ /mswin32/i ? `cd` : $^O eq 'VMS' ? `show default` : `pwd`));
+chomp(my $pwd = ($^O =~ /mswin32/i ? `cd` : $^O eq 'VMS' ? `show default` : `pwd`));
 if ($^O eq 'VMS') {
     $pwd =~ s#^\s+##;
     $pwd = VMS::Filespec::unixpath($pwd);
@@ -83,7 +86,7 @@ print "ok 6\n";
 # Let's test making our own things
 URI::URL::strict(0);
 # This should work after URI::URL::strict(0)
-$url = new URI::URL "x-myscheme:something";
+my $url = new URI::URL "x-myscheme:something";
 # Since no implementor is registered for 'x-myscheme' then it will
 # be handled by the URI::URL::_generic class
 $url->_expect('as_string' => 'x-myscheme:something');
@@ -147,7 +150,7 @@ sub scheme_parse_test {
 
     print "scheme_parse_test:\n";
 
-    $tests = {
+    my $tests = {
 	'hTTp://web1.net/a/b/c/welcome#intro'
 	=> {    'scheme'=>'http', 'host'=>'web1.net', 'port'=>80,
 		'path'=>'/a/b/c/welcome', 'frag'=>'intro','query'=>undef,
@@ -254,11 +257,11 @@ sub scheme_parse_test {
 #		'password'=>'pswd' },
     };
 
-    foreach $url_str (sort keys %$tests ){
+    foreach my $url_str (sort keys %$tests ){
 	print "Testing '$url_str'\n";
 	my $url = new URI::URL $url_str;
 	my $tests = $tests->{$url_str};
-	while( ($method, $exp) = each %$tests ){
+	while( my ($method, $exp) = each %$tests ){
 	    $exp = 'UNDEF' unless defined $exp;
 	    $url->_expect($method, $exp);
 	}
@@ -629,7 +632,7 @@ sub escape_test {
     $url->frag($reserved);
     $url->_expect('as_string', 'http://h/;%3B%2F%3F%3A%40&=%23%25?%3B%2F%3F%3A%40&=%23%25#;/?:@&=#%');
 
-    $str = $url->as_string;
+    my $str = $url->as_string;
     $url = new URI::URL $str;
     die "URL changed" if $str ne $url->as_string;
 
@@ -797,7 +800,7 @@ sub absolute_test {
 
     my $base = 'http://a/b/c/d;p?q#f';
 
-    $absolute_tests = <<EOM;
+    my $absolute_tests = <<EOM;
 5.1.  Normal Examples
 
       g:h        = <URL:g:h>
@@ -872,7 +875,8 @@ EOM
     # convert text to list like
     # @absolute_tests = ( ['g:h' => 'g:h'], ...)
 
-    for $line (split("\n", $absolute_tests)) {
+    my @absolute_tests;
+    for my $line (split("\n", $absolute_tests)) {
 	next unless $line =~ /^\s{6}/;
 	if ($line =~ /^\s+(\S+)\s*=\s*<URL:([^>]*)>/) {
 	    my($rel, $abs) = ($1, $2);
@@ -896,7 +900,7 @@ EOM
 
     print "  Relative    +  Base  =>  Expected Absolute URL\n";
     print "================================================\n";
-    for $test (@absolute_tests) {
+    for my $test (@absolute_tests) {
 	my($rel, $abs) = @$test;
 	my $abs_url = new URI::URL $abs;
 	my $abs_str = $abs_url->as_string;

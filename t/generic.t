@@ -1,10 +1,13 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..48\n";
 
 use URI;
 
-$foo = URI->new("Foo:opaque#frag");
+my $foo = URI->new("Foo:opaque#frag");
 
 print "not " unless ref($foo) eq "URI::_foreign";
 print "ok 1\n";
@@ -29,7 +32,7 @@ print "not " unless $foo->canonical eq "foo:opaque#frag";
 print "ok 7\n";
 
 # Try modificators
-$old = $foo->scheme("bar");
+my $old = $foo->scheme("bar");
 
 print "not " unless $old eq "foo" && $foo eq "bar:opaque#frag";
 print "ok 8\n";

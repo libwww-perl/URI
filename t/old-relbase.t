@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..5\n";
 
 use URI::URL;
@@ -7,13 +10,13 @@ use URI::URL;
 # We used to have problems with URLs that used a base that was
 # not absolute itself.
 
-$u1 = url("/foo/bar", "http://www.acme.com/");
-$u2 = url("../foo/", $u1);
-$u3 = url("zoo/foo", $u2);
+my $u1 = url("/foo/bar", "http://www.acme.com/");
+my $u2 = url("../foo/", $u1);
+my $u3 = url("zoo/foo", $u2);
 
-$a1 = $u1->abs->as_string;
-$a2 = $u2->abs->as_string;
-$a3 = $u3->abs->as_string;
+my $a1 = $u1->abs->as_string;
+my $a2 = $u2->abs->as_string;
+my $a3 = $u3->abs->as_string;
 
 print "$a1\n$a2\n$a3\n";
 
@@ -25,8 +28,8 @@ print "not " unless $a3 eq "http://www.acme.com/foo/zoo/foo";
 print "ok 3\n";
 
 # We used to have problems with URI::URL as the base class :-(
-$u4 = url("foo", "URI::URL");
-$a4 = $u4->abs;
+my $u4 = url("foo", "URI::URL");
+my $a4 = $u4->abs;
 print "$a4\n";
 print "not " unless $u4 eq "foo" && $a4 eq "uri:/foo";
 print "ok 4\n";

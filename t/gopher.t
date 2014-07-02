@@ -1,5 +1,7 @@
 #!perl -w
+
 use strict;
+use warnings;
 
 print "1..48\n";
 

@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 eval {
     require Storable;
     print "1..3\n";

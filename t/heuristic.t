@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 BEGIN {
     # mock up a gethostbyname that always works :-)
     *CORE::GLOBAL::gethostbyname = sub {

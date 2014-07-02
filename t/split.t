@@ -1,8 +1,10 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..17\n";
 
-use strict;
 use URI::Split qw(uri_split uri_join);
 
 sub j { join("-", map { defined($_) ? $_ : "<undef>" } @_) }

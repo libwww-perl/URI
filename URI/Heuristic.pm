@@ -87,7 +87,7 @@ modify it under the same terms as Perl itself.
 =cut
 
 use strict;
-
+use warnings;
 
 require Exporter;
 *import = \&Exporter::import;

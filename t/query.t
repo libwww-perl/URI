@@ -1,6 +1,8 @@
 #!perl -w
 
 use strict;
+use warnings;
+
 use Test::More tests => 23;
 
 use URI ();

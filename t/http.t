@@ -1,10 +1,13 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..16\n";
 
 use URI;
 
-$u = URI->new("<http://www.perl.com/path?q=fôo>");
+my $u = URI->new("<http://www.perl.com/path?q=fôo>");
 
 #print "$u\n";
 print "not " unless $u eq "http://www.perl.com/path?q=f%F4o";
@@ -14,7 +17,7 @@ print "not " unless $u->port == 80;
 print "ok 2\n";
 
 # play with port
-$old = $u->port(8080);
+my $old = $u->port(8080);
 print "not " unless $old == 80 && $u eq "http://www.perl.com:8080/path?q=f%F4o";
 print "ok 3\n";
 
@@ -30,7 +33,7 @@ $u->port(undef);
 print "not " unless $u eq "http://www.perl.com/path?q=f%F4o";
 print "ok 6\n";
 
-@q = $u->query_form;
+my @q = $u->query_form;
 print "not " unless @q == 2 && "@q" eq "q fôo";
 print "ok 7\n";
 

@@ -3,6 +3,7 @@ package URI::IRI;
 # Experimental
 
 use strict;
+use warnings;
 use URI ();
 
 use overload '""' => sub { shift->as_string };

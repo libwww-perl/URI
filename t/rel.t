@@ -1,10 +1,12 @@
 #!/usr/bin/perl -w
 
+use strict;
+use warnings;
+
 use Test;
 
 plan tests => 6;
 
-use strict;
 use URI;
 
 my $uri;

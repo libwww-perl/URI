@@ -1,13 +1,17 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..45\n";
 
 # This test the resolution of abs path for all examples given
 # in the "Uniform Resource Identifiers (URI): Generic Syntax" document.
 
 use URI;
-$base = "http://a/b/c/d;p?q";
-$testno = 1;
+my $base = "http://a/b/c/d;p?q";
+my $testno = 1;
+my @rel_fail;
 
 while (<DATA>) {
    #next if 1 .. /^C\.\s+/;

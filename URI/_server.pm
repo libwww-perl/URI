@@ -1,8 +1,11 @@
 package URI::_server;
-require URI::_generic;
-@ISA=qw(URI::_generic);
 
 use strict;
+use warnings;
+
+require URI::_generic;
+our @ISA=qw(URI::_generic);
+
 use URI::Escape qw(uri_unescape);
 
 sub _uric_escape {

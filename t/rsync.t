@@ -1,8 +1,10 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..4\n";
 
-use strict;
 use URI;
 
 my $u = URI->new('rsync://gisle@perl.com/foo/bar');

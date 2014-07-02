@@ -1,9 +1,10 @@
 package URI::URL;
 
-require URI::WithBase;
-@ISA=qw(URI::WithBase);
-
 use strict;
+use warnings;
+
+require URI::WithBase;
+our @ISA=qw(URI::WithBase);
 
 our $VERSION = "5.04";
 

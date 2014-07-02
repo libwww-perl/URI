@@ -1,6 +1,9 @@
 package URI::_foreign;
 
-require URI::_generic;
-@ISA=qw(URI::_generic);
+use strict;
+use warnings;
+
+use URI::_generic;
+our @ISA=qw(URI::_generic);
 
 1;

@@ -1,9 +1,10 @@
 package URI::urn::oid;  # RFC 2061
 
-require URI::urn;
-@ISA=qw(URI::urn);
-
 use strict;
+use warnings;
+
+require URI::urn;
+our @ISA=qw(URI::urn);
 
 sub oid {
     my $self = shift;

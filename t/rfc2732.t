@@ -3,6 +3,8 @@
 # Test URIs containing IPv6 addresses
 
 use strict;
+use warnings;
+
 use Test::More tests => 19;
 
 use URI;

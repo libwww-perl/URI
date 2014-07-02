@@ -1,9 +1,11 @@
 package URI::pop;   # RFC 2384
 
-require URI::_server;
-@ISA=qw(URI::_server);
-
 use strict;
+use warnings;
+
+require URI::_server;
+our @ISA=qw(URI::_server);
+
 use URI::Escape qw(uri_unescape);
 
 sub default_port { 110 }

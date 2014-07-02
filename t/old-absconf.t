@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..6\n";
 
 use URI::URL qw(url);
@@ -9,7 +12,7 @@ use URI::URL qw(url);
 $URI::URL::ABS_REMOTE_LEADING_DOTS = 1;
 $URI::URL::ABS_ALLOW_RELATIVE_SCHEME = 1;
 
-$u1 = url("../../../../abc", "http://web/a/b");
+my $u1 = url("../../../../abc", "http://web/a/b");
 
 print "not " unless $u1->abs->as_string eq "http://web/abc";
 print "ok 1\n";

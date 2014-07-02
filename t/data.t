@@ -1,5 +1,8 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 eval {
     require MIME::Base64;
 };
@@ -13,7 +16,7 @@ print "1..22\n";
 
 use URI;
 
-$u = URI->new("data:,A%20brief%20note");
+my $u = URI->new("data:,A%20brief%20note");
 print "not " unless $u->scheme eq "data" && $u->opaque eq ",A%20brief%20note";
 print "ok 1\n";
 
@@ -21,7 +24,7 @@ print "not " unless $u->media_type eq "text/plain;charset=US-ASCII" &&
 	            $u->data eq "A brief note";
 print "ok 2\n";
 
-$old = $u->data("Får-i-kål er tingen!");
+my $old = $u->data("Får-i-kål er tingen!");
 print "not " unless $old eq "A brief note" && $u eq "data:,F%E5r-i-k%E5l%20er%20tingen!";
 print "ok 3\n";
 

@@ -1,9 +1,11 @@
 package URI::urn;  # RFC 2141
 
-require URI;
-@ISA=qw(URI);
-
 use strict;
+use warnings;
+
+require URI;
+our @ISA=qw(URI);
+
 use Carp qw(carp);
 
 my %implementor;

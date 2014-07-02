@@ -1,10 +1,11 @@
 package URI::ftp;
 
+use strict;
+use warnings;
+
 require URI::_server;
 require URI::_userpass;
-@ISA=qw(URI::_server URI::_userpass);
-
-use strict;
+our @ISA=qw(URI::_server URI::_userpass);
 
 sub default_port { 21 }
 

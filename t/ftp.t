@@ -1,8 +1,10 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..13\n";
 
-use strict;
 use URI;
 my $uri;
 

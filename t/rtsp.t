@@ -1,10 +1,13 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..9\n";
 
 use URI;
 
-$u = URI->new("<rtsp://media.perl.com/fôo.smi/>");
+my $u = URI->new("<rtsp://media.perl.com/fôo.smi/>");
 
 #print "$u\n";
 print "not " unless $u eq "rtsp://media.perl.com/f%F4o.smi/";
@@ -14,7 +17,7 @@ print "not " unless $u->port == 554;
 print "ok 2\n";
 
 # play with port
-$old = $u->port(8554);
+my $old = $u->port(8554);
 print "not " unless $old == 554 && $u eq "rtsp://media.perl.com:8554/f%F4o.smi/";
 print "ok 3\n";
 

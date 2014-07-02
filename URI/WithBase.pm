@@ -1,6 +1,8 @@
 package URI::WithBase;
 
 use strict;
+use warnings;
+
 use URI;
 
 our $VERSION = "2.20";

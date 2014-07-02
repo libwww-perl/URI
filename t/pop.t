@@ -1,10 +1,13 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..8\n";
 
 use URI;
 
-$u = URI->new('pop://aas@pop.sn.no');
+my $u = URI->new('pop://aas@pop.sn.no');
 
 print "not " unless $u->user eq "aas" &&
                     !defined($u->auth) &&

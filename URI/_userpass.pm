@@ -1,6 +1,8 @@
 package URI::_userpass;
 
 use strict;
+use warnings;
+
 use URI::Escape qw(uri_unescape);
 
 sub user

@@ -1,6 +1,7 @@
 package URI::file;
 
 use strict;
+use warnings;
 
 require URI::_generic;
 our @ISA = qw(URI::_generic);

@@ -1,10 +1,13 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..7\n";
 
 use URI;
 
-$u = URI->new("news:comp.lang.perl.misc");
+my $u = URI->new("news:comp.lang.perl.misc");
 
 print "not " unless $u->group eq "comp.lang.perl.misc" &&
                     !defined($u->message) &&
@@ -23,7 +26,7 @@ $u->group("no.perl", 1 => 10);
 print "not " unless $u eq "news://news.online.no/no.perl/1-10";
 print "ok 3\n";
 
-@g = $u->group;
+my @g = $u->group;
 #print "G: @g\n";
 print "not " unless @g == 3 && "@g" eq "no.perl 1 10";
 print "ok 4\n";

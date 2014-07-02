@@ -1,9 +1,11 @@
 package URI::file::Unix;
 
-require URI::file::Base;
-@ISA=qw(URI::file::Base);
-
 use strict;
+use warnings;
+
+require URI::file::Base;
+our @ISA=qw(URI::file::Base);
+
 use URI::Escape qw(uri_unescape);
 
 sub _file_extract_path

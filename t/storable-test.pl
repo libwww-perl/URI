@@ -1,6 +1,7 @@
 #!perl -w
 
 use strict;
+use warnings;
 use Storable;
 
 if (@ARGV && $ARGV[0] eq "store") {

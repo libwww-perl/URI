@@ -1,16 +1,19 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..7\n";
 
 use URI;
 
-$u = URI->new('mailto:gisle@aas.no');
+my $u = URI->new('mailto:gisle@aas.no');
 
 print "not " unless $u->to eq 'gisle@aas.no' &&
                     $u eq 'mailto:gisle@aas.no';
 print "ok 1\n";
 
-$old = $u->to('larry@wall.org');
+my $old = $u->to('larry@wall.org');
 print "not " unless $old eq 'gisle@aas.no' &&
                     $u->to eq 'larry@wall.org' &&
 		    $u eq 'mailto:larry@wall.org';
@@ -21,7 +24,7 @@ print "not " unless $u->to eq "?/#" &&
                     $u eq 'mailto:%3F/%23';
 print "ok 3\n";
 
-@h = $u->headers;
+my @h = $u->headers;
 print "not " unless @h == 2 && "@h" eq "to ?/#";
 print "ok 4\n";
 

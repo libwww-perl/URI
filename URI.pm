@@ -1,6 +1,8 @@
 package URI;
 
 use strict;
+use warnings;
+
 our $VERSION = "1.61";
 
 our ($ABS_REMOTE_LEADING_DOTS, $ABS_ALLOW_RELATIVE_SCHEME, $DEFAULT_QUERY_FORM_DELIMITER);
@@ -230,7 +232,7 @@ sub opaque
     $old_opaque;
 }
 
-*path = \&opaque;  # alias
+sub path { goto &opaque }  # alias
 
 
 sub fragment

@@ -1,10 +1,11 @@
 package URI::mailto;  # RFC 2368
 
+use strict;
+use warnings;
+
 require URI;
 require URI::_query;
-@ISA=qw(URI URI::_query);
-
-use strict;
+our @ISA=qw(URI URI::_query);
 
 sub to
 {

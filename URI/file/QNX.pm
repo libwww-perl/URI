@@ -1,9 +1,10 @@
 package URI::file::QNX;
 
-require URI::file::Unix;
-@ISA=qw(URI::file::Unix);
-
 use strict;
+use warnings;
+
+require URI::file::Unix;
+our @ISA=qw(URI::file::Unix);
 
 sub _file_extract_path
 {

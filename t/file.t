@@ -1,8 +1,11 @@
 #!perl -Tw
 
+use strict;
+use warnings;
+
 use URI::file;
 
-@tests =  (
+my @tests =  (
 [ "file",          "unix",       "win32",         "mac" ],
 #----------------  ------------  ---------------  --------------
 [ "file://localhost/foo/bar",
@@ -21,22 +24,22 @@ use URI::file;
 [ "../%2E%2E",     "!../..",     "!..\\..",      "::.."],
 );
 
-@os = @{shift @tests};
+my @os = @{shift @tests};
 shift @os;  # file
 
 my $num = @tests;
 print "1..$num\n";
 
-$testno = 1;
+my $testno = 1;
 
-for $t (@tests) {
+for my $t (@tests) {
    my @t = @$t;
    my $file = shift @t;
    my $err;
 
    my $u = URI->new($file, "file");
    my $i = 0;
-   for $os (@os) {
+   for my $os (@os) {
        my $f = $u->file($os);
        my $expect = $t[$i];
        $f = "<undef>" unless defined $f;
@@ -48,7 +51,7 @@ for $t (@tests) {
            $err++;
        }
        if (defined($t[$i]) && !$loose) {
-	   $u2 = URI::file->new($t[$i], $os);
+	   my $u2 = URI::file->new($t[$i], $os);
            unless ($u2->as_string eq $file) {
               print "URI::file->new('$t[$i]', '$os') ne $file, but $u2\n";
               $err++;

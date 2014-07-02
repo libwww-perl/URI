@@ -1,6 +1,7 @@
 package URI::ldapi;
 
 use strict;
+use warnings;
 
 require URI::_generic;
 require URI::_ldap;

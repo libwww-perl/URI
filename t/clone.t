@@ -1,8 +1,10 @@
 #!perl -w
 
+use strict;
+use warnings;
+
 print "1..2\n";
 
-use strict;
 use URI::URL;
 
 my $b = URI::URL->new("http://www/");

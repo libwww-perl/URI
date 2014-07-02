@@ -1,6 +1,8 @@
 #!perl -w
 
 use strict;
+use warnings;
+
 use utf8;
 use Test::More tests => 7;
 use URI::_idna;

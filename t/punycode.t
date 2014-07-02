@@ -1,6 +1,8 @@
 #!perl -w
 
 use strict;
+use warnings;
+
 use utf8;
 use Test::More tests => 15;
 use URI::_punycode qw(encode_punycode decode_punycode);
