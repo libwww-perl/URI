@@ -11,6 +11,7 @@ WriteMakefile(
     'PREREQ_PM'    => {
         'MIME::Base64' => 2,
         'parent'       => '0',
+        'Exporter'     => '5.57',
     },
     'META_MERGE' => {
         'recommends' => {

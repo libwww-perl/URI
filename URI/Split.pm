@@ -3,7 +3,7 @@ package URI::Split;
 use strict;
 use warnings;
 
-use parent 'Exporter';
+use Exporter 'import';
 our @EXPORT_OK = qw(uri_split uri_join);
 
 use URI::Escape ();

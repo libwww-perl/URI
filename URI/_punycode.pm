@@ -5,7 +5,7 @@ use warnings;
 
 our $VERSION = "1.61";
 
-use parent 'Exporter';
+use Exporter 'import';
 our @EXPORT = qw(encode_punycode decode_punycode);
 
 use integer;
