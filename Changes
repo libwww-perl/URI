@@ -1,3 +1,13 @@
+
+  Release 1.62
+
+  Karen Etheridge (3):
+    - use strict and warnings in all modules, tests and scripts
+    - resolve "Unescaped left brace in regex is deprecated" warning (new in
+      5.21.1)
+    - remove all remaining uses of "use vars"
+
+
 2014-07-01   Karen Etheridge <ether@cpan.org>
 
   Release 1.61
