@@ -12,6 +12,7 @@ WriteMakefile(
         'MIME::Base64' => 2,
         'parent'       => '0',
         'Exporter'     => '5.57',
+        'utf8'         => '0',
     },
     'META_MERGE' => {
         'recommends' => {
