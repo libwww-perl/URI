@@ -7,6 +7,9 @@
       5.21.1)
     - remove all remaining uses of "use vars"
 
+  Eric Brine:
+    - fixed new "\C is deprecated in regex" warning in 5.21.2 (RT#96941)
+
 
 2014-07-01   Karen Etheridge <ether@cpan.org>
 
