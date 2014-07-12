@@ -16,4 +16,4 @@ Makefile$
 \.gitignore$
 pm_to_blib$
 ^todo
-^.ackrc$
+^\.ackrc$
