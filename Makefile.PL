@@ -25,7 +25,7 @@ WriteMakefile(
     BUILD_REQUIRES => {
         'ExtUtils::MakeMaker' => 0,
         'Test' => 0,
-        'Test::More' => 0,
+        'Test::More' => 0.88,
         'File::Temp' => 0,
     },
 );

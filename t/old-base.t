@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use Test::More;
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
 use File::Temp 'tempdir';
@@ -11,22 +12,6 @@ use File::Temp 'tempdir';
 use URI::file;
 $URI::file::DEFAULT_AUTHORITY = undef;
 
-# _expect()
-#
-# Handy low-level object method tester which we insert as a method
-# in the URI::URL class
-#
-sub URI::URL::_expect {
-    my($self, $method, $expect, @args) = @_;
-    my $result = $self->$method(@args);
-    $expect = 'UNDEF' unless defined $expect;
-    $result = 'UNDEF' unless defined $result;
-    return 1 if $expect eq $result;
-    warn "'$self'->$method(@args) = '$result' " .
-		"(expected '$expect')\n";
-    $self->print_on('STDERR');
-    die "Test Failed";
-}
 
 package main;
 
@@ -44,7 +29,7 @@ for (@INC) {
     $x = VMS::Filespec::unixpath($x) if $^O eq 'VMS';
     next if $x =~ m|^/| or $^O =~ /os2|mswin32/i
 	and $x =~ m#^(\w:[\\/]|[\\/]{2})#;
-    print "Turn lib path $x into $pwd/$x\n";
+    note "Turn lib path $x into $pwd/$x\n";
     $_ = "$pwd/$x";
 
 }
@@ -52,36 +37,21 @@ for (@INC) {
 
 $| = 1;
 
-print "1..8\n";  # for Test::Harness
-
 # Do basic tests first.
-# Dies if an error has been detected, prints "ok" otherwise.
 
-print "Self tests for URI::URL version $URI::URL::VERSION...\n";
+note "Self tests for URI::URL version $URI::URL::VERSION...\n";
 
-eval { scheme_parse_test(); };
-print "not " if $@;
-print "ok 1\n";
+subtest 'scheme tests' => \&scheme_parse_test;
 
-eval { parts_test(); };
-print "not " if $@;
-print "ok 2\n";
+subtest 'parts test' => \&parts_test;
 
-eval { escape_test(); };
-print "not " if $@;
-print "ok 3\n";
+subtest 'escape test' => \&escape_test;
 
-eval { newlocal_test(); };
-print "not " if $@;
-print "ok 4\n";
+subtest 'newlocal test' => \&newlocal_test;
 
-eval { absolute_test(); };
-print "not " if $@;
-print "ok 5\n";
+subtest 'Test relative/absolute URI::URL parsing' => \&absolute_test;
 
-eval { eq_test(); };
-print "not " if $@;
-print "ok 6\n";
+subtest 'eq test' => \&eq_test;
 
 # Let's test making our own things
 URI::URL::strict(0);
@@ -89,8 +59,8 @@ URI::URL::strict(0);
 my $url = new URI::URL "x-myscheme:something";
 # Since no implementor is registered for 'x-myscheme' then it will
 # be handled by the URI::URL::_generic class
-$url->_expect('as_string' => 'x-myscheme:something');
-$url->_expect('path' => 'something');
+is($url->as_string, 'x-myscheme:something', ref($url) . '->as_string');
+is($url->path, 'something', ref($url) . '->path');
 URI::URL::strict(1);
 
 =comment
@@ -116,8 +86,8 @@ URI::URL::implementor('x-foo', 'MyURL');
 
 # Now we are ready to try our new URL scheme
 $url = new URI::URL 'x-a+b.c://foo/bar;a?b';
-$url->_expect('as_string', 'x-a+b.c://foo/bar;a?b');
-$url->_expect('path', '/bar;a?b');
+is($url->as_string, 'x-a+b.c://foo/bar;a?b', ref($url) . '->as_string');
+is($url->path, '/bar;a?b', ref($url) . '->path');
 $url->foo;
 $newurl = new URI::URL 'xxx', $url;
 $newurl->foo;
@@ -126,15 +96,13 @@ $url->foo;
 
 =cut
 
-print "ok 7\n";
-
 # Test the new wash&go constructor
-print "not " if url("../foo.html", "http://www.sn.no/a/b")->abs->as_string
-		ne 'http://www.sn.no/foo.html';
-print "ok 8\n";
+is(url("../foo.html", "http://www.sn.no/a/b")->abs->as_string,
+   'http://www.sn.no/foo.html', 'wash&go');
 
-print "URI::URL version $URI::URL::VERSION ok\n";
+note "URI::URL version $URI::URL::VERSION ok\n";
 
+done_testing;
 exit 0;
 
 
@@ -147,8 +115,6 @@ exit 0;
 # test parsing and retrieval methods
 
 sub scheme_parse_test {
-
-    print "scheme_parse_test:\n";
 
     my $tests = {
 	'hTTp://web1.net/a/b/c/welcome#intro'
@@ -258,12 +224,11 @@ sub scheme_parse_test {
     };
 
     foreach my $url_str (sort keys %$tests ){
-	print "Testing '$url_str'\n";
+	note "Testing '$url_str'\n";
 	my $url = new URI::URL $url_str;
 	my $tests = $tests->{$url_str};
 	while( my ($method, $exp) = each %$tests ){
-	    $exp = 'UNDEF' unless defined $exp;
-	    $url->_expect($method, $exp);
+            is($url->$method, $exp, ref($url) . "->$method");
 	}
     }
 }
@@ -276,7 +241,6 @@ sub scheme_parse_test {
 # Test individual component part access functions
 #
 sub parts_test {
-    print "parts_test:\n";
 
     # test storage part access/edit methods (netloc, user, password,
     # host and port are tested by &netloc_test)
@@ -286,39 +250,39 @@ sub parts_test {
     $url->path('1info');
     $url->query('key words');
     $url->frag('this');
-    $url->_expect('as_string' => 'http://web/1info?key%20words#this');
+    is($url->as_string, 'http://web/1info?key%20words#this', ref($url) .  '->as_string');
 
     $url->epath('%2f/%2f');
     $url->equery('a=%26');
-    $url->_expect('full_path' => '/%2f/%2f?a=%26');
+    is($url->full_path, '/%2f/%2f?a=%26', ref($url) . '->full_path');
 
     # At this point it should be impossible to access the members path()
     # and query() without complaints.
-    eval { my $p = $url->path; print "Path is $p\n"; };
-    die "Path exception failed" unless $@;
-    eval { my $p = $url->query; print "Query is $p\n"; };
-    die "Query exception failed" unless $@;
+    eval { my $p = $url->path; note "Path is $p\n"; };
+    fail "Path exception failed" unless $@;
+    eval { my $p = $url->query; note "Query is $p\n"; };
+    fail "Query exception failed" unless $@;
 
     # but we should still be able to set it 
     $url->path("howdy");
-    $url->_expect('as_string' => 'http://web/howdy?a=%26#this');
+    is($url->as_string, 'http://web/howdy?a=%26#this', ref($url) .  '->as_string');
 
     # Test the path_components function
     $url = new URI::URL 'file:%2f/%2f';
     my $p;
     $p = join('-', $url->path_components);
-    die "\$url->path_components returns '$p', expected '/-/'"
+    fail "\$url->path_components returns '$p', expected '/-/'"
       unless $p eq "/-/";
     $url->host("localhost");
     $p = join('-', $url->path_components);
-    die "\$url->path_components returns '$p', expected '-/-/'"
+    fail "\$url->path_components returns '$p', expected '-/-/'"
       unless $p eq "-/-/";
     $url->epath("/foo/bar/");
     $p = join('-', $url->path_components);
-    die "\$url->path_components returns '$p', expected '-foo-bar-'"
+    fail "\$url->path_components returns '$p', expected '-foo-bar-'"
       unless $p eq "-foo-bar-";
     $url->path_components("", "/etc", "\0", "..", "øse", "");
-    $url->_expect('full_path' => '/%2Fetc/%00/../%F8se/');
+    is($url->full_path, '/%2Fetc/%00/../%F8se/', ref($url) . '->full_path');
 
     # Setting undef
     $url = new URI::URL 'http://web/p;p?q#f';
@@ -326,39 +290,47 @@ sub parts_test {
     $url->equery(undef);
     $url->eparams(undef);
     $url->frag(undef);
-    $url->_expect('as_string' => 'http://web');
+    is($url->as_string, 'http://web', ref($url) . '->as_string');
 
     # Test http query access methods
     $url->keywords('dog');
-    $url->_expect('as_string' => 'http://web?dog');
+    is($url->as_string, 'http://web?dog', ref($url) . '->as_string');
     $url->keywords(qw(dog bones));
-    $url->_expect('as_string' => 'http://web?dog+bones');
+    is($url->as_string, 'http://web?dog+bones', ref($url) . '->as_string');
     $url->keywords(0,0);
-    $url->_expect('as_string' => 'http://web?0+0');
+    is($url->as_string, 'http://web?0+0', ref($url) . '->as_string');
     $url->keywords('dog', 'bones', '#+=');
-    $url->_expect('as_string' => 'http://web?dog+bones+%23%2B%3D');
+    is($url->as_string, 'http://web?dog+bones+%23%2B%3D', ref($url) . '->as_string');
     $a = join(":", $url->keywords);
-    die "\$url->keywords did not work (returned '$a')" unless $a eq 'dog:bones:#+=';
+    is($a, 'dog:bones:#+=', "\$url->keywords");
     # calling query_form is an error
 #    eval { my $foo = $url->query_form; };
-#    die "\$url->query_form should croak since query contains keywords not a form."
+#    fail "\$url->query_form should croak since query contains keywords not a form."
 #      unless $@;
 
     $url->query_form(a => 'foo', b => 'bar');
-    $url->_expect('as_string' => 'http://web?a=foo&b=bar');
+    is($url->as_string, 'http://web?a=foo&b=bar', ref($url) . '->as_string');
     my %a = $url->query_form;
-    die "\$url->query_form did not work"
-      unless $a{a} eq 'foo' && $a{b} eq 'bar';
+    is_deeply(
+        \%a,
+        { a => 'foo', b => 'bar' },
+        "\$url->query_form",
+    );
 
     $url->query_form(a => undef, a => 'foo', '&=' => '&=+');
-    $url->_expect('as_string' => 'http://web?a=&a=foo&%26%3D=%26%3D%2B');
+    is($url->as_string, 'http://web?a=&a=foo&%26%3D=%26%3D%2B', ref($url) . '->as_string');
 
     my @a = $url->query_form;
-    die "Wrong length" unless @a == 6;
-    die "Bad keys from query_form"
-      unless $a[0] eq 'a' && $a[2] eq 'a' && $a[4] eq '&=';
-    die "Bad values from query_form"
-      unless $a[1] eq '' && $a[3] eq 'foo' && $a[5] eq '&=+';
+    is(scalar(@a), 6, 'length');
+    is_deeply(
+        \@a,
+        [
+            'a', '',
+            'a', 'foo',
+            '&=', '&=+',
+        ],
+        'query_form',
+    );
 
     # calling keywords is an error
 #    eval { my $foo = $url->keywords; };
@@ -367,44 +339,46 @@ sub parts_test {
     # Try this odd one
     $url->equery('&=&=b&a=&a&a=b=c&&a=b');
     @a = $url->query_form;
-    #print join(":", @a), "\n";
-    die "Wrong length" unless @a == 16;
-    die "Wrong sequence" unless $a[4]  eq ""  && $a[5]  eq "b" &&
-                                $a[10] eq "a" && $a[11] eq "b=c";
+    #note join(":", @a), "\n";
+    is(scalar(@a), 16, 'length');
+    ok(
+       $a[4]  eq ""  && $a[5]  eq "b" && $a[10] eq "a" && $a[11] eq "b=c",
+       'sequence',
+    );
 
     # Try array ref values in the key value pairs
     $url->query_form(a => ['foo', 'bar'], b => 'foo', c => ['bar', 'foo']);
-    $url->_expect('as_string', 'http://web?a=foo&a=bar&b=foo&c=bar&c=foo');
+    is($url->as_string, 'http://web?a=foo&a=bar&b=foo&c=bar&c=foo', ref($url) . '->as_string');
 
-
-    netloc_test();
-    port_test();
+    subtest 'netloc_test' => \&netloc_test;
+    subtest 'port_test' => \&port_test;
 
     $url->query(undef);
-    $url->_expect('query', undef);
+    is($url->query, undef, ref($url) . '->as_string');
 
     $url = new URI::URL 'gopher://gopher/';
     $url->port(33);
     $url->gtype("3");
     $url->selector("S");
     $url->search("query");
-    $url->_expect('as_string', 'gopher://gopher:33/3S%09query');
+    is($url->as_string, 'gopher://gopher:33/3S%09query', ref($url) . '->as_string');
 
     $url->epath("45%09a");
-    $url->_expect('gtype' => '4');
-    $url->_expect('selector' => '5');
-    $url->_expect('search' => 'a');
-    $url->_expect('string' => undef);
-    $url->_expect('path' => "/45\ta");
+    is($url->gtype, '4', ref($url) . '->as_string');
+    is($url->selector, '5', ref($url) . '->as_string');
+    is($url->search, 'a', ref($url) . '->as_string');
+    is($url->string, undef, ref($url) . '->as_string');
+    is($url->path, "/45\ta", ref($url) . '->as_string');
 #    $url->path("00\t%09gisle");
-#    $url->_expect('search', '%09gisle');
+#    is($url->search '%09gisle', ref($url) . '->search');
 
     # Let's test som other URL schemes
     $url = new URI::URL 'news:';
     $url->group("comp.lang.perl.misc");
-    $url->_expect('as_string' => 'news:comp.lang.perl.misc');
+    is($url->as_string, 'news:comp.lang.perl.misc', ref($url) . '->as_string');
     $url->article('<1234@a.sn.no>');
-    $url->_expect('as_string' => 'news:1234@a.sn.no'); # "<" and ">" are gone
+    is($url->as_string, 'news:1234@a.sn.no', ref($url) . '->as_string: "<" and ">" are gone');
+
     # This one should be illegal
     eval { $url->article("no.perl"); };
     die "This one should really complain" unless $@;
@@ -412,62 +386,58 @@ sub parts_test {
 #    $url = new URI::URL 'mailto:';
 #    $url->user("aas");
 #    $url->host("a.sn.no");
-#    $url->_expect("as_string" => 'mailto:aas@a.sn.no');
+#    is($url->as_string, 'mailto:aas@a.sn.no', ref($url) . '->as_string');
 #    $url->address('foo@bar');
-#    $url->_expect("host" => 'bar');
-#    $url->_expect("user" => 'foo');
+#    is($url->host, 'bar', ref($url) . '->as_string');
+#    is($url->user, 'foo', ref($url) . '->as_string');
 
 #    $url = new URI::URL 'wais://host/database/wt/wpath';
 #    $url->database('foo');
-#    $url->_expect('as_string' => 'wais://host/foo/wt/wpath');
+#    is($url->as_string, 'wais://host/foo/wt/wpath', ref($url) . '->as_string');
 #    $url->wtype('bar');
-#    $url->_expect('as_string' => 'wais://host/foo/bar/wpath');
+#    is($url->as_string, 'wais://host/foo/bar/wpath', ref($url) . '->as_string');
 
     # Test crack method for various URLs
     my(@crack, $crack);
     @crack = URI::URL->new("http://host/path;param?query#frag")->crack;
-    die "Cracked result should be 9 elements" unless @crack == 9;
+    is(scalar(@crack), 9, '9 elements');
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
-    die "Bad crack result" unless
-      $crack eq "http*UNDEF*UNDEF*host*80*/path*param*query*frag";
+    note "Cracked result: $crack";
+    is($crack, "http*UNDEF*UNDEF*host*80*/path*param*query*frag", 'crack result');
 
     @crack = URI::URL->new("foo/bar", "ftp://aas\@ftp.sn.no/")->crack;
-    die "Cracked result should be 9 elements" unless @crack == 9;
+    is(scalar(@crack), 9, '9 elements');
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
+    note "Cracked result: $crack";
 #    die "Bad crack result" unless
 #      $crack eq "ftp*UNDEF*UNDEF*UNDEF*21*foo/bar*UNDEF*UNDEF*UNDEF";
 
     @crack = URI::URL->new('ftp://u:p@host/q?path')->crack;
-    die "Cracked result should be 9 elements" unless @crack == 9;
+    is(scalar(@crack), 9, '9 elements');
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
-    die "Bad crack result" unless
-      $crack eq "ftp*u*p*host*21*/q?path*UNDEF*path*UNDEF";
+    note "Cracked result: $crack";
+    is($crack, "ftp*u*p*host*21*/q?path*UNDEF*path*UNDEF", 'crack result');
 
     @crack = URI::URL->new("ftp://ftp.sn.no/pub")->crack;    # Test anon ftp
-    die "Cracked result should be 9 elements" unless @crack == 9;
-    die "No passwd in anonymous crack" unless $crack[2];
+    is(scalar(@crack), 9, '9 elements');
+    ok($crack[2], "passwd in anonymous crack");
     $crack[2] = 'passwd';  # easier to test when we know what it is
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
-    die "Bad crack result" unless
-      $crack eq "ftp*anonymous*passwd*ftp.sn.no*21*/pub*UNDEF*UNDEF*UNDEF";
+    note "Cracked result: $crack";
+    is($crack, "ftp*anonymous*passwd*ftp.sn.no*21*/pub*UNDEF*UNDEF*UNDEF", 'crack result');
 
     @crack = URI::URL->new('mailto:aas@sn.no')->crack;
-    die "Cracked result should be 9 elements" unless @crack == 9;
+    is(scalar(@crack), 9, '9 elements');
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
+    note "Cracked result: $crack";
 #    die "Bad crack result" unless
 #      $crack eq "mailto*aas*UNDEF*sn.no*UNDEF*aas\@sn.no*UNDEF*UNDEF*UNDEF";
 
     @crack = URI::URL->new('news:comp.lang.perl.misc')->crack;
-    die "Cracked result should be 9 elements" unless @crack == 9;
+    is(scalar(@crack), 9, '9 elements');
     $crack = join("*", map { defined($_) ? $_ : "UNDEF" } @crack);
-    print "Cracked result: $crack\n";
-    die "Bad crack result" unless
-      $crack eq "news*UNDEF*UNDEF*UNDEF*119*comp.lang.perl.misc*UNDEF*UNDEF*UNDEF";
+    note "Cracked result: $crack";
+    is($crack, "news*UNDEF*UNDEF*UNDEF*119*comp.lang.perl.misc*UNDEF*UNDEF*UNDEF", 'crack result');
 }
 
 #
@@ -476,55 +446,54 @@ sub parts_test {
 # Test automatic netloc synchronisation
 #
 sub netloc_test {
-    print "netloc_test:\n";
 
     my $url = new URI::URL 'ftp://anonymous:p%61ss@håst:12345';
-    $url->_expect('user', 'anonymous');
-    $url->_expect('password', 'pass');
-    $url->_expect('host', 'xn--hst-ula');
-    $url->_expect('port', 12345);
+    is($url->user, 'anonymous', ref($url) . '->as_string');
+    is($url->password, 'pass', ref($url) . '->as_string');
+    is($url->host, 'xn--hst-ula', ref($url) . '->as_string');
+    is($url->port, 12345, ref($url) . '->as_string');
     # Can't really know how netloc is represented since it is partially escaped
-    #$url->_expect('netloc', 'anonymous:pass@hst:12345');
-    $url->_expect('as_string' => 'ftp://anonymous:pass@xn--hst-ula:12345');
+    #is($url->netloc, 'anonymous:pass@hst:12345', ref($url) . '->as_string');
+    is($url->as_string, 'ftp://anonymous:pass@xn--hst-ula:12345', ref($url) . '->as_string');
 
     # The '0' is sometimes tricky to get right
     $url->user(0);
     $url->password(0);
     $url->host(0);
     $url->port(0);
-    $url->_expect('netloc' => '0:0@0:0');
+    is($url->netloc, '0:0@0:0', ref($url) . '->as_string');
     $url->host(undef);
-    $url->_expect('netloc' => '0:0@:0');
+    is($url->netloc, '0:0@:0', ref($url) . '->as_string');
     $url->host('h');
     $url->user(undef);
-    $url->_expect('netloc' => ':0@h:0');
+    is($url->netloc, ':0@h:0', ref($url) . '->as_string');
     $url->user('');
-    $url->_expect('netloc' => ':0@h:0');
+    is($url->netloc, ':0@h:0', ref($url) . '->as_string');
     $url->password('');
-    $url->_expect('netloc' => ':@h:0');
+    is($url->netloc, ':@h:0', ref($url) . '->as_string');
     $url->user('foo');
-    $url->_expect('netloc' => 'foo:@h:0');
+    is($url->netloc, 'foo:@h:0', ref($url) . '->as_string');
 
     # Let's try a simple one
     $url->user('nemo');
     $url->password('p2');
     $url->host('hst2');
     $url->port(2);
-    $url->_expect('netloc' => 'nemo:p2@hst2:2');
+    is($url->netloc, 'nemo:p2@hst2:2', ref($url) . '->as_string');
 
     $url->user(undef);
     $url->password(undef);
     $url->port(undef);
-    $url->_expect('netloc' => 'hst2');
-    $url->_expect('port' => '21');  # the default ftp port
+    is($url->netloc, 'hst2', ref($url) . '->as_string');
+    is($url->port, '21', ref($url) . '->as_string');  # the default ftp port
 
     $url->port(21);
-    $url->_expect('netloc' => 'hst2:21');
+    is($url->netloc, 'hst2:21', ref($url) . '->as_string');
 
     # Let's try some reserved chars
     $url->user("@");
     $url->password(":-#-;-/-?");
-    $url->_expect('as_string' => 'ftp://%40::-%23-;-%2F-%3F@hst2:21');
+    is($url->as_string, 'ftp://%40::-%23-;-%2F-%3F@hst2:21', ref($url) . '->as_string');
 
 }
 
@@ -534,36 +503,26 @@ sub netloc_test {
 # Test port behaviour
 #
 sub port_test {
-    print "port_test:\n";
-
     $url = URI::URL->new('http://foo/root/dir/');
     my $port = $url->port;
-    die "Port undefined" unless defined $port;
-    die "Wrong port $port" unless $port == 80;
-    die "Wrong string" unless $url->as_string eq
-	'http://foo/root/dir/';
+    is($port, 80, 'port');
+    is($url->as_string, 'http://foo/root/dir/', 'string');
 
     $url->port(8001);
     $port = $url->port;
-    die "Port undefined" unless defined $port;
-    die "Wrong port $port" unless $port == 8001;
-    die "Wrong string" unless $url->as_string eq
-	'http://foo:8001/root/dir/';
+    is($port, 8001, 'port');
+    is($url->as_string, 'http://foo:8001/root/dir/', 'string');
 
     $url->port(80);
     $port = $url->port;
-    die "Port undefined" unless defined $port;
-    die "Wrong port $port" unless $port == 80;
-    die "Wrong string" unless $url->canonical->as_string eq
-	'http://foo/root/dir/';
+    is($port, 80, 'port');
+    is($url->canonical->as_string, 'http://foo/root/dir/', 'string');
 
     $url->port(8001);
     $url->port(undef);
     $port = $url->port;
-    die "Port undefined" unless defined $port;
-    die "Wrong port $port" unless $port == 80;
-    die "Wrong string" unless $url->as_string eq
-	'http://foo/root/dir/';
+    is($port, 80, 'port');
+    is($url->canonical->as_string, 'http://foo/root/dir/', 'string');
 }
 
 
@@ -574,63 +533,61 @@ sub port_test {
 # escaping functions
 
 sub escape_test {
-    print "escape_test:\n";
-
     # supply escaped URL
     $url = new URI::URL 'http://web/this%20has%20spaces';
     # check component is unescaped
-    $url->_expect('path', '/this has spaces');
+    is($url->path, '/this has spaces', ref($url) . '->as_string');
 
     # modify the unescaped form
     $url->path('this ALSO has spaces');
     # check whole url is escaped
-    $url->_expect('as_string',
-		  'http://web/this%20ALSO%20has%20spaces');
+    is($url->as_string,
+		  'http://web/this%20ALSO%20has%20spaces', ref($url) . '->as_string');
 
     $url = new URI::URL uri_escape('http://web/try %?#" those');
-    $url->_expect('as_string',
-		  'http%3A%2F%2Fweb%2Ftry%20%25%3F%23%22%20those');
+    is($url->as_string,
+		  'http%3A%2F%2Fweb%2Ftry%20%25%3F%23%22%20those', ref($url) . '->as_string');
 
     my $all = pack('C*',0..255);
     my $esc = uri_escape($all);
     my $new = uri_unescape($esc);
-    die "uri_escape->uri_unescape mismatch" unless $all eq $new;
+    is($all, $new, "uri_escape->uri_unescape"),
 
     $url->path($all);
-    $url->_expect('full_path' => q(%00%01%02%03%04%05%06%07%08%09%0A%0B%0C%0D%0E%0F%10%11%12%13%14%15%16%17%18%19%1A%1B%1C%1D%1E%1F%20!%22%23$%&'()*+,-./0123456789:;%3C=%3E%3F@ABCDEFGHIJKLMNOPQRSTUVWXYZ[%5C]%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F%80%81%82%83%84%85%86%87%88%89%8A%8B%8C%8D%8E%8F%90%91%92%93%94%95%96%97%98%99%9A%9B%9C%9D%9E%9F%A0%A1%A2%A3%A4%A5%A6%A7%A8%A9%AA%AB%AC%AD%AE%AF%B0%B1%B2%B3%B4%B5%B6%B7%B8%B9%BA%BB%BC%BD%BE%BF%C0%C1%C2%C3%C4%C5%C6%C7%C8%C9%CA%CB%CC%CD%CE%CF%D0%D1%D2%D3%D4%D5%D6%D7%D8%D9%DA%DB%DC%DD%DE%DF%E0%E1%E2%E3%E4%E5%E6%E7%E8%E9%EA%EB%EC%ED%EE%EF%F0%F1%F2%F3%F4%F5%F6%F7%F8%F9%FA%FB%FC%FD%FE%FF));
+    is($url->full_path, q(%00%01%02%03%04%05%06%07%08%09%0A%0B%0C%0D%0E%0F%10%11%12%13%14%15%16%17%18%19%1A%1B%1C%1D%1E%1F%20!%22%23$%&'()*+,-./0123456789:;%3C=%3E%3F@ABCDEFGHIJKLMNOPQRSTUVWXYZ[%5C]%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F%80%81%82%83%84%85%86%87%88%89%8A%8B%8C%8D%8E%8F%90%91%92%93%94%95%96%97%98%99%9A%9B%9C%9D%9E%9F%A0%A1%A2%A3%A4%A5%A6%A7%A8%A9%AA%AB%AC%AD%AE%AF%B0%B1%B2%B3%B4%B5%B6%B7%B8%B9%BA%BB%BC%BD%BE%BF%C0%C1%C2%C3%C4%C5%C6%C7%C8%C9%CA%CB%CC%CD%CE%CF%D0%D1%D2%D3%D4%D5%D6%D7%D8%D9%DA%DB%DC%DD%DE%DF%E0%E1%E2%E3%E4%E5%E6%E7%E8%E9%EA%EB%EC%ED%EE%EF%F0%F1%F2%F3%F4%F5%F6%F7%F8%F9%FA%FB%FC%FD%FE%FF), ref($url) . '->as_string');
 
     # test escaping uses uppercase (preferred by rfc1837)
     $url = new URI::URL 'file://h/';
     $url->path(chr(0x7F));
-    $url->_expect('as_string', 'file://h/%7F');
+    is($url->as_string, 'file://h/%7F', ref($url) . '->as_string');
 
     return;
     # reserved characters differ per scheme
 
     ## XXX is this '?' allowed to be unescaped
     $url = new URI::URL 'file://h/test?ing';
-    $url->_expect('path', '/test?ing');
+    is($url->path, '/test?ing', ref($url) . '->as_string');
 
     $url = new URI::URL 'file://h/';
     $url->epath('question?mark');
-    $url->_expect('as_string', 'file://h/question?mark');
+    is($url->as_string, 'file://h/question?mark', ref($url) . '->as_string');
     # XXX Why should this be any different???
     #     Perhaps we should not expect too much :-)
     $url->path('question?mark');
-    $url->_expect('as_string', 'file://h/question%3Fmark');
+    is($url->as_string, 'file://h/question%3Fmark', ref($url) . '->as_string');
 
     # See what happens when set different elements to this ugly sting
     my $reserved = ';/?:@&=#%';
     $url->path($reserved . "foo");
-    $url->_expect('as_string', 'file://h/%3B/%3F%3A%40%26%3D%23%25foo');
+    is($url->as_string, 'file://h/%3B/%3F%3A%40%26%3D%23%25foo', ref($url) . '->as_string');
 
     $url->scheme('http');
     $url->path('');
-    $url->_expect('as_string', 'http://h/');
+    is($url->as_string, 'http://h/', ref($url) . '->as_string');
     $url->query($reserved);
     $url->params($reserved);
     $url->frag($reserved);
-    $url->_expect('as_string', 'http://h/;%3B%2F%3F%3A%40&=%23%25?%3B%2F%3F%3A%40&=%23%25#;/?:@&=#%');
+    is($url->as_string, 'http://h/;%3B%2F%3F%3A%40&=%23%25?%3B%2F%3F%3A%40&=%23%25#;/?:@&=#%', ref($url) . '->as_string');
 
     my $str = $url->as_string;
     $url = new URI::URL $str;
@@ -639,7 +596,7 @@ sub escape_test {
     $url = new URI::URL 'ftp:foo';
     $url->user($reserved);
     $url->host($reserved);
-    $url->_expect('as_string', 'ftp://%3B%2F%3F%3A%40%26%3D%23%25@%3B%2F%3F%3A%40%26%3D%23%25/foo');
+    is($url->as_string, 'ftp://%3B%2F%3F%3A%40%26%3D%23%25@%3B%2F%3F%3A%40%26%3D%23%25/foo', ref($url) . '->as_string');
 
 }
 
@@ -652,7 +609,6 @@ sub escape_test {
 sub newlocal_test {
     return 1 if $^O eq "MacOS";
 
-    print "newlocal_test:\n";
     my $isMSWin32 = ($^O =~ /MSWin32/i);
     my $pwd = ($isMSWin32 ? 'cd' :
 	      ($^O eq 'qnx' ? '/usr/bin/fullpath -t' :
@@ -688,23 +644,23 @@ sub newlocal_test {
     $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL;
     my $ss = $isMSWin32 ? '//' : (($dir =~ m,^/,) ? '' : '///' );
-    $url->_expect('as_string', URI::URL->new("file:$ss$dir/")->as_string);
+    is($url->as_string, URI::URL->new("file:$ss$dir/")->as_string, ref($url) . '->as_string');
 
-    print "Local directory is ". $url->local_path . "\n";
+    note "Local directory is ". $url->local_path . "\n";
 
     if ($^O ne 'VMS') {
     # absolute dir
     chdir('/') or die $!;
     $url = newlocal URI::URL '/usr/';
-    $url->_expect('as_string', 'file:/usr/');
+    is($url->as_string, 'file:/usr/', ref($url) . '->as_string');
 
     # absolute file
     $url = newlocal URI::URL '/vmunix';
-    $url->_expect('as_string', 'file:/vmunix');
+    is($url->as_string, 'file:/vmunix', ref($url) . '->as_string');
     }
 
     # relative file
-    chdir($tmpdir) or die $!;
+    chdir($tmpdir) or fail $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
     chomp $dir;
     if ($^O eq 'VMS') {
@@ -715,10 +671,10 @@ sub newlocal_test {
     $dir = uri_escape($dir, ':');
     $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL 'foo';
-    $url->_expect('as_string', "file:$ss$dir/foo");
+    is($url->as_string, "file:$ss$dir/foo", ref($url) . '->as_string');
 
     # relative dir
-    chdir($tmpdir) or die $!;
+    chdir($tmpdir) or fail $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
     chomp $dir;
     if ($^O eq 'VMS') {
@@ -729,59 +685,59 @@ sub newlocal_test {
     $dir = uri_escape($dir, ':');
     $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL 'bar/';
-    $url->_expect('as_string', "file:$ss$dir/bar/");
+    is($url->as_string, "file:$ss$dir/bar/", ref($url) . '->as_string');
 
     # 0
     if ($^O ne 'VMS') {
-    chdir('/') or die $!;
+    chdir('/') or fail $!;
     $dir = `$pwd`; $dir =~ tr|\\|/|;
         chomp $dir;
         $dir = uri_escape($dir, ':');
     $dir =~ s/^(\w)%3A/$1:/ if $isMSWin32 or $^O eq 'os2';
     $url = newlocal URI::URL '0';
-    $url->_expect('as_string', "file:$ss${dir}0");
+    is($url->as_string, "file:$ss${dir}0", ref($url) . '->as_string');
     }
 
     # Test access methods for file URLs
     $url = new URI::URL 'file:/c:/dos';
-    $url->_expect('dos_path', 'C:\\DOS');
-    $url->_expect('unix_path', '/c:/dos');
-    #$url->_expect('vms_path', '[C:]DOS');
-    $url->_expect('mac_path',  'UNDEF');
+    is($url->dos_path, 'C:\\DOS', ref($url) . '->as_string');
+    is($url->unix_path, '/c:/dos', ref($url) . '->as_string');
+    #is($url->vms_path, '[C:]DOS', ref($url) . '->as_string');
+    is($url->mac_path,  undef, ref($url) . '->as_string');
 
     $url = new URI::URL 'file:/foo/bar';
-    $url->_expect('unix_path', '/foo/bar');
-    $url->_expect('mac_path', 'foo:bar');
+    is($url->unix_path, '/foo/bar', ref($url) . '->as_string');
+    is($url->mac_path, 'foo:bar', ref($url) . '->as_string');
 
     # Some edge cases
 #    $url = new URI::URL 'file:';
-#    $url->_expect('unix_path', '/');
+#    is($url->unix_path, '/', ref($url) . '->as_string');
     $url = new URI::URL 'file:/';
-    $url->_expect('unix_path', '/');
+    is($url->unix_path, '/', ref($url) . '->as_string');
     $url = new URI::URL 'file:.';
-    $url->_expect('unix_path', '.');
+    is($url->unix_path, '.', ref($url) . '->as_string');
     $url = new URI::URL 'file:./foo';
-    $url->_expect('unix_path', './foo');
+    is($url->unix_path, './foo', ref($url) . '->as_string');
     $url = new URI::URL 'file:0';
-    $url->_expect('unix_path', '0');
+    is($url->unix_path, '0', ref($url) . '->as_string');
     $url = new URI::URL 'file:../../foo';
-    $url->_expect('unix_path', '../../foo');
+    is($url->unix_path, '../../foo', ref($url) . '->as_string');
     $url = new URI::URL 'file:foo/../bar';
-    $url->_expect('unix_path', 'foo/../bar');
+    is($url->unix_path, 'foo/../bar', ref($url) . '->as_string');
 
     # Relative files
     $url = new URI::URL 'file:foo/b%61r/Note.txt';
-    $url->_expect('unix_path', 'foo/bar/Note.txt');
-    $url->_expect('mac_path', ':foo:bar:Note.txt');
-    $url->_expect('dos_path', 'FOO\\BAR\\NOTE.TXT');
-    #$url->_expect('vms_path', '[.FOO.BAR]NOTE.TXT');
+    is($url->unix_path, 'foo/bar/Note.txt', ref($url) . '->as_string');
+    is($url->mac_path, ':foo:bar:Note.txt', ref($url) . '->as_string');
+    is($url->dos_path, 'FOO\\BAR\\NOTE.TXT', ref($url) . '->as_string');
+    #is($url->vms_path', '[.FOO.BAR]NOTE.TXT', ref($url) . '->as_string');
 
     # The VMS path found in RFC 1738 (section 3.10)
     $url = new URI::URL 'file://vms.host.edu/disk$user/my/notes/note12345.txt';
-#    $url->_expect('vms_path', 'DISK$USER:[MY.NOTES]NOTE12345.TXT');
-#    $url->_expect('mac_path', 'disk$user:my:notes:note12345.txt');
+#    is($url->vms_path, 'DISK$USER:[MY.NOTES]NOTE12345.TXT', ref($url) . '->as_string');
+#    is($url->mac_path, 'disk$user:my:notes:note12345.txt', ref($url) . '->as_string');
 
-    chdir($savedir) or die $!;
+    chdir($savedir) or fail $!;
 }
 
 
@@ -790,9 +746,6 @@ sub newlocal_test {
 # absolute_test()
 #
 sub absolute_test {
-
-    print "Test relative/absolute URI::URL parsing:\n";
-
     # Tests from draft-ietf-uri-relative-url-06.txt
     # Copied verbatim from the draft, parsed below
 
@@ -898,17 +851,17 @@ EOM
 #			  ['%2e%2e/a'  => 'http://a/b/c/%2e%2e/a'],
 	);
 
-    print "  Relative    +  Base  =>  Expected Absolute URL\n";
-    print "================================================\n";
+    note "  Relative    +  Base  =>  Expected Absolute URL";
+    note "================================================\n";
     for my $test (@absolute_tests) {
 	my($rel, $abs) = @$test;
 	my $abs_url = new URI::URL $abs;
 	my $abs_str = $abs_url->as_string;
 
-	printf("  %-10s  +  $base  =>  %s\n", $rel, $abs);
+	note sprintf("  %-10s  +  $base  =>  %s", $rel, $abs);
 	my $u   = new URI::URL $rel, $base;
 	my $got = $u->abs;
-	$got->_expect('as_string', $abs_str);
+	is($got->as_string, $abs_str, ref($url) . '->as_string');
     }
 
     # bug found and fixed in 1.9 by "J.E. Fritz" <FRITZ@gems.vcu.edu>
@@ -917,7 +870,7 @@ EOM
     my $result = $relative->abs;
 
     my ($a, $b) = ($base->path, $result->path);
-	die "'$a' and '$b' should be the same" unless $a eq $b;
+    is($a, $b, 'identity');
 
     # Counter the expectation of least surprise,
     # section 6 of the draft says the URL should
@@ -927,9 +880,9 @@ EOM
     $base = new URI::URL 'http://host/dir1/../dir2/file';
     $relative = new URI::URL 'file', $base;
     $result = $relative->abs;
-    die 'URL not canonicalised' unless $result eq 'http://host/dir2/file';
+    is($result, 'http://host/dir2/file', 'URL canonicalised');
 
-    print "--------\n";
+    note "--------";
     # Test various other kinds of URLs and how they like to be absolutized
     for (["http://abc/", "news:45664545", "http://abc/"],
 	 ["news:abc",    "http://abc/",   "news:abc"],
@@ -959,10 +912,10 @@ EOM
 	my($url, $base, $expected_abs) = @$_;
 	my $rel = new URI::URL $url, $base;
 	my $abs = $rel->abs($base, 1);
-	printf("  %-12s+  $base  =>  %s\n", $rel, $abs);
-	$abs->_expect('as_string', $expected_abs);
+	note sprintf("  %-12s+  $base  =>  %s", $rel, $abs);
+	is($abs->as_string, $expected_abs, ref($url) . '->as_string');
     }
-    print "absolute test ok\n";
+    note "absolute test ok\n";
 
     # Test relative function
     for (
@@ -989,11 +942,10 @@ EOM
         )
     {
 	my($abs, $base, $expect) = @$_;
-	printf "url('$abs', '$base')->rel eq '$expect'\n";
 	my $rel = URI::URL->new($abs, $base)->rel;
-	$rel->_expect('as_string', $expect);
+	is($rel->as_string, $expect, "url('$abs', '$base')->rel = '$expect'");
     }
-    print "relative test ok\n";
+    note "relative test ok\n";
 }
 
 
@@ -1004,25 +956,25 @@ sub eq_test
     my $u3 = new URI::URL 'http://ABC.com:/%7esmith/home.html';
 
     # Test all permutations of these tree
-    $u1->eq($u2) or die "1: $u1 ne $u2";
-    $u1->eq($u3) or die "2: $u1 ne $u3";
-    $u2->eq($u1) or die "3: $u2 ne $u1";
-    $u2->eq($u3) or die "4: $u2 ne $u3";
-    $u3->eq($u1) or die "5: $u3 ne $u1";
-    $u3->eq($u2) or die "6: $u3 ne $u2";
+    ok($u1->eq($u2), "1: $u1 ne $u2");
+    ok($u1->eq($u3), "2: $u1 ne $u3");
+    ok($u2->eq($u1), "3: $u2 ne $u1");
+    ok($u2->eq($u3), "4: $u2 ne $u3");
+    ok($u3->eq($u1), "5: $u3 ne $u1");
+    ok($u3->eq($u2), "6: $u3 ne $u2");
 
     # Test empty path
     my $u4 = new URI::URL 'http://www.sn.no';
-    $u4->eq("HTTP://WWW.SN.NO:80/") or die "7: $u4";
-    $u4->eq("http://www.sn.no:81") and die "8: $u4";
+    ok($u4->eq("HTTP://WWW.SN.NO:80/"), "7: $u4");
+    ok(!$u4->eq("http://www.sn.no:81"),"8: $u4");
 
     # Test mailto
 #    my $u5 = new URI::URL 'mailto:AAS@SN.no';
-#    $u5->eq('mailto:aas@sn.no') or die "9: $u5";
+#    ok($u5->eq('mailto:aas@sn.no'), "9: $u5");
+
 
     # Test reserved char
     my $u6 = new URI::URL 'ftp://ftp/%2Fetc';
-    $u6->eq("ftp://ftp/%2fetc") or die "10: $u6";
-    $u6->eq("ftp://ftp://etc") and die "11: $u6";
+    ok($u6->eq("ftp://ftp/%2fetc"), "10: $u6");
+    ok(!$u6->eq("ftp://ftp://etc"), "11: $u6");
 }
-
