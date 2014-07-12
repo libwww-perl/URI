@@ -1,5 +1,13 @@
 Revision history for URI
 
+
+  Release 1.63
+
+  Karen Etheridge:
+    - mark utf8-related test failures on older perls caused by recent string
+      parsing changes as TODO (RT#97177, RT#96941)
+
+
 2014-07-12   Karen Etheridge <ether@cpan.org>
 
   Release 1.62

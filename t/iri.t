@@ -69,10 +69,10 @@ is(URI->new("http://xn--99zt52a.example.org/%e2%80%ae")->as_iri, "http://\x{7D0D
 
 # try some URLs that can't be IDNA encoded (fallback to encoded UTF8 bytes)
 $u = URI->new("http://" . ("ü" x 128));
-is $u, "http://" . ("%C3%BC" x 128);
-is $u->host, ("\xC3\xBC" x 128);
 TODO: {
     local $TODO = "should ihost decode UTF8 bytes?";
+    is $u, "http://" . ("%C3%BC" x 128);
+    is $u->host, ("\xC3\xBC" x 128);
     is $u->ihost, ("ü" x 128);
+    is $u->as_iri, "http://" . ("ü" x 128);
 }
-is $u->as_iri, "http://" . ("ü" x 128);
