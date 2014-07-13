@@ -5,7 +5,7 @@ use warnings;
 
 use parent 'URI';
 
-our $VERSION = '1.62';
+our $VERSION = '1.63';
 
 use MIME::Base64 qw(encode_base64 decode_base64);
 use URI::Escape  qw(uri_unescape);
