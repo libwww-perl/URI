@@ -214,7 +214,7 @@ sub escape_char {
         unshift(@_, $s);
     }
 
-    return join '', @URI::Escape::escapes{$_[0] =~ /(.)/sg};
+    return join '', @URI::Escape::escapes{split //, $_[0]};
 }
 
 1;
