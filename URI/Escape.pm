@@ -204,8 +204,12 @@ sub uri_unescape {
 
 # XXX FIXME escape_char is buggy as it assigns meaning to the string's storage format.
 sub escape_char {
+    # Old versions of utf8::is_utf8() didn't properly handle magical vars (e.g. $1).
+    # The following forces a fetch to occur beforehand.
+    my $dummy = substr($_[0], 0, 0);
+
     if (utf8::is_utf8($_[0])) {
-        my $s = $_[0];
+        my $s = shift;
         utf8::encode($s);
         unshift(@_, $s);
     }

@@ -1,5 +1,12 @@
 Revision history for URI
 
+
+  Release 1.64
+
+  Eric Brine:
+    - better fix for RT#96941, that also works around utf8 bugs on older perls
+
+
 2014-07-13   Karen Etheridge <ether@cpan.org>
 
   Release 1.63
