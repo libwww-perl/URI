@@ -210,7 +210,6 @@ sub escape_char {
         unshift(@_, $s);
     }
 
-    no warnings 'uninitialized';
     return join '', @URI::Escape::escapes{$_[0] =~ /(.)/sg};
 }
 
