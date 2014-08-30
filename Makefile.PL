@@ -43,6 +43,7 @@ my %WriteMakefileArgs = (
                     'parent'        => '0',
                     'Exporter'      => '5.57',
                     'utf8'          => '0',
+                    'Scalar::Util'  => '0',
                     'perl'          => '5.008001',
                 },
                 recommends => {
