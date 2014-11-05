@@ -1,5 +1,8 @@
 Revision history for URI
 
+2014-11-05   Karen Etheridge <ether@cpan.org>
+
+  Release 1.65
 
   Karen Etheridge:
     - add a TO_JSON method, to assist JSON serialization
