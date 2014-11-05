@@ -18,8 +18,8 @@ use URI::IRI;
 
 my $u;
 
-binmode Test::More->builder->output, ":utf8";
-binmode Test::More->builder->failure_output, ":utf8";
+binmode Test::More->builder->output, ':encoding(UTF-8)';
+binmode Test::More->builder->failure_output, ':encoding(UTF-8)';
 
 $u = URI->new("http://Bücher.ch");
 is $u, "http://xn--bcher-kva.ch";
