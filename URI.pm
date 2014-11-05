@@ -155,6 +155,7 @@ sub clone
     bless \$other, ref $self;
 }
 
+sub TO_JSON { ${$_[0]} }
 
 sub _no_scheme_ok { 0 }
 
