@@ -1,5 +1,13 @@
 Revision history for URI
 
+2014-12-02   Karen Etheridge <ether@cpan.org>
+
+  Release 1.66
+
+  John Napiorkowski
+    - added ws: and wss: (websockets) schemes
+
+
 2014-11-05   Karen Etheridge <ether@cpan.org>
 
   Release 1.65
