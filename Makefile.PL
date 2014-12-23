@@ -1,5 +1,5 @@
 use strict;
-use warnings FATAL => 'all';
+use warnings;
 require 5.008001;
 use ExtUtils::MakeMaker;
 
