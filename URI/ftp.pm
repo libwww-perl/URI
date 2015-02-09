@@ -7,6 +7,8 @@ use parent qw(URI::_server URI::_userpass);
 
 sub default_port { 21 }
 
+sub encrypt_mode { undef }
+
 sub path { shift->path_query(@_) }  # XXX
 
 sub _user     { shift->SUPER::user(@_);     }
