@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 13;
+use Test::More tests => 23;
 
 use URI ();
 my $uri;
@@ -13,6 +13,10 @@ is($uri->scheme, "ftp");
 is($uri->host, "ftp.example.com");
 
 is($uri->port, 21);
+
+is($uri->secure, 0);
+
+is($uri->encrypt_mode, undef);
 
 is($uri->user, "anonymous");
 
@@ -31,6 +35,7 @@ $uri->password("secret");
 is($uri, "ftp://gisle%40aas.no:secret\@ftp.example.com/path");
 
 $uri = URI->new("ftp://gisle\@aas.no:secret\@ftp.example.com/path");
+
 is($uri, "ftp://gisle\@aas.no:secret\@ftp.example.com/path");
 
 is($uri->userinfo, "gisle\@aas.no:secret");
@@ -38,3 +43,23 @@ is($uri->userinfo, "gisle\@aas.no:secret");
 is($uri->user, "gisle\@aas.no");
 
 is($uri->password, "secret");
+
+$uri = URI->new("ftps://ftp.example.com/path");
+
+is($uri->scheme, "ftps");
+
+is($uri->port, 990);
+
+is($uri->secure, 1);
+
+is($uri->encrypt_mode, 'implicit');
+
+$uri = URI->new("ftpes://ftp.example.com/path");
+
+is($uri->scheme, "ftpes");
+
+is($uri->port, 21);
+
+is($uri->secure, 1);
+
+is($uri->encrypt_mode, 'explicit');
