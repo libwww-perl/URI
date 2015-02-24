@@ -7,5 +7,9 @@ BEGIN {
         unless -d '.git' || $ENV{AUTHOR_TESTING};
 }
 
-use Test::DistManifest;
+eval 'use Test::DistManifest';
+if ($@) {
+    plan skip_all => 'Test::DistManifest required to test MANIFEST';
+}
+
 manifest_ok();
