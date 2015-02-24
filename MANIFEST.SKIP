@@ -5,16 +5,13 @@
 ^old/
 ^tgz/
 ^blib/
-\.old$
-\.bak$
 Makefile$
 ^MANIFEST.SKIP$
 ^#
 /#
-~$
 \.git/
 \.gitignore$
 pm_to_blib$
 ^todo
 ^\.ackrc$
-^URI-
+^URI-\d
