@@ -1,5 +1,11 @@
 Revision history for URI
 
+  Release 1.67
+
+  Karen Etheridge:
+    - properly skip author test for normal user installs
+
+
 2015-02-24   Karen Etheridge <ether@cpan.org>
 
   Release 1.66
