@@ -1,5 +1,9 @@
 Revision history for URI
 
+2015-02-24   Karen Etheridge <ether@cpan.org>
+
+  Release 1.66
+
   Adam Herzog:
 
     - reorganize .pm files under lib/ (github #20)
