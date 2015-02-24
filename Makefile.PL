@@ -27,6 +27,7 @@ my %WriteMakefileArgs = (
                 web => 'https://rt.cpan.org/Public/Dist/Display.html?Name=URI',
             },
             x_MailingList => 'mailto:libwww@perl.org',
+            x_IRC => 'irc://irc.perl.org/#lwp',
         },
     },
 
