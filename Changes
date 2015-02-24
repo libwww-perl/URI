@@ -5,7 +5,6 @@ Revision history for URI
   Release 1.66
 
   Adam Herzog:
-
     - reorganize .pm files under lib/ (github #20)
 
 
