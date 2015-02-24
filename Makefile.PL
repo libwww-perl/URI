@@ -8,8 +8,8 @@ ExtUtils::MakeMaker->VERSION(6.98) if $developer;
 
 my %WriteMakefileArgs = (
     NAME                => 'URI',
-    VERSION_FROM        => 'URI.pm',
-    ABSTRACT_FROM       => 'URI.pm',
+    VERSION_FROM        => 'lib/URI.pm',
+    ABSTRACT_FROM       => 'lib/URI.pm',
     AUTHOR              => 'Gisle Aas <gisle@activestate.com>',
     LICENSE             => 'perl_5',
 
