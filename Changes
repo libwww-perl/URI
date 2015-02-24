@@ -1,5 +1,10 @@
 Revision history for URI
 
+
+  Adam Herzog:
+    - make distmanifest.t skip all tests unless test module is installed
+
+
 2015-02-24   Karen Etheridge <ether@cpan.org>
 
   Release 1.67
