@@ -1,5 +1,3 @@
-#!perl -w
-
 # Test URIs containing IPv6 addresses
 
 use strict;
