@@ -39,6 +39,7 @@ lib/URI/rlogin.pm
 lib/URI/rsync.pm
 lib/URI/rtsp.pm
 lib/URI/rtspu.pm
+lib/URI/sftp.pm
 lib/URI/sip.pm
 lib/URI/sips.pm
 lib/URI/snews.pm
