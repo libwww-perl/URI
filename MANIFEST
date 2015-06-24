@@ -80,6 +80,8 @@ t/old-absconf.t
 t/old-base.t
 t/old-file.t
 t/old-relbase.t
+t/path-segments.t
+t/sort-hash-query-form.t
 t/pop.t
 t/punycode.t
 t/query-param.t
