@@ -7,6 +7,8 @@
 ^blib/
 Makefile$
 ^MANIFEST.SKIP$
+MYMETA.json
+MYMETA.yml
 ^#
 /#
 \.git/
