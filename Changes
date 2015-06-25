@@ -1,5 +1,19 @@
 Revision history for URI
 
+YYYY-MM-DD    Author Name <email@example.com>
+
+  Release 1.68
+
+  Kent Fredric:
+    - Sort hash keys to make generated query predictable
+
+  Slaven Rezic:
+    - Add new tests for path segments
+
+  Brendan Byrd:
+    - Add sftp scheme
+
+
 2015-02-24   Karen Etheridge <ether@cpan.org>
 
   Release 1.67
