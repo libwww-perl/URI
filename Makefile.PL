@@ -29,6 +29,7 @@ my %WriteMakefileArgs = (
             x_MailingList => 'mailto:libwww@perl.org',
             x_IRC => 'irc://irc.perl.org/#lwp',
         },
+        x_authority => 'cpan:GAAS',
     },
 
     META_ADD => {
