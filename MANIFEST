@@ -52,6 +52,7 @@ lib/URI/urn.pm
 lib/URI/urn/isbn.pm
 lib/URI/urn/oid.pm
 lib/URI/WithBase.pm
+LICENSE
 Makefile.PL
 MANIFEST
 README
