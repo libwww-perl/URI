@@ -1,5 +1,8 @@
 package URI::sftp;
-require URI::ssh;
-@ISA=qw(URI::ssh);
+
+use strict;
+use warnings;
+
+use parent 'URI::ssh';
 
 1;
