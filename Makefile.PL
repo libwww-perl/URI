@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 require 5.008001;
+use utf8;
 use ExtUtils::MakeMaker;
 
 my $developer = -f '.gitignore';
@@ -30,6 +31,31 @@ my %WriteMakefileArgs = (
             x_IRC => 'irc://irc.perl.org/#lwp',
         },
         x_authority => 'cpan:GAAS',
+        x_contributors => [ # manually added, from git shortlog -e -s -n
+            'Gisle Aas <gisle@aas.no>',
+            'Karen Etheridge <ether@cpan.org>',
+            'Ville Skyttä <ville.skytta@iki.fi>',
+            'Mark Stosberg <mark@stosberg.com>',
+            'Michael G. Schwern <schwern@pobox.com>',
+            'Olaf Alders <olaf@wundersolutions.com>',
+            'Slaven Rezic <slaven@rezic.de>',
+            'Matt Lawrence <matthewlawrence@venda.com>',
+            'Peter Rabbitson <ribasushi@cpan.org>',
+            'Piotr Roszatycki <piotr.roszatycki@gmail.com>',
+            'Salvatore Bonaccorso <carnil@launchpad.net>',
+            'Tatsuhiko Miyagawa <miyagawa@bulknews.net>',
+            'Torsten Förtsch <torsten.foertsch@gmx.net>',
+            'Adam Herzog <adam@adamherzog.com>',
+            'gerard <gerard@tty.nl>',
+            'Alex Kapranoff <kapranoff@gmail.com>',
+            'Brendan Byrd <Perl@ResonatorSoft.org>',
+            'David Schmidt <davewood@gmx.at>',
+            'Jan Dubois <jand@activestate.com>',
+            'John Miller <john@rimmkaufman.com>',
+            'Kenichi Ishigaki <ishigaki@cpan.org>',
+            'Kent Fredric <kentfredric@gmail.com>',
+            'Masahiro Honma <hiratara@cpan.org>',
+        ],
     },
 
     META_ADD => {
