@@ -105,3 +105,8 @@ delete $WriteMakefileArgs{LICENSE}
     if $eumm_version < 6.31;
 
 WriteMakefile(%WriteMakefileArgs);
+
+# pod2text is in https://metacpan.org/release/podlators
+system("pod2text $WriteMakefileArgs{VERSION_FROM} > README")
+    if $developer
+        and (not -e 'README' or (stat('README'))[9] < (stat($WriteMakefileArgs{VERSION_FROM}))[9]);
