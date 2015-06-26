@@ -82,7 +82,6 @@ t/old-base.t
 t/old-file.t
 t/old-relbase.t
 t/path-segments.t
-t/sort-hash-query-form.t
 t/pop.t
 t/punycode.t
 t/query-param.t
@@ -98,6 +97,7 @@ t/roytest5.html
 t/rsync.t
 t/rtsp.t
 t/sip.t
+t/sort-hash-query-form.t
 t/split.t
 t/storable-test.pl
 t/storable.t
