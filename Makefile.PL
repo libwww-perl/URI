@@ -79,6 +79,9 @@ for (qw(configure build test runtime)) {
 
 $WriteMakefileArgs{MIN_PERL_VERSION} = delete $WriteMakefileArgs{PREREQ_PM}{perl} || 0;
 
+die 'attention developer: you need to do a sane meta merge here!'
+    if keys %{$WriteMakefileArgs{BUILD_REQUIRES}};
+
 $WriteMakefileArgs{BUILD_REQUIRES} = {
     %{$WriteMakefileArgs{BUILD_REQUIRES} || {}},
     %{delete $WriteMakefileArgs{TEST_REQUIRES}}
