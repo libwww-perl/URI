@@ -2,8 +2,10 @@ Revision history for URI
 
 
   Karen Etheridge:
-
     - add $VERSIONs for all modules that lack them
+
+  Olaf Alders:
+    - add missing documentation for URI::sftp
 
 
 2015-06-25   Karen Etheridge <ether@cpan.org>
