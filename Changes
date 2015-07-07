@@ -6,6 +6,7 @@ Revision history for URI
 
   Olaf Alders:
     - add missing documentation for URI::sftp
+    - Clarify use of query_param() method
 
 
 2015-06-25   Karen Etheridge <ether@cpan.org>
