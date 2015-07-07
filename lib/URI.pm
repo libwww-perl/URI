@@ -990,6 +990,12 @@ C<URI> objects belonging to the ssh scheme support the common,
 generic and server methods. In addition, they provide methods to
 access the userinfo sub-components: $uri->user and $uri->password.
 
+=item B<sftp>:
+
+C<URI> objects belonging to the sftp scheme support the common,
+generic and server methods. In addition, they provide methods to
+access the userinfo sub-components: $uri->user and $uri->password.
+
 =item B<urn>:
 
 The syntax of Uniform Resource Names is specified in RFC 2141.  C<URI>
