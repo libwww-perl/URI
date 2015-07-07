@@ -141,6 +141,17 @@ parameters with the given key.  If any of the values provided are
 array references, then the array is dereferenced to get the actual
 values.
 
+Please note that you can supply multiple values to this method, but you cannot
+supply multiple keys.
+
+Do this:
+
+    $uri->query_param( widget_id => 1, 5, 9 );
+
+Do NOT do this:
+
+    $uri->query_param( widget_id => 1, frobnicator_id => 99 );
+
 =item $u->query_param_append($key, $value,...)
 
 Adds new parameters with the given
