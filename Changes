@@ -5,6 +5,10 @@ Revision history for URI
 
     - add $VERSIONs for all modules that lack them
 
+  Olaf Alders
+
+    - Clarify use of query_param() method
+
 
 2015-06-25   Karen Etheridge <ether@cpan.org>
 
