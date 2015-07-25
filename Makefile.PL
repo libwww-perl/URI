@@ -1,7 +1,5 @@
 use strict;
 use warnings;
-require 5.008001;
-use utf8;
 use ExtUtils::MakeMaker;
 
 my $developer = -f '.gitignore';
@@ -34,7 +32,7 @@ my %WriteMakefileArgs = (
         x_contributors => [ # manually added, from git shortlog -e -s -n
             'Gisle Aas <gisle@aas.no>',
             'Karen Etheridge <ether@cpan.org>',
-            'Ville Skyttä <ville.skytta@iki.fi>',
+            "Ville Skytt\xe4 <ville.skytta\@iki.fi>",
             'Mark Stosberg <mark@stosberg.com>',
             'Michael G. Schwern <schwern@pobox.com>',
             'Olaf Alders <olaf@wundersolutions.com>',
@@ -44,7 +42,7 @@ my %WriteMakefileArgs = (
             'Piotr Roszatycki <piotr.roszatycki@gmail.com>',
             'Salvatore Bonaccorso <carnil@launchpad.net>',
             'Tatsuhiko Miyagawa <miyagawa@bulknews.net>',
-            'Torsten Förtsch <torsten.foertsch@gmx.net>',
+            "Torsten F\xf6rtsch <torsten.foertsch\@gmx.net>",
             'Adam Herzog <adam@adamherzog.com>',
             'gerard <gerard@tty.nl>',
             'Alex Kapranoff <kapranoff@gmail.com>',
@@ -72,7 +70,7 @@ my %WriteMakefileArgs = (
                     'Exporter'      => '5.57',
                     'utf8'          => '0',
                     'Scalar::Util'  => '0',
-                    'perl'          => '5.008001',
+                    'perl'          => '5.006',  # only 5.8+ is guaranteed; patches requested for 5.6 fixes
                 },
                 recommends => {
                     'Business::ISBN' => '0',

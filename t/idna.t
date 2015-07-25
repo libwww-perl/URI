@@ -1,6 +1,10 @@
 use strict;
 use warnings;
 
+BEGIN {
+    plan skip_all => 'these tests require perl 5.8' if $] < '5.008';
+}
+
 use utf8;
 use Test::More tests => 7;
 use URI::_idna;

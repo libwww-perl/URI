@@ -1,5 +1,9 @@
 Revision history for URI
 
+  Karen Etheridge:
+    - minimum required perl version has been *experimentally* lowered to 5.6,
+      so as to allow any compatibility issues to be found.
+
 2015-07-25   Karen Etheridge <ether@cpan.org>
 
   Release 1.69

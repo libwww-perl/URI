@@ -1,3 +1,7 @@
+BEGIN {
+    plan skip_all => 'these tests require perl 5.8' if $] < '5.008';
+}
+
 use strict;
 use warnings;
 
