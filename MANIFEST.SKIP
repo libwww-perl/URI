@@ -2,8 +2,8 @@
 \.tar\.gz$
 ^draft-.*\.txt$
 ^rfc\d+\.txt$
-^old/
-^tgz/
+\.old/
+\.tgz/
 ^MANIFEST.SKIP$
 ^\.ackrc$
 ^URI-\d
