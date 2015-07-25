@@ -530,6 +530,11 @@ SCHEME-SPECIFIC SUPPORT
         generic and server methods. In addition, they provide methods to
         access the userinfo sub-components: $uri->user and $uri->password.
 
+    sftp:
+        "URI" objects belonging to the sftp scheme support the common,
+        generic and server methods. In addition, they provide methods to
+        access the userinfo sub-components: $uri->user and $uri->password.
+
     urn:
         The syntax of Uniform Resource Names is specified in RFC 2141. "URI"
         objects belonging to the urn scheme provide the common methods, and
