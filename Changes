@@ -1,5 +1,8 @@
 Revision history for URI
 
+2015-07-25   Karen Etheridge <ether@cpan.org>
+
+  Release 1.69
 
   Karen Etheridge:
     - add $VERSIONs for all modules that lack them
