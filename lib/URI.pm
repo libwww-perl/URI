@@ -884,9 +884,14 @@ value from $uri->host.  When setting the host attribute to an IPv6 address you
 can use a raw address or one enclosed in brackets.  The address needs to be
 enclosed in brackets if you want to pass in a new port value as well.
 
+Sample: Returns I<www.xn--ri-sample-fra0f> for I<http://www.E<0xC3>E<0xBC>ri-sample/foo/bar.html>
+
 =item $uri->ihost
 
-Returns the host in Unicode form.  Any IDNA A-labels are turned into U-labels.
+Returns the host in Unicode form. Any IDNA A-labels (encoded unicode chars with
+I<xn--> prefix) are turned into U-labels (unicode chars).
+
+Sample: Returns I<www.E<0xC3>E<0xBC>ri-sample> for I<http://www.E<0xC3>E<0xBC>ri-sample/foo/bar.html>
 
 =item $uri->port
 
