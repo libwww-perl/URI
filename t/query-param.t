@@ -3,7 +3,6 @@ use warnings;
 
 use Test::More tests => 19;
 
-use URI;
 use URI::QueryParam;
 
 my $u = URI->new("http://www.sol.no?foo=4&bar=5&foo=5");
