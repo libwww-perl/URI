@@ -2,6 +2,7 @@ package URI::QueryParam;
 
 use strict;
 use warnings;
+use URI;
 
 our $VERSION = "1.69";
 
@@ -96,7 +97,6 @@ URI::QueryParam - Additional query methods for URIs
 
 =head1 SYNOPSIS
 
-  use URI;
   use URI::QueryParam;
 
   $u = URI->new("", "http");
