@@ -96,6 +96,7 @@ t/roytest4.html
 t/roytest5.html
 t/rsync.t
 t/rtsp.t
+t/scheme-exceptions.t
 t/sip.t
 t/sort-hash-query-form.t
 t/split.t
