@@ -129,9 +129,10 @@ sub implementor
     # check we actually have one for the scheme:
     unless (@{"${ic}::ISA"}) {
         # Try to load it
-        local $@;
+        my $_old_error = $@;
         eval "require $ic";
         die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
+        $@ = $_old_error;
         return undef unless @{"${ic}::ISA"};
     }
 

@@ -30,9 +30,10 @@ sub _init {
 	no strict 'refs';
 	unless (@{"${impclass}::ISA"}) {
 	    # Try to load it
-            local $@;
+            my $_old_error = $@;
 	    eval "require $impclass";
 	    die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
+            $@ = $old_error;
 	    $impclass = "URI::urn" unless @{"${impclass}::ISA"};
 	}
     }
