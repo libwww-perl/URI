@@ -1,5 +1,10 @@
 Revision history for URI
 
+  Kaitlyn Parkhurst:
+
+    - Localize $@ when attempting to load URI subclasses (PR#30)
+
+
 2015-07-25   Karen Etheridge <ether@cpan.org>
 
   Release 1.69
