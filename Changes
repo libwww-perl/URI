@@ -4,6 +4,11 @@ Revision history for URI
 
     - Localize $@ when attempting to load URI subclasses (PR#30)
 
+  Karen Etheridge:
+
+    - speed up construction time by not attempting to load the same
+      non-existent URI subclass twice
+
 
 2015-07-25   Karen Etheridge <ether@cpan.org>
 

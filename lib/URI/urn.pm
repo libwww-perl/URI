@@ -10,6 +10,7 @@ use parent 'URI';
 use Carp qw(carp);
 
 my %implementor;
+my %require_attempted;
 
 sub _init {
     my $class = shift;
@@ -29,11 +30,13 @@ sub _init {
 	$impclass = "URI::urn::$id";
 	no strict 'refs';
 	unless (@{"${impclass}::ISA"}) {
-	    # Try to load it
-            my $_old_error = $@;
-	    eval "require $impclass";
-	    die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
-            $@ = $old_error;
+            if (not exists $require_attempted{$impclass}) {
+                # Try to load it
+                my $_old_error = $@;
+                eval "require $impclass";
+                die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
+                $@ = $_old_error;
+            }
 	    $impclass = "URI::urn" unless @{"${impclass}::ISA"};
 	}
     }

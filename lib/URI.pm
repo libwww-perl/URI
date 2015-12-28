@@ -94,6 +94,7 @@ sub _uric_escape
     return $str;
 }
 
+my %require_attempted;
 
 sub implementor
 {
@@ -128,11 +129,13 @@ sub implementor
     no strict 'refs';
     # check we actually have one for the scheme:
     unless (@{"${ic}::ISA"}) {
-        # Try to load it
-        my $_old_error = $@;
-        eval "require $ic";
-        die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
-        $@ = $_old_error;
+        if (not exists $require_attempted{$ic}) {
+            # Try to load it
+            my $_old_error = $@;
+            eval "require $ic";
+            die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
+            $@ = $_old_error;
+        }
         return undef unless @{"${ic}::ISA"};
     }
 
