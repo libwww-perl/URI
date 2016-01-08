@@ -9,7 +9,7 @@ use warnings;
 use URI::_punycode qw(encode_punycode decode_punycode);
 use Carp qw(croak);
 
-our $VERSION = '1.70_001';
+our $VERSION = '1.71';
 $VERSION = eval $VERSION;
 
 BEGIN {
