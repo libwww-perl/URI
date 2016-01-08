@@ -167,6 +167,9 @@ Revision history for URI
 
   Release 1.57
 
+  Perl 5.6 is no longer supported, use backpan to obtain obsolete versions
+  of uri.
+
   Mark Stosberg (8):
       typo fix: s/do deal/to deal/
       best practice: s/foreach /for /
