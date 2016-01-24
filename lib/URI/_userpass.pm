@@ -39,8 +39,8 @@ sub password
 	my $user = defined($info) ? $info : "";
 	$user =~ s/:.*//;
 
-	if (!defined($new) && !length($user)) {
-	    $self->userinfo(undef);
+	if (!defined($new)) {
+	    $self->userinfo($user || undef);
 	} else {
 	    $new = "" unless defined($new);
 	    $new =~ s/%/%25/g;
