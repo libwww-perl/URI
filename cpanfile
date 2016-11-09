@@ -1,0 +1,41 @@
+requires "Business::ISBN" => "0";
+requires "Carp" => "0";
+requires "Cwd" => "0";
+requires "Data::Dumper" => "0";
+requires "Encode" => "0";
+requires "Exporter" => "5.57";
+requires "MIME::Base64" => "2";
+requires "Net::Domain" => "0";
+requires "Scalar::Util" => "0";
+requires "constant" => "0";
+requires "integer" => "0";
+requires "overload" => "0";
+requires "parent" => "0";
+requires "perl" => "5.008001";
+requires "strict" => "0";
+requires "warnings" => "0";
+
+on 'test' => sub {
+  requires "File::Spec::Functions" => "0";
+  requires "File::Temp" => "0";
+  requires "Storable" => "0";
+  requires "Test" => "0";
+  requires "Test::More" => "0";
+  requires "utf8" => "0";
+};
+
+on 'test' => sub {
+  recommends "Business::ISBN" => "0";
+};
+
+on 'configure' => sub {
+  requires "ExtUtils::MakeMaker" => "0";
+};
+
+on 'configure' => sub {
+  suggests "JSON::PP" => "2.27300";
+};
+
+on 'develop' => sub {
+  requires "Test::CPAN::Changes" => "0.19";
+};

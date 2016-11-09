@@ -1,0 +1,115 @@
+{
+   "abstract" : "Uniform Resource Identifiers (absolute and relative)",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.007, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "URI",
+   "no_index" : {
+      "directory" : [
+         "examples",
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         },
+         "suggests" : {
+            "JSON::PP" : "2.27300"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Changes" : "0.19"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Business::ISBN" : "0",
+            "Carp" : "0",
+            "Cwd" : "0",
+            "Data::Dumper" : "0",
+            "Encode" : "0",
+            "Exporter" : "5.57",
+            "MIME::Base64" : "2",
+            "Net::Domain" : "0",
+            "Scalar::Util" : "0",
+            "constant" : "0",
+            "integer" : "0",
+            "overload" : "0",
+            "parent" : "0",
+            "perl" : "5.008001",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      },
+      "test" : {
+         "recommends" : {
+            "Business::ISBN" : "0"
+         },
+         "requires" : {
+            "File::Spec::Functions" : "0",
+            "File::Temp" : "0",
+            "Storable" : "0",
+            "Test" : "0",
+            "Test::More" : "0",
+            "utf8" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/libwww-perl/URI/issues"
+      },
+      "homepage" : "https://github.com/libwww-perl/URI",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/libwww-perl/URI.git",
+         "web" : "https://github.com/libwww-perl/URI"
+      },
+      "x_IRC" : "irc://irc.perl.org/#lwp",
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "6.06",
+   "x_contributors" : [
+      "Adam Herzog <adam@adamherzog.com>",
+      "Alex Kapranoff <kapranoff@gmail.com>",
+      "Brendan Byrd <Perl@ResonatorSoft.org>",
+      "David Schmidt <davewood@gmx.at>",
+      "gerard <gerard@tty.nl>",
+      "Gisle Aas <gisle@aas.no>",
+      "Jan Dubois <jand@activestate.com>",
+      "John Karr <brainbuz@brainbuz.org>",
+      "John Miller <john@rimmkaufman.com>",
+      "Kaitlyn Parkhurst <symkat@symkat.com>",
+      "Karen Etheridge <ether@cpan.org>",
+      "Kenichi Ishigaki <ishigaki@cpan.org>",
+      "Kent Fredric <kentfredric@gmail.com>",
+      "Mark Stosberg <mark@stosberg.com>",
+      "Masahiro Honma <hiratara@cpan.org>",
+      "Matt Lawrence <matthewlawrence@venda.com>",
+      "Michael G. Schwern <schwern@pobox.com>",
+      "Olaf Alders <olaf@wundersolutions.com>",
+      "Peter Rabbitson <ribasushi@cpan.org>",
+      "Piotr Roszatycki <piotr.roszatycki@gmail.com>",
+      "Salvatore Bonaccorso <carnil@launchpad.net>",
+      "Slaven Rezic <slaven@rezic.de>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
+      "Torsten F\u00f6rtsch <torsten.foertsch@gmx.net>",
+      "Ville Skytt\u00e4 <ville.skytta@iki.fi>"
+   ],
+   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0218"
+}
+
