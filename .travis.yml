@@ -13,3 +13,6 @@ before_install:
   - source ~/travis-perl-helpers/init
   - build-perl
   - perl -V
+install:
+  # since AUTHOR_TESTING is set during tests, we need this
+  - cpanm Test::DistManifest
