@@ -82,6 +82,7 @@ my %WriteMakefileArgs = (
                 requires => {
                     'Test::More' => '0.96',
                     'File::Temp' => '0',
+                    'Test::Needs' => '0',
                 },
             },
         },

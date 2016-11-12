@@ -1,15 +1,6 @@
 use strict;
 use warnings;
 
-eval {
-    require MIME::Base64;
-};
-if ($@) {
-    print "1..0\n";
-    print $@;
-    exit;
-}
-
 print "1..22\n";
 
 use URI;

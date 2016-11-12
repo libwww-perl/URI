@@ -1,14 +1,7 @@
 use strict;
 use warnings;
 
-eval {
-    require Business::ISBN;
-};
-if ($@) {
-    print "1..0 # Skipped: Needs the Business::ISBN module installed\n\n";
-    print $@;
-    exit;
-}
+use Test::Needs 'Business::ISBN';
 
 print "1..13\n";
 
