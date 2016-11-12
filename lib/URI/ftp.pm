@@ -3,7 +3,7 @@ package URI::ftp;
 use strict;
 use warnings;
 
-our $VERSION = '1.71';
+our $VERSION = '1.72';
 $VERSION = eval $VERSION;
 
 use parent qw(URI::_server URI::_userpass);

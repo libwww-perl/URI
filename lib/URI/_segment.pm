@@ -11,7 +11,7 @@ use URI::Escape qw(uri_unescape);
 use overload '""' => sub { $_[0]->[0] },
              fallback => 1;
 
-our $VERSION = '1.71';
+our $VERSION = '1.72';
 $VERSION = eval $VERSION;
 
 sub new
