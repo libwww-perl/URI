@@ -29,8 +29,10 @@ on 'runtime' => sub {
 on 'test' => sub {
     requires "File::Spec::Functions" => "0";
     requires "File::Temp" => "0";
+    requires "MIME::Base64" => "2";
     requires "Storable" => "0";
     requires "Test" => "0";
     requires "Test::More" => "0";
+    requires "Test::Needs" => '0';
     requires "utf8" => "0";
 };

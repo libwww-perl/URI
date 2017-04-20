@@ -36,7 +36,6 @@
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
-            "Test::EOL" : "0",
             "Test::MinimumVersion" : "0",
             "Test::Mojibake" : "0",
             "Test::More" : "0.94",
@@ -76,9 +75,11 @@
             "File::Spec" : "0",
             "File::Spec::Functions" : "0",
             "File::Temp" : "0",
+            "MIME::Base64" : "2",
             "Storable" : "0",
             "Test" : "0",
             "Test::More" : "0",
+            "Test::Needs" : "0",
             "utf8" : "0"
          }
       }
@@ -601,22 +602,6 @@
             "version" : "2.001000"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::EOL",
-            "config" : {
-               "Dist::Zilla::Plugin::Test::EOL" : {
-                  "filename" : "xt/author/eol.t",
-                  "finder" : [
-                     ":ExecFiles",
-                     ":InstallModules",
-                     ":TestFiles"
-                  ],
-                  "trailing_whitespace" : 1
-               }
-            },
-            "name" : "Test::EOL",
-            "version" : "0.19"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::MetaTests",
             "name" : "MetaTests",
             "version" : "6.009"
@@ -763,6 +748,7 @@
       "Adam Herzog <adam@adamherzog.com>",
       "Alex Kapranoff <kapranoff@gmail.com>",
       "Brendan Byrd <Perl@ResonatorSoft.org>",
+      "Chase Whitener <capoeirab@cpan.org>",
       "David Schmidt <davewood@gmx.at>",
       "gerard <gerard@tty.nl>",
       "Gisle Aas <gisle@aas.no>",
