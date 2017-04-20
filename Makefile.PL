@@ -43,7 +43,7 @@ my %WriteMakefileArgs = (
     "MIME::Base64" => 2,
     "Storable" => 0,
     "Test" => 0,
-    "Test::More" => 0,
+    "Test::More" => "0.96",
     "Test::Needs" => 0,
     "utf8" => 0
   },
@@ -68,7 +68,7 @@ my %FallbackPrereqs = (
   "Scalar::Util" => 0,
   "Storable" => 0,
   "Test" => 0,
-  "Test::More" => 0,
+  "Test::More" => "0.96",
   "Test::Needs" => 0,
   "constant" => 0,
   "integer" => 0,

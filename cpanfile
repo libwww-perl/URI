@@ -32,7 +32,7 @@ on 'test' => sub {
     requires "MIME::Base64" => "2";
     requires "Storable" => "0";
     requires "Test" => "0";
-    requires "Test::More" => "0";
+    requires "Test::More" => "0.96";
     requires "Test::Needs" => '0';
     requires "utf8" => "0";
 };
