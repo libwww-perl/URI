@@ -519,14 +519,14 @@
             "version" : "0.08"
          },
          {
-            "class" : "Dist::Zilla::Plugin::MakeMaker::Awesome",
+            "class" : "Dist::Zilla::Plugin::MakeMaker",
             "config" : {
                "Dist::Zilla::Role::TestRunner" : {
                   "default_jobs" : 1
                }
             },
-            "name" : "MakeMaker::Awesome",
-            "version" : "0.38"
+            "name" : "MakeMaker",
+            "version" : "6.009"
          },
          {
             "class" : "Dist::Zilla::Plugin::TestRelease",
