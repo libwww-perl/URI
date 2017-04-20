@@ -2,12 +2,6 @@
 
 URI - Uniform Resource Identifiers (absolute and relative)
 
-[![Build Status](https://travis-ci.org/libwww-perl/URI.png?branch=master)](https://travis-ci.org/libwww-perl/URI)
-
-# VERSION
-
-version 6.06
-
 # SYNOPSIS
 
     $u1 = URI->new("http://www.perl.com");
@@ -728,6 +722,15 @@ Berners-Lee, Fielding, Masinter, August 1998.
 
 [http://www.w3.org/Addressing/](http://www.w3.org/Addressing/)
 
+# COPYRIGHT
+
+Copyright 1995-2009 Gisle Aas.
+
+Copyright 1995 Martijn Koster.
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
 # AUTHORS / ACKNOWLEDGMENTS
 
 This module is based on the `URI::URL` module, which in turn was
@@ -741,14 +744,3 @@ Martijn Koster with input from other people on the libwww-perl mailing
 list.
 
 `URI` and related subclasses was developed by Gisle Aas.
-
-# AUTHOR
-
-Gisle Aas <gisle@activestate.com>
-
-# COPYRIGHT AND LICENSE
-
-This software is copyright (c) 1995-2016 by Gisle Aas, Martijn Koster.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
