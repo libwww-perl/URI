@@ -78,7 +78,7 @@
             "MIME::Base64" : "2",
             "Storable" : "0",
             "Test" : "0",
-            "Test::More" : "0",
+            "Test::More" : "0.96",
             "Test::Needs" : "0",
             "utf8" : "0"
          }
