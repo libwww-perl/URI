@@ -290,8 +290,7 @@
                      "draft-duerst-iri-bis.txt",
                      "rfc2396.txt",
                      "rfc3986.txt",
-                     "rfc3987.txt",
-                     "uri-test"
+                     "rfc3987.txt"
                   ],
                   "exclude_match" : [],
                   "follow_symlinks" : 0,
