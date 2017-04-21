@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Convert the dist to Dist::Zilla for authoring.
+    - Remove recommendation of Business::ISBN as urn/isbn.pm is deprecated
 
 2016-01-08   Karen Etheridge <ether@cpan.org>
 
@@ -527,7 +529,7 @@ Revision history for URI
    Relative URIs that start with the query string directly (i.e. "?q")
    are now absolutized as specified in rfc2396bis.  See:
    http://www.apache.org/~fielding/uri/rev-2002/issues.html#003-relative-query
-   
+
    Added URI::Split module.  It's a lightweight module that can be
    used to parse and compose URI string to/from its component parts.
 

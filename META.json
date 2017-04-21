@@ -286,7 +286,12 @@
                      "LICENSE",
                      "META.json",
                      "Makefile.PL",
-                     "README.md"
+                     "README.md",
+                     "draft-duerst-iri-bis.txt",
+                     "rfc2396.txt",
+                     "rfc3986.txt",
+                     "rfc3987.txt",
+                     "uri-test"
                   ],
                   "exclude_match" : [],
                   "follow_symlinks" : 0,
