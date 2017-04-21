@@ -87,175 +87,175 @@
    "provides" : {
       "URI" : {
          "file" : "lib/URI.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::Escape" : {
          "file" : "lib/URI/Escape.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::Heuristic" : {
          "file" : "lib/URI/Heuristic.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::IRI" : {
          "file" : "lib/URI/IRI.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::QueryParam" : {
          "file" : "lib/URI/QueryParam.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::Split" : {
          "file" : "lib/URI/Split.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::URL" : {
          "file" : "lib/URI/URL.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::WithBase" : {
          "file" : "lib/URI/WithBase.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::data" : {
          "file" : "lib/URI/data.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file" : {
          "file" : "lib/URI/file.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::Base" : {
          "file" : "lib/URI/file/Base.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::FAT" : {
          "file" : "lib/URI/file/FAT.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::Mac" : {
          "file" : "lib/URI/file/Mac.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::OS2" : {
          "file" : "lib/URI/file/OS2.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::QNX" : {
          "file" : "lib/URI/file/QNX.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::Unix" : {
          "file" : "lib/URI/file/Unix.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::file::Win32" : {
          "file" : "lib/URI/file/Win32.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::ftp" : {
          "file" : "lib/URI/ftp.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::gopher" : {
          "file" : "lib/URI/gopher.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::http" : {
          "file" : "lib/URI/http.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::https" : {
          "file" : "lib/URI/https.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::ldap" : {
          "file" : "lib/URI/ldap.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::ldapi" : {
          "file" : "lib/URI/ldapi.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::ldaps" : {
          "file" : "lib/URI/ldaps.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::mailto" : {
          "file" : "lib/URI/mailto.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::mms" : {
          "file" : "lib/URI/mms.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::news" : {
          "file" : "lib/URI/news.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::nntp" : {
          "file" : "lib/URI/nntp.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::pop" : {
          "file" : "lib/URI/pop.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::rlogin" : {
          "file" : "lib/URI/rlogin.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::rsync" : {
          "file" : "lib/URI/rsync.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::rtsp" : {
          "file" : "lib/URI/rtsp.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::rtspu" : {
          "file" : "lib/URI/rtspu.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::sftp" : {
          "file" : "lib/URI/sftp.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::sip" : {
          "file" : "lib/URI/sip.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::sips" : {
          "file" : "lib/URI/sips.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::snews" : {
          "file" : "lib/URI/snews.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::ssh" : {
          "file" : "lib/URI/ssh.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::telnet" : {
          "file" : "lib/URI/telnet.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::tn3270" : {
          "file" : "lib/URI/tn3270.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::urn" : {
          "file" : "lib/URI/urn.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::urn::isbn" : {
          "file" : "lib/URI/urn/isbn.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       },
       "URI::urn::oid" : {
          "file" : "lib/URI/urn/oid.pm",
-         "version" : "6.06"
+         "version" : "1.72"
       }
    },
    "release_status" : "stable",
@@ -272,7 +272,7 @@
       "x_IRC" : "irc://irc.perl.org/#lwp",
       "x_MailingList" : "mailto:libwww@perl.org"
    },
-   "version" : "6.06",
+   "version" : "1.72",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.024001"
@@ -366,7 +366,7 @@
                   "branch" : null,
                   "changelog" : "Changes",
                   "signed" : 0,
-                  "tag" : "v6.06",
+                  "tag" : "v1.72",
                   "tag_format" : "v%v",
                   "tag_message" : "v%v"
                },
