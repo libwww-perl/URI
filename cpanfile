@@ -31,7 +31,6 @@ on 'runtime' => sub {
 on 'test' => sub {
     requires "File::Spec::Functions" => "0";
     requires "File::Temp" => "0";
-    requires "MIME::Base64" => "2";
     requires "Test" => "0";
     requires "Test::More" => "0.96";
     requires "Test::Needs" => '0';
