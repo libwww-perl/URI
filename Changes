@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+
+1.72      2017-07-25
     - Convert the dist to Dist::Zilla for authoring.
     - Remove recommendation of Business::ISBN as urn/isbn.pm is deprecated
     - Use Test::Needs instead of raw eval in urn-isbn.t
