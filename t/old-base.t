@@ -850,7 +850,7 @@ EOM
 	);
 
     note "  Relative    +  Base  =>  Expected Absolute URL";
-    note "================================================\n";
+    note "------------------------------------------------\n";
     for my $test (@absolute_tests) {
 	my($rel, $abs) = @$test;
 	my $abs_url = new URI::URL $abs;
