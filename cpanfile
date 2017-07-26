@@ -6,6 +6,7 @@ on 'configure' => sub {
 on 'develop' => sub {
     requires "Test::CPAN::Changes" => "0.19";
     recommends 'Business::ISBN' => 0;
+    recommends "Storable" => "0";
 };
 
 on 'runtime' => sub {
@@ -31,7 +32,6 @@ on 'test' => sub {
     requires "File::Spec::Functions" => "0";
     requires "File::Temp" => "0";
     requires "MIME::Base64" => "2";
-    requires "Storable" => "0";
     requires "Test" => "0";
     requires "Test::More" => "0.96";
     requires "Test::Needs" => '0';
