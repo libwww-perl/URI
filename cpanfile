@@ -5,6 +5,7 @@ on 'configure' => sub {
 
 on 'develop' => sub {
     requires "Test::CPAN::Changes" => "0.19";
+    recommends 'Business::ISBN' => 0;
 };
 
 on 'runtime' => sub {
