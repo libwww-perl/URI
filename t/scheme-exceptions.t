@@ -5,7 +5,7 @@ use Test::More;
 use URI;
 
 plan skip_all => 'this test assumes that URI::javascript does not exist'
-    if eval 'require URI::javascript';
+    if eval { +require URI::javascript };
 plan tests => 4;
 
 for (0..1) {
