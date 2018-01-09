@@ -2,6 +2,7 @@ Revision history for URI
 
 {{$NEXT}}
     - Update documentation for URI::_punycode (GH Issue #45)
+    - Prefix private methods with _ in URI::_punycode (GH Issue #47)
 
 1.72      2017-07-25
     - Convert the dist to Dist::Zilla for authoring.
