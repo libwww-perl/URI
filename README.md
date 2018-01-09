@@ -4,6 +4,8 @@ URI - Uniform Resource Identifiers (absolute and relative)
 
 # SYNOPSIS
 
+    use URI;
+
     $u1 = URI->new("http://www.perl.com");
     $u2 = URI->new("foo", "http");
     $u3 = $u2->abs($u1);

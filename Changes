@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+1.73      2018-01-09 06:42:51Z
     - Update documentation for URI::_punycode (GH Issue #45)
 
 1.72      2017-07-25
