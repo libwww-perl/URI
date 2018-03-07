@@ -140,6 +140,14 @@ sub implementor
         return undef unless @{"${ic}::ISA"};
     }
 
+    # There's at least one case on CPAN where we could end
+    # up using a module that doesn't inherit from URI. Let's
+    # check the implementation class is a subclass first.
+    if (! $ic->isa('URI')) {
+	require URI::_generic;
+	return "URI::_generic";
+    }
+
     $ic->_init_implementor($scheme);
     $implements{$scheme} = $ic;
     $ic;
