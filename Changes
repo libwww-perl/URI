@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+1.74      2018-04-22 12:30:44Z
     - avoid 'uninitialized' warning in URI::File when host has no domain name
       set (PR#53, thanks Shoichi Kaji!)
 
