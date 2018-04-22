@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - avoid 'uninitialized' warning in URI::File when host has no domain name
+      set (PR#53, thanks Shoichi Kaji!)
 
 1.73      2018-01-09 06:42:51Z
     - Update documentation for URI::_punycode (GH Issue #45)
