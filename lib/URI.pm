@@ -181,6 +181,8 @@ sub implementor
     # check we actually have one for the scheme:
     unless (@{"${ic}::ISA"}) {
         if (not exists $require_attempted{$ic}) {
+            $require_attempted{$ic} = 1;
+
             # Try to load it
             my $_old_error = $@;
             eval "require $ic";
