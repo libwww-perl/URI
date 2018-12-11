@@ -302,21 +302,22 @@ sub canonical
     # Make sure scheme is lowercased, that we don't escape unreserved chars,
     # and that we use upcase escape sequences.
 
-    my $self = shift;
-    my $scheme = $self->_scheme || "";
-    my $uc_scheme = $scheme =~ /[A-Z]/;
-    my $esc = $$self =~ /%[a-fA-F0-9]{2}/;
-    return $self unless $uc_scheme || $esc;
+    # We now clone unconditionally; see
+    # https://github.com/libwww-perl/URI/issues/57
 
-    my $other = $self->clone;
-    if ($uc_scheme) {
-	$other->_scheme(lc $scheme);
-    }
+    my $other = $_[0]->clone;
+    my $scheme = $other->_scheme || "";
+    my $uc_scheme = $scheme =~ /[A-Z]/;
+    my $esc = $$other =~ /%[a-fA-F0-9]{2}/;
+    return $other unless $uc_scheme || $esc;
+
+    $other->_scheme(lc $scheme) if $uc_scheme;
+
     if ($esc) {
-	$$other =~ s{%([0-9a-fA-F]{2})}
-	            { my $a = chr(hex($1));
+        $$other =~ s{%([0-9a-fA-F]{2})}
+                    { my $a = chr(hex($1));
                       $a =~ /^[$unreserved]\z/o ? $a : "%\U$1"
-                    }ge;
+                  }ge;
     }
     return $other;
 }
@@ -571,8 +572,12 @@ removing the explicit port specification if it matches the default port,
 uppercasing all escape sequences, and unescaping octets that can be
 better represented as plain characters.
 
-For efficiency reasons, if the $uri is already in normalized form,
-then a reference to it is returned instead of a copy.
+Before version 1.75, this method would return the original unchanged
+C<$uri> object if it detected nothing to change. To make the return
+value consistent (and since the efficiency gains from this behaviour
+were marginal), this method now unconditionally returns a clone. This
+means idioms like C<< $uri->clone->canonical >> are no longer
+necessary.
 
 =item $uri->eq( $other_uri )
 
