@@ -1,9 +1,10 @@
 use strict;
 use warnings;
 
-print "1..48\n";
+print "1..49\n";
 
 use URI;
+use Scalar::Util qw(refaddr);
 
 my $foo = URI->new("Foo:opaque#frag");
 
@@ -217,3 +218,8 @@ $old = $foo->query("q");
 print "not " unless !defined($old) && $foo eq "?q";
 print "ok 48\n";
 
+# canonical must always be a clone
+my $c1 = $foo->canonical; # canonicalize first
+my $c2 = $c1->canonical;  # canonicalize again
+print 'not ' if refaddr($c1) == refaddr($c2) or $$c1 ne $$c2;
+print "ok 49\n";
