@@ -15,6 +15,7 @@ sub _uric_escape {
 	my($scheme, $host, $rest) = ($1, $2, $3);
 	my $ui = $host =~ s/(.*@)// ? $1 : "";
 	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+	warn 'Bad port specification' if $host =~ m/:/;
 	if (_host_escape($host)) {
 	    $str = "$scheme//$ui$host$port$rest";
 	}
