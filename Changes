@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+1.75      2019-01-08 19:45:38Z
     - $uri->canonical unconditionally returns a clone (GH#58) (Dorian Taylor)
 
 1.74      2018-04-22 12:30:44Z
