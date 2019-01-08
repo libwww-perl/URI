@@ -3,7 +3,7 @@ package URI::rtsp;
 use strict;
 use warnings;
 
-our $VERSION = '1.75';
+our $VERSION = '1.76';
 
 use parent 'URI::http';
 
