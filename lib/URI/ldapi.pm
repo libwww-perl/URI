@@ -3,7 +3,7 @@ package URI::ldapi;
 use strict;
 use warnings;
 
-our $VERSION = '1.76';
+our $VERSION = '1.77';
 
 use parent qw(URI::_ldap URI::_generic);
 
