@@ -205,12 +205,8 @@ The common methods available for all URI are:
     uppercasing all escape sequences, and unescaping octets that can be
     better represented as plain characters.
 
-    Before version 1.75, this method would return the original unchanged
-    `$uri` object if it detected nothing to change. To make the return
-    value consistent (and since the efficiency gains from this behaviour
-    were marginal), this method now unconditionally returns a clone. This
-    means idioms like `$uri->clone->canonical` are no longer
-    necessary.
+    For efficiency reasons, if the $uri is already in normalized form,
+    then a reference to it is returned instead of a copy.
 
 - $uri->eq( $other\_uri )
 - URI::eq( $first\_uri, $other\_uri )
