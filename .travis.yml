@@ -37,3 +37,11 @@ before_script:
   - coverage-setup
 after_success:
   - coverage-report
+script:
+  - perl Makefile.PL
+  - make
+  - prove -b -r -s -j$(test-jobs) $(test-files)
+  - make install
+  - unset AUTHOR_TESTING; unset AUTOMATED_TESTING; unset RELEASE_TESTING
+  - cpanm --test-only HTTP::Message || ( cat ~/.cpanm/build.log; false )
+  - cpanm --test-only LWP || ( cat ~/.cpanm/build.log; false )
