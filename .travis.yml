@@ -11,6 +11,11 @@ perl:
   - "5.12"
   - "5.10"
   - "blead"             # builds perl from git
+env:
+  global:
+    - AUTHOR_TESTING=1
+    - AUTOMATED_TESTING=1
+    - RELEASE_TESTING=1
 matrix:
   include:
     - perl: 5.28
