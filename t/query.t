@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 23;
+use Test::More tests => 26;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -11,7 +11,7 @@ $u->query_form(a => 3, b => 4);
 is $u, "?a=3&b=4";
 
 $u->query_form(a => undef);
-is $u, "?a=";
+is $u, "?a";
 
 $u->query_form("a[=&+#] " => " [=&+#]");
 is $u, "?a%5B%3D%26%2B%23%5D+=+%5B%3D%26%2B%23%5D";
@@ -79,3 +79,11 @@ $u->query_form([]);
     $u->query_form(a => 1, b => 2);
 }
 is $u, "?a=1;b=2";
+
+$u->query('a&b=2');
+@q = $u->query_form;
+is join(":", @q), "a::b:2";
+ok !defined($q[1]);
+
+$u->query_form(@q);
+is $u,'?a&b=2';
