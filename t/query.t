@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 23;
+use Test::More tests => 24;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -79,3 +79,7 @@ $u->query_form([]);
     $u->query_form(a => 1, b => 2);
 }
 is $u, "?a=1;b=2";
+
+$u->query_elements([]);
+$u->query_elements([qw(a b)],{c=>[1,2]},[qw(x y z)],{p=>3});
+is $u, "?a+b&c=1&c=2&x+y+z&p=3";

@@ -338,9 +338,13 @@ sub parts_test {
     $url->equery('&=&=b&a=&a&a=b=c&&a=b');
     @a = $url->query_form;
     #note join(":", @a), "\n";
-    is(scalar(@a), 16, 'length');
+    is(scalar(@a), 10, 'length');
     ok(
-       $a[4]  eq ""  && $a[5]  eq "b" && $a[10] eq "a" && $a[11] eq "b=c",
+        $a[0] eq "" && $a[1] eq "" &&
+            $a[2] eq "" && $a[3]  eq "b" &&
+            $a[4] eq "a" && $a[5]  eq "" &&
+            $a[6] eq "a" && $a[7] eq "b=c" &&
+            $a[8] eq "a" && $a[9]  eq "b",
        'sequence',
     );
 
