@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 23;
+use Test::More tests => 25;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -79,3 +79,10 @@ $u->query_form([]);
     $u->query_form(a => 1, b => 2);
 }
 is $u, "?a=1;b=2";
+
+$u->query('a&b=2');
+@q = $u->query_form;
+like join(":", @q), qr/^a:ARRAY\(.+\):b:2$/;
+
+$u->query_form(@q);
+is $u,'?a&b=2';
