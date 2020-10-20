@@ -1,7 +1,9 @@
 Revision history for URI
 
 {{$NEXT}}
-    - Add a simple test case for an ipv6 host
+    - Bump all versions to 5.05 in order to remove various version mismatches.
+      (GH #77) (Olaf Alders)
+    - Add a simple test case for an ipv6 host (GH#66) (Olaf Alders)
 
 1.76      2019-01-09 16:59:54Z
     - Revert changes introduced in 1.75
