@@ -3,7 +3,7 @@ package URI::QueryParam;
 use strict;
 use warnings;
 
-our $VERSION = '1.77';
+our $VERSION = '5.05';
 
 sub URI::_query::query_param {
     my $self = shift;
