@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.05      2020-10-21 13:00:44Z
     - Bump all versions to 5.05 in order to remove various version mismatches.
       (GH #77) (Olaf Alders)
