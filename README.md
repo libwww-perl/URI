@@ -86,7 +86,7 @@ The following methods construct new `URI` objects:
     methods available).
 
     The set of characters available for building URI references is
-    restricted (see [URI::Escape](https://metacpan.org/pod/URI::Escape)).  Characters outside this set are
+    restricted (see [URI::Escape](https://metacpan.org/pod/URI%3A%3AEscape)).  Characters outside this set are
     automatically escaped by the URI constructor.
 
 - $uri = URI->new\_abs( $str, $base\_uri )
@@ -99,18 +99,18 @@ The following methods construct new `URI` objects:
 - $uri = URI::file->new( $filename )
 - $uri = URI::file->new( $filename, $os )
 
-    Constructs a new _file_ URI from a file name.  See [URI::file](https://metacpan.org/pod/URI::file).
+    Constructs a new _file_ URI from a file name.  See [URI::file](https://metacpan.org/pod/URI%3A%3Afile).
 
 - $uri = URI::file->new\_abs( $filename )
 - $uri = URI::file->new\_abs( $filename, $os )
 
     Constructs a new absolute _file_ URI from a file name.  See
-    [URI::file](https://metacpan.org/pod/URI::file).
+    [URI::file](https://metacpan.org/pod/URI%3A%3Afile).
 
 - $uri = URI::file->cwd
 
     Returns the current working directory as a _file_ URI.  See
-    [URI::file](https://metacpan.org/pod/URI::file).
+    [URI::file](https://metacpan.org/pod/URI%3A%3Afile).
 
 - $uri->clone
 
@@ -327,7 +327,7 @@ methods:
     ";" for the same global effect.
 
     The `URI::QueryParam` module can be loaded to add further methods to
-    manipulate the form of a URI.  See [URI::QueryParam](https://metacpan.org/pod/URI::QueryParam) for details.
+    manipulate the form of a URI.  See [URI::QueryParam](https://metacpan.org/pod/URI%3A%3AQueryParam) for details.
 
 - $uri->query\_keywords
 - $uri->query\_keywords( $keywords, ... )
@@ -419,7 +419,7 @@ generic methods.
 
     `URI` objects belonging to the data scheme support the common methods
     and two new methods to access their scheme-specific components:
-    $uri->media\_type and $uri->data.  See [URI::data](https://metacpan.org/pod/URI::data) for details.
+    $uri->media\_type and $uri->data.  See [URI::data](https://metacpan.org/pod/URI%3A%3Adata) for details.
 
 - **file**:
 
@@ -429,7 +429,7 @@ generic methods.
 
     `URI` objects belonging to the file scheme support the common and
     generic methods.  In addition, they provide two methods for mapping file URIs
-    back to local file names; $uri->file and $uri->dir.  See [URI::file](https://metacpan.org/pod/URI::file)
+    back to local file names; $uri->file and $uri->dir.  See [URI::file](https://metacpan.org/pod/URI%3A%3Afile)
     for details.
 
 - **ftp**:
@@ -478,7 +478,7 @@ generic methods.
     `URI` objects belonging to the ldap scheme support the common,
     generic and server methods as well as ldap-specific methods: $uri->dn,
     $uri->attributes, $uri->scope, $uri->filter, $uri->extensions.  See
-    [URI::ldap](https://metacpan.org/pod/URI::ldap) for details.
+    [URI::ldap](https://metacpan.org/pod/URI%3A%3Aldap) for details.
 
 - **ldapi**:
 
@@ -712,8 +712,8 @@ readable alternative.
 
 # SEE ALSO
 
-[URI::file](https://metacpan.org/pod/URI::file), [URI::WithBase](https://metacpan.org/pod/URI::WithBase), [URI::QueryParam](https://metacpan.org/pod/URI::QueryParam), [URI::Escape](https://metacpan.org/pod/URI::Escape),
-[URI::Split](https://metacpan.org/pod/URI::Split), [URI::Heuristic](https://metacpan.org/pod/URI::Heuristic)
+[URI::file](https://metacpan.org/pod/URI%3A%3Afile), [URI::WithBase](https://metacpan.org/pod/URI%3A%3AWithBase), [URI::QueryParam](https://metacpan.org/pod/URI%3A%3AQueryParam), [URI::Escape](https://metacpan.org/pod/URI%3A%3AEscape),
+[URI::Split](https://metacpan.org/pod/URI%3A%3ASplit), [URI::Heuristic](https://metacpan.org/pod/URI%3A%3AHeuristic)
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
 Berners-Lee, Fielding, Masinter, August 1998.
