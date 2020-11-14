@@ -161,13 +161,17 @@ sub uri_escape {
     my($text, $patn) = @_;
     return undef unless defined $text;
     if (defined $patn){
-        unless (exists  $subst{$patn}) {
-            # Because we can't compile the regex we fake it with a cached sub
-            (my $tmp = $patn) =~ s,/,\\/,g;
-            eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
-            Carp::croak("uri_escape: $@") if $@;
+        if (ref($patn) eq 'Regexp') {
+            $text =~ s/($patn)/$escapes{$1} || _fail_hi($1)/ge;
+        } else {
+            unless (exists  $subst{$patn}) {
+                # Because we can't compile the regex we fake it with a cached sub
+                (my $tmp = $patn) =~ s,/,\\/,g;
+                eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
+                Carp::croak("uri_escape: $@") if $@;
+            }
+            &{$subst{$patn}}($text);
         }
-        &{$subst{$patn}}($text);
     } else {
         $text =~ s/($Unsafe{RFC3986})/$escapes{$1} || _fail_hi($1)/ge;
     }
