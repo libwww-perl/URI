@@ -3,7 +3,7 @@ use warnings;
 
 print "1..13\n";
 
-use URI;
+use URI ();
 my $uri;
 
 $uri = URI->new("ftp://ftp.example.com/path");

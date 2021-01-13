@@ -3,7 +3,7 @@ use warnings;
 
 print "1..11\n";
 
-use URI;
+use URI ();
 
 my $u = URI->new('sip:phone@domain.ext');
 print "not " unless $u->user eq 'phone' &&

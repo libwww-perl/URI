@@ -3,7 +3,7 @@ use warnings;
 
 print "1..48\n";
 
-use URI;
+use URI ();
 
 my $t = 1;
 sub is {

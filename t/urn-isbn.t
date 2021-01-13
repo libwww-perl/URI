@@ -5,7 +5,7 @@ use Test::Needs 'Business::ISBN';
 
 print "1..13\n";
 
-use URI;
+use URI ();
 my $u = URI->new("URN:ISBN:0395363411");
 
 print "not " unless $u eq "URN:ISBN:0395363411" &&

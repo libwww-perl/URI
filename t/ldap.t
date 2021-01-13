@@ -3,7 +3,7 @@ use warnings;
 
 print "1..24\n";
 
-use URI;
+use URI ();
 
 my $uri;
 

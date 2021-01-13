@@ -4,7 +4,7 @@ use warnings;
 # see https://rt.cpan.org/Ticket/Display.html?id=96941
 
 use Test::More;
-use URI;
+use URI ();
 
 TODO: {
     my $str = "http://foo/\xE9";

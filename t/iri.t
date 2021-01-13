@@ -3,7 +3,7 @@ use warnings;
 
 use utf8;
 use Test::More;
-use Config;
+use Config qw(%Config);
 
 if (defined $Config{useperlio}) {
     plan tests=>26;
@@ -11,7 +11,7 @@ if (defined $Config{useperlio}) {
     plan skip_all=>'this perl doesn\'t support PerlIO layers';
 }
 
-use URI;
+use URI ();
 use URI::IRI;
 
 my $u;

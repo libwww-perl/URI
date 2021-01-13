@@ -12,7 +12,7 @@ use warnings;
 
 use parent qw(URI::_server URI::_userpass);
 
-use URI::Escape qw(uri_unescape);
+use URI::Escape ();
 
 our $VERSION = '5.06';
 

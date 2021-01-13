@@ -3,7 +3,7 @@ use warnings;
 
 print "1..8\n";
 
-use URI;
+use URI ();
 
 my $u = URI->new('pop://aas@pop.sn.no');
 

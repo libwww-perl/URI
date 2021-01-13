@@ -4,7 +4,7 @@ use warnings;
 use Test::More 0.96;
 use URI::URL qw(url);
 use URI::Escape qw(uri_escape uri_unescape);
-use File::Temp 'tempdir';
+use File::Temp qw(tempdir);
 
 # want compatibility
 use URI::file;

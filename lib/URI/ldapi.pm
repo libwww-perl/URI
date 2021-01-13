@@ -7,7 +7,7 @@ our $VERSION = '5.06';
 
 use parent qw(URI::_ldap URI::_generic);
 
-require URI::Escape;
+use URI::Escape ();
 
 sub un_path {
     my $self = shift;

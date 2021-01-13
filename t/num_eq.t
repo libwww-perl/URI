@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::More 'no_plan';
 
-use URI;
+use URI ();
 
 my $uri1 = URI->new("http://foo.com");
 my $uri2 = URI->new("http://foo.com");

@@ -3,7 +3,7 @@ use warnings;
 
 print "1..17\n";
 
-use URI::Split qw(uri_split uri_join);
+use URI::Split qw(uri_join uri_split);
 
 sub j { join("-", map { defined($_) ? $_ : "<undef>" } @_) }
 

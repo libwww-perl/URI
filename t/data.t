@@ -3,7 +3,7 @@ use warnings;
 
 print "1..22\n";
 
-use URI;
+use URI ();
 
 my $u = URI->new("data:,A%20brief%20note");
 print "not " unless $u->scheme eq "data" && $u->opaque eq ",A%20brief%20note";

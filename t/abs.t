@@ -6,7 +6,7 @@ print "1..45\n";
 # This test the resolution of abs path for all examples given
 # in the "Uniform Resource Identifiers (URI): Generic Syntax" document.
 
-use URI;
+use URI ();
 my $base = "http://a/b/c/d;p?q";
 my $testno = 1;
 my @rel_fail;
