@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 
-use Test qw(plan ok);
+use Test qw(ok plan);
 plan tests => 102;
 
-use URI;
+use URI ();
 use File::Spec::Functions qw(catfile);
 
 my $no = 1;

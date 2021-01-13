@@ -5,7 +5,7 @@ use Test::More;
 
 # ABSTRACT: Make sure query_form(\%hash) is sorted
 
-use URI;
+use URI ();
 
 my $base = URI->new('http://example.org/');
 

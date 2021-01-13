@@ -3,7 +3,7 @@ use warnings;
 
 print "1..5\n";
 
-use URI::URL;
+use URI::URL qw(url);
 
 # We used to have problems with URLs that used a base that was
 # not absolute itself.

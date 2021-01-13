@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 12;
 
-use URI::Escape;
+use URI::Escape qw(%escapes uri_escape uri_escape_utf8 uri_unescape);
 
 is uri_escape("|abcå"), "%7Cabc%E5";
 
@@ -19,13 +19,7 @@ is uri_unescape("%7Cabc%e5"), "|abcå";
 
 is_deeply [uri_unescape("%40A%42", "CDE", "F%47H")], [qw(@AB CDE FGH)];
 
-
-use URI::Escape qw(%escapes);
-
 is $escapes{"%"}, "%25";
-
-
-use URI::Escape qw(uri_escape_utf8);
 
 is uri_escape_utf8("|abcå"), "%7Cabc%C3%A5";
 

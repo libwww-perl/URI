@@ -6,7 +6,7 @@ package URI::_idna;
 use strict;
 use warnings;
 
-use URI::_punycode qw(encode_punycode decode_punycode);
+use URI::_punycode qw(decode_punycode encode_punycode);
 use Carp qw(croak);
 
 our $VERSION = '5.06';

@@ -5,7 +5,7 @@ use Test::More;
 
 plan tests => 6;
 
-use URI;
+use URI ();
 
 my $uri;
 

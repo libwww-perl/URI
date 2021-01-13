@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use URI;
+use URI ();
 
 plan skip_all => 'this test assumes that URI::javascript does not exist'
     if eval { +require URI::javascript };

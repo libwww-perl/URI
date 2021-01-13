@@ -3,7 +3,7 @@ use warnings;
 
 print "1..16\n";
 
-use URI;
+use URI ();
 
 my $u = URI->new("<http://www.perl.com/path?q=fôo>");
 

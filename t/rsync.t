@@ -3,7 +3,7 @@ use warnings;
 
 print "1..4\n";
 
-use URI;
+use URI ();
 
 my $u = URI->new('rsync://gisle@perl.com/foo/bar');
 

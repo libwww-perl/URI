@@ -3,8 +3,8 @@ package URI::WithBase;
 use strict;
 use warnings;
 
-use URI;
-use Scalar::Util 'blessed';
+use URI ();
+use Scalar::Util qw(blessed);
 
 our $VERSION = '5.06';
 

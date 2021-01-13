@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 19;
 
-use URI;
+use URI ();
 my $uri = URI->new("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html");
 
 is $uri->as_string, "http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html";

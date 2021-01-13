@@ -4,9 +4,9 @@ use warnings;
 print "1..6\n";
 
 # Test mixing of URI and URI::WithBase objects
-use URI;
+use URI ();
 use URI::WithBase;
-use URI::URL;
+use URI::URL ();
 
 my $str = "http://www.sn.no/";
 my $rel = "path/img.gif";

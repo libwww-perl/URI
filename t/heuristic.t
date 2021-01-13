@@ -15,7 +15,7 @@ BEGIN {
 
 print "1..26\n";
 
-use URI::Heuristic qw(uf_urlstr uf_url);
+use URI::Heuristic qw(uf_url uf_urlstr);
 if (shift) {
     $URI::Heuristic::DEBUG++;
     open(STDERR, ">&STDOUT");  # redirect STDERR
@@ -59,7 +59,7 @@ print "ok 5\n";
     print "not " unless uf_urlstr("perl/camel.gif") =~ m,^http://www\.perl\.(org|co)\.uk/camel\.gif$,;
     print "ok 6\n";
 
-    use Net::Domain;
+    use Net::Domain ();
     $ENV{LC_ALL} = "C";
     { no warnings; *Net::Domain::hostfqdn = sub { return 'vasya.su' } }
     undef $URI::Heuristic::MY_COUNTRY;

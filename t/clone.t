@@ -3,7 +3,7 @@ use warnings;
 
 print "1..2\n";
 
-use URI::URL;
+use URI::URL ();
 
 my $b = URI::URL->new("http://www/");
 
