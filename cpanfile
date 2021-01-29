@@ -4,9 +4,21 @@ on 'configure' => sub {
 };
 
 on 'develop' => sub {
-    requires "Test::CPAN::Changes" => "0.19";
     recommends 'Business::ISBN' => 0;
     recommends "Storable" => "0";
+    requires "File::Spec" => "0";
+    requires "IO::Handle" => "0";
+    requires "IPC::Open3" => "0";
+    requires "Pod::Coverage::TrustPod" => "0";
+    requires "Test::CPAN::Meta" => "0";
+    requires "Test::MinimumVersion" => "0";
+    requires "Test::Mojibake" => "0";
+    requires "Test::More" => "0.94";
+    requires "Test::Pod" => "1.41";
+    requires "Test::Pod::Coverage" => "1.08";
+    requires "Test::Portability::Files" => "0";
+    requires "Test::Spelling" => "0.12";
+    requires "Test::Version" => "1";
 };
 
 on 'runtime' => sub {
