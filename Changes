@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - s/perl.com/example.com/ in examples and tests (GH#81) (Olaf Alders)
 
 5.06      2021-01-14 16:01:13Z
     - Tidy import statements (GH#80) (Olaf Alders)
