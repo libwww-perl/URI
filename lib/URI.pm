@@ -916,7 +916,8 @@ query-related sub-components.
 
 The I<news>, I<nntp> and I<snews> URI schemes are specified in
 <draft-gilman-news-url-01> and will hopefully be available as an RFC
-2396 based specification soon.
+2396 based specification soon. (Update: as of April 2010, they are in
+L<RFC 5538|https://tools.ietf.org/html/rfc5538>.
 
 C<URI> objects belonging to the news scheme support the common,
 generic and server methods.  In addition, they provide some methods to
@@ -928,7 +929,7 @@ See I<news> scheme.
 
 =item B<nntps>:
 
-See I<news> scheme.
+See I<news> scheme and L<RFC 5538|https://tools.ietf.org/html/rfc5538>.
 
 =item B<pop>:
 
