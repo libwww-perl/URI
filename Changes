@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - added URI::nntps (GH#82)
 
 5.07      2021-01-29 22:52:20Z
     - s/perl.com/example.com/ in examples and tests (GH#81) (Olaf Alders)

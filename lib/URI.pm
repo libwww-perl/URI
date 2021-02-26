@@ -926,6 +926,10 @@ access the path: $uri->group and $uri->message.
 
 See I<news> scheme.
 
+=item B<nntps>:
+
+See I<news> scheme.
+
 =item B<pop>:
 
 The I<pop> URI scheme is specified in RFC 2384. The scheme is used to

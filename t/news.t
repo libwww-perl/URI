@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-print "1..7\n";
+print "1..8\n";
 
 use URI ();
 
@@ -49,3 +49,9 @@ print "not " unless $u->group eq "no.perl" &&
                     $u->port == 563;
 print "ok 7\n";
 
+$u = URI->new("nntps://nntps.online.no/no.perl");
+
+print "not " unless $u->group eq "no.perl" &&
+	            $u->host  eq "nntps.online.no" &&
+                    $u->port == 563;
+print "ok 8\n";
