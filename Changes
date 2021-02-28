@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.08      2021-02-28 18:08:32Z
     - added URI::nntps (GH#82)
 
