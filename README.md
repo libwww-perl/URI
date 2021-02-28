@@ -520,7 +520,8 @@ generic methods.
 
     The _news_, _nntp_ and _snews_ URI schemes are specified in
     &lt;draft-gilman-news-url-01> and will hopefully be available as an RFC
-    2396 based specification soon.
+    2396 based specification soon. (Update: as of April 2010, they are in
+    [RFC 5538](https://tools.ietf.org/html/rfc5538).
 
     `URI` objects belonging to the news scheme support the common,
     generic and server methods.  In addition, they provide some methods to
@@ -529,6 +530,10 @@ generic methods.
 - **nntp**:
 
     See _news_ scheme.
+
+- **nntps**:
+
+    See _news_ scheme and [RFC 5538](https://tools.ietf.org/html/rfc5538).
 
 - **pop**:
 
