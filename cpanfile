@@ -4,7 +4,7 @@ on 'configure' => sub {
 };
 
 on 'develop' => sub {
-    recommends 'Business::ISBN' => 0;
+    recommends 'Business::ISBN' => "3.005";
     recommends "Storable" => "0";
     requires "File::Spec" => "0";
     requires "IO::Handle" => "0";
