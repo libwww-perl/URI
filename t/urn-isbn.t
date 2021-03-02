@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::Needs 'Business::ISBN';
+use Test::Needs { 'Business::ISBN' => 3.005 };
 
 print "1..13\n";
 
