@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Update Business::ISBN version requirements (GH#85) (brian d foy and Olaf
+      Alders)
 
 5.08      2021-02-28 18:08:32Z
     - added URI::nntps (GH#82)
