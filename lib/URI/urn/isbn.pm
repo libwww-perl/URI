@@ -14,8 +14,8 @@ BEGIN {
 
     local $^W = 0; # don't warn about dev versions, perl5.004 style
     warn "Using Business::ISBN version " . Business::ISBN->VERSION .
-        " which is deprecated.\nUpgrade to Business::ISBN version 2\n"
-        if Business::ISBN->VERSION < 2;
+        " which is deprecated.\nUpgrade to Business::ISBN version 3.005\n"
+        if Business::ISBN->VERSION < 3.005;
     }
 
 sub _isbn {
