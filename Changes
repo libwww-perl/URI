@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.09      2021-03-03 15:16:47Z
     - Update Business::ISBN version requirements (GH#85) (brian d foy and Olaf
       Alders)
 
