@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Remove Authority section from dist.ini (GH#86) (Olaf Alders)
 
 5.09      2021-03-03 15:16:47Z
     - Update Business::ISBN version requirements (GH#85) (brian d foy and Olaf
