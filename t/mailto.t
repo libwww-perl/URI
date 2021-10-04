@@ -1,48 +1,47 @@
 use strict;
 use warnings;
 
-print "1..7\n";
+use Test::More;
 
 use URI ();
 
 my $u = URI->new('mailto:gisle@aas.no');
-
-print "not " unless $u->to eq 'gisle@aas.no' &&
-                    $u eq 'mailto:gisle@aas.no';
-print "ok 1\n";
+is $u->to, 'gisle@aas.no', 'parsing normal URI sets to()';
+is $u, 'mailto:gisle@aas.no', '... and stringification works';
 
 my $old = $u->to('larry@wall.org');
-print "not " unless $old eq 'gisle@aas.no' &&
-                    $u->to eq 'larry@wall.org' &&
-		    $u eq 'mailto:larry@wall.org';
-print "ok 2\n";
+is $old, 'gisle@aas.no', 'to() returns old value';
+is $u->to, 'larry@wall.org', '... and sets new value';
+is $u, 'mailto:larry@wall.org', '... and stringification works';
 
 $u->to("?/#");
-print "not " unless $u->to eq "?/#" &&
-                    $u eq 'mailto:%3F/%23';
-print "ok 3\n";
+is $u->to, "?/#", 'to() accepts chars that need escaping';
+is $u, 'mailto:%3F/%23', '... and stringification escapes them';
 
 my @h = $u->headers;
-print "not " unless @h == 2 && "@h" eq "to ?/#";
-print "ok 4\n";
+ok @h == 2 && "@h" eq "to ?/#", '... and headers() returns the correct values';
 
-$u->headers(to      => 'gisle@aas.no',
-            cc      => 'gisle@ActiveState.com,larry@wall.org',
-            Subject => 'How do you do?',
-	    garbage => '/;?#=&',
+$u->headers(
+    to      => 'gisle@aas.no',
+    cc      => 'gisle@ActiveState.com,larry@wall.org',
+    Subject => 'How do you do?',
+    garbage => '/;?#=&',
 );
 
 @h = $u->headers;
-print "not " unless $u->to eq 'gisle@aas.no' &&
-                    @h == 8 &&
-                    "@h" eq 'to gisle@aas.no cc gisle@ActiveState.com,larry@wall.org Subject How do you do? garbage /;?#=&';
-print "ok 5\n";
+ok @h == 8
+  && "@h" eq
+'to gisle@aas.no cc gisle@ActiveState.com,larry@wall.org Subject How do you do? garbage /;?#=&',
+  'setting multiple headers at once works';
+is $u->to, 'gisle@aas.no', '... and to() returns the new value';
 
 #print "$u\n";
-print "not " unless $u eq 'mailto:gisle@aas.no?cc=gisle%40ActiveState.com%2Clarry%40wall.org&Subject=How+do+you+do%3F&garbage=%2F%3B%3F%23%3D%26';
-print "ok 6\n";
+is $u,
+'mailto:gisle@aas.no?cc=gisle%40ActiveState.com%2Clarry%40wall.org&Subject=How+do+you+do%3F&garbage=%2F%3B%3F%23%3D%26',
+  '... and stringification works';
 
 $u = URI->new("mailto:");
 $u->to("gisle");
-print "not " unless $u eq 'mailto:gisle';
-print "ok 7\n";
+is $u, 'mailto:gisle', 'starting with an empty URI and setting to() works';
+
+done_testing;
