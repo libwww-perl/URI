@@ -48,4 +48,11 @@ $u = URI->new('mailto:user+detail@example.com');
 is $u->to, 'user+detail@example.com', 'subaddress with `+` parsed correctly';
 is $u, 'mailto:user+detail@example.com', '... and stringification works';
 
+TODO: {
+    local $TODO = "We can't handle quoted local parts without properly parsing the email addresses";
+    $u = URI->new('mailto:"foo bar+baz"@example.com');
+    is $u->to, '"foo bar+baz"@example.com', 'address with quoted local part containing spaces is parsed correctly';
+    is $u, 'mailto:%22foo%20bar+baz%22@example.com', '... and stringification works';
+}
+
 done_testing;
