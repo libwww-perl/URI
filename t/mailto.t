@@ -44,4 +44,8 @@ $u = URI->new("mailto:");
 $u->to("gisle");
 is $u, 'mailto:gisle', 'starting with an empty URI and setting to() works';
 
+$u = URI->new('mailto:user+detail@example.com');
+is $u->to, 'user+detail@example.com', 'subaddress with `+` parsed correctly';
+is $u, 'mailto:user+detail@example.com', '... and stringification works';
+
 done_testing;
