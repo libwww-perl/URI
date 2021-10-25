@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.10      2021-10-25 20:58:42Z
     - Remove Authority section from dist.ini (GH#86) (Olaf Alders)
     - Make URI::mailto parse subaddresses with + sign correctly (GH#89) (Julien Fiegehenn)
