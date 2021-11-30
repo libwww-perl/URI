@@ -113,13 +113,13 @@ URI::file - URI that maps to local file names
 =head1 SYNOPSIS
 
  use URI::file;
- 
+
  $u1 = URI->new("file:/foo/bar");
  $u2 = URI->new("foo/bar", "file");
- 
+
  $u3 = URI::file->new($path);
  $u4 = URI::file->new("c:\\windows\\", "win32");
- 
+
  $u1->file;
  $u1->file("mac");
 
