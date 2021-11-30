@@ -301,11 +301,11 @@ If there is no mapping then the "Unix" implementation is used.
 
 =item $URI::file::DEFAULT_AUTHORITY
 
-This determine what "authority" string to include in absolute file
+This determines what "authority" string to include in absolute file
 URIs.  It defaults to "".  If you prefer verbose URIs you might set it
 to be "localhost".
 
-Setting this value to C<undef> force behaviour compatible to URI v1.31
+Setting this value to C<undef> forces behaviour compatible to URI v1.31
 and earlier.  In this mode host names in UNC paths and drive letters
 are mapped to the authority component on Windows, while we produce
 authority-less URIs on Unix.
