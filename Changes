@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Fix some typos in URI::file (GH#94) (Olaf Alders)
 
 5.10      2021-10-25 20:58:42Z
     - Remove Authority section from dist.ini (GH#86) (Olaf Alders)
