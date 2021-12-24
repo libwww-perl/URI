@@ -8,7 +8,7 @@ our $VERSION = '5.11';
 
 use URI::Escape qw(uri_unescape);
 
-our $DEFAULT_AUTHORITY = "";
+our $DEFAULT_AUTHORITY;
 
 # Map from $^O values to implementation classes.  The Unix
 # class is the default.
