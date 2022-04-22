@@ -84,10 +84,10 @@ jobs:
         with:
           cpanfile: "cpanfile"
           args: "--with-suggests --with-recommends --with-test"
-      - run: prove -lrv t xt
+      - run: prove -lrv t
         env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
+          AUTHOR_TESTING: 0
+          RELEASE_TESTING: 0
   macos-test-job:
     needs: ubuntu-test-job
     runs-on: "macos-latest"
@@ -125,10 +125,10 @@ jobs:
         with:
           cpanfile: "cpanfile"
           args: "--with-suggests --with-recommends --with-test"
-      - run: prove -lrv t xt
+      - run: prove -lrv t
         env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
+          AUTHOR_TESTING: 0
+          RELEASE_TESTING: 0
   windows-test-job:
     needs: ubuntu-test-job
     runs-on: "windows-latest"
