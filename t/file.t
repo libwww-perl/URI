@@ -3,6 +3,7 @@ use warnings;
 
 use Test::More;
 use URI::file ();
+use File::Spec;
 
 
 subtest 'OS related tests (unix, win32, mac)' => sub {
@@ -88,7 +89,6 @@ SKIP: {
         );
 
     };
-
 }
 
 
@@ -115,6 +115,15 @@ subtest "Regression Tests" => sub {
         my $current_dir = URI::file->new_abs()->file();
 
         isnt($file_path, $current_dir, 'regression test for #102');
+    }
+
+    # Regression test for https://github.com/libwww-perl/URI/issues/95
+    {
+        my $file = ' hello world ';
+        my $u    = URI::file->new_abs($file);
+        my @dirs = File::Spec->splitdir($u->file('Unix'));
+
+        is($dirs[-1], $file, 'leading and trailing whitespace preserved (issue GH#95)');
     }
 
 };
