@@ -20,7 +20,7 @@ sub new
 
     if (defined $auth) {
 	$auth =~ s,%,%25,g unless $escaped_auth;
-	$auth =~ s,([/?\#]), URI::Escape::escape_char($1),eg;
+	$auth =~ s,([/?\#\s]), URI::Escape::escape_char($1),eg;
 	$auth = "//$auth";
 	if (defined $path) {
 	    $path = "/$path" unless substr($path, 0, 1) eq "/";
@@ -32,7 +32,7 @@ sub new
 	$auth = "";
     }
 
-    $path =~ s,([%;?]), URI::Escape::escape_char($1),eg unless $escaped_path;
+    $path =~ s,([%;?\s]), URI::Escape::escape_char($1),eg unless $escaped_path;
     $path =~ s/\#/%23/g;
 
     my $uri = $auth . $path;
