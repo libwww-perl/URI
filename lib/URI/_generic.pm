@@ -10,8 +10,8 @@ use Carp ();
 
 our $VERSION = '5.11';
 
-my $ACHAR = $URI::uric;  $ACHAR =~ s,\\[/?],,g;
-my $PCHAR = $URI::uric;  $PCHAR =~ s,\\[?],,g;
+my $ACHAR = URI::HAS_RESERVED_SQUARE_BRACKETS ? $URI::uric : $URI::uric4host;  $ACHAR =~ s,\\[/?],,g;
+my $PCHAR = $URI::uric;                                                        $PCHAR =~ s,\\[?],,g;
 
 sub _no_scheme_ok { 1 }
 

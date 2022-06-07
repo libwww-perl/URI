@@ -23,7 +23,8 @@ sub _uric_escape {
 }
 
 sub _host_escape {
-    return unless $_[0] =~ /[^$URI::uric]/;
+  return if  URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric]/;
+  return if !URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric4host]/;
     eval {
 	require URI::_idna;
 	$_[0] = URI::_idna::encode($_[0]);

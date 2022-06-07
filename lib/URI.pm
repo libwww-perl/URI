@@ -5,16 +5,21 @@ use warnings;
 
 our $VERSION = '5.11';
 
+# 1=version 5.10 and earlier; 0=version 5.11 and later
+use constant HAS_RESERVED_SQUARE_BRACKETS => $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} ? 1 : 0;
+
 our ($ABS_REMOTE_LEADING_DOTS, $ABS_ALLOW_RELATIVE_SCHEME, $DEFAULT_QUERY_FORM_DELIMITER);
+our $RESERVED_SQUARE_BRACKETS = $ENV{URI_RESERVED_SQUARE_BRACKETS} || 0;  # 1=version 5.10 and earlier; 0=version 5.11 and later
 
 my %implements;  # mapping from scheme to implementor class
 
 # Some "official" character classes
 
-our $reserved   = q(;/?:@&=+$,[]);
+our $reserved   = HAS_RESERVED_SQUARE_BRACKETS ? q(;/?:@&=+$,[]) : q(;/?:@&=+$,);
 our $mark       = q(-_.!~*'());                                    #'; emacs
 our $unreserved = "A-Za-z0-9\Q$mark\E";
 our $uric       = quotemeta($reserved) . $unreserved . "%";
+our $uric4host  = $uric . ( HAS_RESERVED_SQUARE_BRACKETS ? '' : quotemeta( q([]) ) );
 
 our $scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
@@ -86,10 +91,35 @@ sub _init
 }
 
 
+#-- Version: 5.11+
+#   Since the complete URI will be percent-encoded including '[' and ']',
+#   we selectively unescape square brackets from the autority/host part of the URI.
+#   Derived modules that implement _uric_escape() should take this into account
+#   if they do not rely on URI::_uric_escape().
+#   No unescaping is performed for the userinfo@ part of the authority part.
+sub _fix_uric_escape_for_host_part {
+  return if HAS_RESERVED_SQUARE_BRACKETS;
+  return if $_[0] !~ /%/;
+
+  if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
+    my $orig          = $2;
+    my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
+    $user  ||= '';
+    my $port = $host =~ s/(:\d+)$// ? $1 : '';
+    #TODO: die() here if scheme indicates TCP/UDP and port is out of range [0..65535] ?
+    #TODO: count substitutions and die() here if count('[') != count(']') > 1 ?  (imbalanced or too many)
+    $host    =~ s/\%5B/[/gi;
+    $host    =~ s/\%5D/]/gi;
+    $_[0]    =~ s/\Q$orig\E/$user$host$port/;
+  }
+}
+
+
 sub _uric_escape
 {
     my($class, $str) = @_;
     $str =~ s*([^$uric\#])* URI::Escape::escape_char($1) *ego;
+    _fix_uric_escape_for_host_part( $str );
     utf8::downgrade($str);
     return $str;
 }
@@ -1084,6 +1114,34 @@ examples:
 
 This value can be set to ";" to have the query form C<key=value> pairs
 delimited by ";" instead of "&" which is the default.
+
+=back
+
+=head1 ENVIRONMENT VARIABLES
+
+=item URI_HAS_RESERVED_SQUARE_BRACKETS
+
+Before version 5.11, URI treated square brackets as reserved characters
+thoughout the whole URI string. However, these brackets are reserved
+only whithin the autority/host part of the URI and nowhere else (RFC 3986).
+
+Starting with version 5.11, URI takes this distinction into account.
+Setting the environment variable c<URI_HAS_RESERVED_SQUARE_BRACKETS>
+(programmatically or via the shell), restores the old behavior.
+
+ Note: This environment variable is just an initialiser and has to be set
+       before module URI is used/required. Changing it at run time has no effect.
+
+ #-- restore 5.10 behavior programmatically
+ BEGIN {
+   $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} = 1;
+ }
+ use URI ();
+
+
+Its value can be checked programmatically by accessing the constant
+C<URI::HAS_RESERVED_SQUARE_BRACKETS>.
+
 
 =back
 
