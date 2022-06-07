@@ -14,6 +14,8 @@ my $orig = $uri;
 
 require URI;
 
+warn "Using: $INC{'URI.pm'}\n"  if  $INC{'URI.pm'} ne 'lib/URI.pm'  and  -t STDOUT  and  -t STDIN;
+
 my @ctor_arg = ($uri);
 push(@ctor_arg, shift) while @ARGV && $ARGV[0] =~ s/^\+//;
 
