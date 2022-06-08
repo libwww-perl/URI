@@ -26,6 +26,12 @@ sub authority
 	my $rest = $3;
 	if (defined $auth) {
 	    $auth =~ s/([^$ACHAR])/ URI::Escape::escape_char($1)/ego;
+            if ( my ($user, $host) = $auth =~ /^(.*@)?([^@]+)$/ ) { #-- special escape userinfo part
+              $user ||= '';
+              $user =~ s/([^$URI::uric4user])/ URI::Escape::escape_char($1)/ego;
+              $user =~ s/%40$/\@/; # recover final '@'
+              $auth = $user . $host;
+            }
 	    utf8::downgrade($auth);
 	    $$self .= "//$auth";
 	}

@@ -138,6 +138,38 @@ is( URI::HAS_RESERVED_SQUARE_BRACKETS, 0, "constant indicates NOT to treat squar
  is ($u->canonical(), "https://j.doe%40example.com:secret@[$ip6]/index.html", "userinfo replaced (escaped3)");
  is ($u->userinfo() , "j.doe%40example.com:secret", "userinfo is escaped3");
 
+
+
+$u->host("example.com");
+ is ($u->canonical(), "https://j.doe%40example.com:secret\@example.com/index.html", "hostname replaced");
+
+ $u->host("127.0.0.1");
+ is ($u->canonical(), "https://j.doe%40example.com:secret\@127.0.0.1/index.html", "hostname replaced");
+
+ for my $host ( qw(example.com 127.0.0.1)) {
+   $u->host( $host );
+   my $expect = "https://j.doe%40example.com:secret\@$host/index.html";
+   is ($u->canonical(), $expect, "host: $host");
+   is ($u->host(), $host, "same hosts ($host)");
+ }
+
+ for my $host6 ( $ip6, qw(::1) ) {
+   $u->host( $host6 );
+   my $expect = "https://j.doe%40example.com:secret\@[$host6]/index.html";
+   is ($u->canonical(), $expect, "IPv6 host: $host6");
+   is ($u->host(), $host6, "same IPv6 hosts ($host6)");
+ }
+
+ $u->host($ip6);
+ $u->path("/subdir/index[1].html");
+ is( $u->canonical(), "https://j.doe%40example.com:secret@[$ip6]/subdir/index%5B1%5D.html", "path replaced");
+
+ $u->fragment("fragment[xyz]");
+ is( $u->canonical(), "https://j.doe%40example.com:secret@[$ip6]/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "fragment added");
+
+ $u->authority("user[doe]@[::1]");
+ is( $u->canonical(), "https://user%5Bdoe%5D@[::1]/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
 }
 
 done_testing;
