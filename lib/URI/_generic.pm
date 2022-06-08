@@ -15,6 +15,36 @@ my $PCHAR = $URI::uric;                                                        $
 
 sub _no_scheme_ok { 1 }
 
+our $IPv6_re;
+{ #-- "borrowed" from SALVAs Regexp::IPv6 - https://metacpan.org/dist/Regexp-IPv6/source/lib/Regexp/IPv6.pm
+  #TODO: Should be made a dependency of this module.
+  my $IPv4 = "((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))";
+  my $G = "[0-9a-fA-F]{1,4}";
+
+  my @tail = ( ":",
+               "(:($G)?|$IPv4)",
+               ":($IPv4|$G(:$G)?|)",
+               "(:$IPv4|:$G(:$IPv4|(:$G){0,2})|:)",
+               "((:$G){0,2}(:$IPv4|(:$G){1,2})|:)",
+               "((:$G){0,3}(:$IPv4|(:$G){1,2})|:)",
+               "((:$G){0,4}(:$IPv4|(:$G){1,2})|:)" );
+
+  $IPv6_re = $G;
+  $IPv6_re = "$G:($IPv6_re|$_)" for @tail;
+  $IPv6_re = qq/:(:$G){0,5}((:$G){1,2}|:$IPv4)|$IPv6_re/;
+  $IPv6_re =~ s/\(/(?:/g;
+  $IPv6_re = qr/$IPv6_re/;
+}
+
+
+sub _looks_like_raw_ip6_address {
+  my $addr = shift;
+  #TODO: use Regexp::IPv6
+  return 1 if $addr and $addr =~ /^$IPv6_re$/;
+  return 0;
+}
+
+
 sub authority
 {
     my $self = shift;
@@ -30,6 +60,7 @@ sub authority
               $user ||= '';
               $user =~ s/([^$URI::uric4user])/ URI::Escape::escape_char($1)/ego;
               $user =~ s/%40$/\@/; # recover final '@'
+              $host = "[$host]" if _looks_like_raw_ip6_address( $host );
               $auth = $user . $host;
             }
 	    utf8::downgrade($auth);

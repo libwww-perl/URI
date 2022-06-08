@@ -138,9 +138,7 @@ is( URI::HAS_RESERVED_SQUARE_BRACKETS, 0, "constant indicates NOT to treat squar
  is ($u->canonical(), "https://j.doe%40example.com:secret@[$ip6]/index.html", "userinfo replaced (escaped3)");
  is ($u->userinfo() , "j.doe%40example.com:secret", "userinfo is escaped3");
 
-
-
-$u->host("example.com");
+ $u->host("example.com");
  is ($u->canonical(), "https://j.doe%40example.com:secret\@example.com/index.html", "hostname replaced");
 
  $u->host("127.0.0.1");
@@ -169,6 +167,21 @@ $u->host("example.com");
 
  $u->authority("user[doe]@[::1]");
  is( $u->canonical(), "https://user%5Bdoe%5D@[::1]/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
+ $u->authority("::1");
+ is( $u->canonical(), "https://[::1]/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
+ $u->authority("[::1]:19999");
+ is( $u->canonical(), "https://[::1]:19999/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
+ # $u->authority("::1:18000"); #-- theoretically, we could guess an [::1]:18000 ... but for now it will just be ill formatted.
+ # is( $u->canonical(), "https://::1:18000/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
+ $u->authority("user[abc]\@::1");
+ is( $u->canonical(), "https://user%5Babc%5D@[::1]/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
+
+ $u->authority("user[xyz]\@example.com\@[::1]:22022");
+ is( $u->canonical(), "https://user%5Bxyz%5D%40example.com@[::1]:22022/subdir/index%5B1%5D.html#fragment%5Bxyz%5D", "authority replaced");
 
 }
 
