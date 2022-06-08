@@ -45,6 +45,73 @@ is( URI::HAS_RESERVED_SQUARE_BRACKETS, 0, "constant indicates NOT to treat squar
     ) or show $u;
 }
 
-done_testing;
 
-#TODO: more tests, esp. setter methods
+{
+  my $u = URI->new("http://root[user]@[::1]/path_with_square_[brackets]?par=value[1]&par[2]=value[2]#fragment[2]");
+  is( $u->canonical,
+      "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D#fragment%5B2%5D",
+      "sqb in userinfo, host, path, request and fragment"
+    ) or show $u;
+
+  is( $u->scheme()                , "http",           "scheme");
+  is( $u->userinfo()              , "root%5Buser%5D", "userinfo");
+  is( $u->host()                  , "::1",            "host");
+  is( $u->ihost()                 , "::1",            "ihost");
+  is( $u->port()                  , "80",             "port");
+  is( $u->default_port()          , "80",             "default_port");
+  is( $u->host_port()             , "[::1]:80",       "host_port");
+  is( $u->secure()                , "0",              "is_secure" );
+  is( $u->path()                  , "/path_with_square_%5Bbrackets%5D", "path");
+  is( $u->opaque()                , "//root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D", "opaque");
+  is( $u->fragment()              , "fragment%5B2%5D", "fragment");
+  is( $u->query()                 , "par=value%5B1%5D&par%5B2%5D=value%5B2%5D", "query");
+  is( $u->as_string()             , "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D#fragment%5B2%5D", "as_string");
+  is( $u->has_recognized_scheme() , "1", "has_recognized_scheme");
+  is( $u->as_iri()                , "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D#fragment%5B2%5D", "as_iri"); #TODO: utf8
+
+  is( $u->abs( "/BASEDIR")->as_string() , "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D#fragment%5B2%5D", "abs (no change)");
+  is( $u->rel("../BASEDIR")             , "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D#fragment%5B2%5D", "rel");
+
+  is( $u->authority()                   , "root%5Buser%5D@[::1]", "authority" );
+  is( $u->path_query()                  , "/path_with_square_%5Bbrackets%5D?par=value%5B1%5D&par%5B2%5D=value%5B2%5D", "path_query");
+  is( $u->query_keywords()              , undef, "query_keywords");
+
+  my @segments = $u->path_segments();
+  is( join(" | ", @segments), " | path_with_square_[brackets]", "segments");
+}
+
+
+{ #-- form/query related tests
+  my $u = URI->new("http://root[user]@[::1]/path_with_square_[brackets]/segment[2]?par=value[1]&par[2]=value[2]#fragment[2]");
+
+  is( $u->query_form(), "4", "scalar: query_form");
+  is( join(" | ", $u->query_form()), "par | value[1] | par[2] | value[2]", "list: query_form");
+
+  $u->query_form( {} );
+  is( $u->query(), undef, "query removed");
+  is( join(" | ", $u->query_form()), "", "list: query_form");
+  is( $u->canonical(), "http://root%5Buser%5D@[::1]/path_with_square_%5Bbrackets%5D/segment%5B2%5D#fragment%5B2%5D", "query removed: canonical");
+
+  $u->query_form( key1 => 'val1', key2 => 'val[2]' );
+  is( $u->query(), "key1=val1&key2=val%5B2%5D", "query");
+}
+
+
+{ #-- path segments
+  my $u = URI->new("http://root[user]@[::1]/path_with_square_[brackets]/segment[2]?par=value[1]#fragment[2]");
+  my @segments = $u->path_segments();
+  is( join(" | ", @segments), " | path_with_square_[brackets] | segment[2]", "segments");
+}
+
+
+{ #-- rel
+  my $u = URI->new("http://root[user]@[::1]/oldbase/next/path_with_square_[brackets]/segment[2]?par=value[1]#fragment[2]");
+  #TODO: is userinfo@ optional?
+  is( $u->rel("http://root%5Buser%5D@[::1]/oldbase/next/")->canonical(),
+      "path_with_square_%5Bbrackets%5D/segment%5B2%5D?par=value%5B1%5D#fragment%5B2%5D",
+      "rel/canonical"
+    );
+}
+
+
+done_testing;
