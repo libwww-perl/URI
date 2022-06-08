@@ -114,4 +114,30 @@ is( URI::HAS_RESERVED_SQUARE_BRACKETS, 0, "constant indicates NOT to treat squar
 }
 
 
+{ #-- various setters
+ my $ip6 = 'fedc:ba98:7654:3210:fedc:ba98:7654:3210';
+ my $u = URI->new("http://\[" . uc($ip6) . "\]/index.html");
+ is ($u->canonical(), "http://[$ip6]/index.html", "basic IPv6 URI");
+
+ $u->scheme("https");
+ is ($u->canonical(), "https://[$ip6]/index.html", "basic IPv6 URI");
+
+ $u->userinfo("user[42]"); #-- tolerate unescaped '[', ']'
+ is ($u->canonical(), "https://user%5B42%5D@[$ip6]/index.html", "userinfo added (unescaped)");
+ is ($u->userinfo(), "user%5B42%5D", "userinfo is escaped");
+
+ $u->userinfo("user%5B77%5D"); #-- already escaped
+ is ($u->canonical(), "https://user%5B77%5D@[$ip6]/index.html", "userinfo replaced (escaped)");
+ is ($u->userinfo(), "user%5B77%5D", "userinfo is escaped");
+
+ $u->userinfo( q(weird.al$!:secret*[1]++) );
+ is ($u->canonical(), "https://weird.al\$!:secret*%5B1%5D++@[$ip6]/index.html", "userinfo replaced (escaped2)");
+ is ($u->userinfo(),  "weird.al\$!:secret*%5B1%5D++", "userinfo is escaped2");
+
+ $u->userinfo( q(j.doe@example.com:secret) );
+ is ($u->canonical(), "https://j.doe%40example.com:secret@[$ip6]/index.html", "userinfo replaced (escaped3)");
+ is ($u->userinfo() , "j.doe%40example.com:secret", "userinfo is escaped3");
+
+}
+
 done_testing;

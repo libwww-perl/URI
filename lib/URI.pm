@@ -20,6 +20,7 @@ our $mark       = q(-_.!~*'());                                    #'; emacs
 our $unreserved = "A-Za-z0-9\Q$mark\E";
 our $uric       = quotemeta($reserved) . $unreserved . "%";
 our $uric4host  = $uric . ( HAS_RESERVED_SQUARE_BRACKETS ? '' : quotemeta( q([]) ) );
+our $uric4user  = quotemeta( q{!$'()*,;:._~%-+=%&} ) . "A-Za-z0-9" . ( HAS_RESERVED_SQUARE_BRACKETS ? quotemeta( q([]) ) : '' ); # RFC-3987: iuserinfo w/o UTF
 
 our $scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 

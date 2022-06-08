@@ -60,8 +60,8 @@ sub userinfo
 	$new =~ s/.*@//;  # remove old stuff
 	my $ui = shift;
 	if (defined $ui) {
-	    $ui =~ s/@/%40/g;   # protect @
-	    $new = "$ui\@$new";
+          $ui =~ s/([^$URI::uric4user])/ URI::Escape::escape_char($1)/ego;
+          $new = "$ui\@$new";
 	}
 	$self->authority($new);
     }
