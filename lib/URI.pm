@@ -1122,8 +1122,8 @@ delimited by ";" instead of "&" which is the default.
 =item URI_HAS_RESERVED_SQUARE_BRACKETS
 
 Before version 5.11, URI treated square brackets as reserved characters
-thoughout the whole URI string. However, these brackets are reserved
-only whithin the autority/host part of the URI and nowhere else (RFC 3986).
+throughout the whole URI string. However, these brackets are reserved
+only within the autority/host part of the URI and nowhere else (RFC 3986).
 
 Starting with version 5.11, URI takes this distinction into account.
 Setting the environment variable c<URI_HAS_RESERVED_SQUARE_BRACKETS>
