@@ -1120,6 +1120,8 @@ delimited by ";" instead of "&" which is the default.
 
 =head1 ENVIRONMENT VARIABLES
 
+=over 4
+
 =item URI_HAS_RESERVED_SQUARE_BRACKETS
 
 Before version 5.11, URI treated square brackets as reserved characters
