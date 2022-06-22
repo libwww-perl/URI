@@ -9,7 +9,6 @@ our $VERSION = '5.11';
 use constant HAS_RESERVED_SQUARE_BRACKETS => $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} ? 1 : 0;
 
 our ($ABS_REMOTE_LEADING_DOTS, $ABS_ALLOW_RELATIVE_SCHEME, $DEFAULT_QUERY_FORM_DELIMITER);
-our $RESERVED_SQUARE_BRACKETS = $ENV{URI_RESERVED_SQUARE_BRACKETS} || 0;  # 1=version 5.10 and earlier; 0=version 5.11 and later
 
 my %implements;  # mapping from scheme to implementor class
 
