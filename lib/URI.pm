@@ -107,8 +107,7 @@ sub _fix_uric_escape_for_host_part {
     my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
     $user  ||= '';
     my $port = $host =~ s/(:\d+)$// ? $1 : '';
-    #TODO: die() here if scheme indicates TCP/UDP and port is out of range [0..65535] ?
-    #TODO: count substitutions and die() here if count('[') != count(']') > 1 ?  (imbalanced or too many)
+    #MAINT: die() here if scheme indicates TCP/UDP and port is out of range [0..65535] ?
     $host    =~ s/\%5B/[/gi;
     $host    =~ s/\%5D/]/gi;
     $_[0]    =~ s/\Q$orig\E/$user$host$port/;
@@ -1132,19 +1131,17 @@ Starting with version 5.11, URI takes this distinction into account.
 Setting the environment variable c<URI_HAS_RESERVED_SQUARE_BRACKETS>
 (programmatically or via the shell), restores the old behavior.
 
- Note: This environment variable is just an initialiser and has to be set
-       before module URI is used/required. Changing it at run time has no effect.
+  #-- restore 5.10 behavior programmatically
+  BEGIN {
+    $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} = 1;
+  }
+  use URI ();
 
- #-- restore 5.10 behavior programmatically
- BEGIN {
-   $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} = 1;
- }
- use URI ();
-
+I<Note>: This environment variable is just an initialiser and has to be set
+      I<before> module URI is used/required. Changing it at run time has no effect.
 
 Its value can be checked programmatically by accessing the constant
 C<URI::HAS_RESERVED_SQUARE_BRACKETS>.
-
 
 =back
 
