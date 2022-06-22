@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use lib ( './lib' ); #-- use local implementation while authoring module
-
 sub usage {
     my $prog = $0; $prog =~ s,.*/,,;
     die "Usage: $prog <uri> [<method> [<args>]...]\n";
@@ -15,6 +13,8 @@ my $uri = shift;
 my $orig = $uri;
 
 require URI;
+
+warn "Using: $INC{'URI.pm'}\n"  if  $INC{'URI.pm'} ne 'lib/URI.pm'  and  -t STDOUT  and  -t STDIN;
 
 my @ctor_arg = ($uri);
 push(@ctor_arg, shift) while @ARGV && $ARGV[0] =~ s/^\+//;
