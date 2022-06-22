@@ -1136,7 +1136,7 @@ Setting the environment variable c<URI_HAS_RESERVED_SQUARE_BRACKETS>
   }
   use URI ();
 
-I<Note>: This environment variable is just an initialiser and has to be set
+I<Note>: This environment variable is just used during initialization and has to be set
       I<before> module URI is used/required. Changing it at run time has no effect.
 
 Its value can be checked programmatically by accessing the constant
