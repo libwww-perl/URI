@@ -38,6 +38,7 @@ on 'runtime' => sub {
     requires "strict" => "0";
     requires "warnings" => "0";
     requires "utf8" => '0';
+    suggests 'Regexp::IPv6' => "0.03";
     suggests 'Business::ISBN' => "3.005";
 };
 
