@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.11      2022-07-04 20:53:38Z
     - Fix some typos in URI::file (GH#94) (Olaf Alders)
     - Escape square brackets in path (GH#100) (Perlbotics)
     - Fix storable.t (GH#97) (Shoichi Kaji)

@@ -684,6 +684,30 @@ methods behave:
     This value can be set to ";" to have the query form `key=value` pairs
     delimited by ";" instead of "&" which is the default.
 
+# ENVIRONMENT VARIABLES
+
+- URI\_HAS\_RESERVED\_SQUARE\_BRACKETS
+
+    Before version 5.11, URI treated square brackets as reserved characters
+    throughout the whole URI string. However, these brackets are reserved
+    only within the authority/host part of the URI and nowhere else (RFC 3986).
+
+    Starting with version 5.11, URI takes this distinction into account.
+    Setting the environment variable `URI_HAS_RESERVED_SQUARE_BRACKETS`
+    (programmatically or via the shell), restores the old behavior.
+
+        #-- restore 5.10 behavior programmatically
+        BEGIN {
+          $ENV{URI_HAS_RESERVED_SQUARE_BRACKETS} = 1;
+        }
+        use URI ();
+
+    _Note_: This environment variable is just used during initialization and has to be set
+          _before_ module URI is used/required. Changing it at run time has no effect.
+
+    Its value can be checked programmatically by accessing the constant
+    `URI::HAS_RESERVED_SQUARE_BRACKETS`.
+
 # BUGS
 
 There are some things that are not quite right:
