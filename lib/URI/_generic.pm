@@ -20,13 +20,12 @@ our $IPv6_re;
 sub _looks_like_raw_ip6_address {
   my $addr = shift;
 
-  #MAINT: consider to make Regexp::IPv6 a dependency of URI module
-  if ( !$IPv6_re ) { #-- lazy / runs once
+  if ( !$IPv6_re ) { #-- lazy / runs once / use Regexp::IPv6 if installed
     eval {
       require Regexp::IPv6;
       Regexp::IPv6->import( qw($IPv6_re) );
       1;
-    }  ||  do { $IPv6_re = qr/[:0-9a-f]{3,}/; }; #-- fallback: unambicious guess
+    }  ||  do { $IPv6_re = qr/[:0-9a-f]{3,}/; }; #-- fallback: unambitious guess
   }
 
   return 0 unless $addr;

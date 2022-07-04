@@ -93,7 +93,7 @@ sub _init
 
 #-- Version: 5.11+
 #   Since the complete URI will be percent-encoded including '[' and ']',
-#   we selectively unescape square brackets from the autority/host part of the URI.
+#   we selectively unescape square brackets from the authority/host part of the URI.
 #   Derived modules that implement _uric_escape() should take this into account
 #   if they do not rely on URI::_uric_escape().
 #   No unescaping is performed for the userinfo@ part of the authority part.
@@ -1124,10 +1124,10 @@ delimited by ";" instead of "&" which is the default.
 
 Before version 5.11, URI treated square brackets as reserved characters
 throughout the whole URI string. However, these brackets are reserved
-only within the autority/host part of the URI and nowhere else (RFC 3986).
+only within the authority/host part of the URI and nowhere else (RFC 3986).
 
 Starting with version 5.11, URI takes this distinction into account.
-Setting the environment variable c<URI_HAS_RESERVED_SQUARE_BRACKETS>
+Setting the environment variable C<URI_HAS_RESERVED_SQUARE_BRACKETS>
 (programmatically or via the shell), restores the old behavior.
 
   #-- restore 5.10 behavior programmatically
