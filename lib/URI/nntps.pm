@@ -3,7 +3,7 @@ package URI::nntps;
 use strict;
 use warnings;
 
-our $VERSION = '5.11';
+our $VERSION = '5.12';
 
 use parent 'URI::nntp';
 
