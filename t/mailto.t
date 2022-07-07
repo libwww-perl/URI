@@ -55,4 +55,16 @@ TODO: {
     is $u, 'mailto:%22foo%20bar+baz%22@example.com', '... and stringification works';
 }
 
+# RFC 5321 (4.1.3) - Address Literals
+
+# IPv4
+$u = URI->new('mailto:user@[127.0.0.1]');
+is $u->to, 'user@[127.0.0.1]', 'IPv4 host name';
+is $u, 'mailto:user@[127.0.0.1]', '... and stringification works';
+
+# IPv6
+$u = URI->new('mailto:user@[IPv6:fe80::e828:209d:20e:c0ae]');
+is $u->to, 'user@[IPv6:fe80::e828:209d:20e:c0ae]', 'IPv4 host name';
+is $u, 'mailto:user@[IPv6:fe80::e828:209d:20e:c0ae]', '... and stringification works';
+
 done_testing;
