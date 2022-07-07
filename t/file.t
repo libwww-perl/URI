@@ -27,7 +27,7 @@ my @tests =  (
 my @os = @{shift @tests};
 shift @os;  # file
 
-my $num = @tests;
+my $num = @tests + 1;
 print "1..$num\n";
 
 my $testno = 1;
@@ -62,4 +62,14 @@ for my $t (@tests) {
    print "not " if $err;
    print "ok $testno\n";
    $testno++;
+}
+
+
+{ #-- https://github.com/libwww-perl/URI/issues/102 -- "5.11 breaks HTML::FormatExternal"
+  my $with_hashes = URI::file->new_abs("/tmp/###");
+  if ( $with_hashes ne 'file:///tmp/%23%23%23') {
+    print "not ";
+  }
+  print "ok $testno\n";
+  $testno++;
 }
