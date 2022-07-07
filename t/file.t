@@ -65,7 +65,7 @@ for my $t (@tests) {
 }
 
 
-{ #-- https://github.com/libwww-perl/URI/issues/102 -- "5.11 breaks HTML::FormatExternal"
+{ # Regression test for https://github.com/libwww-perl/URI/issues/102
   my $with_hashes = URI::file->new_abs("/tmp/###");
   if ( $with_hashes ne 'file:///tmp/%23%23%23') {
     print "not ";

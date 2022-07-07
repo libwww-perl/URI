@@ -102,7 +102,7 @@ sub _fix_uric_escape_for_host_part {
   return if $_[0] !~ /%/;
 
   if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
-    my $orig          = $2 || return; #-- no authority part to unescape (issue#102)
+    my $orig          = $2 || return; # Return early if there is no authority part to unescape. Fixes https://github.com/libwww-perl/URI/issues/102
     my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
     $user  ||= '';
     my $port = $host =~ s/(:\d+)$// ? $1 : '';

@@ -2,8 +2,11 @@ Revision history for URI
 
 {{$NEXT}}
 
-5.12      2022-07-07 16:51:05Z
-    - Fix for 'file:' scheme issue (GH#102) (Perlbotics)
+5.12      2022-07-07 17:26:14Z
+    - Fixes an issue where i.e. 'file:///tmp/###' was not properly escaped.
+      A non-existing authority part was accidentally processed.
+      Details: https://github.com/libwww-perl/URI/issues/102
+      (GH#102) (Perlbotics)
 
 5.11      2022-07-04 20:53:38Z
     - Fix some typos in URI::file (GH#94) (Olaf Alders)
