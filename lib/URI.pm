@@ -101,8 +101,8 @@ sub _fix_uric_escape_for_host_part {
   return if HAS_RESERVED_SQUARE_BRACKETS;
   return if $_[0] !~ /%/;
 
-  if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
-    my $orig          = $2 || return; # Return early if there is no authority part to unescape. Fixes https://github.com/libwww-perl/URI/issues/102
+  if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]+)(.*)$,os) {
+    my $orig          = $2;
     my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
     $user  ||= '';
     my $port = $host =~ s/(:\d+)$// ? $1 : '';
