@@ -33,6 +33,10 @@ our $schemes_without_host_part_re = 'data|file|ldapi|urn|sqlite|sqlite3';
 #MAINT: URI has no test coverage for DB schemes
 #MAINT: decoupling - perhaps let each class decide itself by defining a member function 'scheme_has_authority_part()'?
 
+#MAINT: 'mailto:' needs special treatment for IPv* addresses / RFC 5321 (4.1.3). Until then: restore all '[', ']'
+# These schemes need fallback to previous (<= 5.10) encoding until a specific handler is available.
+our $fallback_schemes_re = 'mailto';
+
 use Carp ();
 use URI::Escape ();
 
@@ -111,6 +115,13 @@ sub _fix_uric_escape_for_host_part {
   return if HAS_RESERVED_SQUARE_BRACKETS;
   return if $_[0] !~ /%/;
   return if $_[0] =~ m,^(?:$URI::schemes_without_host_part_re):,os;
+
+  # until a scheme specific handler is available, fall back to previous behavior of v5.10 (i.e. 'mailto:')
+  if ($_[0] =~ m,^(?:$URI::fallback_schemes_re):,os) {
+    $_[0]    =~ s/\%5B/[/gi;
+    $_[0]    =~ s/\%5D/]/gi;
+    return;
+  }
 
   if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]+)(.*)$,os) {
     my $orig          = $2;
