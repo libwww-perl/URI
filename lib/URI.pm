@@ -24,10 +24,10 @@ our $uric4user  = quotemeta( q{!$'()*,;:._~%-+=%&} ) . "A-Za-z0-9" . ( HAS_RESER
 our $scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
 # These schemes doesn't have an IPv6+ address part.
-our $schemes_without_host_part_re = 'data|file|ldapi|urn|sqlite|sqlite3';
+our $schemes_without_host_part_re = 'data|ldapi|urn|sqlite|sqlite3';
 
 # These schemes can have an IPv6+ authority part:
-#     ftp, gopher, http, https, ldap, ldaps, mms, news, nntp, nntps, pop, rlogin, rtsp, rtspu, rsync, sip, sips, snews,
+#     file, ftp, gopher, http, https, ldap, ldaps, mms, news, nntp, nntps, pop, rlogin, rtsp, rtspu, rsync, sip, sips, snews,
 #     telnet, tn3270, ssh, sftp
 #     (all DB URIs, i.e. cassandra, couch, couchdb, etc.), except 'sqlite:', 'sqlite3:'. Others?
 #MAINT: URI has no test coverage for DB schemes
