@@ -23,7 +23,7 @@ our $uric4user  = quotemeta( q{!$'()*,;:._~%-+=%&} ) . "A-Za-z0-9" . ( HAS_RESER
 
 our $scheme_re  = '[a-zA-Z][a-zA-Z0-9.+\-]*';
 
-# These schemes doesn't have an IPv6+ address part.
+# These schemes don't have an IPv6+ address part.
 our $schemes_without_host_part_re = 'data|ldapi|urn|sqlite|sqlite3';
 
 # These schemes can have an IPv6+ authority part:
@@ -114,16 +114,16 @@ sub _init
 sub _fix_uric_escape_for_host_part {
   return if HAS_RESERVED_SQUARE_BRACKETS;
   return if $_[0] !~ /%/;
-  return if $_[0] =~ m,^(?:$URI::schemes_without_host_part_re):,os;
+  return if $_[0] =~ m{^(?:$URI::schemes_without_host_part_re):}os;
 
   # until a scheme specific handler is available, fall back to previous behavior of v5.10 (i.e. 'mailto:')
-  if ($_[0] =~ m,^(?:$URI::fallback_schemes_re):,os) {
+  if ($_[0] =~ m{^(?:$URI::fallback_schemes_re):}os) {
     $_[0]    =~ s/\%5B/[/gi;
     $_[0]    =~ s/\%5D/]/gi;
     return;
   }
 
-  if ($_[0] =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]+)(.*)$,os) {
+  if ($_[0] =~ m{^((?:$URI::scheme_re:)?)//([^/?\#]+)(.*)$}os) {
     my $orig          = $2;
     my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
     $user  ||= '';

@@ -6,6 +6,8 @@ Revision history for URI
       A non-existing authority part was accidentally processed.
       Details: https://github.com/libwww-perl/URI/issues/102
       (GH#102) (Perlbotics)
+    - Reverts to previous behavior (5.10) for 'mailto:' scheme for
+      escaping square brackets.
 
 5.11      2022-07-04 20:53:38Z
     - Fix some typos in URI::file (GH#94) (Olaf Alders)
