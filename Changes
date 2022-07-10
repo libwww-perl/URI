@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.12      2022-07-10 23:48:50Z
     - Fix an issue where i.e. 'file:///tmp/###' was not properly escaped.
       A non-existing authority part was accidentally processed.
       Details: https://github.com/libwww-perl/URI/issues/102
