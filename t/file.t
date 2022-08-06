@@ -97,8 +97,26 @@ SKIP: {
 subtest "Regression Tests" => sub {
 
   # Regression test for https://github.com/libwww-perl/URI/issues/102
-  my $with_hashes = URI::file->new_abs("/tmp/###");
-  is($with_hashes, 'file:///tmp/%23%23%23', "issue GH#102");
+  {
+    my $with_hashes = URI::file->new_abs("/tmp/###");
+    is($with_hashes, 'file:///tmp/%23%23%23', "issue GH#102");
+  }
+
+  # URI 5.11 introduced a bug where URI::file could return the current
+  # working directory instead of the path defined.
+  # The bug was caused by a wrong quantifier in a regular expression in
+  # URI::_fix_uric_escape_for_host_part() which returned an empty string for
+  # all URIs that needed escaping ('%xx') but did not have a host part.
+  # The empty string in turn caused URI::file->new_abs() to use the current
+  # working directory as a default.
+  {
+    my $sandbox_path = "/tmp/my sandbox";   # '%' in $good_uri causes the problem
+    my $file_uri     = URI::file->new_abs($sandbox_path);
+    my $good_uri     = "file:///tmp/my%20sandbox";
+
+    is( $file_uri,         $good_uri,     "file URI escaped correctly" );
+    is( $file_uri->file(), $sandbox_path, "got original filename (not current directory)" );
+  }
 
 };
 
