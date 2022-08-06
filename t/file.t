@@ -110,12 +110,31 @@ subtest "Regression Tests" => sub {
   # The empty string in turn caused URI::file->new_abs() to use the current
   # working directory as a default.
   {
-    my $sandbox_path = "/tmp/my sandbox";   # '%' in $good_uri causes the problem
-    my $file_uri     = URI::file->new_abs($sandbox_path);
+    my $test_loc     = $0 . ':' . __LINE__;
+    my $sandbox_unix = '/tmp/my sandbox';   # '%' in $good_uri causes the problem
+    my $sandbox_win  = '\tmp\my sandbox';
+    my $file_uri     = URI::file->new_abs($sandbox_unix);
     my $good_uri     = "file:///tmp/my%20sandbox";
 
     is( $file_uri,         $good_uri,     "file URI escaped correctly" );
-    is( $file_uri->file(), $sandbox_path, "got original filename (not current directory)" );
+
+    my $file_path = $file_uri->file();
+    $file_path    = '(undef)' unless defined $file_path;
+
+    if ( $file_path eq $sandbox_unix  or  $file_path eq $sandbox_win ) {
+      pass "got original filename for linux/windows";
+    } else {
+
+      my $current_dir = URI::file->new_abs('')->file();
+      if ( $file_path eq $current_dir ) {
+        fail "$test_loc: URI $URI::VERSION exposed a bug that could leak or destroy files on your system ($^O).";
+      } else {
+        diag "TODO: URI $URI::VERSION: A platform specific test on platform '$^O' with result '$file_path' "
+          .  "was skipped. Consider to notify maintainers ($test_loc).";
+      }
+
+    }
+
   }
 
 };
