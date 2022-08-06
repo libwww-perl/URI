@@ -1,6 +1,9 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Regression test added for a previous bug (5.11) in URI::file (Perlbotics).
+      file() method of URI::file can return the current working directory
+      instead of the properly unescaped path. (GH#106) (Perlbotics)
 
 5.12      2022-07-10 23:48:50Z
     - Fix an issue where i.e. 'file:///tmp/###' was not properly escaped.
