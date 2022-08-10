@@ -113,7 +113,7 @@ subtest "Regression Tests" => sub {
     my $file_path   = URI::file->new_abs('/a/path/that/pretty likely/does/not/exist-yie1Ahgh0Ohlahqueirequ0iebu8ip')->file();
     my $current_dir = URI::file->new_abs()->file();
 
-    isnt( $file_path, $current_dir, "URI $URI::VERSION exposes a bug that could leak or destroy files on your system ($^O)." );
+    isnt( $file_path, $current_dir, 'regression test for #102' );
   }
 
 };
