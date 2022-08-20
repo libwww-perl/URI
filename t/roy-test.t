@@ -1,8 +1,7 @@
 use strict;
 use warnings;
 
-use Test qw(ok plan);
-plan tests => 102;
+use Test::More tests => 102;
 
 use URI ();
 use File::Spec::Functions qw(catfile);
@@ -16,13 +15,13 @@ for my $i (1..5) {
    my $file = catfile(@prefix, "roytest$i.html");
 
    open(FILE, $file) || die "Can't open $file: $!";
-   print "# $file\n";
+   note $file;
    my $base = undef;
    while (<FILE>) {
        if (/^<BASE href="([^"]+)">/) {
            $base = URI->new($1);
        } elsif (/^<a href="([^"]*)">.*<\/a>\s*=\s*(\S+)/) {
-           die "Missing base at line $." unless $base;	    
+           die "Missing base at line $." unless $base;
            my $link = $1;
            my $exp  = $2;
            $exp = $base if $exp =~ /current/;  # special case test 22
@@ -35,7 +34,7 @@ for my $i (1..5) {
 	       $exp = "http://a/b/c/d;p?y";
 	   }
 
-	   ok(URI->new($link)->abs($base), $exp);
+	   is(URI->new($link)->abs($base), $exp);
 
            $no++;
        }
