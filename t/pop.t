@@ -1,50 +1,42 @@
 use strict;
 use warnings;
 
-print "1..8\n";
+use Test::More tests => 8;
 
 use URI ();
 
 my $u = URI->new('pop://aas@pop.sn.no');
 
-print "not " unless $u->user eq "aas" &&
-                    !defined($u->auth) &&
-	            $u->host eq "pop.sn.no" &&
-                    $u->port == 110 && 
-		    $u eq 'pop://aas@pop.sn.no';
-print "ok 1\n";
+ok($u->user eq "aas" &&
+   !defined($u->auth) &&
+   $u->host eq "pop.sn.no" &&
+   $u->port == 110 &&
+   $u eq 'pop://aas@pop.sn.no');
 
 $u->auth("+APOP");
-print "not " unless $u->auth eq "+APOP" &&
-                    $u eq 'pop://aas;AUTH=+APOP@pop.sn.no';
-print "ok 2\n";
+ok($u->auth eq "+APOP" &&
+   $u eq 'pop://aas;AUTH=+APOP@pop.sn.no');
 
 $u->user("gisle");
-print "not " unless $u->user eq "gisle" &&
-	            $u eq 'pop://gisle;AUTH=+APOP@pop.sn.no';
-print "ok 3\n";
+ok($u->user eq "gisle" &&
+   $u eq 'pop://gisle;AUTH=+APOP@pop.sn.no');
 
 $u->port(4000);
-print "not " unless $u eq 'pop://gisle;AUTH=+APOP@pop.sn.no:4000';
-print "ok 4\n";
+is($u, 'pop://gisle;AUTH=+APOP@pop.sn.no:4000');
 
 $u = URI->new("pop:");
 $u->host("pop.sn.no");
 $u->user("aas");
 $u->auth("*");
-print "not " unless $u eq 'pop://aas;AUTH=*@pop.sn.no';
-print "ok 5\n";
+is($u, 'pop://aas;AUTH=*@pop.sn.no');
 
 $u->auth(undef);
-print "not " unless $u eq 'pop://aas@pop.sn.no';
-print "ok 6\n";
+is($u, 'pop://aas@pop.sn.no');
 
 $u->user(undef);
-print "not " unless $u eq 'pop://pop.sn.no';
-print "ok 7\n";
+is($u, 'pop://pop.sn.no');
 
 # Try some funny characters too
 $u->user('får;k@l');
-print "not " unless $u->user eq 'får;k@l' &&
-                    $u eq 'pop://f%E5r%3Bk%40l@pop.sn.no';
-print "ok 8\n";
+ok($u->user eq 'får;k@l' &&
+   $u eq 'pop://f%E5r%3Bk%40l@pop.sn.no');

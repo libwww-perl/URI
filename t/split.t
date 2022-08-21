@@ -1,59 +1,42 @@
 use strict;
 use warnings;
 
-print "1..17\n";
+use Test::More tests => 17;
 
 use URI::Split qw(uri_join uri_split);
 
 sub j { join("-", map { defined($_) ? $_ : "<undef>" } @_) }
 
-print "not " unless j(uri_split("p")) eq "<undef>-<undef>-p-<undef>-<undef>";
-print "ok 1\n";
+is j(uri_split("p")), "<undef>-<undef>-p-<undef>-<undef>";
 
-print "not " unless j(uri_split("p?q")) eq "<undef>-<undef>-p-q-<undef>";
-print "ok 2\n";
+is j(uri_split("p?q")), "<undef>-<undef>-p-q-<undef>";
 
-print "not " unless j(uri_split("p#f")) eq "<undef>-<undef>-p-<undef>-f";
-print "ok 3\n";
+is j(uri_split("p#f")), "<undef>-<undef>-p-<undef>-f";
 
-print "not " unless j(uri_split("p?q/#f/?")) eq "<undef>-<undef>-p-q/-f/?";
-print "ok 4\n";
+is j(uri_split("p?q/#f/?")), "<undef>-<undef>-p-q/-f/?";
 
-print "not " unless j(uri_split("s://a/p?q#f")) eq "s-a-/p-q-f";
-print "ok 5\n";
+is j(uri_split("s://a/p?q#f")), "s-a-/p-q-f";
 
-print "not " unless uri_join("s", "a", "/p", "q", "f") eq "s://a/p?q#f";
-print "ok 6\n";
+is uri_join("s", "a", "/p", "q", "f"), "s://a/p?q#f";
 
-print "not " unless uri_join("s", "a", "p", "q", "f") eq "s://a/p?q#f";
-print "ok 7\n";
+is uri_join("s", "a", "p", "q", "f"), "s://a/p?q#f";
 
-print "not " unless uri_join(undef, undef, "", undef, undef) eq "";
-print "ok 8\n";
+is uri_join(undef, undef, "", undef, undef), "";
 
-print "not " unless uri_join(undef, undef, "p", undef, undef) eq "p";
-print "ok 9\n";
+is uri_join(undef, undef, "p", undef, undef), "p";
 
-print "not " unless uri_join("s", undef, "p") eq "s:p";
-print "ok 10\n";
+is uri_join("s", undef, "p"), "s:p";
 
-print "not " unless uri_join("s") eq "s:";
-print "ok 11\n";
+is uri_join("s"), "s:";
 
-print "not " unless uri_join() eq "";
-print "ok 12\n";
+is uri_join(), "";
 
-print "not " unless uri_join("s", "a") eq "s://a";
-print "ok 13\n";
+is uri_join("s", "a"), "s://a";
 
-print "not " unless uri_join("s", "a/b") eq "s://a%2Fb";
-print "ok 14\n";
+is uri_join("s", "a/b"), "s://a%2Fb";
 
-print "not " unless uri_join("s", ":/?#", ":/?#", ":/?#", ":/?#") eq "s://:%2F%3F%23/:/%3F%23?:/?%23#:/?#";
-print "ok 15\n";
+is uri_join("s", ":/?#", ":/?#", ":/?#", ":/?#"), "s://:%2F%3F%23/:/%3F%23?:/?%23#:/?#";
 
-print "not " unless uri_join(undef, undef, "a:b") eq "a%3Ab";
-print "ok 16\n";
+is uri_join(undef, undef, "a:b"), "a%3Ab";
 
-print "not " unless uri_join("s", undef, "//foo//bar") eq "s:////foo//bar";
-print "ok 17\n";
+is uri_join("s", undef, "//foo//bar"), "s:////foo//bar";

@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+use Test::More;
+
 use URI::file;
 $URI::file::DEFAULT_AUTHORITY = undef;
 
@@ -43,10 +45,7 @@ my @extratests = (
 my @os = @{shift @tests};
 shift @os;  # file
 
-my $num = @tests;
-print "1..$num\n";
-
-my $testno = 1;
+plan tests => scalar @tests;
 
 for my $t (@tests) {
    my @t = @$t;
@@ -63,19 +62,17 @@ for my $t (@tests) {
        my $loose;
        $loose++ if $expect =~ s/^!//;
        if ($expect ne $f) {
-           print "URI->new('$file', 'file')->file('$os') ne $expect, but $f\n";
+           diag "URI->new('$file', 'file')->file('$os') ne $expect, but $f";
            $err++;
        }
        if (defined($t[$i]) && !$loose) {
 	   my $u2 = URI::file->new($t[$i], $os);
            unless ($u2->as_string eq $file) {
-              print "URI::file->new('$t[$i]', '$os') ne $file, but $u2\n";
+              diag "URI::file->new('$t[$i]', '$os') ne $file, but $u2";
               $err++;
            }
        }
        $i++;
    }
-   print "not " if $err;
-   print "ok $testno\n";
-   $testno++;
+   ok !$err;
 }

@@ -1,219 +1,171 @@
 use strict;
 use warnings;
 
-print "1..48\n";
+use Test::More tests => 48;
 
 use URI ();
 
 my $foo = URI->new("Foo:opaque#frag");
 
-print "not " unless ref($foo) eq "URI::_foreign";
-print "ok 1\n";
+is(ref($foo), "URI::_foreign");
 
-print "not " unless $foo->as_string eq "Foo:opaque#frag";
-print "ok 2\n";
+is($foo->as_string, "Foo:opaque#frag");
 
-print "not " unless "$foo" eq "Foo:opaque#frag";
-print "ok 3\n";
+is("$foo", "Foo:opaque#frag");
 
 # Try accessors
-print "not " unless $foo->_scheme eq "Foo" && $foo->scheme eq "foo" && !$foo->has_recognized_scheme;
-print "ok 4\n";
+ok($foo->_scheme eq "Foo" && $foo->scheme eq "foo" && !$foo->has_recognized_scheme);
 
-print "not " unless $foo->opaque eq "opaque";
-print "ok 5\n";
+is($foo->opaque, "opaque");
 
-print "not " unless $foo->fragment eq "frag";
-print "ok 6\n";
+is($foo->fragment, "frag");
 
-print "not " unless $foo->canonical eq "foo:opaque#frag";
-print "ok 7\n";
+is($foo->canonical, "foo:opaque#frag");
 
 # Try modificators
 my $old = $foo->scheme("bar");
 
-print "not " unless $old eq "foo" && $foo eq "bar:opaque#frag";
-print "ok 8\n";
+ok($old eq "foo" && $foo eq "bar:opaque#frag");
 
 $old = $foo->scheme("");
-print "not " unless $old eq "bar" && $foo eq "opaque#frag";
-print "ok 9\n";
+ok($old eq "bar" && $foo eq "opaque#frag");
 
 $old = $foo->scheme("foo");
 $old = $foo->scheme(undef);
 
-print "not " unless $old eq "foo" && $foo eq "opaque#frag";
-print "ok 10\n";
+ok($old eq "foo" && $foo eq "opaque#frag");
 
 $foo->scheme("foo");
 
 
 $old = $foo->opaque("xxx");
-print "not " unless $old eq "opaque" && $foo eq "foo:xxx#frag";
-print "ok 11\n";
+ok($old eq "opaque" && $foo eq "foo:xxx#frag");
 
 $old = $foo->opaque("");
-print "not " unless $old eq "xxx" && $foo eq "foo:#frag";
-print "ok 12\n";
+ok($old eq "xxx" && $foo eq "foo:#frag");
 
 $old = $foo->opaque(" #?/");
 $old = $foo->opaque(undef);
-print "not " unless $old eq "%20%23?/" && $foo eq "foo:#frag";
-print "ok 13\n";
+ok($old eq "%20%23?/" && $foo eq "foo:#frag");
 
 $foo->opaque("opaque");
 
 
 $old = $foo->fragment("x");
-print "not " unless $old eq "frag" && $foo eq "foo:opaque#x";
-print "ok 14\n";
+ok($old eq "frag" && $foo eq "foo:opaque#x");
 
 $old = $foo->fragment("");
-print "not " unless $old eq "x" && $foo eq "foo:opaque#";
-print "ok 15\n";
+ok($old eq "x" && $foo eq "foo:opaque#");
 
 $old = $foo->fragment(undef);
-print "not " unless $old eq "" && $foo eq "foo:opaque";
-print "ok 16\n";
+ok($old eq "" && $foo eq "foo:opaque");
 
 
 # Compare
-print "not " unless $foo->eq("Foo:opaque") &&
-                    $foo->eq(URI->new("FOO:opaque")) &&
-	            $foo->eq("foo:opaque");
-print "ok 17\n";
+ok($foo->eq("Foo:opaque") &&
+   $foo->eq(URI->new("FOO:opaque")) &&
+   $foo->eq("foo:opaque"));
 
-print "not " if $foo->eq("Bar:opaque") ||
-                $foo->eq("foo:opaque#");
-print "ok 18\n";
+ok(!$foo->eq("Bar:opaque") &&
+   !$foo->eq("foo:opaque#"));
 
 
 # Try hierarchal unknown URLs
 
 $foo = URI->new("foo://host:80/path?query#frag");
 
-print "not " unless "$foo" eq "foo://host:80/path?query#frag";
-print "ok 19\n";
+is("$foo", "foo://host:80/path?query#frag");
 
 # Accessors
-print "not " unless $foo->scheme eq "foo";
-print "ok 20\n";
+is($foo->scheme, "foo");
 
-print "not " unless $foo->authority eq "host:80";
-print "ok 21\n";
+is($foo->authority, "host:80");
 
-print "not " unless $foo->path eq "/path";
-print "ok 22\n";
+is($foo->path, "/path");
 
-print "not " unless $foo->query eq "query";
-print "ok 23\n";
+is($foo->query, "query");
 
-print "not " unless $foo->fragment eq "frag";
-print "ok 24\n";
+is($foo->fragment, "frag");
 
 # Modificators
 $old = $foo->authority("xxx");
-print "not " unless $old eq "host:80" && $foo eq "foo://xxx/path?query#frag";
-print "ok 25\n";
+ok($old eq "host:80" && $foo eq "foo://xxx/path?query#frag");
 
 $old = $foo->authority("");
-print "not " unless $old eq "xxx" && $foo eq "foo:///path?query#frag";
-print "ok 26\n";
+ok($old eq "xxx" && $foo eq "foo:///path?query#frag");
 
 $old = $foo->authority(undef);
-print "not " unless $old eq "" && $foo eq "foo:/path?query#frag";
-print "ok 27\n";
+ok($old eq "" && $foo eq "foo:/path?query#frag");
 
 $old = $foo->authority("/? #;@&");
-print "not " unless !defined($old) && $foo eq "foo://%2F%3F%20%23;@&/path?query#frag";
-print "ok 28\n";
+ok(!defined($old) && $foo eq "foo://%2F%3F%20%23;@&/path?query#frag");
 
 $old = $foo->authority("host:80");
-print "not " unless $old eq "%2F%3F%20%23;@&" && $foo eq "foo://host:80/path?query#frag";
-print "ok 29\n";
+ok($old eq "%2F%3F%20%23;@&" && $foo eq "foo://host:80/path?query#frag");
 
 
 $old = $foo->path("/foo");
-print "not " unless $old eq "/path" && $foo eq "foo://host:80/foo?query#frag";
-print "ok 30\n";
+ok($old eq "/path" && $foo eq "foo://host:80/foo?query#frag");
 
 $old = $foo->path("bar");
-print "not " unless $old eq "/foo" && $foo eq "foo://host:80/bar?query#frag";
-print "ok 31\n";
+ok($old eq "/foo" && $foo eq "foo://host:80/bar?query#frag");
 
 $old = $foo->path("");
-print "not " unless $old eq "/bar" && $foo eq "foo://host:80?query#frag";
-print "ok 32\n";
+ok($old eq "/bar" && $foo eq "foo://host:80?query#frag");
 
 $old = $foo->path(undef);
-print "not " unless $old eq "" && $foo eq "foo://host:80?query#frag";
-print "ok 33\n";
+ok($old eq "" && $foo eq "foo://host:80?query#frag");
 
 $old = $foo->path("@;/?#");
-print "not " unless $old eq "" && $foo eq "foo://host:80/@;/%3F%23?query#frag";
-print "ok 34\n";
+ok($old eq "" && $foo eq "foo://host:80/@;/%3F%23?query#frag");
 
 $old = $foo->path("path");
-print "not " unless $old eq "/@;/%3F%23" && $foo eq "foo://host:80/path?query#frag";
-print "ok 35\n";
+ok($old eq "/@;/%3F%23" && $foo eq "foo://host:80/path?query#frag");
 
 
 $old = $foo->query("foo");
-print "not " unless $old eq "query" && $foo eq "foo://host:80/path?foo#frag";
-print "ok 36\n";
+ok($old eq "query" && $foo eq "foo://host:80/path?foo#frag");
 
 $old = $foo->query("");
-print "not " unless $old eq "foo" && $foo eq "foo://host:80/path?#frag";
-print "ok 37\n";
+ok($old eq "foo" && $foo eq "foo://host:80/path?#frag");
 
 $old = $foo->query(undef);
-print "not " unless $old eq "" && $foo eq "foo://host:80/path#frag";
-print "ok 38\n";
+ok($old eq "" && $foo eq "foo://host:80/path#frag");
 
 $old = $foo->query("/?&=# ");
-print "not " unless !defined($old) && $foo eq "foo://host:80/path?/?&=%23%20#frag";
-print "ok 39\n";
+ok(!defined($old) && $foo eq "foo://host:80/path?/?&=%23%20#frag");
 
 $old = $foo->query("query");
-print "not " unless $old eq "/?&=%23%20" && $foo eq "foo://host:80/path?query#frag";
-print "ok 40\n";
+ok($old eq "/?&=%23%20" && $foo eq "foo://host:80/path?query#frag");
 
 # Some buildup trics
 $foo = URI->new("");
 $foo->path("path");
 $foo->authority("auth");
 
-print "not " unless $foo eq "//auth/path";
-print "ok 41\n";
+is($foo, "//auth/path");
 
 $foo = URI->new("", "http:");
 $foo->query("query");
 $foo->authority("auth");
-print "not " unless $foo eq "//auth?query" && $foo->has_recognized_scheme;
-print "ok 42\n";
+ok($foo eq "//auth?query" && $foo->has_recognized_scheme);
 
 $foo->path("path");
-print "not " unless $foo eq "//auth/path?query";
-print "ok 43\n";
+is($foo, "//auth/path?query");
 
 $foo = URI->new("");
 $old = $foo->path("foo");
-print "not " unless $old eq "" && $foo eq "foo" && !$foo->has_recognized_scheme;
-print "ok 44\n";
+ok($old eq "" && $foo eq "foo" && !$foo->has_recognized_scheme);
 
 $old = $foo->path("bar");
-print "not " unless $old eq "foo" && $foo eq "bar";
-print "ok 45\n";
+ok($old eq "foo" && $foo eq "bar");
 
 $old = $foo->opaque("foo");
-print "not " unless $old eq "bar" && $foo eq "foo";
-print "ok 46\n";
+ok($old eq "bar" && $foo eq "foo");
 
 $old = $foo->path("");
-print "not " unless $old eq "foo" && $foo eq "";
-print "ok 47\n";
+ok($old eq "foo" && $foo eq "");
 
 $old = $foo->query("q");
-print "not " unless !defined($old) && $foo eq "?q";
-print "ok 48\n";
+ok(!defined($old) && $foo eq "?q");
 

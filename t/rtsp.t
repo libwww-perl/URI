@@ -1,43 +1,34 @@
 use strict;
 use warnings;
 
-print "1..9\n";
+use Test::More tests => 9;
 
 use URI ();
 
 my $u = URI->new("<rtsp://media.example.com/fôo.smi/>");
 
 #print "$u\n";
-print "not " unless $u eq "rtsp://media.example.com/f%F4o.smi/";
-print "ok 1\n";
+is($u, "rtsp://media.example.com/f%F4o.smi/");
 
-print "not " unless $u->port == 554;
-print "ok 2\n";
+is($u->port, 554);
 
 # play with port
 my $old = $u->port(8554);
-print "not " unless $old == 554 && $u eq "rtsp://media.example.com:8554/f%F4o.smi/";
-print "ok 3\n";
+ok($old == 554 && $u eq "rtsp://media.example.com:8554/f%F4o.smi/");
 
 $u->port(554);
-print "not " unless $u eq "rtsp://media.example.com:554/f%F4o.smi/";
-print "ok 4\n";
+is($u, "rtsp://media.example.com:554/f%F4o.smi/");
 
 $u->port("");
-print "not " unless $u eq "rtsp://media.example.com:/f%F4o.smi/" && $u->port == 554;
-print "ok 5\n";
+ok($u eq "rtsp://media.example.com:/f%F4o.smi/" && $u->port == 554);
 
 $u->port(undef);
-print "not " unless $u eq "rtsp://media.example.com/f%F4o.smi/";
-print "ok 6\n";
+is($u, "rtsp://media.example.com/f%F4o.smi/");
 
-print "not " unless $u->host eq "media.example.com";
-print "ok 7\n";
+is($u->host, "media.example.com");
 
-print "not " unless $u->path eq "/f%F4o.smi/";
-print "ok 8\n";
+is($u->path, "/f%F4o.smi/");
 
 $u->scheme("rtspu");
-print "not " unless $u->scheme eq "rtspu";
-print "ok 9\n";
+is($u->scheme, "rtspu");
 

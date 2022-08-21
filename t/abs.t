@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-print "1..45\n";
+use Test::More tests => 45;
 
 # This test the resolution of abs path for all examples given
 # in the "Uniform Resource Identifiers (URI): Generic Syntax" document.
@@ -18,14 +18,13 @@ while (<DATA>) {
    my $uref = $1;
    my $expect = $2;
    $expect =~ s/\(current document\)/$base/;
-   #print "$uref => $expect\n";
 
    my $bad;
    my $u = URI->new($uref, $base);
    if ($u->abs($base)->as_string ne $expect) {
        $bad++;
        my $abs = $u->abs($base)->as_string;
-       print qq(URI->new("$uref")->abs("$base") ==> "$abs"\n);
+       diag qq(URI->new("$uref")->abs("$base") ==> "$abs");
    }
 
    # Let's test another version of the same thing
@@ -33,7 +32,7 @@ while (<DATA>) {
    my $b = URI->new($base);
    if ($u->abs($b,1) ne $expect && $uref !~ /^http:/) {
        $bad++;
-       print qq(URI->new("$uref")->abs(URI->new("$base"), 1)\n);
+       diag qq(URI->new("$uref")->abs(URI->new("$base"), 1));
    }
 
    # Let's try the other way
@@ -42,13 +41,12 @@ while (<DATA>) {
        push(@rel_fail, qq($testno: URI->new("$expect", "$base")->rel ==> "$u" (not "$uref")\n));
    }
 
-   print "not " if $bad;
-   print "ok ", $testno++, "\n";
+   ok !$bad, "$uref => $expect";
 }
 
 if (@rel_fail) {
-    print "\n\nIn the following cases we did not get back to where we started with rel()\n";
-    print @rel_fail;
+    note "\n\nIn the following cases we did not get back to where we started with rel()";
+    note @rel_fail;
 }
 
 

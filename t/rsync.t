@@ -1,23 +1,19 @@
 use strict;
 use warnings;
 
-print "1..4\n";
+use Test::More tests => 4;
 
 use URI ();
 
 my $u = URI->new('rsync://gisle@example.com/foo/bar');
 
-print "not " unless $u->user eq "gisle";
-print "ok 1\n";
+is($u->user, "gisle");
 
-print "not " unless $u->port eq 873;
-print "ok 2\n";
+is($u->port, 873);
 
-print "not " unless $u->path eq "/foo/bar";
-print "ok 3\n";
+is($u->path, "/foo/bar");
 
 $u->port(8730);
 
-print "not " unless $u eq 'rsync://gisle@example.com:8730/foo/bar';
-print "ok 4\n";
+is($u, 'rsync://gisle@example.com:8730/foo/bar');
 
