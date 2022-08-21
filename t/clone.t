@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-print "1..2\n";
+use Test::More tests => 2;
 
 use URI::URL ();
 
@@ -14,8 +14,6 @@ $u1->base("http://yyy/");
 
 #use Data::Dump; Data::Dump::dump($b, $u1, $u2);
 
-print "not " unless $u1->abs->as_string eq "http://yyy/foo";
-print "ok 1\n";
+is $u1->abs->as_string, "http://yyy/foo";
 
-print "not " unless $u2->abs->as_string eq "http://www/foo";
-print "ok 2\n";
+is $u2->abs->as_string, "http://www/foo";

@@ -1,21 +1,9 @@
 use strict;
 use warnings;
 
-print "1..48\n";
+use Test::More tests => 48;
 
 use URI ();
-
-my $t = 1;
-sub is {
-    my ($exp, $got) = @_;
-    if (!defined $exp) {
-        print "not " if defined $got;
-    }
-    else {
-        print "not " unless $got eq $exp;
-    }
-    print "ok " . ($t++) . "\n";
-}
 
 sub check_gopher_uri {
     my ($u, $exphost, $expport, $exptype, $expselector, $expsearch) = @_;

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-print "1..6\n";
+use Test::More tests => 6;
 
 # Test mixing of URI and URI::WithBase objects
 use URI ();
@@ -27,32 +27,28 @@ sub Dump
 }
 
 #Dump();
-print "not " unless $a->isa("URI") &&
-                    ref($b) eq ref($uw) &&
-                    ref($c) eq ref($uu) &&
-                    $d->isa("URI");
-print "ok 1\n";
+ok($a->isa("URI") &&
+   ref($b) eq ref($uw) &&
+   ref($c) eq ref($uu) &&
+   $d->isa("URI"));
 
-print "not " if $b->base && $c->base;
-print "ok 2\n";
+ok(not $b->base && $c->base);
 
 $a = URI::URL->new($rel, $u);
 $b = URI::URL->new($rel, $uw);
 $c = URI::URL->new($rel, $uu);
 $d = URI::URL->new($rel, $str);
 
-print "not " unless ref($a) eq "URI::URL" &&
-                    ref($b) eq "URI::URL" &&
-                    ref($c) eq "URI::URL" &&
-                    ref($d) eq "URI::URL";
-print "ok 3\n";
+ok(ref($a) eq "URI::URL" &&
+   ref($b) eq "URI::URL" &&
+   ref($c) eq "URI::URL" &&
+   ref($d) eq "URI::URL");
 
-print "not " unless ref($b->base) eq ref($uw) &&
-                    $b->base eq $uw &&
-                    ref($c->base) eq ref($uu) &&
-                    $c->base eq $uu &&
-                    $d->base eq $str;
-print "ok 4\n";
+ok(ref($b->base) eq ref($uw) &&
+   $b->base eq $uw &&
+   ref($c->base) eq ref($uu) &&
+   $c->base eq $uu &&
+   $d->base eq $str);
 
 
 
@@ -62,19 +58,17 @@ $c = URI->new($uu, $uu);
 $d = URI->new($uu, $str);
 
 #Dump();
-print "not " unless ref($a) eq ref($b) &&
-                    ref($b) eq ref($c) &&
-                    ref($c) eq ref($d) &&
-                    ref($d) eq ref($u);
-print "ok 5\n";
+ok(ref($a) eq ref($b) &&
+   ref($b) eq ref($c) &&
+   ref($c) eq ref($d) &&
+   ref($d) eq ref($u));
 
 $a = URI::URL->new($u, $u);
 $b = URI::URL->new($u, $uw);
 $c = URI::URL->new($u, $uu);
 $d = URI::URL->new($u, $str);
 
-print "not " unless ref($a) eq "URI::URL" &&
-                    ref($b) eq "URI::URL" &&
-                    ref($c) eq "URI::URL" &&
-                    ref($d) eq "URI::URL";
-print "ok 6\n";
+ok(ref($a) eq "URI::URL" &&
+   ref($b) eq "URI::URL" &&
+   ref($c) eq "URI::URL" &&
+   ref($d) eq "URI::URL");

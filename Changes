@@ -5,6 +5,7 @@ Revision history for URI
       file() method of URI::file can return the current working directory
       instead of the properly unescaped path. (GH#106) (Perlbotics)
     - Replace "Test" with "Test::More" (GH#107) (James Raspass)
+    - Replace raw TAP printing with "Test::More" (GH#108) (James Raspass)
 
 5.12      2022-07-10 23:48:50Z
     - Fix an issue where i.e. 'file:///tmp/###' was not properly escaped.

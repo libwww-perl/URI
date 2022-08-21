@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-print "1..6\n";
+use Test::More tests => 6;
 
 use URI::URL qw(url);
 
@@ -12,27 +12,21 @@ $URI::URL::ABS_ALLOW_RELATIVE_SCHEME = 1;
 
 my $u1 = url("../../../../abc", "http://web/a/b");
 
-print "not " unless $u1->abs->as_string eq "http://web/abc";
-print "ok 1\n";
+is($u1->abs->as_string, "http://web/abc");
 
 {
     local $URI::URL::ABS_REMOTE_LEADING_DOTS;
-    print "not " unless $u1->abs->as_string eq "http://web/../../../abc";
-    print "ok 2\n";
+    is($u1->abs->as_string, "http://web/../../../abc");
 }
 
 
 $u1 = url("http:../../../../abc", "http://web/a/b");
-print "not " unless $u1->abs->as_string eq "http://web/abc";
-print "ok 3\n";
+is($u1->abs->as_string, "http://web/abc");
 
 {
    local $URI::URL::ABS_ALLOW_RELATIVE_SCHEME;
-   print "not " unless $u1->abs->as_string eq "http:../../../../abc";
-   print "ok 4\n";
-   print "not " unless $u1->abs(undef,1)->as_string eq "http://web/abc";
-   print "ok 5\n";
+   is($u1->abs->as_string, "http:../../../../abc");
+   is($u1->abs(undef,1)->as_string, "http://web/abc");
 }
 
-print "not " unless $u1->abs(undef,0)->as_string eq "http:../../../../abc";
-print "ok 6\n";
+is($u1->abs(undef,0)->as_string, "http:../../../../abc");

@@ -1,53 +1,40 @@
 use strict;
 use warnings;
 
-print "1..13\n";
+use Test::More tests => 13;
 
 use URI ();
 my $uri;
 
 $uri = URI->new("ftp://ftp.example.com/path");
 
-print "not " unless $uri->scheme eq "ftp";
-print "ok 1\n";
+is($uri->scheme, "ftp");
 
-print "not " unless $uri->host eq "ftp.example.com";
-print "ok 2\n";
+is($uri->host, "ftp.example.com");
 
-print "not " unless $uri->port eq 21;
-print "ok 3\n";
+is($uri->port, 21);
 
-print "not " unless $uri->user eq "anonymous";
-print "ok 4\n";
+is($uri->user, "anonymous");
 
-print "not " unless $uri->password eq 'anonymous@';
-print "ok 5\n";
+is($uri->password, 'anonymous@');
 
 $uri->userinfo("gisle\@aas.no");
 
-print "not " unless $uri eq "ftp://gisle%40aas.no\@ftp.example.com/path";
-print "ok 6\n";
+is($uri, "ftp://gisle%40aas.no\@ftp.example.com/path");
 
-print "not " unless $uri->user eq "gisle\@aas.no";
-print "ok 7\n";
+is($uri->user, "gisle\@aas.no");
 
-print "not " if defined($uri->password);
-print "ok 8\n";
+is($uri->password, undef);
 
 $uri->password("secret");
 
-print "not " unless $uri eq "ftp://gisle%40aas.no:secret\@ftp.example.com/path";
-print "ok 9\n";
+is($uri, "ftp://gisle%40aas.no:secret\@ftp.example.com/path");
 
 $uri = URI->new("ftp://gisle\@aas.no:secret\@ftp.example.com/path");
-print "not " unless $uri eq "ftp://gisle\@aas.no:secret\@ftp.example.com/path";
-print "ok 10\n";
+is($uri, "ftp://gisle\@aas.no:secret\@ftp.example.com/path");
 
-print "not " unless $uri->userinfo eq "gisle\@aas.no:secret";
-print "ok 11\n";
+is($uri->userinfo, "gisle\@aas.no:secret");
 
-print "not " unless $uri->user eq "gisle\@aas.no";
-print "ok 12\n";
+is($uri->user, "gisle\@aas.no");
 
-print "not " unless $uri->password eq "secret";
-print "ok 13\n";
+is($uri->password, "secret");

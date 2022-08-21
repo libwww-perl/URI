@@ -1,57 +1,48 @@
 use strict;
 use warnings;
 
-print "1..8\n";
+use Test::More tests => 8;
 
 use URI ();
 
 my $u = URI->new("news:comp.lang.perl.misc");
 
-print "not " unless $u->group eq "comp.lang.perl.misc" &&
-                    !defined($u->message) &&
-		    $u->port == 119 &&
-		    $u eq "news:comp.lang.perl.misc";
-print "ok 1\n";
+ok($u->group eq "comp.lang.perl.misc" &&
+   !defined($u->message) &&
+   $u->port == 119 &&
+   $u eq "news:comp.lang.perl.misc");
 
 
 $u->host("news.online.no");
-print "not " unless $u->group eq "comp.lang.perl.misc" &&
-                    $u->port == 119 &&
-                    $u eq "news://news.online.no/comp.lang.perl.misc";
-print "ok 2\n";
+ok($u->group eq "comp.lang.perl.misc" &&
+   $u->port == 119 &&
+   $u eq "news://news.online.no/comp.lang.perl.misc");
 
 $u->group("no.perl", 1 => 10);
-print "not " unless $u eq "news://news.online.no/no.perl/1-10";
-print "ok 3\n";
+is($u, "news://news.online.no/no.perl/1-10");
 
 my @g = $u->group;
-#print "G: @g\n";
-print "not " unless @g == 3 && "@g" eq "no.perl 1 10";
-print "ok 4\n";
+is_deeply(\@g, ["no.perl", 1, 10]);
 
 $u->message('42@g.aas.no');
 #print "$u\n";
-print "not " unless $u->message eq '42@g.aas.no' &&
-                    !defined($u->group) &&
-                    $u eq 'news://news.online.no/42@g.aas.no';
-print "ok 5\n";
+ok($u->message eq '42@g.aas.no' &&
+   !defined($u->group) &&
+   $u eq 'news://news.online.no/42@g.aas.no');
 
 
 $u = URI->new("nntp:no.perl");
-print "not " unless $u->group eq "no.perl" &&
-                    $u->port == 119;
-print "ok 6\n";
+ok($u->group eq "no.perl" &&
+   $u->port == 119);
 
 $u = URI->new("snews://snews.online.no/no.perl");
 
-print "not " unless $u->group eq "no.perl" &&
-	            $u->host  eq "snews.online.no" &&
-                    $u->port == 563;
-print "ok 7\n";
+ok($u->group eq "no.perl" &&
+   $u->host  eq "snews.online.no" &&
+   $u->port == 563);
 
 $u = URI->new("nntps://nntps.online.no/no.perl");
 
-print "not " unless $u->group eq "no.perl" &&
-	            $u->host  eq "nntps.online.no" &&
-                    $u->port == 563;
-print "ok 8\n";
+ok($u->group eq "no.perl" &&
+   $u->host  eq "nntps.online.no" &&
+   $u->port == 563);

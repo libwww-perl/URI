@@ -3,53 +3,39 @@ use warnings;
 
 use Test::Needs { 'Business::ISBN' => 3.005 };
 
-print "1..13\n";
+use Test::More tests => 13;
 
 use URI ();
 my $u = URI->new("URN:ISBN:0395363411");
 
-print "not " unless $u eq "URN:ISBN:0395363411" &&
-                    $u->scheme eq "urn" &&
-                    $u->nid eq "isbn";
-print "ok 1\n";
+ok($u eq "URN:ISBN:0395363411" &&
+   $u->scheme eq "urn" &&
+   $u->nid eq "isbn");
 
-print "not " unless $u->canonical eq "urn:isbn:0-395-36341-1";
-print "ok 2\n";
+is($u->canonical, "urn:isbn:0-395-36341-1");
 
-print "not " unless $u->isbn eq "0-395-36341-1";
-print "ok 3\n";
+is($u->isbn, "0-395-36341-1");
 
-print "not " unless $u->isbn_group_code == 0;
-print "ok 4\n";
+is($u->isbn_group_code, 0);
 
-print "not " unless $u->isbn_publisher_code == 395;
-print "ok 5\n";
+is($u->isbn_publisher_code, 395);
 
-print "not " unless $u->isbn13 eq "9780395363416";
-print "ok 6\n";
+is($u->isbn13, "9780395363416");
 
-print "not " unless $u->nss eq "0395363411";
-print "ok 7\n";
+is($u->nss, "0395363411");
 
-print "not " unless $u->isbn("0-88730-866-x") eq "0-395-36341-1";
-print "ok 8\n";
+is($u->isbn("0-88730-866-x"), "0-395-36341-1");
 
-print "not " unless $u->nss eq "0-88730-866-x";
-print "ok 9\n";
+is($u->nss, "0-88730-866-x");
 
-print "not " unless $u->isbn eq "0-88730-866-X";
-print "ok 10\n";
+is($u->isbn, "0-88730-866-X");
 
-print "not " unless URI::eq("urn:isbn:088730866x", "URN:ISBN:0-88-73-08-66-X");
-print "ok 11\n";
+ok(URI::eq("urn:isbn:088730866x", "URN:ISBN:0-88-73-08-66-X"));
 
 # try to illegal ones
 $u = URI->new("urn:ISBN:abc");
-print "not " unless $u eq "urn:ISBN:abc";
-print "ok 12\n";
+is($u, "urn:ISBN:abc");
 
-print "not " if $u->nss ne "abc" || defined $u->isbn;
-print "ok 13\n";
-
+ok($u->nss eq "abc" && !defined $u->isbn);
 
 
