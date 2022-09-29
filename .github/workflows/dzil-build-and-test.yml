@@ -47,13 +47,13 @@ jobs:
         run: cpan-install-dist-deps && test-dist
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
-  ubuntu-test-job:
+  test-job:
     needs: build-job
-    runs-on: "ubuntu-latest"
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        distribution: [default, strawberry]
         perl-version:
           - "5.8"
           - "5.10"
@@ -70,92 +70,23 @@ jobs:
           - "5.32"
           - "5.34"
           - "5.36"
-    name: perl ${{ matrix.perl-version }} on ${{ matrix.os }}
+        exclude:
+          - { os: windows-latest, distribution: default }
+          - { os: macos-latest,   distribution: strawberry }
+          - { os: ubuntu-latest,  distribution: strawberry }
+          - { distribution: strawberry, perl-version: "5.8" }
+          - { distribution: strawberry, perl-version: "5.10" }
+          - { distribution: strawberry, perl-version: "5.12" }
+          - { distribution: strawberry, perl-version: "5.34" }
+          - { distribution: strawberry, perl-version: "5.36" }
+    runs-on: ${{ matrix.os }}
+    name:  on ${{ matrix.os }} perl ${{ matrix.perl-version }}
     steps:
       - name: set up perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl-version }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: build_dir
-          path: .
-      - name: install deps using cpm
-        uses: perl-actions/install-with-cpm@v1
-        with:
-          cpanfile: "cpanfile"
-          args: "--with-suggests --with-recommends --with-test"
-      - run: prove -lr t
-        env:
-          AUTHOR_TESTING: 0
-          RELEASE_TESTING: 0
-  macos-test-job:
-    needs: ubuntu-test-job
-    runs-on: "macos-latest"
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [macos-latest]
-        perl-version:
-          - "5.8"
-          - "5.10"
-          - "5.12"
-          - "5.14"
-          - "5.16"
-          - "5.18"
-          - "5.20"
-          - "5.22"
-          - "5.24"
-          - "5.26"
-          - "5.28"
-          - "5.30"
-          - "5.32"
-          - "5.34"
-          - "5.36"
-    name: perl ${{ matrix.perl-version }} on ${{ matrix.os }}
-    steps:
-      - name: set up perl
-        uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: ${{ matrix.perl-version }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: build_dir
-          path: .
-      - name: install deps using cpm
-        uses: perl-actions/install-with-cpm@v1
-        with:
-          cpanfile: "cpanfile"
-          args: "--with-suggests --with-recommends --with-test"
-      - run: prove -lr t
-        env:
-          AUTHOR_TESTING: 0
-          RELEASE_TESTING: 0
-  windows-test-job:
-    needs: ubuntu-test-job
-    runs-on: "windows-latest"
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [windows-latest]
-        perl-version:
-          - "5.14"
-          - "5.16"
-          - "5.18"
-          - "5.20"
-          - "5.22"
-          - "5.24"
-          - "5.26"
-          - "5.28"
-          - "5.30"
-          - "5.32"
-    name: perl ${{ matrix.perl-version }} on ${{ matrix.os }}
-    steps:
-      - name: set up perl
-        uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: ${{ matrix.perl-version }}
-          distribution: strawberry # this option only used on windows
+          distribution: ${{ matrix.distribution }}
       - uses: actions/download-artifact@v3
         with:
           name: build_dir
