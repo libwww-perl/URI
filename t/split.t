@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 17;
 
-use URI::Split qw(uri_join uri_split);
+use URI::Split qw( uri_join uri_split );
 
 sub j { join("-", map { defined($_) ? $_ : "<undef>" } @_) }
 

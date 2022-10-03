@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-use URI::file;
+use URI::file ();
 $URI::file::DEFAULT_AUTHORITY = undef;
 
 my @tests =  (

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use URI::file;
+use URI::file ();
 
 
 subtest 'OS related tests (unix, win32, mac)' => sub {

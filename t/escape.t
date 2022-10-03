@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 12;
 
-use URI::Escape qw(%escapes uri_escape uri_escape_utf8 uri_unescape);
+use URI::Escape qw( %escapes uri_escape uri_escape_utf8 uri_unescape );
 
 is uri_escape("|abcå"), "%7Cabc%E5";
 

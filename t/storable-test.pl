@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Storable;
+use Storable qw( retrieve store );
 
 if (@ARGV && $ARGV[0] eq "store") {
     require URI;

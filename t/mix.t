@@ -5,7 +5,7 @@ use Test::More tests => 6;
 
 # Test mixing of URI and URI::WithBase objects
 use URI ();
-use URI::WithBase;
+use URI::WithBase ();
 use URI::URL ();
 
 my $str = "http://www.sn.no/";

@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 5;
 
-use URI::URL qw(url);
+use URI::URL qw( url );
 
 # We used to have problems with URLs that used a base that was
 # not absolute itself.

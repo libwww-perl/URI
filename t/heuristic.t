@@ -15,7 +15,7 @@ BEGIN {
 
 use Test::More tests => 26;
 
-use URI::Heuristic qw(uf_url uf_urlstr);
+use URI::Heuristic qw( uf_url uf_urlstr );
 if (shift) {
     $URI::Heuristic::DEBUG++;
     open(STDERR, ">&STDOUT");  # redirect STDERR
