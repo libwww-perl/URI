@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 6;
 
-use URI::URL qw(url);
+use URI::URL qw( url );
 
 # Test configuration via some global variables.
 

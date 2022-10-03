@@ -3,7 +3,7 @@ use warnings;
 
 use utf8;
 use Test::More tests => 7;
-use URI::_idna;
+use URI::_idna ();
 
 is URI::_idna::encode("www.example.com"), "www.example.com";
 is URI::_idna::decode("www.example.com"), "www.example.com";

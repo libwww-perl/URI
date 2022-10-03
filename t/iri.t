@@ -3,7 +3,7 @@ use warnings;
 
 use utf8;
 use Test::More;
-use Config qw(%Config);
+use Config qw( %Config );
 
 if (defined $Config{useperlio}) {
     plan tests=>26;
@@ -12,7 +12,7 @@ if (defined $Config{useperlio}) {
 }
 
 use URI ();
-use URI::IRI;
+use URI::IRI ();
 
 my $u;
 

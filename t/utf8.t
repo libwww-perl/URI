@@ -14,7 +14,7 @@ is( $uri->query, "mooi%E2%82%ACe=mooi%E2%82%ACe" );
 is( ($uri->query_form)[1], "mooi\xE2\x82\xACe" );
 
 # RT#70161
-use Encode qw(decode_utf8);
+use Encode qw( decode_utf8 );
 $uri = URI->new(decode_utf8 '?Query=%C3%A4%C3%B6%C3%BC');
 is( ($uri->query_form)[1], "\xC3\xA4\xC3\xB6\xC3\xBC");
 is( decode_utf8(($uri->query_form)[1]), 'äöü');

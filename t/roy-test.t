@@ -4,7 +4,7 @@ use warnings;
 use Test::More tests => 102;
 
 use URI ();
-use File::Spec::Functions qw(catfile);
+use File::Spec::Functions qw( catfile );
 
 my $no = 1;
 
