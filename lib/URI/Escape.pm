@@ -160,24 +160,31 @@ my %Unsafe = (
 sub uri_escape {
     my($text, $patn) = @_;
     return undef unless defined $text;
+    my $re;
     if (defined $patn){
-        unless (exists  $subst{$patn}) {
-            # Because we can't compile the regex we fake it with a cached sub
-            my @parts = $patn =~ m/(
-                (?: ^ \^? -? )
-                | (?: .-. )
-                | (?: \[:[^:]+:\] )
-                | .
-            )/gx;
-
-            my $tmp = join '', shift @parts, map { length > 1 ? $_ : quotemeta } @parts;
-            eval "\$subst{\$patn} = sub {\$_[0] =~ s/([$tmp])/\$escapes{\$1} || _fail_hi(\$1)/ge; }";
-            Carp::croak("uri_escape: $@") if $@;
+        $re = $subst{$patn};
+        if (!defined $re) {
+            $re = $patn;
+            # we need to escape the [] characters, except for those used in
+            # posix classes. if they are prefixed by a backslash, allow them
+            # through unmodified.
+            $re =~ s{(\[:\w+:\])|(\\)?([\[\]]|\\\z)}{
+                defined $1 ? $1 : defined $2 ? "$2$3" : "\\$3"
+            }ge;
+            eval {
+                # disable the warnings here, since they will trigger later
+                # when used, and we only want them to appear once per call,
+                # but every time the same pattern is used.
+                no warnings 'regexp';
+                $re = $subst{$patn} = qr{[$re]};
+                1;
+            } or Carp::croak("uri_escape: $@");
         }
-        &{$subst{$patn}}($text);
-    } else {
-        $text =~ s/($Unsafe{RFC3986})/$escapes{$1} || _fail_hi($1)/ge;
     }
+    else {
+        $re = $Unsafe{RFC3986};
+    }
+    $text =~ s/($re)/$escapes{$1} || _fail_hi($1)/ge;
     $text;
 }
 
