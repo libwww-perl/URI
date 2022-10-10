@@ -1,9 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
-    - fix uri_escape allowing \w style character classes in its character set
-      parameter
-
+    - Fix uri_escape allowing \w style character classes in its character set
+      parameter (GH#112) (Graham Knop)
 
 5.13      2022-10-06 16:46:32Z
     - Regression test added for a previous bug (5.11) in URI::file (Perlbotics).
