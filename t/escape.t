@@ -2,6 +2,8 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Warnings qw( :all );
+use Test::Fatal;
 
 use URI::Escape qw( %escapes uri_escape uri_escape_utf8 uri_unescape );
 
@@ -39,19 +41,19 @@ is
 
 is
     uri_escape ('[]\\${}', '][\\${`kill -0 -1`}'),
-    '%5B%5D%5C%24%7B%7D',
+    '%5B%5D\\%24%7B%7D',
     'it should recognize scalar interpolation injection in unwanted characters',
     ;
 
 is
     uri_escape ('[]\\@{}', '][\\@{`kill -0 -1`}'),
-    '%5B%5D%5C%40%7B%7D',
+    '%5B%5D\\%40%7B%7D',
     'it should recognize array interpolation injection in unwanted characters',
     ;
 
 is
     uri_escape ('[]\\%{}', '][\\%{`kill -0 -1`}'),
-    '%5B%5D%5C%25%7B%7D',
+    '%5B%5D\\%25%7B%7D',
     'it should recognize hash interpolation injection in unwanted characters',
     ;
 
@@ -72,6 +74,35 @@ is
     '%61-%62-%31',
     'it should recognize character groups'
     ;
+
+is
+    uri_escape ('abcd-', '\w'),
+    '%61%62%63%64-',
+    'it should allow character class escapes'
+    ;
+
+is
+    uri_escape ('a/b`]c^', '/-^'),
+    'a%2Fb`%5Dc%5E',
+    'regex characters like / and ^ allowed in range'
+    ;
+
+like exception { uri_escape ('abcdef', 'd-c') },
+  qr/Invalid \[\] range "d-c" in regex/,
+  'invalid range with max less than min throws exception';
+
+like join('', warnings {
+    is
+        uri_escape ('abcdeQE', '\Qabc\E'),
+        '%61%62%63de%51%45',
+        'it should allow character class escapes'
+        ;
+}), qr{
+  (?-x:Unrecognized escape \\Q in character class passed through in regex)
+  .*
+  (?-x:Unrecognized escape \\E in character class passed through in regex)
+}xs,
+  'bad escapes emit warnings';
 
 is $escapes{"%"}, "%25";
 
