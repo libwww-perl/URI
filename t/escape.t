@@ -104,6 +104,18 @@ like join('', warnings {
 }xs,
   'bad escapes emit warnings';
 
+is
+    uri_escape ('abcd-[]', qr/[bc]/),
+    'a%62%63d-[]',
+    'allows regexp objects',
+    ;
+
+is
+    uri_escape ('a12b21c12d', qr/12/),
+    'a%31%32b21c%31%32d',
+    'allows regexp objects matching multiple characters',
+    ;
+
 is $escapes{"%"}, "%25";
 
 is uri_escape_utf8("|abcå"), "%7Cabc%C3%A5";
