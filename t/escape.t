@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 21;
+use Test::More;
 
 use URI::Escape qw( %escapes uri_escape uri_escape_utf8 uri_unescape );
 
@@ -83,3 +83,5 @@ ok !eval { print uri_escape("abc" . chr(300)); 1 };
 like $@, qr/^Can\'t escape \\x\{012C\}, try uri_escape_utf8\(\) instead/;
 
 is uri_escape_utf8(chr(0xFFF)), "%E0%BF%BF";
+
+done_testing;
