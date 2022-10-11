@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Teach uri_escape to accept a Regexp object as the characters to escape
+      as an alternative to a character class.
 
 5.14      2022-10-10 20:37:57Z
     - Fix uri_escape allowing \w style character classes in its character set
