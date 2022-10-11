@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.15      2022-10-11 14:48:28Z
     - Teach uri_escape to accept a Regexp object as the characters to escape
       as an alternative to a character class. (GH#113) (Graham Knop)
