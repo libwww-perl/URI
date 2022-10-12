@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.16      2022-10-12 13:10:40Z
     - Merge the methods from URI::QueryParam into URI, so they are always
       available (GH#114) (Graham Knop)
 

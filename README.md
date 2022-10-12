@@ -326,8 +326,74 @@ methods:
     You might also set the $URI::DEFAULT\_QUERY\_FORM\_DELIMITER variable to
     ";" for the same global effect.
 
-    The `URI::QueryParam` module can be loaded to add further methods to
-    manipulate the form of a URI.  See [URI::QueryParam](https://metacpan.org/pod/URI%3A%3AQueryParam) for details.
+- @keys = $u->query\_param
+- @values = $u->query\_param( $key )
+- $first\_value = $u->query\_param( $key )
+- $u->query\_param( $key, $value,... )
+
+    If $u->query\_param is called with no arguments, it returns all the
+    distinct parameter keys of the URI.  In a scalar context it returns the
+    number of distinct keys.
+
+    When a $key argument is given, the method returns the parameter values with the
+    given key.  In a scalar context, only the first parameter value is
+    returned.
+
+    If additional arguments are given, they are used to update successive
+    parameters with the given key.  If any of the values provided are
+    array references, then the array is dereferenced to get the actual
+    values.
+
+    Please note that you can supply multiple values to this method, but you cannot
+    supply multiple keys.
+
+    Do this:
+
+        $uri->query_param( widget_id => 1, 5, 9 );
+
+    Do NOT do this:
+
+        $uri->query_param( widget_id => 1, frobnicator_id => 99 );
+
+- $u->query\_param\_append($key, $value,...)
+
+    Adds new parameters with the given
+    key without touching any old parameters with the same key.  It
+    can be explained as a more efficient version of:
+
+        $u->query_param($key,
+                        $u->query_param($key),
+                        $value,...);
+
+    One difference is that this expression would return the old values
+    of $key, whereas the query\_param\_append() method does not.
+
+- @values = $u->query\_param\_delete($key)
+- $first\_value = $u->query\_param\_delete($key)
+
+    Deletes all key/value pairs with the given key.
+    The old values are returned.  In a scalar context, only the first value
+    is returned.
+
+    Using the query\_param\_delete() method is slightly more efficient than
+    the equivalent:
+
+        $u->query_param($key, []);
+
+- $hashref = $u->query\_form\_hash
+- $u->query\_form\_hash( \\%new\_form )
+
+    Returns a reference to a hash that represents the
+    query form's key/value pairs.  If a key occurs multiple times, then the hash
+    value becomes an array reference.
+
+    Note that sequence information is lost.  This means that:
+
+        $u->query_form_hash($u->query_form_hash);
+
+    is not necessarily a no-op, as it may reorder the key/value pairs.
+    The values returned by the query\_param() method should stay the same
+    though.
 
 - $uri->query\_keywords
 - $uri->query\_keywords( $keywords, ... )
@@ -741,7 +807,7 @@ readable alternative.
 
 # SEE ALSO
 
-[URI::file](https://metacpan.org/pod/URI%3A%3Afile), [URI::WithBase](https://metacpan.org/pod/URI%3A%3AWithBase), [URI::QueryParam](https://metacpan.org/pod/URI%3A%3AQueryParam), [URI::Escape](https://metacpan.org/pod/URI%3A%3AEscape),
+[URI::file](https://metacpan.org/pod/URI%3A%3Afile), [URI::WithBase](https://metacpan.org/pod/URI%3A%3AWithBase), [URI::Escape](https://metacpan.org/pod/URI%3A%3AEscape),
 [URI::Split](https://metacpan.org/pod/URI%3A%3ASplit), [URI::Heuristic](https://metacpan.org/pod/URI%3A%3AHeuristic)
 
 RFC 2396: "Uniform Resource Identifiers (URI): Generic Syntax",
