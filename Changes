@@ -1,8 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
-    - merge the methods from URI::QueryParam into URI, so they are always
-      available
+    - Merge the methods from URI::QueryParam into URI, so they are always
+      available (GH#114) (Graham Knop)
 
 5.15      2022-10-11 14:48:28Z
     - Teach uri_escape to accept a Regexp object as the characters to escape
