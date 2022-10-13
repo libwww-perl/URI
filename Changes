@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Add a GH workflow to test LWP::Curl (GH#116) (Olaf Alders)
 
 5.17      2022-11-02 17:03:48Z
     - Updated RFC references in the pod documentation for URI::file (GH#117)

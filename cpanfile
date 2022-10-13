@@ -11,6 +11,7 @@ on 'develop' => sub {
     requires "IPC::Open3" => "0";
     requires "Pod::Coverage::TrustPod" => "0";
     requires "Test::CPAN::Meta" => "0";
+    requires "Test::DependentModules" => "0.27";
     requires "Test::MinimumVersion" => "0";
     requires "Test::Mojibake" => "0";
     requires "Test::More" => "0.94";
