@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Add a GH workflow to test LWP::Curl (GH#116) (Olaf Alders)
 
 5.16      2022-10-12 13:10:40Z
     - Merge the methods from URI::QueryParam into URI, so they are always
