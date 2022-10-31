@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Updated RFC references in the pod documentation for URI::file (GH#117)
+      (Håkon Hgland)
 
 5.16      2022-10-12 13:10:40Z
     - Merge the methods from URI::QueryParam into URI, so they are always
