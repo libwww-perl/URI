@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.17      2022-11-02 17:03:48Z
     - Updated RFC references in the pod documentation for URI::file (GH#117)
       (Håkon Hgland)
