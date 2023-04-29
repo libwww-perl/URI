@@ -6,6 +6,7 @@ Revision history for URI
       (Sebastian Willing)
     - Remove colon from username:password if there is no password (GH#31)
       (David E. Wheeler, Joenio Marques da Costa, Julien Fiegehenn)
+    - Prefix private methods with _ in URI::_punycode (GH#47) (David E Wheeler)
 
 5.17      2022-11-02 17:03:48Z
     - Updated RFC references in the pod documentation for URI::file (GH#117)
@@ -81,7 +82,6 @@ Revision history for URI
 
 1.73      2018-01-09 06:42:51Z
     - Update documentation for URI::_punycode (GH Issue #45)
-    - Prefix private methods with _ in URI::_punycode (GH Issue #47)
 
 1.72      2017-07-25
     - Convert the dist to Dist::Zilla for authoring.
