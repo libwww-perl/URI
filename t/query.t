@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 23;
+use Test::More tests => 25;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -31,8 +31,9 @@ is $u, "?%20+%2B+%3D+%5B+%5D";
 @q = $u->query_keywords;
 is join(":", @q), " :+:=:[:]";
 
+# If someone set query keywords than same keywords can be treated as form parameter
 @q = $u->query_form;
-ok !@q;
+is join(":", @q ), '  + = [ ]:';
 
 $u->query(" +?=#");
 is $u, "?%20+?=%23";
@@ -79,3 +80,10 @@ $u->query_form([]);
     $u->query_form(a => 1, b => 2);
 }
 is $u, "?a=1;b=2";
+
+# check if url with single query keyword parsed correctly
+my $u1 = URI->new("http://example.com/?foo");
+is $u1->query, 'foo';
+
+@q = $u1->query_form;
+is join(":", @q), 'foo:';
