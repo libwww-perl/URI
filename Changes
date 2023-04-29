@@ -4,6 +4,8 @@ Revision history for URI
     - Add a GH workflow to test LWP::Curl (GH#116) (Olaf Alders)
     - Add documentation examples for the host() and ihost() methods (GH#28)
       (Sebastian Willing)
+    - Remove colon from username:password if there is no password (GH#31)
+      (David E. Wheeler, Joenio Marques da Costa, Julien Fiegehenn)
 
 5.17      2022-11-02 17:03:48Z
     - Updated RFC references in the pod documentation for URI::file (GH#117)

@@ -1,12 +1,18 @@
 use strict;
 use warnings;
 
-print "1..1\n";
+use Test::More;
 
 use URI;
 
-my $uri = URI->new("rsync://foo:bar\@example.com");
-$uri->password(undef);
+my $uri = URI->new('rsync://foo:bar@example.com');
+like $uri->as_string, qr/foo:bar\@example\.com/, 'userinfo is included';
 
-print "not " if $uri->as_string =~ /foo:\@example.com/;
-print "ok 1\n";
+$uri->password(undef);
+like $uri->as_string, qr/foo\@example\.com/, 'set password to undef';
+
+$uri = URI->new('rsync://0:bar@example.com');
+$uri->password(undef);
+like $uri->as_string, qr/0\@example\.com/, '... also for username "0"';
+
+done_testing;

@@ -40,7 +40,7 @@ sub password
 	$user =~ s/:.*//;
 
 	if (!defined($new)) {
-	    $self->userinfo($user || undef);
+	    $self->userinfo(length $user ? $user : undef);
 	} else {
 	    $new = "" unless defined($new);
 	    $new =~ s/%/%25/g;
