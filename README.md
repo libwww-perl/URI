@@ -430,7 +430,7 @@ methods.
 
     Sets and returns the unescaped hostname.
 
-    If the $new\_host string ends with a colon and a number, then this
+    If the `$new_host` string ends with a colon and a number, then this
     number also sets the port.
 
     For IPv6 addresses the brackets around the raw address is removed in the return
@@ -438,9 +438,16 @@ methods.
     can use a raw address or one enclosed in brackets.  The address needs to be
     enclosed in brackets if you want to pass in a new port value as well.
 
+        my $uri = URI->new("http://www.\xC3\xBCri-sample/foo/bar.html");
+        print $u->host; # www.xn--ri-sample-fra0f
+
 - $uri->ihost
 
-    Returns the host in Unicode form.  Any IDNA A-labels are turned into U-labels.
+    Returns the host in Unicode form. Any IDNA A-labels (encoded unicode chars with
+    _xn--_ prefix) are turned into U-labels (unicode chars).
+
+        my $uri = URI->new("http://www.\xC3\xBCri-sample/foo/bar.html");
+        print $u->ihost; # www.\xC3\xBCri-sample
 
 - $uri->port
 - $uri->port( $new\_port )
