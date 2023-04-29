@@ -6,9 +6,9 @@ use Test::More;
 use Config qw( %Config );
 
 if (defined $Config{useperlio}) {
-    plan tests=>26;
+    plan tests=>30;
 } else {
-    plan skip_all=>'this perl doesn\'t support PerlIO layers';
+    plan skip_all=>"this perl doesn't support PerlIO layers";
 }
 
 use URI ();
@@ -24,6 +24,13 @@ is $u, "http://xn--bcher-kva.ch";
 is $u->host, "xn--bcher-kva.ch";
 is $u->ihost, "bücher.ch";
 is $u->as_iri, "http://bücher.ch";
+
+# example from the docs for host and ihost
+$u = URI->new("http://www.\xC3\xBCri-sample/foo/bar.html");
+is $u, "http://www.xn--ri-sample-fra0f/foo/bar.html";
+is $u->host, "www.xn--ri-sample-fra0f";
+is $u->ihost, "www.\xC3\xBCri-sample";
+is $u->as_iri, "http://www.\xC3\xBCri-sample/foo/bar.html";
 
 $u = URI->new("http://example.com/Bücher");
 is $u, "http://example.com/B%C3%BCcher";
