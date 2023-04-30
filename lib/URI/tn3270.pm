@@ -3,7 +3,7 @@ package URI::tn3270;
 use strict;
 use warnings;
 
-our $VERSION = '5.19';
+our $VERSION = '5.20';
 
 use parent 'URI::_login';
 
