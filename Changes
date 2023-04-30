@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+   - Form parameters without values are now represented by undef (GH#65)
+     (Gianni Ceccarelli)
 
 5.18      2023-04-29 16:08:14Z
     - Add a GH workflow to test LWP::Curl (GH#116) (Olaf Alders)
