@@ -74,7 +74,7 @@ sub query_form {
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
     return unless $old =~ /=/; # not a form
-    map { defined ? do { s/\+/ /g; uri_unescape($_) } : undef }
+    map { ( defined ) ? do { s/\+/ /g; uri_unescape($_) } : undef }
          map { /=/ ? split(/=/, $_, 2) : ($_ => undef)} split(/[&;]/, $old);
 }
 
