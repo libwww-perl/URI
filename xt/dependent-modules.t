@@ -5,7 +5,7 @@ use Test::Needs qw( Test::DependentModules );
 use Test::DependentModules qw( test_modules );
 use Test::More;
 
-my @modules = ('WWW::Mechanize');
+my @modules = ('HTTP::Message');
 
 SKIP: {
     skip '$ENV{TEST_DEPENDENTS} not set', scalar @modules
