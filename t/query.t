@@ -82,7 +82,7 @@ is $u, "?a=1;b=2";
 
 $u->query('a&b=2');
 @q = $u->query_form;
-is join(":", @q), "a::b:2";
+is join(":", map { defined ? $_ : '' } @q), "a::b:2";
 ok !defined($q[1]);
 
 $u->query_form(@q);
