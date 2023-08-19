@@ -7,7 +7,6 @@ use URI ();
 
 my $u = URI->new("<icap://www.example.com/path?q=fôo>");
 
-#print "$u\n";
 is($u, "icap://www.example.com/path?q=f%F4o");
 
 is($u->port, 1344);
