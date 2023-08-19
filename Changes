@@ -4,6 +4,7 @@ Revision history for URI
    - Remove Shebang and Taint from all tests.
    - Fix t/query.t to get rid of a warning about join() on
       array with undef
+   - Add icap and icaps URIs (GH#130) (david-dick)
 
 5.19      2023-04-30 16:15:58Z
    - Form parameters without values are now represented by undef (GH#65)
