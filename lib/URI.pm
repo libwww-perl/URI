@@ -994,6 +994,21 @@ implemented.  The scheme is used to reference HTTP servers through SSL
 connections.  Its syntax is the same as http, but the default
 port is different.
 
+=item B<icap>:
+
+The I<icap> URI scheme is specified in L<RFC 3507|http://tools.ietf.org/html/rfc3507>.
+The scheme is used to reference resources hosted by ICAP servers.
+
+C<URI> objects belonging to the icap scheme support the common,
+generic and server methods.
+
+=item B<icaps>:
+
+The I<icaps> URI scheme is specified in L<RFC 3507|http://tools.ietf.org/html/rfc3507> as well.
+The scheme is used to reference ICAP servers through SSL
+connections.  Its syntax is the same as icap, including the same
+default port.
+
 =item B<ldap>:
 
 The I<ldap> URI scheme is specified in RFC 2255.  LDAP is the
