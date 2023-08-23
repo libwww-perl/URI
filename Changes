@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.20      2023-08-23 14:13:23Z
    - Remove Shebang and Taint from all tests.
    - Fix t/query.t to get rid of a warning about join() on
