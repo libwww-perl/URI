@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Fix version declarations in icap.pm and icaps.pm (GH#131) (Olaf Alders)
 
 5.20      2023-08-23 14:13:23Z
    - Remove Shebang and Taint from all tests.
