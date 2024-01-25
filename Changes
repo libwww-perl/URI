@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.23      2024-01-25 21:02:18Z
     - Revert the reftype change introduced in 5.22 as it causes warnings.
       (GH#134) (Olaf Alders)
 
