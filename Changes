@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - cache scheme so it never attempt to load it again (GH#55) (mschae94)
 
 5.21      2023-08-23 16:02:14Z
     - Fix version declarations in icap.pm and icaps.pm (GH#131) (Olaf Alders)
