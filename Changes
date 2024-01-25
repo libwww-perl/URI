@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Revert the reftype change introduced in 5.22 as it causes warnings.
+      (GH#134) (Olaf Alders)
 
 5.22      2024-01-25 15:22:54Z
     - Use Scalar::Util::reftype instead of ref to check for ARRAY (GH#132)
