@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.22      2024-01-25 15:22:54Z
     - Use Scalar::Util::reftype instead of ref to check for ARRAY (GH#132)
       (Jacques Deguest)
 
