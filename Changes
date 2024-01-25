@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Use Scalar::Util::reftype instead of ref to check for ARRAY (GH#132)
+      (Jacques Deguest)
 
 5.21      2023-08-23 16:02:14Z
     - Fix version declarations in icap.pm and icaps.pm (GH#131) (Olaf Alders)
