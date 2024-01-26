@@ -5,7 +5,6 @@ use warnings;
 
 use URI ();
 use URI::Escape qw(uri_unescape);
-use Scalar::Util ();
 
 our $VERSION = '5.24';
 
@@ -35,7 +34,7 @@ sub query_form {
         # Try to set query string
         my $delim;
         my $r = $_[0];
-        if (Scalar::Util::reftype($r) eq "ARRAY") {
+        if (ref($r) eq "ARRAY") {
             $delim = $_[1];
             @_ = @$r;
         }
@@ -50,7 +49,7 @@ sub query_form {
             $key = '' unless defined $key;
 	    $key =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
 	    $key =~ s/ /+/g;
-	    $vals = [Scalar::Util::reftype($vals) eq "ARRAY" ? @$vals : $vals];
+	    $vals = [ref($vals) eq "ARRAY" ? @$vals : $vals];
             for my $val (@$vals) {
                 if (defined $val) {
                     $val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
@@ -87,7 +86,7 @@ sub query_keywords
     if (@_) {
         # Try to set query string
 	my @copy = @_;
-	@copy = @{$copy[0]} if @copy == 1 && Scalar::Util::reftype($copy[0]) eq "ARRAY";
+	@copy = @{$copy[0]} if @copy == 1 && ref($copy[0]) eq "ARRAY";
 	for (@copy) { s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg; }
 	$self->query(@copy ? join('+', @copy) : undef);
     }
@@ -115,7 +114,7 @@ sub query_param {
     if (@_) {
         my @new = @old;
         my @new_i = @i;
-        my @vals = map { Scalar::Util::reftype($_) eq 'ARRAY' ? @$_ : $_ } @_;
+        my @vals = map { ref($_) eq 'ARRAY' ? @$_ : $_ } @_;
 
         while (@new_i > @vals) {
             splice @new, pop @new_i, 2;
@@ -140,7 +139,7 @@ sub query_param {
 sub query_param_append {
     my $self = shift;
     my $key = shift;
-    my @vals = map { Scalar::Util::reftype $_ eq 'ARRAY' ? @$_ : $_ } @_;
+    my @vals = map { ref $_ eq 'ARRAY' ? @$_ : $_ } @_;
     $self->query_form($self->query_form, $key => \@vals);  # XXX
     return;
 }
@@ -169,7 +168,7 @@ sub query_form_hash {
     while (my($k, $v) = splice(@old, 0, 2)) {
         if (exists $hash{$k}) {
             for ($hash{$k}) {
-                $_ = [$_] unless Scalar::Util::reftype($_) eq "ARRAY";
+                $_ = [$_] unless ref($_) eq "ARRAY";
                 push(@$_, $v);
             }
         }
