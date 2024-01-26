@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.24      2024-01-26 04:36:32Z
     - Really revert "use Scalar::Util::reftype instead of ref to check for
       ARRAY" (GH#136) (Olaf Alders)
