@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.25      2024-01-27 16:11:41Z
     - cache scheme so it never attempt to load it again (GH#55) (mschae94)
 
 5.24      2024-01-26 04:36:32Z
