@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 19;
+use Test::More tests => 20;
 
 use URI ();
 use URI::QueryParam;
@@ -65,6 +65,21 @@ is $u->query, 'a=1&a=2&a=3&b=1';
 
 $u->query_param('a' => []);
 $u->query_param('b' => []);
+
+ok ! $u->query;
+
+# Same, but using array object
+{
+    package
+        Foo::Bar::Array;
+    sub new
+    {
+        my $this = shift( @_ );
+        return( bless( ( @_ == 1 && ref( $_[0] || '' ) eq 'ARRAY' ) ? shift( @_ ) : [@_] => ( ref( $this ) || $this ) ) );
+    }
+}
+$u->query_param('a' => Foo::Bar::Array->new);
+$u->query_param('b' => Foo::Bar::Array->new);
 
 ok ! $u->query;
 

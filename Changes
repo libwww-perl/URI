@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Using Scalar::Util::reftype instead of just ref(), but mindful this time
+      about definedness to avoid warnings (GH#140) (Jacques Deguest)
 
 5.27      2024-02-09 15:01:24Z
     - Add missing NAME section to POD of URI::geo (GH#142) (gregor herrmann)
