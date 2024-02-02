@@ -232,14 +232,6 @@ sub _path {
 
 __END__
 
-=head1 NAME
-
-URI::geo - The geo URI scheme.
-
-=head1 VERSION
-
-This document describes URI::geo version 5.26
-
 =head1 SYNOPSIS
 
   use URI;
