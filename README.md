@@ -541,6 +541,15 @@ generic methods.
     connections.  Its syntax is the same as http, but the default
     port is different.
 
+- **geo**:
+
+    The _geo_ URI scheme is specified in [RFC 5870](http://tools.ietf.org/html/rfc5870).
+    The scheme is used to reference physical location in a two- or
+    three-dimensional coordinate reference system in a compact, simple,
+    human-readable, and protocol-independent way.
+
+    `URI` objects belonging to the geo scheme support the common methods.
+
 - **icap**:
 
     The _icap_ URI scheme is specified in [RFC 3507](http://tools.ietf.org/html/rfc3507).
