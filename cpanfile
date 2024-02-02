@@ -5,7 +5,6 @@ on 'configure' => sub {
 
 on 'develop' => sub {
     recommends 'Business::ISBN' => "3.005";
-    recommends 'Geo::Point' => "0";
     recommends "Storable" => "0";
     requires "File::Spec" => "0";
     requires "IO::Handle" => "0";
@@ -42,7 +41,6 @@ on 'runtime' => sub {
     requires "utf8" => '0';
     suggests 'Regexp::IPv6' => "0.03";
     suggests 'Business::ISBN' => "3.005";
-    suggests 'Geo::Point' => "0";
 };
 
 on 'test' => sub {
