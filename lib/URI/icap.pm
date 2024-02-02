@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw(URI::http);
 
-our $VERSION = '5.26';
+our $VERSION = '5.27';
 
 sub default_port { return 1344 }
 

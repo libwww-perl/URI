@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw(URI::icap);
 
-our $VERSION = '5.26';
+our $VERSION = '5.27';
 
 sub secure { return 1 }
 
