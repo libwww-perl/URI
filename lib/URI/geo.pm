@@ -244,7 +244,7 @@ This document describes URI::geo version 5.26
 
   use URI;
 
-  # GeoURI from textual uri
+  # Geo URI from textual uri
   my $guri = URI->new( 'geo:54.786989,-2.344214' );
 
   # From coordinates
@@ -291,11 +291,11 @@ Create a new URI::geo. The arguments should be either
 
 =back
 
-To maximise the likelyhood that you can pass in some object that
+To maximize the likelihood that you can pass in some object that
 represents a geographical location and have URI::geo do the right thing
 we try a number of different accessor names.
 
-If the object has a C<latlong> method (eg L<Geo::Point>) we'll use that.
+If the object has a C<latlong> method (e.g. L<Geo::Point>) we'll use that.
 If there's a C<location> method we call that. Otherwise we look for
 accessors called C<lat>, C<latitude>, C<lon>, C<long>, C<longitude>,
 C<ele>, C<alt>, C<elevation> or C<altitude> and use them.
@@ -317,7 +317,7 @@ and this:
 
   my $guri = URI::geo->new( 55, -1 );
 
-Note that you can also create a new C<URI::geo> by passing a GeoURI to
+Note that you can also create a new C<URI::geo> by passing a Geo URI to
 C<URI::new>:
 
   use URI;
