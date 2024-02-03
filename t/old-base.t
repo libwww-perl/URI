@@ -348,6 +348,19 @@ sub parts_test {
     $url->query_form(a => ['foo', 'bar'], b => 'foo', c => ['bar', 'foo']);
     is($url->as_string, 'http://web?a=foo&a=bar&b=foo&c=bar&c=foo', ref($url) . '->as_string');
 
+    # Same, but using array object
+    {
+        package
+            Foo::Bar::Array;
+        sub new
+        {
+            my $this = shift( @_ );
+            return( bless( ( @_ == 1 && ref( $_[0] || '' ) eq 'ARRAY' ) ? shift( @_ ) : [@_] => ( ref( $this ) || $this ) ) );
+        }
+    }
+    $url->query_form(a => Foo::Bar::Array->new(['foo', 'bar']), b => 'foo', c => Foo::Bar::Array->new(['bar', 'foo']));
+    is($url->as_string, 'http://web?a=foo&a=bar&b=foo&c=bar&c=foo', ref($url) . '->as_string');
+
     subtest 'netloc_test' => \&netloc_test;
     subtest 'port_test' => \&port_test;
 
