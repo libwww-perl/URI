@@ -50,7 +50,7 @@ sub query_form {
             $key = '' unless defined $key;
 	    $key =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
 	    $key =~ s/ /+/g;
-	    $vals = [(defined($vals) && (Scalar::Util::reftype($vals) || '') eq "ARRAY") ? @$vals : $vals];
+	    $vals = [(defined($vals) && (Scalar::Util::reftype($vals) || '') eq "ARRAY" && !( Scalar::Util::blessed( $vals ) && overload::Method( $vals, '""' ) ) ) ? @$vals : $vals];
             for my $val (@$vals) {
                 if (defined $val) {
                     $val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
@@ -87,7 +87,7 @@ sub query_keywords
     if (@_) {
         # Try to set query string
 	my @copy = @_;
-	@copy = @{$copy[0]} if @copy == 1 && defined($copy[0]) && (Scalar::Util::reftype($copy[0]) || '') eq "ARRAY";
+	@copy = @{$copy[0]} if @copy == 1 && defined($copy[0]) && (Scalar::Util::reftype($copy[0]) || '') eq "ARRAY" && !( Scalar::Util::blessed( $copy[0] ) && overload::Method( $copy[0], '""' ) );
 	for (@copy) { s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg; }
 	$self->query(@copy ? join('+', @copy) : undef);
     }
@@ -115,7 +115,7 @@ sub query_param {
     if (@_) {
         my @new = @old;
         my @new_i = @i;
-        my @vals = map { (defined($_) && (Scalar::Util::reftype($_) || '') eq 'ARRAY') ? @$_ : $_ } @_;
+        my @vals = map { (defined($_) && (Scalar::Util::reftype($_) || '') eq 'ARRAY' && !( Scalar::Util::blessed( $_ ) && overload::Method( $_, '""' ) )) ? @$_ : $_ } @_;
 
         while (@new_i > @vals) {
             splice @new, pop @new_i, 2;
@@ -140,7 +140,7 @@ sub query_param {
 sub query_param_append {
     my $self = shift;
     my $key = shift;
-    my @vals = map { (defined($_) && (Scalar::Util::reftype($_) || '') eq 'ARRAY') ? @$_ : $_ } @_;
+    my @vals = map { (defined($_) && (Scalar::Util::reftype($_) || '') eq 'ARRAY' && !( Scalar::Util::blessed( $_ ) && overload::Method( $_, '""' ) )) ? @$_ : $_ } @_;
     $self->query_form($self->query_form, $key => \@vals);  # XXX
     return;
 }
@@ -169,7 +169,7 @@ sub query_form_hash {
     while (my($k, $v) = splice(@old, 0, 2)) {
         if (exists $hash{$k}) {
             for ($hash{$k}) {
-                $_ = [$_] unless(defined($_) && (Scalar::Util::reftype($_) || '') eq "ARRAY");
+                $_ = [$_] unless(defined($_) && (Scalar::Util::reftype($_) || '') eq "ARRAY" && !( Scalar::Util::blessed( $_ ) && overload::Method( $_, '""' ) ));
                 push(@$_, $v);
             }
         }
