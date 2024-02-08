@@ -232,6 +232,10 @@ sub _path {
 
 __END__
 
+=head1 NAME
+
+URI::geo - URI scheme for geo Identifiers
+
 =head1 SYNOPSIS
 
   use URI;
