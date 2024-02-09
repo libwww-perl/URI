@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Add missing NAME section to POD of URI::geo (GH#142) (gregor herrmann)
 
 5.26      2024-02-02 19:04:40Z
     - Add URI::geo (GH#141) (david-dick)
