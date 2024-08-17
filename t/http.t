@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 76;
 
 use URI ();
 
@@ -48,3 +48,51 @@ $u = URI->new("http://%65%78%61%6d%70%6c%65%2e%63%6f%6d/%70%75%62/%61/%32%30%30%
 is($u->canonical, "http://example.com/pub/a/2001/08/27/bjornstad.html");
 
 ok($u->has_recognized_scheme);
+
+my $username = 'u1!"#$%&\'()*+,-./;<=>?@[\]^_`{|}~';
+my $exp_username = 'u1!%22%23$%&\'()*+,-.%2F;%3C=%3E%3F@%5B%5C%5D%5E_%60%7B%7C%7D~';
+my $password = 'p1!"#$%&\'()*+,-./;<=>?@[\]^_`{|}~';
+my $exp_password = 'p1!%22%23$%&\'()*+,-.%2F;%3C=%3E%3F@%5B%5C%5D%5E_%60%7B%7C%7D~';
+my $path = 'path/to/page';
+my $query = 'a=b&c=d';
+my %host = (
+    '[::1]' => {
+        host => '::1',
+        port => 80,
+    },
+    '[::1]:8080' => {
+        host => '::1',
+        port => 8080,
+    },
+    '127.0.0.1' => {
+        host => '127.0.0.1',
+        port => 80,
+    },
+    '127.0.0.1:8080' => {
+        host => '127.0.0.1',
+        port => 8080,
+    },
+    'localhost' => {
+        host => 'localhost',
+        port => 80,
+    },
+    'localhost:8080' => {
+        host => 'localhost',
+        port => 8080,
+    },
+);
+
+foreach my $host (keys %host) {
+    my $uri = URI->new("http://${username}:${password}\@${host}/${path}?${query}");
+    is($uri->scheme, 'http');
+    is($uri->userinfo, "${exp_username}:${exp_password}");
+    is($uri->host, $host{$host}->{host});
+    is($uri->port, $host{$host}->{port});
+    is($uri->path, "/${path}");
+    is($uri->query, $query);
+    is($uri->authority, "${exp_username}:${exp_password}\@${host}");
+    is($uri->as_string, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+    is($uri->as_iri, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+    is($uri->canonical, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+}
+

@@ -5,19 +5,25 @@ use warnings;
 
 use parent 'URI::_generic';
 
-use URI::Escape qw(uri_unescape);
+use URI::Escape qw(uri_unescape uri_escape);
 
 our $VERSION = '5.29';
 
 sub _uric_escape {
     my($class, $str) = @_;
-    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
-	my($scheme, $host, $rest) = ($1, $2, $3);
-	my $ui = $host =~ s/(.*@)// ? $1 : "";
-	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
-	if (_host_escape($host)) {
-	    $str = "$scheme//$ui$host$port$rest";
-	}
+    if ($str =~ m,^((?:$URI::scheme_re:)?)//(.*:.*@)?([^/?\#]*)(.*)$,os) {
+        my $scheme = $1;
+        my $ui = $2 || '';
+        my $host = $3;
+        my $rest = $4;
+        my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+        if ($ui) {
+            # escape /?# symbols as they are used
+            # in subsequent regex for path parsing
+            $ui = uri_escape($ui, '/?#');
+        }
+        _host_escape($host);
+        $str = "$scheme//$ui$host$port$rest";
     }
     return $class->SUPER::_uric_escape($str);
 }
@@ -26,8 +32,8 @@ sub _host_escape {
   return if  URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric]/;
   return if !URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric4host]/;
     eval {
-	require URI::_idna;
-	$_[0] = URI::_idna::encode($_[0]);
+        require URI::_idna;
+        $_[0] = URI::_idna::encode($_[0]);
     };
     return 0 if $@;
     return 1;
