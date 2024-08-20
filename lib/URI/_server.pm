@@ -11,7 +11,7 @@ our $VERSION = '5.29';
 
 sub _uric_escape {
     my($class, $str) = @_;
-    if ($str =~ m,^((?:$URI::scheme_re:)?)//(.*:.*@)?([^/?\#]*)(.*)$,os) {
+    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^:]+:.*@)?([^/?\#]*)(.*)$,os) {
         my $scheme = $1;
         my $userinfo = $2 || '';
         my $host = $3;
