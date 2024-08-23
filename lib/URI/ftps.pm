@@ -1,7 +1,11 @@
 package URI::ftps;
 
-require URI::ftp;
-@ISA=qw(URI::ftp);
+use strict;
+use warnings;
+
+our $VERSION = '5.29';
+
+use parent 'URI::ftp';
 
 sub default_port { 990 }
 
