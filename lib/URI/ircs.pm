@@ -1,7 +1,11 @@
 package URI::ircs;
 
-require URI::irc;
-@ISA=qw(URI::irc);
+use strict;
+use warnings;
+
+our $VERSION = '5.29';
+
+use parent 'URI::irc';
 
 sub default_port { 994 }
 

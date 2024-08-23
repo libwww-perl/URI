@@ -1,9 +1,11 @@
 package URI::irc;  # draft-butcher-irc-url-04
 
-require URI::_login;
-@ISA=qw(URI::_login);
-
 use strict;
+use warnings;
+
+our $VERSION = '5.29';
+
+use parent 'URI::_login';
 
 use overload (
    '""'     => sub { $_[0]->as_string  },

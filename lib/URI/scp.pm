@@ -1,5 +1,10 @@
 package URI::scp;
-require URI::ssh;
-@ISA=qw(URI::ssh);
+
+use strict;
+use warnings;
+
+our $VERSION = '5.29';
+
+use parent 'URI::ssh';
 
 1;
