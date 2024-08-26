@@ -123,7 +123,7 @@ sub _fix_uric_escape_for_host_part {
     return;
   }
 
-  if ($_[0] =~ m{^((?:$URI::scheme_re:)?)//((.*:.*@)?[^/?\#]+)(.*)$}os) {
+  if ($_[0] =~ m{^((?:$URI::scheme_re:)?)//([^/?\#]+)(.*)$}os) {
     my $orig          = $2;
     my ($user, $host) = $orig =~ /^(.*@)?([^@]*)$/;
     $user  ||= '';

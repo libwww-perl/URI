@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 76;
+use Test::More tests => 256;
 
 use URI ();
 
@@ -53,7 +53,12 @@ my $username = 'u1!"#$%&\'()*+,-./;<=>?@[\]^_`{|}~';
 my $exp_username = 'u1!%22%23$%&\'()*+,-.%2F;%3C=%3E%3F@%5B%5C%5D%5E_%60%7B%7C%7D~';
 my $password = 'p1!"#$%&\'()*+,-./;<=>?@[\]^_`{|}~';
 my $exp_password = 'p1!%22%23$%&\'()*+,-.%2F;%3C=%3E%3F@%5B%5C%5D%5E_%60%7B%7C%7D~';
-my $path = 'path/to/page';
+my @path = qw(
+    path/to/page
+    path@to/page
+    path:@to/page
+    path:to@page/with@at
+);
 my $query = 'a=b&c=d';
 my %host = (
     '[::1]' => {
@@ -83,16 +88,19 @@ my %host = (
 );
 
 foreach my $host (keys %host) {
-    my $uri = URI->new("http://${username}:${password}\@${host}/${path}?${query}");
-    is($uri->scheme, 'http');
-    is($uri->userinfo, "${exp_username}:${exp_password}");
-    is($uri->host, $host{$host}->{host});
-    is($uri->port, $host{$host}->{port});
-    is($uri->path, "/${path}");
-    is($uri->query, $query);
-    is($uri->authority, "${exp_username}:${exp_password}\@${host}");
-    is($uri->as_string, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
-    is($uri->as_iri, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
-    is($uri->canonical, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+    foreach my $path (@path) {
+        my $uri = URI->new("http://${username}:${password}\@${host}/${path}?${query}");
+        is($uri->scheme, 'http');
+        is($uri->userinfo, "${exp_username}:${exp_password}");
+        is($uri->host, $host{$host}->{host});
+        is($uri->port, $host{$host}->{port});
+        is($uri->path, "/${path}");
+        is($uri->query, $query);
+        is($uri->authority, "${exp_username}:${exp_password}\@${host}");
+        is($uri->as_string, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+        is($uri->as_iri, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+        is($uri->canonical, "http://${exp_username}:${exp_password}\@${host}/${path}?${query}");
+    }
 }
+
 
