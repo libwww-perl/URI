@@ -632,6 +632,13 @@ generic methods.
 
     See _news_ scheme and [RFC 5538](https://tools.ietf.org/html/rfc5538).
 
+- **otpauth**:
+
+    The _otpauth_ URI scheme is specified in [https://github.com/google/google-authenticator/wiki/Key-Uri-Format](https://github.com/google/google-authenticator/wiki/Key-Uri-Format).
+    The scheme is used to encode secret keys for use in TOTP or HOTP schemes.
+
+    `URI` objects belonging to the otpauth scheme support the common methods.
+
 - **pop**:
 
     The _pop_ URI scheme is specified in RFC 2384. The scheme is used to

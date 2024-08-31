@@ -1087,6 +1087,13 @@ See I<news> scheme.
 
 See I<news> scheme and L<RFC 5538|https://tools.ietf.org/html/rfc5538>.
 
+=item B<otpauth>:
+
+The I<otpauth> URI scheme is specified in L<https://github.com/google/google-authenticator/wiki/Key-Uri-Format>.
+The scheme is used to encode secret keys for use in TOTP or HOTP schemes.
+
+C<URI> objects belonging to the otpauth scheme support the common methods.
+
 =item B<pop>:
 
 The I<pop> URI scheme is specified in RFC 2384. The scheme is used to
