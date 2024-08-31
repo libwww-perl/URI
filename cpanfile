@@ -28,6 +28,7 @@ on 'runtime' => sub {
     requires "Data::Dumper" => "0";
     requires "Encode" => "0";
     requires "Exporter" => "5.57";
+    requires "MIME::Base32" => "0";
     requires "MIME::Base64" => "2";
     requires "Net::Domain" => "0";
     requires "Scalar::Util" => "0";
