@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.30      2024-10-08 21:18:35Z
     - Add scp, ftps, ftpes, irc, ircs schemes (GH#16) (SineSwiper)
 

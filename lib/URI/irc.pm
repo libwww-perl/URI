@@ -3,7 +3,7 @@ package URI::irc;  # draft-butcher-irc-url-04
 use strict;
 use warnings;
 
-our $VERSION = '5.30';
+our $VERSION = '5.31';
 
 use parent 'URI::_login';
 
