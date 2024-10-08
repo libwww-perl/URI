@@ -1,6 +1,7 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Add scp, ftps, ftpes, irc, ircs schemes (GH#16) (SineSwiper)
 
 5.29      2024-09-05 16:09:30Z
     - Add otpauth URI (GH#145) (david-dick)
