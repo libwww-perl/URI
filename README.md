@@ -515,6 +515,9 @@ generic methods.
     generic and server methods.  In addition, they provide two methods for
     accessing the userinfo sub-components: $uri->user and $uri->password.
 
+    It also supports accessing to the encryption mode ($uri->encrypt\_mode),
+    which has its own defaults for _ftps_ and _ftpes_ URI schemes.
+
 - **gopher**:
 
     The _gopher_ URI scheme is specified in
@@ -564,6 +567,15 @@ generic methods.
     The scheme is used to reference ICAP servers through SSL
     connections.  Its syntax is the same as icap, including the same
     default port.
+
+- **irc**:
+
+    The _irc_ URI scheme is specified in [draft-butcher-irc-url-04](https://datatracker.ietf.org/doc/html/draft-butcher-irc-url-04).
+    The scheme is used to reference IRC servers and their resources.
+
+    `URI` objects belonging to the irc or ircs scheme support login
+    methods, and the following IRC-specific ones: $uri->entity,
+    $uri->flags, $uri->options.
 
 - **ldap**:
 
