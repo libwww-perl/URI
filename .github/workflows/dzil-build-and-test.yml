@@ -68,17 +68,19 @@ jobs:
           - "5.32"
           - "5.34"
           - "5.36"
+          - "5.38"
+          - "5.40"
         exclude:
           - { os: windows-latest, distribution: default }
           - { os: macos-latest,   distribution: strawberry }
           - { os: ubuntu-latest,  distribution: strawberry }
-          - { distribution: strawberry, perl-version: "5.8" }
           - { distribution: strawberry, perl-version: "5.10" }
           - { distribution: strawberry, perl-version: "5.12" }
           - { distribution: strawberry, perl-version: "5.14" }
           - { distribution: strawberry, perl-version: "5.16" }
           - { distribution: strawberry, perl-version: "5.34" }
           - { distribution: strawberry, perl-version: "5.36" }
+          - { distribution: strawberry, perl-version: "5.8" }
     runs-on: ${{ matrix.os }}
     name:  on ${{ matrix.os }} perl ${{ matrix.perl-version }}
     steps:

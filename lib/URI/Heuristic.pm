@@ -158,6 +158,11 @@ sub uf_uristr ($)
     } elsif (/^(ftp|gopher|news|wais|https|http)[a-z0-9-]*(?:\.|$)/i) {
 	$_ = lc($1) . "://$_";
 
+    } elsif (
+		m,^//, || m,^[\\][\\],) # UNC-like file name
+    {
+		s{[\\]}{/}g;
+		$_ = "smb:$_";
     } elsif ($^O ne "MacOS" && 
 	    (m,^/,      ||          # absolute file name
 	     m,^\.\.?/, ||          # relative file name

@@ -1153,6 +1153,13 @@ I<sip> parameters: $uri->params_form and $uri->params.
 See I<sip> scheme.  Its syntax is the same as sip, but the default
 port is different.
 
+=item B<smb>:
+
+C<URI> objects belonging to the smb scheme support the common,
+generic and server methods. In addition, they provide methods to
+access the userinfo sub-components ($uri->user and $uri->password)
+as well as $uri->authdomain and $uri->sharename methods.
+
 =item B<snews>:
 
 See I<news> scheme.  Its syntax is the same as news, but the default
