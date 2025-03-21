@@ -48,7 +48,7 @@ jobs:
   test-job:
     needs: build-job
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         distribution: [default, strawberry]
@@ -68,6 +68,8 @@ jobs:
           - "5.32"
           - "5.34"
           - "5.36"
+          - "5.38"
+          - "5.40"
         exclude:
           - { os: windows-latest, distribution: default }
           - { os: macos-latest,   distribution: strawberry }
