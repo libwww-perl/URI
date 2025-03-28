@@ -13,7 +13,7 @@ BEGIN {
     };
 }
 
-use Test::More tests => 26;
+use Test::More tests => 28;
 
 use URI::Heuristic qw( uf_url uf_urlstr );
 if (shift) {
@@ -101,6 +101,10 @@ is(uf_urlstr("perl"), "http://www.perl.org");
     is(uf_urlstr("123.3.3.3:443/foo"), "https://123.3.3.3:443/foo");
 
     is(uf_urlstr("123.3.3.3:21/foo"), "ftp://123.3.3.3:21/foo");
+
+    is(uf_urlstr("//server/share/dir"), "smb://server/share/dir");
+    
+    is(uf_urlstr(qq(\\\\server\\share\\dir)), "smb://server/share/dir");
 
     is(uf_url("FTP.example.com")->scheme, "ftp");
 
