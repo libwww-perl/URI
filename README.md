@@ -698,13 +698,6 @@ generic methods.
     See _sip_ scheme.  Its syntax is the same as sip, but the default
     port is different.
 
-- **smb**:
-
-    `URI` objects belonging to the smb scheme support the common,
-    generic and server methods. In addition, they provide methods to
-    access the userinfo sub-components ($uri->user and $uri->password)
-    as well as $uri->authdomain and $uri->sharename methods.
-
 - **snews**:
 
     See _news_ scheme.  Its syntax is the same as news, but the default
