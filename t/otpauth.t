@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use URI;
-use Test::More tests => 86;
+use Test::More tests => 90;
 
 {
   my $uri = URI->new( 'otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example' );
@@ -121,6 +121,7 @@ for my $case ( @case ) {
   ok $uri, "created $uri";
   is $uri->scheme(), 'otpauth', "$name: scheme";
   is $uri->type(),  $type, "$name: type";
+  is $uri->authority(),  $type, "$name: authority";
   is $uri->secret(), $secret, "$name: secret";
   is $uri->issuer(),  $issuer, "$name: issuer";
   if (defined $issuer) {
@@ -140,6 +141,8 @@ my $doc2_uri = URI::otpauth->new( type => 'totp', issuer => 'Example', account_n
 diag "doc1_uri is $doc1_uri";
 diag "doc2_uri is $doc2_uri";
 is "$doc1_uri", "$doc2_uri", "$doc1_uri: matches";
+
+is $doc1_uri->type(), $doc2_uri->authority(), "type and authority match";
 
 # vim:ts=2:sw=2:et:ft=perl
 
