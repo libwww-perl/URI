@@ -138,11 +138,6 @@ eval {
 like $@, qr/^secret is a mandatory parameter for URI::otpauth/,   "missing secret";
 my $doc1_uri = URI->new( 'otpauth://totp/Example:alice@google.com?secret=NFZS25DINFZV643VOAZXELLTGNRXEM3UH4&issuer=Example' );
 my $doc2_uri = URI::otpauth->new( type => 'totp', issuer => 'Example', account_name => 'alice@google.com', secret => 'is-this_sup3r-s3cr3t?' );
-diag "doc1_uri is $doc1_uri";
-diag "doc2_uri is $doc2_uri";
 is "$doc1_uri", "$doc2_uri", "$doc1_uri: matches";
 
 is $doc1_uri->type(), $doc2_uri->authority(), "type and authority match";
-
-# vim:ts=2:sw=2:et:ft=perl
-
