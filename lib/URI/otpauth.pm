@@ -128,6 +128,8 @@ sub type {
     return $self->_field('type', @parameters);
 }
 
+sub authority { return shift->type(@_); }
+
 sub label {
     my ($self, @parameters) = @_;
     return $self->_field('label', @parameters);
