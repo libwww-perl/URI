@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.32      2025-05-10 21:26:50Z
     - Add authority() to URI::otpauth (GH#152) (GH#153) (Lester Hightower)
     - Implement URI::smb for Samba/CIFS (GH#149) (buralien)

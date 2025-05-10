@@ -3,7 +3,7 @@ package URI::pop;   # RFC 2384
 use strict;
 use warnings;
 
-our $VERSION = '5.32';
+our $VERSION = '5.33';
 
 use parent 'URI::_server';
 
