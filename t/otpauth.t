@@ -61,7 +61,7 @@ use Test::More tests => 90;
   is $issuer_uri->digits(),  6,                                                            'digits';
   is $issuer_uri->period(),  30,                                                           'period';
   is $issuer_uri->fragment(),   undef,                                                     'fragment';
-  my $issuer2_uri = URI->new( 'otpauth://hotp/Example:alice@google.com?&issuer=Example2&counter=23&period=15' );
+  my $issuer2_uri = URI->new( 'otpauth://hotp/Example2:alice@google.com?&issuer=Example2&counter=23&period=15' );
   ok $issuer2_uri,                                                                          "created $issuer2_uri";
   isa_ok $issuer2_uri, 'URI::otpauth';
   is $issuer2_uri->type(),    'hotp',                                                       'type';
