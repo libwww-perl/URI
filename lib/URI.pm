@@ -1226,14 +1226,14 @@ value.  In a list context, oid numbers are returned as separate elements.
 =item B<ws>:
 
 The I<ws> URI scheme is specified in L<RFC 6455|http://tools.ietf.org/html/rfc6455>.
-The C<Websocket> Protocol enables two-way communication between a client
+The C<WebSocket> Protocol enables two-way communication between a client
 running untrusted code in a controlled environment to a remote host
 that has opted-in to communications from that code.
 
 =item B<wss>:
 
 The I<wss> URI scheme is specified in L<RFC 6455|http://tools.ietf.org/html/rfc6455> as well.
-The scheme is used to reference C<Websocket> servers through SSL connections.
+The scheme is used to reference C<WebSocket> servers through SSL connections.
 
 =back
 

@@ -12,7 +12,7 @@ __END__
 
 =head1 NAME
 
-URI::ws - URI scheme for Websocket Identifiers
+URI::ws - URI scheme for WebSocket Identifiers
 
 =head1 VERSION
 
