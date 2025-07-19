@@ -1232,6 +1232,18 @@ separated by dots.  A C<URI> object belonging to this namespace has an
 additional method called $uri->oid that can be used to get/set the oid
 value.  In a list context, oid numbers are returned as separate elements.
 
+=item B<ws>:
+
+The <ws> URI scheme is specified in L<RFC 6455|http://tools.ietf.org/html/rfc6455>.
+The C<WebSocket> Protocol enables two-way communication between a client
+running untrusted code in a controlled environment to a remote host
+that has opted-in to communications from that code.
+
+=item B<wss>:
+
+The I<wss> URI scheme is specified in L<RFC 6455|http://tools.ietf.org/html/rfc6455> as well.
+The scheme is used to reference C<WebSocket> servers through SSL connections.
+
 =back
 
 =head1 CONFIGURATION VARIABLES
