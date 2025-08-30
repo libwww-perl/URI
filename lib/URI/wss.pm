@@ -16,7 +16,7 @@ URI::wss - URI scheme for WebSocket Identifiers
 
 =head1 VERSION
 
-Version 5.20
+Version 5.33
 
 =head1 SYNOPSIS
 
