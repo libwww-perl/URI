@@ -54,7 +54,7 @@ See L<URI|URI#BUGS>
 
 =head1 SEE ALSO
 
-L<RFC 3507|http://tools.ietf.org/html/rfc3507>
+L<RFC 6455|http://tools.ietf.org/html/rfc6455>
 
 =head1 AUTHOR
 
