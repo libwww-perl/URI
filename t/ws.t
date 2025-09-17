@@ -5,7 +5,7 @@ use Test::More tests => 16;
 
 use URI ();
 
-my $u = URI->new("<ws://www.example.com/path?q=fôo>");
+my $u = URI->new("ws://www.example.com/path?q=f%F4o");
 
 #print "$u\n";
 is($u, "ws://www.example.com/path?q=f%F4o");
@@ -26,7 +26,7 @@ $u->port(undef);
 is($u, "ws://www.example.com/path?q=f%F4o");
 
 my @q = $u->query_form;
-is_deeply(\@q, ["q", "fôo"]);
+is_deeply(\@q, ["q", "f\xF4o"]);
 
 $u->query_form(foo => "bar", bar => "baz");
 is($u->query, "foo=bar&bar=baz");
