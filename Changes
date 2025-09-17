@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.33      2025-09-17 03:23:13Z
     - Add smtp scheme (GH#156) (SineSwiper)
 
 5.32      2025-05-10 21:26:50Z

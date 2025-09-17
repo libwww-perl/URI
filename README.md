@@ -521,7 +521,7 @@ generic methods.
 - **gopher**:
 
     The _gopher_ URI scheme is specified in
-    &lt;draft-murali-url-gopher-1996-12-04> and will hopefully be available
+    `draft-murali-url-gopher-1996-12-04` and will hopefully be available
     as a RFC 2396 based specification.
 
     `URI` objects belonging to the gopher scheme support the common,
@@ -657,8 +657,8 @@ generic methods.
     reference a POP3 mailbox.
 
     `URI` objects belonging to the pop scheme support the common, generic
-    and server methods.  In addition, they provide two methods to access the
-    userinfo components: $uri->user and $uri->auth
+    and server methods, as well as two email authorization methods:
+    `user` and `auth`.
 
 - **rlogin**:
 
@@ -704,6 +704,15 @@ generic methods.
     generic and server methods. In addition, they provide methods to
     access the userinfo sub-components ($uri->user and $uri->password)
     as well as $uri->authdomain and $uri->sharename methods.
+
+- **smtp**:
+
+    The _smtp_ URI scheme is specified in [draft-earhart-url-smtp-00](https://datatracker.ietf.org/doc/html/draft-earhart-url-smtp-00).
+    The scheme is used to reference a SMTP server.
+
+    `URI` objects belonging to the smtp scheme support the common, generic
+    and server methods, as well as two email authorization methods:
+    `user` and `auth`.
 
 - **snews**:
 
