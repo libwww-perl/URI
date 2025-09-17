@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.34      2025-09-17 11:00:27Z
     - Add WebSocket (ws, wss) URI (GH#158) (david-dick)
 
