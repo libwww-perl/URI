@@ -5,19 +5,25 @@ use warnings;
 
 use parent 'URI::_generic';
 
-use URI::Escape qw(uri_unescape);
+use URI::Escape qw(uri_unescape uri_escape);
 
 our $VERSION = '5.35';
 
 sub _uric_escape {
     my($class, $str) = @_;
-    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
-	my($scheme, $host, $rest) = ($1, $2, $3);
-	my $ui = $host =~ s/(.*@)// ? $1 : "";
-	my $port = $host =~ s/(:\d+)\z// ? $1 : "";
-	if (_host_escape($host)) {
-	    $str = "$scheme//$ui$host$port$rest";
-	}
+    if ($str =~ m,^((?:$URI::scheme_re:)?)//([^:]+:[^@]*@)?([^/?\#]*)(.*)$,os) {
+        my $scheme = $1;
+        my $userinfo = $2 || '';
+        my $host = $3;
+        my $rest = $4;
+        my $port = $host =~ s/(:\d+)\z// ? $1 : "";
+        if ($userinfo) {
+            # escape /?# symbols as they are used
+            # in subsequent regex for path parsing
+            $userinfo = uri_escape($userinfo, '/?#');
+        }
+        _host_escape($host);
+        $str = "$scheme//$userinfo$host$port$rest";
     }
     return $class->SUPER::_uric_escape($str);
 }
@@ -26,8 +32,8 @@ sub _host_escape {
   return if  URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric]/;
   return if !URI::HAS_RESERVED_SQUARE_BRACKETS  and  $_[0] !~ /[^$URI::uric4host]/;
     eval {
-	require URI::_idna;
-	$_[0] = URI::_idna::encode($_[0]);
+        require URI::_idna;
+        $_[0] = URI::_idna::encode($_[0]);
     };
     return 0 if $@;
     return 1;
@@ -39,11 +45,11 @@ sub as_iri {
     if ($str =~ /\bxn--/) {
 	if ($str =~ m,^((?:$URI::scheme_re:)?)//([^/?\#]*)(.*)$,os) {
 	    my($scheme, $host, $rest) = ($1, $2, $3);
-	    my $ui = $host =~ s/(.*@)// ? $1 : "";
+	    my $userinfo = $host =~ s/(.*@)// ? $1 : "";
 	    my $port = $host =~ s/(:\d+)\z// ? $1 : "";
 	    require URI::_idna;
 	    $host = URI::_idna::decode($host);
-	    $str = "$scheme//$ui$host$port$rest";
+	    $str = "$scheme//$userinfo$host$port$rest";
 	}
     }
     return $str;
@@ -58,10 +64,10 @@ sub userinfo
 	my $new = $old;
 	$new = "" unless defined $new;
 	$new =~ s/.*@//;  # remove old stuff
-	my $ui = shift;
-	if (defined $ui) {
-          $ui =~ s/([^$URI::uric4user])/ URI::Escape::escape_char($1)/ego;
-          $new = "$ui\@$new";
+	my $userinfo = shift;
+	if (defined $userinfo) {
+          $userinfo =~ s/([^$URI::uric4user])/ URI::Escape::escape_char($1)/ego;
+          $new = "$userinfo\@$new";
 	}
 	$self->authority($new);
     }
@@ -76,7 +82,7 @@ sub host
     if (@_) {
 	my $tmp = $old;
 	$tmp = "" unless defined $tmp;
-	my $ui = ($tmp =~ /(.*@)/) ? $1 : "";
+	my $userinfo = ($tmp =~ /(.*@)/) ? $1 : "";
 	my $port = ($tmp =~ /(:\d+)$/) ? $1 : "";
 	my $new = shift;
 	$new = "" unless defined $new;
@@ -89,7 +95,7 @@ sub host
 	    $new = "[$new]" if $new =~ /:/ && $new !~ /^\[/; # IPv6 address
 	    _host_escape($new);
 	}
-	$self->authority("$ui$new$port");
+	$self->authority("$userinfo$new$port");
     }
     return undef unless defined $old;
     $old =~ s/.*@//;
