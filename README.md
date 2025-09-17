@@ -777,6 +777,18 @@ generic methods.
     additional method called $uri->oid that can be used to get/set the oid
     value.  In a list context, oid numbers are returned as separate elements.
 
+- **ws**:
+
+    The &lt;ws> URI scheme is specified in [RFC 6455](http://tools.ietf.org/html/rfc6455).
+    The `WebSocket` Protocol enables two-way communication between a client
+    running untrusted code in a controlled environment to a remote host
+    that has opted-in to communications from that code.
+
+- **wss**:
+
+    The _wss_ URI scheme is specified in [RFC 6455](http://tools.ietf.org/html/rfc6455) as well.
+    The scheme is used to reference `WebSocket` servers through SSL connections.
+
 # CONFIGURATION VARIABLES
 
 The following configuration variables influence how the class and its
