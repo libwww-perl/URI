@@ -156,10 +156,13 @@ sub canonical
     my $uc_host = $host =~ /[A-Z]/;
     my $def_port = defined($port) && ($port eq "" ||
                                       $port == $self->default_port);
-    if ($uc_host || $def_port) {
+    # Normalize port by stripping leading zeros (but not if it's a default port that will be removed)
+    my $norm_port = !$def_port && defined($port) && $port ne "" && $port =~ /^0/;
+    if ($uc_host || $def_port || $norm_port) {
 	$other = $other->clone if $other == $self;
 	$other->host(lc $host) if $uc_host;
 	$other->port(undef)    if $def_port;
+	$other->_port(int($port)) if $norm_port;
     }
     $other;
 }
