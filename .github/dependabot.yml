@@ -7,11 +7,6 @@ updates:
     # Check for updates to GitHub Actions every week
     interval: "weekly"
   groups:
-    major-updates:
-      patterns:
-        - "*"
-      update-types:
-        - "major"
     minor-and-patch:
       patterns:
         - "*"
