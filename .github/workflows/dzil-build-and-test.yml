@@ -15,7 +15,7 @@ jobs:
     name: Build distribution
     runs-on: ubuntu-24.04
     container:
-      image: perldocker/perl-tester:5.34
+      image: perldocker/perl-tester:5.42
     steps:
       - uses: actions/checkout@v5
       - name: Run Tests
@@ -29,12 +29,11 @@ jobs:
         with:
           name: build_dir
           path: build_dir
-        if: ${{ github.actor != 'nektos/act' }}
   coverage-job:
     needs: build-job
     runs-on: ubuntu-24.04
     container:
-      image: perldocker/perl-tester:5.34
+      image: perldocker/perl-tester:5.42
     steps:
       - uses: actions/checkout@v5 # codecov wants to be inside a Git repository
       - uses: actions/download-artifact@v5
@@ -70,6 +69,7 @@ jobs:
           - "5.36"
           - "5.38"
           - "5.40"
+          - "5.42"
         exclude:
           - { os: windows-latest, distribution: default }
           - { os: macos-latest,   distribution: strawberry }
