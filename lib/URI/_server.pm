@@ -156,8 +156,7 @@ sub canonical
     my $uc_host = $host =~ /[A-Z]/;
     my $def_port = defined($port) && ($port eq "" ||
                                       $port == $self->default_port);
-    # Normalize port by stripping leading zeros (but not if it's a default port that will be removed)
-    # Only normalize if port starts with 0 followed by another digit (e.g., 08080, 080, 00443)
+    # strip leading zeros from non-default ports (e.g. 08080 -> 8080)
     my $norm_port = !$def_port && defined($port) && $port ne "" && $port =~ /^0\d/;
     if ($uc_host || $def_port || $norm_port) {
 	$other = $other->clone if $other == $self;
