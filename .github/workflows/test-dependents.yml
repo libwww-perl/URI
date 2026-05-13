@@ -9,7 +9,7 @@ jobs:
     name: Build distribution
     runs-on: ubuntu-24.04
     container:
-      image: perldocker/perl-tester:5.36
+      image: perldocker/perl-tester:5.42
     steps:
       - uses: actions/checkout@v5
       - name: install extra modules
