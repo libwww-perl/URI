@@ -79,6 +79,12 @@ jobs:
           - { distribution: strawberry, perl-version: "5.16" }
           - { distribution: strawberry, perl-version: "5.34" }
           - { distribution: strawberry, perl-version: "5.36" }
+          - { os: macos-latest, perl-version: "5.12" }
+          - { os: macos-latest, perl-version: "5.14" }
+          - { os: macos-latest, perl-version: "5.16" }
+          - { os: macos-latest, perl-version: "5.18" }
+          - { os: macos-latest, perl-version: "5.20" }
+          - { os: macos-latest, perl-version: "5.22" }
     runs-on: ${{ matrix.os }}
     name:  on ${{ matrix.os }} perl ${{ matrix.perl-version }}
     steps:
