@@ -483,7 +483,7 @@ The constructor determines the scheme, maps this to an appropriate
 URI subclass, constructs a new object of that class and returns it.
 
 If the scheme isn't one of those that URI recognizes, you still get
-an URI object back that you can access the generic methods on.  The
+a URI object back that you can access the generic methods on.  The
 C<< $uri->has_recognized_scheme >> method can be used to test for
 this.
 
