@@ -751,7 +751,7 @@ Revision history for URI
    web spiders.
 
    URI::URL->new("foo", "bar")->base used to return
-   a "URI" object.  Now an URI::URL object is returned
+   a "URI" object.  Now a URI::URL object is returned
    instead.
 
    Deal properly with file:///-URIs.
