@@ -120,8 +120,6 @@ is $escapes{"%"}, "%25";
 
 is uri_escape_utf8("|abcå"), "%7Cabc%C3%A5";
 
-skip "Perl 5.8.0 or higher required", 3 if $] < 5.008;
-
 ok !eval { print uri_escape("abc" . chr(300)); 1 };
 like $@, qr/^Can\'t escape \\x\{012C\}, try uri_escape_utf8\(\) instead/;
 
