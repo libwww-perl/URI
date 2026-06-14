@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 37;
+use Test::More tests => 43;
 
 use URI ();
 my $u = URI->new("", "http");
@@ -38,7 +38,7 @@ $u->query_form(a => 3, b => 4);
 is $u, "?a=3&b=4";
 
 $u->query_form(a => undef);
-is $u, "?a";
+is $u, '?a=';
 
 $u->query_form("a[=&+#] " => " [=&+#]");
 is $u, "?a%5B%3D%26%2B%23%5D+=+%5B%3D%26%2B%23%5D";
@@ -159,10 +159,33 @@ $u->query_form(Foo::Bar::Array->new([]));
 }
 is $u, "?a=1;b=2";
 
+# In a form, a param with no "=" decodes to an empty-string value, not undef,
+# as it did before 5.19. See RT#150855 / GH#133.
 $u->query('a&b=2');
 @q = $u->query_form;
-is join(":", map { defined($_) ? $_ : '' } @q), "a::b:2";
-ok !defined($q[1]);
+is join(':', @q), 'a::b:2';
+ok defined($q[1]), 'valueless param decodes as a defined value';
+is $q[1], q{}, 'valueless param decodes as empty string, not undef';
 
 $u->query_form(@q);
-is $u, '?a&b=2';
+is $u, '?a=&b=2', 'empty-string value round-trips with an equals sign';
+
+# Regression for RT#150855 / GH#133: an undef value must encode as "key="
+# (e.g. HTTP::Request::Common passes undef meaning an empty value), not as a
+# bare "key" with no equals sign.
+$u->query_form(foo => undef);
+is $u, '?foo=', 'scalar undef value encodes with an equals sign';
+
+$u->query_form(a => undef, a => 'foo');
+is $u, '?a=&a=foo', 'undef among multiple values keeps the equals sign';
+
+$u->query_form({bar => 'baz', foo => undef});
+ok $u eq '?bar=baz&foo=' || $u eq '?foo=&bar=baz',
+    'undef value in a hash is encoded as empty, not dropped';
+
+# A query with no "=" at all is not a form but keywords, so query_form returns
+# nothing and leaves it to query_keywords. This differs from WHATWG parsing,
+# which would yield (a => '', b => '').
+$u->query('a&b');
+is_deeply [$u->query_form],     [], 'query with no "=" is not parsed as a form';
+is_deeply [$u->query_keywords], ['a&b'], '... but as keywords';

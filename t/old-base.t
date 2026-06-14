@@ -381,13 +381,13 @@ sub parts_test {
     $url->query_form(a => undef, a => 'foo', '&=' => '&=+');
     is(
         $url->as_string,
-        'http://web?a&a=foo&%26%3D=%26%3D%2B',
+        'http://web?a=&a=foo&%26%3D=%26%3D%2B',
         ref($url) . '->as_string'
     );
 
     my @a = $url->query_form;
     is(scalar(@a), 6, 'length');
-    is_deeply(\@a, ['a', undef, 'a', 'foo', '&=', '&=+',], 'query_form',);
+    is_deeply(\@a, ['a', q{}, 'a', 'foo', '&=', '&=+',], 'query_form',);
 
     # calling keywords is an error
 #    eval { my $foo = $url->keywords; };
