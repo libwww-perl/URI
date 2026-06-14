@@ -5,7 +5,7 @@ use warnings;
 
 use parent 'URI::_login';
 
-our $VERSION = '5.35';
+our $VERSION = '5.36';
 
 sub default_port { 445 }
 
