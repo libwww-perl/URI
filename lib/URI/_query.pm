@@ -47,19 +47,15 @@ sub query_form {
 
         my @query;
         while (my($key,$vals) = splice(@_, 0, 2)) {
-            $key = '' unless defined $key;
+            $key = q{} unless defined $key;
 	    $key =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
 	    $key =~ s/ /+/g;
 	    $vals = [_is_array($vals) ? @$vals : $vals];
             for my $val (@$vals) {
-                if (defined $val) {
-                    $val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
-                    $val =~ s/ /+/g;
-                    push(@query, "$key=$val");
-                }
-                else {
-                    push(@query, $key);
-                }
+                $val = q{} unless defined $val;
+                $val =~ s/([;\/?:@&=+,\$\[\]%])/ URI::Escape::escape_char($1)/eg;
+                $val =~ s/ /+/g;
+                push(@query, "$key=$val");
             }
         }
         if (@query) {
@@ -75,8 +71,8 @@ sub query_form {
     }
     return if !defined($old) || !length($old) || !defined(wantarray);
     return unless $old =~ /=/; # not a form
-    map { ( defined ) ? do { s/\+/ /g; uri_unescape($_) } : undef }
-         map { /=/ ? split(/=/, $_, 2) : ($_ => undef)} split(/[&;]/, $old);
+    map { s/\+/ /g; uri_unescape($_) }
+         map { /=/ ? split(/=/, $_, 2) : ($_ => q{})} split(/[&;]/, $old);
 }
 
 # Handle ...?dog+bones type of query
