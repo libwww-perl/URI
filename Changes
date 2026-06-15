@@ -1,6 +1,11 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Restore pre-5.19 query_form handling of undef/valueless params: an undef
+      value again encodes as "key=" (restoring compatibility with downstream
+      code such as HTTP::Request::Common), and a param with no "=" again decodes
+      to an empty string rather than undef, matching the WHATWG URL spec
+      (GH#133) (RT#150855)
 
 5.35      2026-06-14 23:04:12Z
     - Strip leading zeros from port numbers in canonical URIs (GH#69) (GH#162)
