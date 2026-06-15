@@ -2,8 +2,8 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Needs;
 use Test::Warnings qw( :all );
-use Test::Fatal;
 
 use URI::Escape qw( %escapes uri_escape uri_escape_utf8 uri_unescape );
 
@@ -87,9 +87,12 @@ is
     'regex characters like / and ^ allowed in range'
     ;
 
-like exception { uri_escape ('abcdef', 'd-c') },
-  qr/Invalid \[\] range "d-c" in regex/,
-  'invalid range with max less than min throws exception';
+subtest 'invalid range throws exception' => sub {
+    test_needs 'Test::Fatal';
+    like Test::Fatal::exception( sub { uri_escape ('abcdef', 'd-c') } ),
+      qr/Invalid \[\] range "d-c" in regex/,
+      'invalid range with max less than min throws exception';
+};
 
 like join('', warnings {
     is
