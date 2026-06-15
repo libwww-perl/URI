@@ -47,9 +47,15 @@ on 'runtime' => sub {
 on 'test' => sub {
     requires "File::Spec::Functions" => "0";
     requires "File::Temp" => "0";
-    requires "Test::Fatal" => "0";
     requires "Test::More" => "0.96";
     requires "Test::Needs" => '0';
     requires "Test::Warnings" => '0';
     requires "utf8" => "0";
+
+    # Test::Fatal 0.18+ requires perl 5.12, but URI still supports older
+    # perls. Require it where it can be installed so the relevant test
+    # always runs; on older perls t/escape.t skips that test via Test::Needs.
+    if ( "$]" >= 5.012 ) {
+        requires "Test::Fatal" => "0";
+    }
 };

@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Only require Test::Fatal on perl >= 5.12 (where it can be installed),
+      so tests still pass on older perls (GH#166) (GH#177)
 
 5.35      2026-06-14 23:04:12Z
     - Strip leading zeros from port numbers in canonical URIs (GH#69) (GH#162)
