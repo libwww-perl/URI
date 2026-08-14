@@ -14,7 +14,8 @@ TODO: {
     local $TODO = 'URI::Escape::escape_char misunderstands utf8';
 
     # http://foo/%C3%A9
-    is("$uri", 'http://foo/%E9', 'correctly created a URI from a utf8-upgraded string');
+    is("$uri", 'http://foo/%E9',
+        'correctly created a URI from a utf8-upgraded string');
 }
 
 {
@@ -23,7 +24,8 @@ TODO: {
     my $uri = URI->new($str);
 
     # http://foo/%E9
-    is("$uri", 'http://foo/%E9', 'correctly created a URI from a utf8-downgrade string');
+    is("$uri", 'http://foo/%E9',
+        'correctly created a URI from a utf8-downgrade string');
 }
 
 done_testing;

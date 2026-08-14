@@ -11,12 +11,12 @@ use URI::Escape ();
 
 sub un_path {
     my $self = shift;
-    my $old = URI::Escape::uri_unescape($self->authority);
+    my $old  = URI::Escape::uri_unescape($self->authority);
     if (@_) {
-	my $p = shift;
-	$p =~ s/:/%3A/g;
-	$p =~ s/\@/%40/g;
-	$self->authority($p);
+        my $p = shift;
+        $p =~ s/:/%3A/g;
+        $p =~ s/\@/%40/g;
+        $self->authority($p);
     }
     return $old;
 }

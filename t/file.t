@@ -94,25 +94,28 @@ SKIP: {
 
 subtest "Regression Tests" => sub {
 
-  # Regression test for https://github.com/libwww-perl/URI/issues/102
-  {
-    my $with_hashes = URI::file->new_abs("/tmp/###");
-    is($with_hashes, 'file:///tmp/%23%23%23', "issue GH#102");
-  }
+    # Regression test for https://github.com/libwww-perl/URI/issues/102
+    {
+        my $with_hashes = URI::file->new_abs("/tmp/###");
+        is($with_hashes, 'file:///tmp/%23%23%23', "issue GH#102");
+    }
 
-  # URI 5.11 introduced a bug where URI::file could return the current
-  # working directory instead of the path defined.
-  # The bug was caused by a wrong quantifier in a regular expression in
-  # URI::_fix_uric_escape_for_host_part() which returned an empty string for
-  # all URIs that needed escaping ('%xx') but did not have a host part.
-  # The empty string in turn caused URI::file->new_abs() to use the current
-  # working directory as a default.
-  {
-    my $file_path   = URI::file->new_abs('/a/path/that/pretty likely/does/not/exist-yie1Ahgh0Ohlahqueirequ0iebu8ip')->file();
-    my $current_dir = URI::file->new_abs()->file();
+    # URI 5.11 introduced a bug where URI::file could return the current
+    # working directory instead of the path defined.
+    # The bug was caused by a wrong quantifier in a regular expression in
+    # URI::_fix_uric_escape_for_host_part() which returned an empty string for
+    # all URIs that needed escaping ('%xx') but did not have a host part.
+    # The empty string in turn caused URI::file->new_abs() to use the current
+    # working directory as a default.
+    {
+        my $file_path
+            = URI::file->new_abs(
+            '/a/path/that/pretty likely/does/not/exist-yie1Ahgh0Ohlahqueirequ0iebu8ip'
+            )->file();
+        my $current_dir = URI::file->new_abs()->file();
 
-    isnt( $file_path, $current_dir, 'regression test for #102' );
-  }
+        isnt($file_path, $current_dir, 'regression test for #102');
+    }
 
 };
 

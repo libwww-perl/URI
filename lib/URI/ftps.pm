@@ -7,10 +7,10 @@ our $VERSION = '5.36';
 
 use parent 'URI::ftp';
 
-sub default_port { 990 }
+sub default_port {990}
 
-sub secure { 1 }
+sub secure {1}
 
-sub encrypt_mode { 'implicit' }
+sub encrypt_mode {'implicit'}
 
 1;

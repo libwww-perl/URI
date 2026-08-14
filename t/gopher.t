@@ -7,12 +7,12 @@ use URI ();
 
 sub check_gopher_uri {
     my ($u, $exphost, $expport, $exptype, $expselector, $expsearch) = @_;
-    is("gopher", $u->scheme);
-    is($exphost, $u->host);
-    is($expport, $u->port);
-    is($exptype, $u->gopher_type);
+    is("gopher",     $u->scheme);
+    is($exphost,     $u->host);
+    is($expport,     $u->port);
+    is($exptype,     $u->gopher_type);
     is($expselector, $u->selector);
-    is($expsearch, $u->search);
+    is($expsearch,   $u->search);
 }
 
 my $u;

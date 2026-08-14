@@ -43,7 +43,10 @@ is($u, "icaps://www.example.com/path?foo=bar&bar=baz");
 
 ok($u->secure);
 
-$u = URI->new("icaps://%65%78%61%6d%70%6c%65%2e%63%6f%6d/%70%75%62/%61/%32%30%30%31/%30%38/%32%37/%62%6a%6f%72%6e%73%74%61%64%2e%68%74%6d%6c");
+$u
+    = URI->new(
+    "icaps://%65%78%61%6d%70%6c%65%2e%63%6f%6d/%70%75%62/%61/%32%30%30%31/%30%38/%32%37/%62%6a%6f%72%6e%73%74%61%64%2e%68%74%6d%6c"
+    );
 is($u->canonical, "icaps://example.com/pub/a/2001/08/27/bjornstad.html");
 
 ok($u->has_recognized_scheme);

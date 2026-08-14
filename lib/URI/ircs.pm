@@ -7,8 +7,8 @@ our $VERSION = '5.36';
 
 use parent 'URI::irc';
 
-sub default_port { 994 }
+sub default_port {994}
 
-sub secure { 1 }
+sub secure {1}
 
 1;

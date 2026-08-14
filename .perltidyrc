@@ -1,4 +1,5 @@
 -pbp     # Start with Perl Best Practices
+-nst     # No standard output (so precious can tidy in place; -pbp implies -st)
 -w       # Show all warnings
 -iob     # Ignore old breakpoints
 -l=80    # 80 characters per line

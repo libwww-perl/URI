@@ -1,16 +1,14 @@
 use strict;
 use warnings;
 
-use Test::Needs { 'Business::ISBN' => 3.005 };
+use Test::Needs {'Business::ISBN' => 3.005};
 
 use Test::More tests => 13;
 
 use URI ();
 my $u = URI->new("URN:ISBN:0395363411");
 
-ok($u eq "URN:ISBN:0395363411" &&
-   $u->scheme eq "urn" &&
-   $u->nid eq "isbn");
+ok($u eq "URN:ISBN:0395363411" && $u->scheme eq "urn" && $u->nid eq "isbn");
 
 is($u->canonical, "urn:isbn:0-395-36341-1");
 

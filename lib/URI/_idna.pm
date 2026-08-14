@@ -7,38 +7,37 @@ use strict;
 use warnings;
 
 use URI::_punycode qw(decode_punycode encode_punycode);
-use Carp qw(croak);
+use Carp           qw(croak);
 
 our $VERSION = '5.36';
 
 BEGIN {
-  *URI::_idna::_ENV_::JOIN_LEAKS_UTF8_FLAGS = "$]" < 5.008_003
-    ? sub () { 1 }
-    : sub () { 0 }
-  ;
+    *URI::_idna::_ENV_::JOIN_LEAKS_UTF8_FLAGS
+        = "$]" < 5.008_003 ? sub () {1} : sub () {0};
 }
 
 my $ASCII = qr/^[\x00-\x7F]*\z/;
 
 sub encode {
     my $idomain = shift;
-    my @labels = split(/\./, $idomain, -1);
+    my @labels  = split(/\./, $idomain, -1);
     my @last_empty;
     push(@last_empty, pop @labels) if @labels > 1 && $labels[-1] eq "";
     for (@labels) {
-	$_ = ToASCII($_);
+        $_ = ToASCII($_);
     }
 
-    return eval 'join(".", @labels, @last_empty)' if URI::_idna::_ENV_::JOIN_LEAKS_UTF8_FLAGS;
+    return eval 'join(".", @labels, @last_empty)'
+        if URI::_idna::_ENV_::JOIN_LEAKS_UTF8_FLAGS;
     return join(".", @labels, @last_empty);
 }
 
 sub decode {
     my $domain = shift;
-    return join(".", map ToUnicode($_), split(/\./, $domain, -1))
+    return join(".", map ToUnicode($_), split(/\./, $domain, -1));
 }
 
-sub nameprep { # XXX real implementation missing
+sub nameprep {    # XXX real implementation missing
     my $label = shift;
     $label = lc($label);
     return $label;
@@ -46,7 +45,7 @@ sub nameprep { # XXX real implementation missing
 
 sub check_size {
     my $label = shift;
-    croak "Label empty" if $label eq "";
+    croak "Label empty"    if $label eq "";
     croak "Label too long" if length($label) > 63;
     return $label;
 }
@@ -57,6 +56,7 @@ sub ToASCII {
 
     # Step 2: nameprep
     $label = nameprep($label);
+
     # Step 3: UseSTD3ASCIIRules is false
     # Step 4: try ASCII again
     return check_size($label) if $label =~ $ASCII;
@@ -83,7 +83,7 @@ sub ToUnicode {
     my $result = decode_punycode(substr($label, 4));
     my $label2 = ToASCII($result);
     if (lc($label) ne $label2) {
-	croak "IDNA does not round-trip: '\L$label\E' vs '$label2'";
+        croak "IDNA does not round-trip: '\L$label\E' vs '$label2'";
     }
     return $result;
 }

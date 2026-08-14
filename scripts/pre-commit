@@ -1,0 +1,57 @@
+#!/bin/sh
+# Pre-commit hook: enforce `precious lint` on staged files and
+# block direct commits to the default branch.
+#
+# Install (run once per clone):
+#   scripts/pre-commit --init
+
+set -eu
+
+if [ "${1:-}" = "--init" ]; then
+    repo_root=$(git rev-parse --show-toplevel)
+    # Resolve the hooks dir via git so it works in plain repos, linked
+    # worktrees (where `.git` is a file pointing into the common git dir),
+    # and setups that override `core.hooksPath`. Run with `-C "$repo_root"`
+    # so the output is anchored under the worktree root regardless of
+    # which subdirectory the contributor invoked `--init` from.
+    hooks_dir=$(git -C "$repo_root" rev-parse --git-path hooks)
+    case "$hooks_dir" in
+        /*) ;;
+        *) hooks_dir="$repo_root/$hooks_dir" ;;
+    esac
+    hook_path="$hooks_dir/pre-commit"
+    target="$repo_root/scripts/pre-commit"
+    if [ -e "$hook_path" ] && [ ! -L "$hook_path" ]; then
+        echo "ERROR: $hook_path exists and is not a symlink." >&2
+        echo "Move or remove it, then re-run scripts/pre-commit --init." >&2
+        exit 1
+    fi
+    chmod +x "$target"
+    ln -sf "$target" "$hook_path"
+    echo "Installed pre-commit hook: $hook_path -> $target"
+    exit 0
+fi
+
+# Anchor to the working-tree root before doing anything else. Git exports
+# GIT_DIR into the hook environment, so `--show-toplevel` resolves the right
+# tree even when a wrapper invokes `git commit` from a directory outside (or
+# beside) the repo. Without this, `precious lint --staged` runs from that
+# foreign cwd, fails to find precious.toml, and the hook breaks.
+cd "$(git rev-parse --show-toplevel)"
+
+# Block direct commits to the default branch.
+default_branch="master"
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+if [ "$branch" = "$default_branch" ]; then
+    echo "ERROR: Direct commits to '$default_branch' branch are not allowed." >&2
+    echo "Please create a feature branch instead:" >&2
+    echo "  git checkout -b feature/your-feature-name" >&2
+    exit 1
+fi
+
+# Run precious lint on staged files
+if ! precious lint -q --staged; then
+    echo "pre-commit hook failed: precious lint found issues with staged files" >&2
+    echo "Please run 'precious tidy -q --staged' and try again" >&2
+    exit 1
+fi

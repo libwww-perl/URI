@@ -7,8 +7,8 @@ our $VERSION = '5.36';
 
 use parent 'URI::ftp';
 
-sub secure { 1 }
+sub secure {1}
 
-sub encrypt_mode { 'explicit' }
+sub encrypt_mode {'explicit'}
 
 1;

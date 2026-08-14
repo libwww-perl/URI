@@ -1,4 +1,4 @@
-package URI::pop;   # RFC 2384
+package URI::pop;    # RFC 2384
 
 use strict;
 use warnings;
@@ -9,7 +9,7 @@ use parent 'URI::_emailauth';
 
 use URI::Escape qw(uri_unescape);
 
-sub default_port { 110 }
+sub default_port {110}
 
 #pop://<user>;auth=<auth>@<host>:<port>
 

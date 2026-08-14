@@ -9,8 +9,8 @@ use parent 'URI::_login';
 
 # ssh://[USER@]HOST[:PORT]/SRC
 
-sub default_port { 22 }
+sub default_port {22}
 
-sub secure { 1 }
+sub secure {1}
 
 1;
