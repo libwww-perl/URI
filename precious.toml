@@ -1,0 +1,23 @@
+[commands.perltidy]
+type    = "both"
+include = ["**/*.{pl,pm,t,psgi}"]
+cmd     = ["perltidy", "--profile=$PRECIOUS_ROOT/.perltidyrc"]
+lint-flags = ["--assert-tidy", "--no-standard-output", "--outfile=/dev/null"]
+tidy-flags = ["--backup-and-modify-in-place", "--backup-file-extension=/"]
+ok-exit-codes = [0]
+lint-failure-exit-codes = [2]
+
+[commands.perlvars]
+type    = "lint"
+include = ["**/*.pm"]
+cmd     = ["perlvars"]
+ok-exit-codes = [0]
+lint-failure-exit-codes = [1]
+
+[commands.omegasort-gitignore]
+type    = "both"
+include = [".gitignore"]
+cmd     = ["omegasort", "--sort", "path", "--unique"]
+lint-flags = ["--check"]
+ok-exit-codes = [0]
+lint-failure-exit-codes = [1]
