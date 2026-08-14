@@ -5,7 +5,9 @@ use Test::More tests => 17;
 
 use URI::Split qw( uri_join uri_split );
 
-sub j { join("-", map { defined($_) ? $_ : "<undef>" } @_) }
+sub j {
+    join("-", map { defined($_) ? $_ : "<undef>" } @_);
+}
 
 is j(uri_split("p")), "<undef>-<undef>-p-<undef>-<undef>";
 
@@ -35,7 +37,8 @@ is uri_join("s", "a"), "s://a";
 
 is uri_join("s", "a/b"), "s://a%2Fb";
 
-is uri_join("s", ":/?#", ":/?#", ":/?#", ":/?#"), "s://:%2F%3F%23/:/%3F%23?:/?%23#:/?#";
+is uri_join("s", ":/?#", ":/?#", ":/?#", ":/?#"),
+    "s://:%2F%3F%23/:/%3F%23?:/?%23#:/?#";
 
 is uri_join(undef, undef, "a:b"), "a%3Ab";
 

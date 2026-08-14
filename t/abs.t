@@ -7,48 +7,51 @@ use Test::More tests => 45;
 # in the "Uniform Resource Identifiers (URI): Generic Syntax" document.
 
 use URI ();
-my $base = "http://a/b/c/d;p?q";
+my $base   = "http://a/b/c/d;p?q";
 my $testno = 1;
 my @rel_fail;
 
 while (<DATA>) {
-   #next if 1 .. /^C\.\s+/;
-   #last if /^D\.\s+/;
-   next unless /\s+(\S+)\s*=\s*(.*)/;
-   my $uref = $1;
-   my $expect = $2;
-   $expect =~ s/\(current document\)/$base/;
 
-   my $bad;
-   my $u = URI->new($uref, $base);
-   if ($u->abs($base)->as_string ne $expect) {
-       $bad++;
-       my $abs = $u->abs($base)->as_string;
-       diag qq(URI->new("$uref")->abs("$base") ==> "$abs");
-   }
+    #next if 1 .. /^C\.\s+/;
+    #last if /^D\.\s+/;
+    next unless /\s+(\S+)\s*=\s*(.*)/;
+    my $uref   = $1;
+    my $expect = $2;
+    $expect =~ s/\(current document\)/$base/;
 
-   # Let's test another version of the same thing
-   $u = URI->new($uref);
-   my $b = URI->new($base);
-   if ($u->abs($b,1) ne $expect && $uref !~ /^http:/) {
-       $bad++;
-       diag qq(URI->new("$uref")->abs(URI->new("$base"), 1));
-   }
+    my $bad;
+    my $u = URI->new($uref, $base);
+    if ($u->abs($base)->as_string ne $expect) {
+        $bad++;
+        my $abs = $u->abs($base)->as_string;
+        diag qq(URI->new("$uref")->abs("$base") ==> "$abs");
+    }
 
-   # Let's try the other way
-   $u = URI->new($expect)->rel($base)->as_string;
-   if ($u ne $uref) {
-       push(@rel_fail, qq($testno: URI->new("$expect", "$base")->rel ==> "$u" (not "$uref")\n));
-   }
+    # Let's test another version of the same thing
+    $u = URI->new($uref);
+    my $b = URI->new($base);
+    if ($u->abs($b, 1) ne $expect && $uref !~ /^http:/) {
+        $bad++;
+        diag qq(URI->new("$uref")->abs(URI->new("$base"), 1));
+    }
 
-   ok !$bad, "$uref => $expect";
+    # Let's try the other way
+    $u = URI->new($expect)->rel($base)->as_string;
+    if ($u ne $uref) {
+        push(@rel_fail,
+            qq($testno: URI->new("$expect", "$base")->rel ==> "$u" (not "$uref")\n)
+        );
+    }
+
+    ok !$bad, "$uref => $expect";
 }
 
 if (@rel_fail) {
-    note "\n\nIn the following cases we did not get back to where we started with rel()";
+    note
+        "\n\nIn the following cases we did not get back to where we started with rel()";
     note @rel_fail;
 }
-
 
 
 __END__

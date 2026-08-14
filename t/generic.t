@@ -14,7 +14,9 @@ is($foo->as_string, "Foo:opaque#frag");
 is("$foo", "Foo:opaque#frag");
 
 # Try accessors
-ok($foo->_scheme eq "Foo" && $foo->scheme eq "foo" && !$foo->has_recognized_scheme);
+ok(        $foo->_scheme eq "Foo"
+        && $foo->scheme eq "foo"
+        && !$foo->has_recognized_scheme);
 
 is($foo->opaque, "opaque");
 
@@ -62,12 +64,11 @@ ok($old eq "" && $foo eq "foo:opaque");
 
 
 # Compare
-ok($foo->eq("Foo:opaque") &&
-   $foo->eq(URI->new("FOO:opaque")) &&
-   $foo->eq("foo:opaque"));
+ok(        $foo->eq("Foo:opaque")
+        && $foo->eq(URI->new("FOO:opaque"))
+        && $foo->eq("foo:opaque"));
 
-ok(!$foo->eq("Bar:opaque") &&
-   !$foo->eq("foo:opaque#"));
+ok(!$foo->eq("Bar:opaque") && !$foo->eq("foo:opaque#"));
 
 
 # Try hierarchal unknown URLs

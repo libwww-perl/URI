@@ -9,8 +9,8 @@ use URI::URL qw( url );
 # not absolute itself.
 
 my $u1 = url("/foo/bar", "http://www.acme.com/");
-my $u2 = url("../foo/", $u1);
-my $u3 = url("zoo/foo", $u2);
+my $u2 = url("../foo/",  $u1);
+my $u3 = url("zoo/foo",  $u2);
 
 my $a1 = $u1->abs->as_string;
 my $a2 = $u2->abs->as_string;

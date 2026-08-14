@@ -7,6 +7,6 @@ our $VERSION = '5.36';
 
 use parent 'URI::_login';
 
-sub default_port { 23 }
+sub default_port {23}
 
 1;

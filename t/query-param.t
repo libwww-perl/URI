@@ -8,19 +8,16 @@ use URI::QueryParam;
 
 my $u = URI->new("http://www.sol.no?foo=4&bar=5&foo=5");
 
-is_deeply(
-    $u->query_form_hash,
-    { foo => [ 4, 5 ], bar => 5 },
-    'query_form_hash get'
-);
+is_deeply($u->query_form_hash, {foo => [4, 5], bar => 5},
+    'query_form_hash get');
 
-$u->query_form_hash({ a => 1, b => 2});
+$u->query_form_hash({a => 1, b => 2});
 ok $u->query eq "a=1&b=2" || $u->query eq "b=2&a=1", 'query_form_hash set';
 
 $u->query("a=1&b=2&a=3&b=4&a=5");
 is join(':', $u->query_param), "a:b", 'query_param list keys';
 
-is $u->query_param("a"), "1", "query_param scalar return";
+is $u->query_param("a"),            "1",     "query_param scalar return";
 is join(":", $u->query_param("a")), "1:3:5", "query_param list return";
 
 is $u->query_param(a => 11 .. 15), 1, "query_param set return";
@@ -40,7 +37,7 @@ $u->query_param_append(b => 6);
 
 is $u->query, "b=2&b=4&a=1&a=3&a=5&b=6";
 
-$u->query_param(a => []);  # same as $u->query_param_delete("a");
+$u->query_param(a => []);    # same as $u->query_param_delete("a");
 
 is $u->query, "b=2&b=4&b=6", 'delete by assigning empty list';
 
@@ -53,7 +50,7 @@ is $u->query, 'a=1&a=2&a=3&b=1', 'query_param from scratch';
 $u->query_param_delete('a');
 $u->query_param_delete('b');
 
-ok ! $u->query;
+ok !$u->query;
 
 is $u->as_string, 'http://www.sol.no';
 
@@ -66,21 +63,27 @@ is $u->query, 'a=1&a=2&a=3&b=1';
 $u->query_param('a' => []);
 $u->query_param('b' => []);
 
-ok ! $u->query;
+ok !$u->query;
 
 # Same, but using array object
 {
-    package
-        Foo::Bar::Array;
-    sub new
-    {
-        my $this = shift( @_ );
-        return( bless( ( @_ == 1 && ref( $_[0] || '' ) eq 'ARRAY' ) ? shift( @_ ) : [@_] => ( ref( $this ) || $this ) ) );
+
+    package Foo::Bar::Array;
+
+    sub new {
+        my $this = shift(@_);
+        return (
+            bless(
+                (@_ == 1 && ref($_[0] || '') eq 'ARRAY')
+                ? shift(@_)
+                : [@_] => (ref($this) || $this)
+            )
+        );
     }
 }
 $u->query_param('a' => Foo::Bar::Array->new);
 $u->query_param('b' => Foo::Bar::Array->new);
 
-ok ! $u->query;
+ok !$u->query;
 
 is $u->as_string, 'http://www.sol.no';

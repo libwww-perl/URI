@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::Needs qw( Test::DependentModules );
+use Test::Needs            qw( Test::DependentModules );
 use Test::DependentModules qw( test_modules );
 use Test::More;
 

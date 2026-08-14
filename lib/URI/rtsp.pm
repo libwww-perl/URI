@@ -7,6 +7,6 @@ our $VERSION = '5.36';
 
 use parent 'URI::http';
 
-sub default_port { 554 }
+sub default_port {554}
 
 1;

@@ -7,7 +7,7 @@ use URI ();
 
 my $u = URI->new("urn:oid");
 
-$u->oid(1..10);
+$u->oid(1 .. 10);
 
 #print "$u\n";
 
