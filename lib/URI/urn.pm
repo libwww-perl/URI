@@ -45,7 +45,7 @@ sub _init {
 }
 
 sub _urn_init {
-    my($class, $self, $nid) = @_;
+    my($class, $self) = @_;
     bless $self, $class;
 }
 

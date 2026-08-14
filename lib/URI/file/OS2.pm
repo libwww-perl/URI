@@ -12,7 +12,7 @@ our $VERSION = '5.36';
 
 sub _file_extract_authority
 {
-    my $class = shift;
+    shift;    # $class
     return $1 if $_[0] =~ s,^\\\\([^\\]+),,;  # UNC
     return $1 if $_[0] =~ s,^//([^/]+),,;     # UNC too?
 

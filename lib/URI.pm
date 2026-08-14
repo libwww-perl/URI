@@ -391,7 +391,7 @@ sub secure { 0 }
 
 # help out Storable
 sub STORABLE_freeze {
-       my($self, $cloning) = @_;
+       my($self) = @_;
        return $$self;
 }
 

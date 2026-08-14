@@ -11,7 +11,7 @@ our $VERSION = '5.36';
 
 sub _file_extract_path
 {
-    my $class = shift;
+    shift;    # $class
     my $path = shift;
 
     my @pre;
