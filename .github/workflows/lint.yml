@@ -1,0 +1,47 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  precious:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.42"
+      - uses: oalders/install-ubi-action@v0.0.6
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          projects: |
+            houseabsolute/precious
+            houseabsolute/omegasort
+      - uses: perl-actions/install-with-cpm@v2
+        with:
+          install: |
+            App::perlvars
+            Perl::Tidy
+          sudo: false
+      - name: precious lint
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch origin "$BASE_REF:refs/remotes/origin/$BASE_REF"
+            precious lint -q --git-diff-from "origin/$BASE_REF"
+          else
+            precious lint -q --all
+          fi
