@@ -119,11 +119,24 @@ subtest "Regression Tests" => sub {
 
     # Regression test for https://github.com/libwww-perl/URI/issues/95
     {
-        my $file = ' hello world ';
-        my $u    = URI::file->new_abs($file);
-        my @dirs = File::Spec->splitdir($u->file('Unix'));
+        my %ws = (
+            space             => ' ',
+            tab               => "\t",
+            newline           => "\n",
+            'carriage return' => "\r",
+            'form feed'       => "\f",
+            'vertical tab'    => "\x0b",
+        );
 
-        is($dirs[-1], $file, 'leading and trailing whitespace preserved (issue GH#95)');
+        for my $name (sort keys %ws) {
+            my $ws   = $ws{$name};
+            my $file = "${ws}hello world${ws}";
+            my $u    = URI::file->new_abs($file);
+            my @dirs = File::Spec->splitdir($u->file('Unix'));
+
+            is($dirs[-1], $file,
+                "leading and trailing $name preserved (issue GH#95)");
+        }
     }
 
 };
