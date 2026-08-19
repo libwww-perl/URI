@@ -3,8 +3,7 @@ use warnings;
 
 use utf8;
 use Test::More;
-use Test::Fatal qw( exception );
-use URI::_idna  ();
+use URI::_idna ();
 
 is URI::_idna::encode("www.example.com"),  "www.example.com";
 is URI::_idna::decode("www.example.com"),  "www.example.com";
@@ -26,7 +25,12 @@ is URI::_idna::encode(URI::_idna::decode("xn--11b2fg")), "xn--11b2fg",
 
 # The non-normalized precomposed A-label for the same name must be rejected
 # rather than silently decoded, so it can never stand in for the NFC host.
-like exception { URI::_idna::decode("xn--72b5c") }, qr/does not round-trip/,
+my $exception = do {
+    local $@;
+    eval { URI::_idna::decode("xn--72b5c") };
+    $@;
+};
+like $exception, qr/does not round-trip/,
     "non-NFC A-label is rejected on decode";
 
 done_testing;
