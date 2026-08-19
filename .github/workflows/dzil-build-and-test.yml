@@ -70,8 +70,13 @@ jobs:
           - "5.38"
           - "5.40"
           - "5.42"
+        include:
+          # Windows CI is otherwise disabled; only test the newest Perls
+          # for now, using the default (non-Strawberry) distribution, since
+          # Strawberry Perl builds aren't yet available for 5.44 on Windows.
+          - { os: windows-latest, distribution: default, perl-version: "5.42" }
+          - { os: windows-latest, distribution: default, perl-version: "5.44" }
         exclude:
-          - { os: windows-latest, distribution: default }
           - { os: macos-latest,   distribution: strawberry }
           - { os: ubuntu-latest,  distribution: strawberry }
           - { distribution: strawberry, perl-version: "5.12" }
