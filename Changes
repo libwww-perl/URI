@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.36      2026-08-19 19:37:22Z
     - Apply Unicode NFC normalization in URI::_idna nameprep so IDNA host
       encoding matches other clients instead of emitting a non-standard,
