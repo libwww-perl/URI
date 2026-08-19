@@ -1,6 +1,10 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Apply Unicode NFC normalization in URI::_idna nameprep so IDNA host
+      encoding matches other clients instead of emitting a non-standard,
+      non-round-tripping A-label [CVE-2026-19953] (reported by Naseeb Dangi,
+      @naseeb0) (GH#191)
 
 5.35      2026-06-14 23:04:12Z
     - Strip leading zeros from port numbers in canonical URIs (GH#69) (GH#162)
