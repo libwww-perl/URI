@@ -6,8 +6,9 @@ package URI::_idna;
 use strict;
 use warnings;
 
-use URI::_punycode qw(decode_punycode encode_punycode);
-use Carp           qw(croak);
+use URI::_punycode     qw(decode_punycode encode_punycode);
+use Unicode::Normalize qw(NFC);
+use Carp               qw(croak);
 
 our $VERSION = '5.36';
 
@@ -37,10 +38,20 @@ sub decode {
     return join(".", map ToUnicode($_), split(/\./, $domain, -1));
 }
 
-sub nameprep {    # XXX real implementation missing
+sub nameprep {
     my $label = shift;
-    $label = lc($label);
-    return $label;
+
+    # Lowercase, then normalize. Without normalization a non-NFC label encodes
+    # to a non-standard A-label that other IDNA implementations reject, so a
+    # host used for a security check can differ from the host actually fetched.
+    # We normalize with NFC (canonical composition): RFC 3491 (IDNA2003)
+    # nominally called for NFKC, but RFC 5891 (IDNA2008) replaced that with NFC,
+    # which is also what UTS #46 applies in browsers and other clients. The
+    # prohibited-character and bidi tables that a full nameprep would enforce
+    # remain unimplemented. A host passed as bytes rather than decoded
+    # characters is treated as Latin-1 per URI's documented contract (see the
+    # host/ihost examples in URI.pm), so pass decoded characters for UTF-8.
+    return NFC(lc $label);
 }
 
 sub check_size {

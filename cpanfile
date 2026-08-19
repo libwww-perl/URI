@@ -32,6 +32,7 @@ on 'runtime' => sub {
     requires "MIME::Base64" => "2";
     requires "Net::Domain" => "0";
     requires "Scalar::Util" => "0";
+    requires "Unicode::Normalize" => "0";
     requires "constant" => "0";
     requires "integer" => "0";
     requires "overload" => "0";
