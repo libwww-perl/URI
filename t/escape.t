@@ -3,7 +3,6 @@ use warnings;
 
 use Test::More;
 use Test::Warnings qw( :all );
-use Test::Fatal;
 
 use URI::Escape qw( %escapes uri_escape uri_escape_utf8 uri_unescape );
 
@@ -54,8 +53,12 @@ is uri_escape('abcd-', '\w'), '%61%62%63%64-',
 is uri_escape('a/b`]c^', '/-^'), 'a%2Fb`%5Dc%5E',
     'regex characters like / and ^ allowed in range';
 
-like exception { uri_escape('abcdef', 'd-c') },
-    qr/Invalid \[\] range "d-c" in regex/,
+my $exception = do {
+    local $@;
+    eval { uri_escape('abcdef', 'd-c') };
+    $@;
+};
+like $exception, qr/Invalid \[\] range "d-c" in regex/,
     'invalid range with max less than min throws exception';
 
 like join(
