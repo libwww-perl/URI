@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
       of silently stripping it (GH#95) (Jacques Deguest)
