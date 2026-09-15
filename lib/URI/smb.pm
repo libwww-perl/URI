@@ -5,6 +5,8 @@ use warnings;
 
 use parent 'URI::_login';
 
+use URI::Escape qw(uri_unescape);
+
 our $VERSION = '5.38';
 
 sub default_port {445}
@@ -12,9 +14,11 @@ sub default_port {445}
 sub user {
     my $self = shift;
     my $new  = shift;
-    my ($user, $authdomain) = _parse_user($self->SUPER::user());
+    my ($user, $authdomain) = _parse_user($self->_raw_user);
     if ($new) {
-        $self->SUPER::user($authdomain ? "$authdomain;$new" : $new);
+        $self->_raw_user($authdomain
+            ? _quote($authdomain) . ';' . _quote($new)
+            : _quote($new));
         $user = $new;
     }
     return $user;
@@ -23,11 +27,11 @@ sub user {
 sub authdomain {
     my $self = shift;
     my $new  = shift;
-    my ($user, $authdomain) = _parse_user($self->SUPER::user());
+    my ($user, $authdomain) = _parse_user($self->_raw_user);
 
     # it must not be possible to set authdomain without user
     if ($user && $new) {
-        $self->SUPER::user("$new;$user");
+        $self->_raw_user(_quote($new) . ';' . _quote($user));
         $authdomain = $new;
     }
     return $authdomain;
@@ -37,10 +41,34 @@ sub sharename {
     return (shift->path_segments)[1];
 }
 
+# The 'authdomain;user' slice of userinfo, still percent-encoded, so that ';'
+# is split before it is decoded (a %3B in a username is data, not a delimiter).
+sub _raw_user {
+    my $self = shift;
+    my $info = $self->userinfo;
+    if (@_) {
+        my $pass = defined($info) ? $info : '';
+        $pass =~ s/^[^:]*//;
+        $self->userinfo(shift(@_) . $pass);
+    }
+    return undef unless defined $info;
+    $info =~ s/:.*//;
+    return $info;
+}
+
+sub _quote {
+    my $v = shift;
+    $v =~ s/%/%25/g;
+    $v =~ s/;/%3B/g;
+    return $v;
+}
+
 sub _parse_user {
     my $input = shift or return;
     my ($authdomain, $user) = split ';', $input, 2;
-    return $user ? ($user, $authdomain) : $authdomain;
+    return $user
+        ? (uri_unescape($user), uri_unescape($authdomain))
+        : uri_unescape($authdomain);
 }
 
 1;
