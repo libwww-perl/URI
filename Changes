@@ -1,6 +1,9 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Treat a percent-escaped ';' in an smb:// userinfo as part of the
+      username instead of the authdomain delimiter, and escape it on write,
+      matching URI::_emailauth
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
