@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More;
 
 use URI ();
 
@@ -51,3 +51,9 @@ $u
 is($u->canonical, "http://example.com/pub/a/2001/08/27/bjornstad.html");
 
 ok($u->has_recognized_scheme);
+
+my $u2 = URI->new("http://www.example.com:/");
+is($u2->host, "www.example.com");
+
+done_testing();
+
