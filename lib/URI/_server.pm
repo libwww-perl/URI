@@ -92,7 +92,7 @@ sub host {
     }
     return undef unless defined $old;
     $old =~ s/.*@//;
-    $old =~ s/:\d+$//;            # remove the port
+    $old =~ s/:\d*$//;            # remove the port
     $old =~ s{^\[(.*)\]$}{$1};    # remove brackets around IPv6 (RFC 3986 3.2.2)
     return uri_unescape($old);
 }
