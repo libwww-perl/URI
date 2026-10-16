@@ -1,6 +1,9 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Fix rel() returning an absolute-path or network-path reference
+      ("/x", "//host/...") when a path has empty segments, so rel()->abs()
+      round-trips again (GH#205)
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
