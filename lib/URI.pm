@@ -903,7 +903,8 @@ I<xn--> prefix) are turned into U-labels (unicode chars).
 =item $uri->port( $new_port )
 
 Sets and returns the port.  The port is a simple integer
-that should be greater than 0.
+that should be greater than 0.  It croaks if the new port is
+not made up of digits only.
 
 If a port is not specified explicitly in the URI, then the URI scheme's default port
 is returned. If you don't want the default port

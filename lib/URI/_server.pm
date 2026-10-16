@@ -5,6 +5,7 @@ use warnings;
 
 use parent 'URI::_generic';
 
+use Carp        ();
 use URI::Escape qw(uri_unescape);
 
 our $VERSION = '5.38';
@@ -111,9 +112,13 @@ sub _port {
     my $self = shift;
     my $old  = $self->authority;
     if (@_) {
+        my $port = shift;
+
+        # anything but digits would let the value rewrite the authority (GH#203)
+        Carp::croak("Bad port '$port'")
+            if defined $port && $port !~ /\A[0-9]*\z/;
         my $new = $old;
         $new =~ s/:\d*$//;
-        my $port = shift;
         $new .= ":$port" if defined $port;
         $self->authority($new);
     }
