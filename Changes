@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
+      croak instead (GH#201)
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
