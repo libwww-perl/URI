@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Reject over-long IDNA labels before punycode encoding or decoding, so
+      a long non-ASCII host no longer takes seconds to fail (GH#207)
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead

@@ -33,4 +33,23 @@ my $exception = do {
 like $exception, qr/does not round-trip/,
     "non-NFC A-label is rejected on decode";
 
+# Over-long labels must be rejected before punycode runs, since encoding is
+# quadratic in the number of distinct code points (GH#207).
+$exception = do {
+    local $@;
+    local *URI::_idna::encode_punycode = sub { die "encoder ran\n" };
+    eval { URI::_idna::encode(join '', map chr(0x4E00 + $_), 1 .. 64) };
+    $@;
+};
+like $exception, qr/Label too long/,
+    'over-long non-ASCII label is rejected on encode';
+
+$exception = do {
+    local $@;
+    local *URI::_idna::decode_punycode = sub { die "decoder ran\n" };
+    eval { URI::_idna::decode('xn--' . ('9' x 100)) };
+    $@;
+};
+like $exception, qr/Label too long/, 'over-long A-label is rejected on decode';
+
 done_testing;
