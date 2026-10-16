@@ -3,6 +3,9 @@ Revision history for URI
 {{$NEXT}}
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
       croak instead (GH#201)
+    - Fix rel() returning an absolute-path or network-path reference
+      ("/x", "//host/...") when a path has empty segments, so rel()->abs()
+      round-trips again (GH#205)
 
 5.39      2026-10-19 16:38:21Z
     - Reject over-long IDNA labels before punycode encoding or decoding, so
