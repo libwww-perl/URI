@@ -7,6 +7,8 @@ our $VERSION = '5.41';
 
 use parent qw(URI URI::_query);
 
+use URI::Escape qw(uri_unescape);
+
 sub to {
     my $self = shift;
     my @old  = $self->headers;
@@ -69,15 +71,30 @@ sub headers {
     URI->new("mailto:?$opaque")->query_form;
 }
 
-# https://datatracker.ietf.org/doc/html/rfc6068#section-5 requires
-# plus signs (+) not to be turned into spaces
+# Recipient plus signs are literal (RFC 6068, section 5). Decode the
+# original values so percent-encoded spaces remain distinct from plus signs.
 sub query_form {
     my $self   = shift;
+    my $query  = $self->query;
     my @fields = $self->SUPER::query_form(@_);
+    if (@_) {
+
+        # The form encoder uses + for spaces; recipient + must stay literal.
+        my $new = $self->query;
+        if (defined $new) {
+            $new =~ s{(^|[&;])([^=&;]*)=([^&;]*)}{
+                my ($delimiter, $key, $value) = ($1, $2, $3);
+                $value =~ s/\+/%20/g if lc(uri_unescape($key)) eq 'to';
+                "$delimiter$key=$value";
+            }eg;
+            $self->query($new);
+        }
+    }
+    my @raw = defined $query ? split(/[&;]/, $query) : ();
     for (my $i = 0; $i < @fields; $i += 2) {
-        if ($fields[0] eq 'to') {
-            $fields[1] =~ s/ /+/g;
-            last;
+        if (lc($fields[$i]) eq 'to') {
+            my (undef, $value) = split(/=/, $raw[$i / 2], 2);
+            $fields[$i + 1] = uri_unescape($value) if defined $value;
         }
     }
     return @fields;
