@@ -48,15 +48,151 @@ $u = URI->new('mailto:user+detail@example.com');
 is $u->to, 'user+detail@example.com', 'subaddress with `+` parsed correctly';
 is $u,     'mailto:user+detail@example.com', '... and stringification works';
 
-TODO: {
-    local $TODO
-        = "We can't handle quoted local parts without properly parsing the email addresses";
-    $u = URI->new('mailto:"foo bar+baz"@example.com');
-    is $u->to, '"foo bar+baz"@example.com',
-        'address with quoted local part containing spaces is parsed correctly';
-    is $u, 'mailto:%22foo%20bar+baz%22@example.com',
-        '... and stringification works';
+$u = URI->new('mailto:"foo bar+baz"@example.com');
+is $u->to, '"foo bar+baz"@example.com',
+    'address with quoted local part containing spaces is parsed correctly';
+is $u, 'mailto:%22foo%20bar+baz%22@example.com',
+    '... and stringification works';
+
+for my $recipient (
+    'user@example.com',           'user+detail@example.com',
+    '"foo bar+baz"@example.com',  '"foo  bar+baz"@example.com',
+    '"foo, bar+baz"@example.com', '"foo%20bar+baz"@example.com',
+    'user@[127.0.0.1]',           'user@[IPv6:fe80::e828:209d:20e:c0ae]',
+    )
+{
+    $u = URI->new('mailto:old@example.com?subject=hello+world');
+    is $u->to($recipient), 'old@example.com', 'setter returns old recipient';
+    is $u->to,             $recipient,        "setter preserves $recipient";
+    my $copy = URI->new("$u");
+    is $copy->to, $recipient, 'recipient survives serialization';
+    my @headers = $copy->headers;
+    is_deeply \@headers, [to => $recipient, subject => 'hello world'],
+        'headers preserve recipient and form-encoded subject';
+    $copy->headers(@headers);
+    is $copy->to, $recipient, 'recipient survives headers round trip';
+    is "$copy",   "$u",       'headers round trip preserves serialization';
 }
+
+$u = URI->new('mailto:%22foo%20bar%2Bbaz%22@example.com');
+is $u->to, '"foo bar+baz"@example.com',
+    'percent-encoded space and plus decode separately';
+$u = URI->new('mailto:%22foo%20bar%2bbaz%22@example.com');
+is $u->to, '"foo bar+baz"@example.com', 'lowercase encoded plus is decoded';
+
+$u
+    = URI->new(
+    'mailto:first+tag@example.com?subject=hello+world&to=%22foo%20bar+baz%22@example.com'
+        . '&TO=third%2Btag@example.com&to=fourth+tag@example.com');
+is $u->to,
+    'first+tag@example.com,"foo bar+baz"@example.com,third+tag@example.com,fourth+tag@example.com',
+    'all recipient fields retain spaces and plus signs';
+my @headers = $u->headers;
+is_deeply \@headers,
+    [
+    to      => 'first+tag@example.com',
+    subject => 'hello world',
+    to      => '"foo bar+baz"@example.com',
+    TO      => 'third+tag@example.com',
+    to      => 'fourth+tag@example.com',
+    ],
+    'headers preserve repeated and case-insensitive recipients in order';
+my $recipients = $u->to;
+$u->headers(@headers);
+is $u->to, $recipients, 'repeated recipients survive headers round trip';
+is $u->to('replacement+tag@example.com'), $recipients,
+    'setter returns all previous recipients';
+is_deeply [$u->headers],
+    [to => 'replacement+tag@example.com', subject => 'hello world',],
+    'setter replaces all recipient fields and preserves other headers';
+
+$u = URI->new('mailto:?subject=a+b%20c%2Bd&to=%22foo%20bar+baz%22@example.com'
+        . '&TO=second+tag@example.com&to');
+my @form = $u->query_form;
+is_deeply \@form,
+    [
+    subject => 'a b c+d',
+    to      => '"foo bar+baz"@example.com',
+    TO      => 'second+tag@example.com',
+    to      => undef,
+    ],
+    'query_form handles later and repeated recipients and leaves bare values undefined';
+is scalar($u->query_form), 8, 'query_form retains scalar return behavior';
+is_deeply [
+    $u->query_form(
+        to      => '"new space+tag"@example.com',
+        subject => 'new subject+suffix'
+    )
+    ],
+    \@form, 'query_form setter returns previous fields';
+is_deeply [$u->query_form],
+    [to => '"new space+tag"@example.com', subject => 'new subject+suffix',],
+    'query_form setter round trip preserves recipient and subject';
+is $u,
+    'mailto:?to=%22new%20space%2Btag%22%40example.com&subject=new+subject%2Bsuffix',
+    'query_form serializes recipient spaces as %20 and preserves header form encoding';
+
+$u->query_form(
+    [to => ['first+tag@example.com', '"second space+tag"@example.com']]);
+is_deeply [$u->query_form],
+    [to => 'first+tag@example.com', to => '"second space+tag"@example.com',],
+    'query_form array values preserve repeated recipients';
+$u->query_form(
+    {to => '"hash space+tag"@example.com', subject => 'hash subject'});
+is_deeply [$u->query_form],
+    [subject => 'hash subject', to => '"hash space+tag"@example.com',],
+    'query_form hash setter handles recipients after another header';
+$u->query('subject=hello+world;to=%22foo%20bar+baz%22@example.com');
+is_deeply [$u->query_form],
+    [subject => 'hello world', to => '"foo bar+baz"@example.com',],
+    'semicolon delimiter preserves recipient semantics';
+$u->query('subject=first&%74%6f=%22foo%20bar+baz%22@example.com');
+is_deeply [$u->query_form],
+    [subject => 'first', to => '"foo bar+baz"@example.com',],
+    'encoded recipient field name is recognized';
+
+my @old_headers = $u->headers(
+    to      => '"header space+tag"@example.com',
+    subject => 'header subject+suffix'
+);
+is_deeply \@old_headers,
+    [to => '', subject => 'first', to => '"foo bar+baz"@example.com',],
+    'headers setter returns previous decoded fields';
+is_deeply [$u->headers],
+    [
+    to      => '"header space+tag"@example.com',
+    subject => 'header subject+suffix',
+    ],
+    'headers setter preserves quoted space and subject plus';
+my $before = "$u";
+my @read   = $u->headers;
+is "$u", $before, 'reading headers does not mutate URI';
+@read = $u->query_form;
+is "$u", $before, 'reading query_form does not mutate URI';
+$u->query_form(to => '"void space+tag"@example.com');
+is_deeply [$u->query_form], [to => '"void space+tag"@example.com'],
+    'query_form setter works in void context';
+is scalar($u->query_form(subject => 'only subject')), 2,
+    'query_form setter retains scalar return behavior';
+is_deeply [$u->query_form], [subject => 'only subject'],
+    'query_form setter without recipient retains form behavior';
+is_deeply [$u->query_form([])], [subject => 'only subject'],
+    'empty setter returns old fields';
+ok !defined($u->query), 'empty setter removes query';
+$u = URI->new('mailto:old+tag@example.com?subject=keep#fragment');
+$u->to('"new space+tag"@example.com');
+is $u->fragment, 'fragment', 'recipient setter retains fragment';
+$u->to(undef);
+is $u->to, '', 'undefined recipient clears recipient';
+is_deeply [$u->headers], [to => '', subject => 'keep'],
+    'clearing recipient retains other headers';
+
+$u = URI->new('mailto:');
+is_deeply [$u->query_form], [], 'missing query has no form fields';
+$u->query('');
+is_deeply [$u->query_form], [], 'empty query has no form fields';
+$u->query('keywords+only');
+is_deeply [$u->query_form], [], 'keyword query has no form fields';
 
 # RFC 5321 (4.1.3) - Address Literals
 
@@ -67,7 +203,7 @@ is $u,     'mailto:user@[127.0.0.1]', '... and stringification works';
 
 # IPv6
 $u = URI->new('mailto:user@[IPv6:fe80::e828:209d:20e:c0ae]');
-is $u->to, 'user@[IPv6:fe80::e828:209d:20e:c0ae]', 'IPv4 host name';
+is $u->to, 'user@[IPv6:fe80::e828:209d:20e:c0ae]', 'IPv6 host name';
 is $u, 'mailto:user@[IPv6:fe80::e828:209d:20e:c0ae]',
     '... and stringification works';
 

@@ -10,6 +10,8 @@ Revision history for URI
       round-trips and neither delimiter can be forged (GH#199)
     - Exclude the trailing colon from host() when a URI has an empty port
       (GH#200)
+    - Preserve spaces and literal plus signs in quoted mailto recipients,
+      including repeated to headers and query_form round trips (GH#189).
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
