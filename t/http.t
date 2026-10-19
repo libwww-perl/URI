@@ -52,8 +52,15 @@ is($u->canonical, "http://example.com/pub/a/2001/08/27/bjornstad.html");
 
 ok($u->has_recognized_scheme);
 
-my $u2 = URI->new("http://www.example.com:/");
-is($u2->host, "www.example.com");
+# An empty port must not leave a trailing colon on host()
+for my $str (
+    'http://www.example.com:/',           'http://www.example.com:',
+    'http://user:pass@www.example.com:/', 'https://www.example.com:/',
+    )
+{
+    is(URI->new($str)->host, 'www.example.com', "host() for $str");
+}
+is(URI->new('https://www.example.com:/')->port,
+    443, 'empty port falls back to the scheme default');
 
 done_testing();
-
