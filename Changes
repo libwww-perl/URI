@@ -6,8 +6,8 @@ Revision history for URI
       covered by the GH#95 fix (GH#95)
     - Treat a percent-escaped ';' in an smb:// userinfo as part of the
       username instead of the authdomain delimiter, matching
-      URI::_emailauth, and escape ';' and ':' on write so neither is
-      misread as a delimiter
+      URI::_emailauth, and escape '%', ';' and ':' on write so the value
+      round-trips and neither delimiter can be forged (GH#199)
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead

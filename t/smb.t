@@ -34,7 +34,7 @@ is($uri->as_string, 'smb://Administrator@server/share$/path');
 $uri->authdomain('DOMAIN');
 is($uri->as_string, 'smb://DOMAIN;Administrator@server/share$/path');
 
-# GH: a percent-escaped ';' in the userinfo is data, not the authdomain
+# GH#199: a percent-escaped ';' in the userinfo is data, not the authdomain
 # delimiter.  URI::_emailauth (pop/smtp) and URI::_userpass (ftp) both split
 # the raw userinfo before unescaping it; URI::smb must do the same.
 $uri = URI->new('smb://user%3Bname@server/share$/path');
