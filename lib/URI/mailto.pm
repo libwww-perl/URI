@@ -7,7 +7,7 @@ our $VERSION = '5.41';
 
 use parent qw(URI URI::_query);
 
-use URI::Escape qw(uri_unescape);
+use URI::Escape qw(uri_escape uri_unescape);
 
 sub to {
     my $self = shift;
@@ -59,9 +59,9 @@ sub headers {
             }
         }
 
-        my $new = join(",", @to);
-        $new =~ s/%/%25/g;
-        $new =~ s/\?/%3F/g;
+        # RFC 6068 section 2: these would otherwise end the address or start
+        # another header.
+        my $new = uri_escape(join(q{,}, @to), q{%?&;});
         $self->opaque($new);
         $self->query_form(@new) if @new;
     }
@@ -92,7 +92,7 @@ sub query_form {
     }
     my @raw = defined $query ? split(/[&;]/, $query) : ();
     for (my $i = 0; $i < @fields; $i += 2) {
-        if (lc($fields[$i]) eq 'to') {
+        if (lc($fields[$i]) eq q{to}) {
             my (undef, $value) = split(/=/, $raw[$i / 2], 2);
             $fields[$i + 1] = uri_unescape($value) if defined $value;
         }

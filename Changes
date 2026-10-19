@@ -2,7 +2,9 @@ Revision history for URI
 
 {{$NEXT}}
     - Preserve spaces and literal plus signs in quoted mailto recipients,
-      including repeated to headers and query_form round trips (GH#189).
+      including repeated to headers and query_form round trips, and escape
+      "&" and ";" in recipients set via to() or headers() so they cannot
+      split the address or inject extra headers (GH#189).
 
 5.40      2026-10-19 19:56:29Z
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
