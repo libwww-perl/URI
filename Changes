@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.40      2026-10-19 19:56:29Z
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
       croak instead (GH#201)
     - Fix rel() returning an absolute-path or network-path reference
