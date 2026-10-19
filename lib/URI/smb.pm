@@ -5,7 +5,7 @@ use warnings;
 
 use parent 'URI::_login';
 
-use URI::Escape qw(uri_unescape);
+use URI::Escape qw(uri_escape uri_unescape);
 
 our $VERSION = '5.38';
 
@@ -17,8 +17,8 @@ sub user {
     my ($user, $authdomain) = _parse_user($self->_raw_user);
     if ($new) {
         $self->_raw_user($authdomain
-            ? _quote($authdomain) . ';' . _quote($new)
-            : _quote($new));
+            ? uri_escape($authdomain, '%;:') . ';' . uri_escape($new, '%;:')
+            : uri_escape($new,        '%;:'));
         $user = $new;
     }
     return $user;
@@ -31,7 +31,8 @@ sub authdomain {
 
     # it must not be possible to set authdomain without user
     if ($user && $new) {
-        $self->_raw_user(_quote($new) . ';' . _quote($user));
+        $self->_raw_user(
+            uri_escape($new, '%;:') . ';' . uri_escape($user, '%;:'));
         $authdomain = $new;
     }
     return $authdomain;
@@ -54,14 +55,6 @@ sub _raw_user {
     return undef unless defined $info;
     $info =~ s/:.*//;
     return $info;
-}
-
-sub _quote {
-    my $v = shift;
-    $v =~ s/%/%25/g;
-    $v =~ s/;/%3B/g;
-    $v =~ s/:/%3A/g;
-    return $v;
 }
 
 sub _parse_user {
