@@ -1,6 +1,6 @@
 Revision history for URI
 
-{{$NEXT}}
+5.39      2026-10-19 16:38:21Z
     - Reject over-long IDNA labels before punycode encoding or decoding, so
       a long non-ASCII host no longer takes seconds to fail (GH#207) (Olaf
       Alders)
