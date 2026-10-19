@@ -3,7 +3,7 @@ package URI::ssh;
 use strict;
 use warnings;
 
-our $VERSION = '5.40';
+our $VERSION = '5.41';
 
 use parent 'URI::_login';
 

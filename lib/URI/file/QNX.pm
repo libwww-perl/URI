@@ -5,7 +5,7 @@ use warnings;
 
 use parent 'URI::file::Unix';
 
-our $VERSION = '5.40';
+our $VERSION = '5.41';
 
 sub _file_extract_path {
     my ($class, $path) = @_;
