@@ -82,11 +82,11 @@ sub query_form {
         # The form encoder uses + for spaces; recipient + must stay literal.
         my $new = $self->query;
         if (defined $new) {
-            $new =~ s{(^|[&;])([^=&;]*)=([^&;]*)}{
-                my ($delimiter, $key, $value) = ($1, $2, $3);
-                $value =~ s/\+/%20/g if lc(uri_unescape($key)) eq 'to';
-                "$delimiter$key=$value";
-            }eg;
+            $new =~ s{((?:^|[&;])to=)([^&;]*)}{
+                my ($prefix, $value) = ($1, $2);
+                $value =~ s/\+/%20/g;
+                "$prefix$value";
+            }gie;
             $self->query($new);
         }
     }
