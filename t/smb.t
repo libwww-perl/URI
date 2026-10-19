@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 31;
+use Test::More tests => 44;
 
 use URI ();
 my $uri;
@@ -90,3 +90,45 @@ $uri = URI->new('smb://server/share$/path');
 $uri->user('a%3Bb');
 is($uri->as_string, 'smb://a%253Bb@server/share$/path', 'R14 setter escapes %');
 is($uri->user,      'a%3Bb', 'R15 literal % round-trips');
+
+# The password is cut off before splitting, so a ';' in it is not a delimiter.
+$uri = URI->new('smb://u:p;w@server/share$/path');
+is($uri->user, 'u', 'R16 ; in the password leaves the user alone');
+is($uri->authdomain, undef,
+    'R17 ; in the password does not invent an authdomain');
+is($uri->password, 'p;w', 'R18 ; in the password is kept');
+$uri->authdomain('D');
+is(
+    $uri->as_string,
+    'smb://D;u:p;w@server/share$/path',
+    'R19 authdomain setter keeps a password containing ;'
+);
+
+$uri = URI->new('smb://a%3Bb;c;d@server/share$/path');
+is($uri->authdomain, 'a;b', 'R20 escaped ; before the raw delimiter');
+is($uri->user,       'c;d', 'R21 raw ; after the delimiter');
+
+$uri = URI->new('smb://user%3bname@server/share$/path');
+is($uri->user, 'user;name', 'R22 lowercase %3b is data too');
+
+$uri = URI->new('smb://a%253Bb@server/share$/path');
+is($uri->user,       'a%3Bb', 'R23 userinfo is decoded exactly once');
+is($uri->authdomain, undef,   'R24 double-encoded ; is not a delimiter');
+
+$uri = URI->new('smb://d;u:@server/share$/path');
+$uri->user('x');
+is(
+    $uri->as_string,
+    'smb://d;x:@server/share$/path',
+    'R25 user setter keeps an empty password'
+);
+is($uri->password, '', 'R26 empty password stays empty');
+
+$uri = URI->new('smb://:pw@server/share$/path');
+$uri->user('bob');
+is(
+    $uri->as_string,
+    'smb://bob:pw@server/share$/path',
+    'R27 user setter on a password-only userinfo'
+);
+is($uri->password, 'pw', 'R28 password-only userinfo keeps its password');
