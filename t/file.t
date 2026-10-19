@@ -139,6 +139,28 @@ subtest "Regression Tests" => sub {
         }
     }
 
+    # Regression test for https://github.com/libwww-perl/URI/issues/95 on the
+    # mac class, which supplies its own escaping instead of URI::file::Base's
+    {
+        my %ws = (
+            space             => ' ',
+            tab               => "\t",
+            newline           => "\n",
+            'carriage return' => "\r",
+            'form feed'       => "\f",
+            'vertical tab'    => "\x0b",
+        );
+
+        for my $name (sort keys %ws) {
+            my $ws   = $ws{$name};
+            my $file = "Disk:${ws}hello world${ws}";
+            my $u    = URI::file->new($file, 'mac');
+
+            is($u->file('mac'), $file,
+                "leading and trailing $name preserved on mac (issue GH#95)");
+        }
+    }
+
 };
 
 
