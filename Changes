@@ -11,7 +11,9 @@ Revision history for URI
     - Exclude the trailing colon from host() when a URI has an empty port
       (GH#200)
     - Preserve spaces and literal plus signs in quoted mailto recipients,
-      including repeated to headers and query_form round trips (GH#189).
+      including repeated to headers and query_form round trips, and escape
+      "&" and ";" in recipients set via to() or headers() so they cannot
+      split the address or inject extra headers (GH#189).
 
 5.37      2026-09-03 22:49:36Z
     - Preserve leading and trailing whitespace in file:// URI paths instead
