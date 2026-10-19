@@ -249,6 +249,8 @@ sub rel {
     for ($path, $bpath) { $_ = "/$_" unless m,^/,; }
 
     # Make it relative by eliminating scheme and authority
+    # (empty the path first so a leading "//" can't be reparsed as authority)
+    $rel->path(q{});
     $rel->scheme(undef);
     $rel->authority(undef);
 
@@ -273,8 +275,11 @@ sub rel {
     }
     else {
         # Add one "../" for each path component left in the base path
-        $path = ('../' x $bpath =~ tr|/|/|) . $path;
+        $path = ('../' x $bpath =~ tr{/}{/}) . $path;
         $path = "./" if $path eq "";
+
+        # leading "/" reads as an absolute path, "//" as an authority
+        $path = "./$path" if $path =~ m{^/};
         $rel->path($path);
     }
 
