@@ -161,6 +161,14 @@ subtest "Regression Tests" => sub {
         }
     }
 
+    # '?' in a mac file name is part of the path, not a query separator
+    {
+        my $u = URI::file->new('Disk:dir:a?b.txt', 'mac');
+        is($u->query, undef, "'?' in a mac file name does not start a query");
+        is($u->file('mac'), 'Disk:dir:a?b.txt',
+            "'?' in a mac file name round-trips");
+    }
+
 };
 
 
