@@ -3,7 +3,7 @@ package URI::rlogin;
 use strict;
 use warnings;
 
-our $VERSION = '5.39';
+our $VERSION = '5.40';
 
 use parent 'URI::_login';
 
