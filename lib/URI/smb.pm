@@ -60,6 +60,7 @@ sub _quote {
     my $v = shift;
     $v =~ s/%/%25/g;
     $v =~ s/;/%3B/g;
+    $v =~ s/:/%3A/g;
     return $v;
 }
 

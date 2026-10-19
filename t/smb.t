@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 22;
+use Test::More tests => 31;
 
 use URI ();
 my $uri;
@@ -57,3 +57,36 @@ is(
 );
 is($uri->user, 'user;name', 'R6 setter round-trips');
 
+# ':' is the user/password delimiter, so it must be escaped on write too.
+$uri = URI->new('smb://server/share$/path');
+$uri->user('admin:pw');
+is(
+    $uri->as_string,
+    'smb://admin%3Apw@server/share$/path',
+    'R7 setter escapes :'
+);
+is($uri->user,     'admin:pw', 'R8 : in the username round-trips');
+is($uri->password, undef, 'R9 : in the username does not invent a password');
+
+# Setting either half keeps the other half and the password.
+$uri = URI->new('smb://dom%3Bain;old:pa%3Ass@server/share$/path');
+$uri->user('new;x');
+is(
+    $uri->as_string,
+    'smb://dom%3Bain;new%3Bx:pa%3Ass@server/share$/path',
+    'R10 user setter keeps authdomain and password'
+);
+$uri->authdomain('d:e;f');
+is(
+    $uri->as_string,
+    'smb://d%3Ae%3Bf;new%3Bx:pa%3Ass@server/share$/path',
+    'R11 authdomain setter escapes : and ;'
+);
+is($uri->authdomain, 'd:e;f', 'R12 authdomain round-trips');
+is($uri->password,   'pa:ss', 'R13 password survives both setters');
+
+# A literal '%' is data and must not be decoded on the way back.
+$uri = URI->new('smb://server/share$/path');
+$uri->user('a%3Bb');
+is($uri->as_string, 'smb://a%253Bb@server/share$/path', 'R14 setter escapes %');
+is($uri->user,      'a%3Bb', 'R15 literal % round-trips');
