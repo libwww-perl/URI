@@ -1,5 +1,7 @@
 Revision history for URI
 
+{{$NEXT}}
+
 5.38      2026-10-19 03:58:47Z
     - Preserve leading and trailing whitespace in file:// URI paths built from
       mac file names; URI::file::Mac supplies its own escaping and so was not

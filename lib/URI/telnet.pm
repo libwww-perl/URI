@@ -3,7 +3,7 @@ package URI::telnet;
 use strict;
 use warnings;
 
-our $VERSION = '5.38';
+our $VERSION = '5.39';
 
 use parent 'URI::_login';
 
