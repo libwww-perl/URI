@@ -17,8 +17,8 @@ sub user {
     my ($user, $authdomain) = _parse_user($self->_raw_user);
     if ($new) {
         $self->_raw_user($authdomain
-            ? uri_escape($authdomain, '%;:') . ';' . uri_escape($new, '%;:')
-            : uri_escape($new,        '%;:'));
+            ? _smb_escape($authdomain) . ';' . _smb_escape($new)
+            : _smb_escape($new));
         $user = $new;
     }
     return $user;
@@ -31,8 +31,7 @@ sub authdomain {
 
     # it must not be possible to set authdomain without user
     if ($user && $new) {
-        $self->_raw_user(
-            uri_escape($new, '%;:') . ';' . uri_escape($user, '%;:'));
+        $self->_raw_user(_smb_escape($new) . ';' . _smb_escape($user));
         $authdomain = $new;
     }
     return $authdomain;
@@ -55,6 +54,13 @@ sub _raw_user {
     return undef unless defined $info;
     $info =~ s/:.*//;
     return $info;
+}
+
+# userinfo() escapes everything except '%', ';' and ':', which here start an
+# escape or delimit authdomain;user:password, so escape those ourselves.
+sub _smb_escape {
+    my $str = shift;
+    return uri_escape($str, '%;:');
 }
 
 sub _parse_user {
