@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use URI;
-use Test::More tests => 24;
+use Test::More tests => 26;
 
 {
     ok my $guri = URI->new('geo:54.786989,-2.344214'), 'created';
@@ -48,8 +48,12 @@ use Test::More tests => 24;
 }
 
 {
-    eval { URI->new('geo:1') };
-    like $@, qr/Badly formed/, 'error ok';
+    local $@ = 'sentinel';
+    my $guri = URI->new('geo:1');
+    is $@, 'sentinel', 'malformed geo: leaves $@ alone';
+    isa_ok $guri, 'URI::geo', 'malformed geo: still constructs';
+    eval { $guri->latitude };
+    like $@, qr/Badly formed/, 'accessor croaks on malformed geo:';
 }
 
 {

@@ -7,7 +7,7 @@ use parent 'URI::file::Base';
 
 use URI::Escape qw(uri_unescape);
 
-our $VERSION = '5.38';
+our $VERSION = '5.41';
 
 sub _file_extract_path {
     my ($class, $path) = @_;

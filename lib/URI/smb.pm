@@ -7,7 +7,7 @@ use parent 'URI::_login';
 
 use URI::Escape qw(uri_escape uri_unescape);
 
-our $VERSION = '5.38';
+our $VERSION = '5.41';
 
 sub default_port {445}
 
