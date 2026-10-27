@@ -24,7 +24,7 @@ is(
 );
 
 # RFC 3986 3.2.3: port = *DIGIT, so an empty port is valid
-$u->port('');
+$u->port(q{});
 is(
     $u->as_string,
     'https://api.good.example:/v1/hook',
