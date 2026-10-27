@@ -1,6 +1,8 @@
 Revision history for URI
 
 {{$NEXT}}
+    - port() now croaks on non-numeric values, which could previously
+      rewrite the host or userinfo of the URI (GH#203)
 
 5.40      2026-10-19 19:56:29Z
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
