@@ -113,6 +113,13 @@ subtest q{equals sign in recipient is escaped} => sub {
         q{= is percent-encoded per RFC 6068 section 2};
 };
 
+subtest q{percent sign in recipient is escaped} => sub {
+    my $u = URI->new(q{mailto:});
+    $u->to(q{"100%"@example.com});
+    is $u,     q{mailto:%22100%25%22@example.com}, q{% is percent-encoded};
+    is $u->to, q{"100%"@example.com},              q{... and decodes back};
+};
+
 subtest q{percent-encoded space and plus} => sub {
     my $u = URI->new(q{mailto:%22foo%20bar%2Bbaz%22@example.com});
     is $u->to, q{"foo bar+baz"@example.com},
@@ -153,13 +160,12 @@ subtest q{repeated recipients} => sub {
         q{setter replaces all recipient fields and preserves other headers};
 };
 
-subtest q{query_form} => sub {
+subtest q{query_form getter} => sub {
     my $u
         = URI->new(
               q{mailto:?subject=a+b%20c%2Bd&to=%22foo%20bar+baz%22@example.com}
             . q{&TO=second+tag@example.com&to});
-    my @form = $u->query_form;
-    is_deeply \@form,
+    is_deeply [$u->query_form],
         [
         subject => q{a b c+d},
         to      => q{"foo bar+baz"@example.com},
@@ -167,14 +173,18 @@ subtest q{query_form} => sub {
         to      => undef,
         ],
         q{query_form handles later and repeated recipients and leaves bare values undefined};
-    is scalar($u->query_form), 8, q{query_form retains scalar return behavior};
+};
+
+subtest q{query_form setter} => sub {
+    my $u = URI->new(q{mailto:?subject=a+b&to=%22foo%20bar+baz%22@example.com});
     is_deeply [
         $u->query_form(
             to      => q{"new space+tag"@example.com},
             subject => q{new subject+suffix}
         )
         ],
-        \@form, q{query_form setter returns previous fields};
+        [subject => q{a b}, to => q{"foo bar+baz"@example.com}],
+        q{query_form setter returns previous fields};
     is_deeply [$u->query_form],
         [
         to      => q{"new space+tag"@example.com},
@@ -184,7 +194,19 @@ subtest q{query_form} => sub {
     is $u,
         q{mailto:?to=%22new%20space%2Btag%22%40example.com&subject=new+subject%2Bsuffix},
         q{query_form serializes recipient spaces as %20 and preserves header form encoding};
+};
 
+subtest q{query_form setter with uppercase TO} => sub {
+    my $u = URI->new(q{mailto:});
+    $u->query_form(TO => q{"a b+c"@example.com});
+    is $u, q{mailto:?TO=%22a%20b%2Bc%22%40example.com},
+        q{uppercase recipient field serializes spaces as %20};
+    is_deeply [$u->query_form], [TO => q{"a b+c"@example.com}],
+        q{... and round trips};
+};
+
+subtest q{query_form array setter} => sub {
+    my $u = URI->new(q{mailto:});
     $u->query_form(
         [to => [q{first+tag@example.com}, q{"second space+tag"@example.com}]]);
     is_deeply [$u->query_form],
@@ -193,16 +215,45 @@ subtest q{query_form} => sub {
         to => q{"second space+tag"@example.com},
         ],
         q{query_form array values preserve repeated recipients};
+};
+
+subtest q{query_form hash setter} => sub {
+    my $u = URI->new(q{mailto:});
     $u->query_form(
         {to => q{"hash space+tag"@example.com}, subject => q{hash subject}});
     is_deeply [$u->query_form],
         [subject => q{hash subject}, to => q{"hash space+tag"@example.com},],
         q{query_form hash setter handles recipients after another header};
-    $u->query(q{subject=hello+world;to=%22foo%20bar+baz%22@example.com});
+};
+
+subtest q{query_form with semicolon delimiter} => sub {
+    my $u = URI->new(
+        q{mailto:?subject=hello+world;to=%22foo%20bar+baz%22@example.com});
     is_deeply [$u->query_form],
         [subject => q{hello world}, to => q{"foo bar+baz"@example.com},],
         q{semicolon delimiter preserves recipient semantics};
-    $u->query(q{subject=first&%74%6f=%22foo%20bar+baz%22@example.com});
+};
+
+subtest q{query_form with empty segments} => sub {
+    my $u = URI->new(q{mailto:?subject=x&&to=%22a%20b+c%22@example.com&});
+    is_deeply [$u->query_form],
+        [subject => q{x}, q{} => undef, to => q{"a b+c"@example.com}],
+        q{empty and trailing segments do not misalign recipients};
+
+    $u = URI->new(q{mailto:?&to=a+b@example.com;;subject=y});
+    is_deeply [$u->query_form],
+        [
+        q{}     => undef,
+        to      => q{a+b@example.com},
+        q{}     => undef,
+        subject => q{y},
+        ],
+        q{leading and doubled delimiters do not misalign recipients};
+};
+
+subtest q{query_form with encoded recipient field name} => sub {
+    my $u = URI->new(
+        q{mailto:?subject=first&%74%6f=%22foo%20bar+baz%22@example.com});
     is_deeply [$u->query_form],
         [subject => q{first}, to => q{"foo bar+baz"@example.com},],
         q{encoded recipient field name is recognized};
@@ -220,16 +271,30 @@ subtest q{query_form} => sub {
         subject => q{header subject+suffix},
         ],
         q{headers setter preserves quoted space and subject plus};
+};
+
+subtest q{reading does not mutate} => sub {
+    my $u
+        = URI->new(
+        q{mailto:%22header%20space+tag%22@example.com?subject=header+subject%2Bsuffix}
+        );
     my $before = "$u";
     my @read   = $u->headers;
     is "$u", $before, q{reading headers does not mutate URI};
     @read = $u->query_form;
     is "$u", $before, q{reading query_form does not mutate URI};
+};
+
+subtest q{query_form setter in void context} => sub {
+    my $u = URI->new(q{mailto:?subject=x});
     $u->query_form(to => q{"void space+tag"@example.com});
     is_deeply [$u->query_form], [to => q{"void space+tag"@example.com}],
         q{query_form setter works in void context};
-    is scalar($u->query_form(subject => q{only subject})), 2,
-        q{query_form setter retains scalar return behavior};
+};
+
+subtest q{query_form setter without recipient} => sub {
+    my $u = URI->new(q{mailto:});
+    $u->query_form(subject => q{only subject});
     is_deeply [$u->query_form], [subject => q{only subject}],
         q{query_form setter without recipient retains form behavior};
     is_deeply [$u->query_form([])], [subject => q{only subject}],

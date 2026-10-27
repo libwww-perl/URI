@@ -5,7 +5,8 @@ Revision history for URI
       including repeated to headers and query_form round trips, and escape
       "&", ";" and "=" in recipients set via to() or headers() so they cannot
       split the address or inject extra headers (GH#189) (Rajvir Ahmed Shuvo,
-      Olaf Alders)
+      Olaf Alders). Recipients containing ";" or "=" are now serialized
+      with those characters percent-encoded.
 
 5.40      2026-10-19 19:56:29Z
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors

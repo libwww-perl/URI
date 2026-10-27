@@ -90,6 +90,9 @@ sub query_form {
             $self->query($new);
         }
     }
+
+    # Relies on URI::_query also splitting on [&;] and keeping empty
+    # segments, so $raw[$i / 2] is the raw text of the field at $fields[$i].
     my @raw = defined $query ? split(/[&;]/, $query) : ();
     for (my $i = 0; $i < @fields; $i += 2) {
         if (lc($fields[$i]) eq q{to}) {
