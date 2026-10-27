@@ -61,7 +61,7 @@ sub headers {
 
         # RFC 6068 section 2: these would otherwise end the address or start
         # another header.
-        my $new = uri_escape(join(q{,}, @to), q{%?&;});
+        my $new = uri_escape(join(q{,}, @to), q{%?&;=});
         $self->opaque($new);
         $self->query_form(@new) if @new;
     }

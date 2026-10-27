@@ -94,7 +94,8 @@ for my $recipient (
 subtest q{recipient cannot inject headers} => sub {
     my $u = URI->new(q{mailto:});
     $u->to(q{a@example.com&bcc=evil@example.com;cc=evil@example.com});
-    is $u, q{mailto:a@example.com%26bcc=evil@example.com%3Bcc=evil@example.com},
+    is $u,
+        q{mailto:a@example.com%26bcc%3Devil@example.com%3Bcc%3Devil@example.com},
         q{header delimiters in recipient are escaped};
 
     subtest q{serialized copy} => sub {
@@ -103,6 +104,13 @@ subtest q{recipient cannot inject headers} => sub {
             [to => q{a@example.com&bcc=evil@example.com;cc=evil@example.com}],
             q{no extra headers after reparsing};
     };
+};
+
+subtest q{equals sign in recipient is escaped} => sub {
+    my $u = URI->new(q{mailto:});
+    $u->to(q{"foo=bar"@example.com});
+    is $u, q{mailto:%22foo%3Dbar%22@example.com},
+        q{= is percent-encoded per RFC 6068 section 2};
 };
 
 subtest q{percent-encoded space and plus} => sub {
