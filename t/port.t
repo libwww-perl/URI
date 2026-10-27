@@ -25,11 +25,7 @@ is(
 
 # RFC 3986 3.2.3: port = *DIGIT, so an empty port is valid
 $u->port(q{});
-is(
-    $u->as_string,
-    'https://api.good.example:/v1/hook',
-    'empty port accepted'
-);
-is($u->port, 443, 'empty port falls back to the default port');
+is($u->as_string, 'https://api.good.example:/v1/hook', 'empty port accepted');
+is($u->port,      443, 'empty port falls back to the default port');
 
 done_testing();
