@@ -1,6 +1,11 @@
 Revision history for URI
 
 {{$NEXT}}
+    - Restore pre-5.19 query_form handling of undef/valueless params: an undef
+      value again encodes as "key=" (restoring compatibility with downstream
+      code such as HTTP::Request::Common), and a param with no "=" again decodes
+      to an empty string rather than undef. As before 5.19, a query with no "="
+      at all is treated as keywords, not a form (GH#133) (RT#150855)
 
 5.40      2026-10-19 19:56:29Z
     - URI->new no longer dies on malformed geo: URIs; the URI::geo accessors
